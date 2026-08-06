@@ -2,11 +2,19 @@
 	import '$lib/styles/app.css';
 	import { browser, dev } from '$app/environment';
 	import { page } from '$app/state';
+	import { afterNavigate } from '$app/navigation';
 	import { settings } from '$lib/ui/settings.svelte.js';
 	import { sw } from '$lib/ui/sw.svelte.js';
+	import { backGuard } from '$lib/ui/backguard.svelte.js';
 	import About from '$lib/ui/About.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
 	let { children } = $props();
+
+	// 설치된 앱에서만 켜진다. 화면 이동 뒤마다 감시 항목을 다시 심는다.
+	afterNavigate(() => {
+		backGuard.start();
+		backGuard.rearm();
+	});
 
 	/**
 	 * 서비스워커 등록.
@@ -66,7 +74,18 @@
 	{#if !dev}<link rel="manifest" href="/manifest.webmanifest" />{/if}
 </svelte:head>
 
-<div class="shell">
+<!--
+	설치된 앱에서는 화면 이동이 히스토리를 쌓지 않고 교체한다. 쌓이면 뒤로가기가
+	아까 본 케이스들을 하나씩 되짚는다. 이동은 하단 탭으로 하고 뒤로가기는 닫기만 뜻한다.
+
+	브라우저 탭에서는 끈다 ("false"). 탭의 뒤로가기를 가로채는 것은 사용자를 가두는
+	짓이고, 애초에 닫을 앱도 아니다.
+-->
+<div
+	class="shell"
+	data-back-guard={backGuard.active}
+	data-sveltekit-replacestate={backGuard.active ? '' : 'false'}
+>
 	<div class="bar">
 		{#if installPrompt}
 			<button type="button" data-install onclick={install}>설치</button>
@@ -88,7 +107,14 @@
 	</div>
 	<About bind:this={about} />
 
-	{#if sw.justUpdated}
+	<!-- 뒤로가기 예고가 우선한다. 2초 안에 답해야 하는 쪽이라 밀리면 안 된다. -->
+	{#if backGuard.armed}
+		<Toast
+			text="한 번 더 누르면 닫힙니다"
+			duration={2000}
+			onclose={() => backGuard.dismiss()}
+		/>
+	{:else if sw.justUpdated}
 		<Toast text="새 버전으로 업데이트했습니다" onclose={() => sw.dismiss()} />
 	{/if}
 	<main>{@render children()}</main>

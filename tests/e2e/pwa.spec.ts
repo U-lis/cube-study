@@ -11,7 +11,9 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 		const res = await request.get('/manifest.webmanifest');
 		expect(res.ok()).toBe(true);
 		const m = await res.json();
-		expect(m.name).toBe('3-Style Corner Trainer');
+		// 홈 화면 라벨은 short_name 이다. 정보 모달의 앱 이름과 같아야 한다.
+		expect(m.name).toBe('CubeStudy');
+		expect(m.short_name).toBe('CubeStudy');
 		expect(m.display).toBe('standalone');
 		expect(m.lang).toBe('ko');
 		expect(m.icons.length).toBeGreaterThanOrEqual(3);
@@ -252,5 +254,142 @@ test.describe('반응형 (FR-22)', () => {
 			() => document.querySelector('.shell')!.getBoundingClientRect().width
 		);
 		expect(w).toBeLessThanOrEqual(720);
+	});
+});
+
+/**
+ * 뒤로가기는 설치된 앱에서만 가로챈다.
+ *
+ * Playwright 는 standalone 으로 띄울 수 없으므로 matchMedia 를 갈아끼워 흉내낸다.
+ * 앱이 보는 신호가 그것뿐이라 이 정도면 실제 경로를 그대로 지난다.
+ */
+const asStandalone = (page: import('@playwright/test').Page) =>
+	page.addInitScript(() => {
+		const orig = window.matchMedia.bind(window);
+		window.matchMedia = ((q: string) =>
+			q.includes('display-mode: standalone')
+				? ({
+						matches: true,
+						media: q,
+						onchange: null,
+						addEventListener() {},
+						removeEventListener() {},
+						addListener() {},
+						removeListener() {},
+						dispatchEvent: () => false
+					} as MediaQueryList)
+				: orig(q)) as typeof window.matchMedia;
+	});
+
+/** 가드가 켜질 때까지 기다린다. */
+const armed = (page: import('@playwright/test').Page) =>
+	page.locator('[data-back-guard="true"]').waitFor({ timeout: 10_000 });
+
+/**
+ * 감시 항목이 실제로 심어질 때까지 기다린다. 가드가 켜진 것만으로는 부족하다 —
+ * 심기가 실패했는데 뒤로가면 예고 없이 사이트를 떠난다.
+ */
+const planted = async (page: import('@playwright/test').Page) => {
+	await armed(page);
+	await page.waitForFunction(() => history.length >= 2, undefined, { timeout: 10_000 });
+};
+
+test.describe('뒤로가기 (설치된 앱)', () => {
+	test('탭을 옮겨도 히스토리가 쌓이지 않는다', async ({ page }) => {
+		await asStandalone(page);
+		await page.goto('/');
+		await armed(page);
+		const before = await page.evaluate(() => history.length);
+
+		for (const label of ['기준공식', '퀴즈', '조회', '기준공식']) {
+			await page.locator(`nav a:text-is("${label}")`).click();
+			await expect(page.locator('nav a.on')).toHaveText(label);
+		}
+
+		expect(await page.evaluate(() => history.length)).toBe(before);
+	});
+
+	test('케이스 링크를 따라가도 히스토리가 쌓이지 않는다', async ({ page }) => {
+		await asStandalone(page);
+		await page.goto('/anchors');
+		await armed(page);
+		const before = await page.evaluate(() => history.length);
+
+		await page.locator('[data-anchor]').first().click();
+		await page.locator('a[href^="/?c="]').first().click();
+		await expect(page.locator('section.case')).toBeVisible();
+
+		expect(await page.evaluate(() => history.length)).toBe(before);
+	});
+
+	test('한 번 누르면 예고만 하고 화면이 남는다', async ({ page }) => {
+		await asStandalone(page);
+		await page.goto('/quiz');
+		await armed(page);
+		await expect(page.locator('h1[data-case]')).toBeVisible();
+
+		await page.goBack();
+
+		await expect(page.locator('[data-toast]')).toHaveText('한 번 더 누르면 닫힙니다');
+		// 이전 화면으로 이동하지 않는다 — 뒤로가기는 닫기만 뜻한다
+		await expect(page.locator('h1[data-case]')).toBeVisible();
+	});
+
+	/**
+	 * 콜드 스타트. 아무 이동 없이 누른 첫 뒤로가기에도 예고가 떠야 한다.
+	 *
+	 * 주의: 실기기에서 났던 실패(라우터 초기화 전이라 심기가 예외를 던지는 것)를
+	 * 이 환경에서는 재현하지 못한다. 여기서는 첫 pushState 가 늘 성공한다.
+	 * 이 테스트는 "심기 전에 뒤로가면 그냥 닫힌다" 는 성질만 지킨다.
+	 */
+	test('켠 직후 아무 이동 없이 눌러도 예고가 뜬다', async ({ page }) => {
+		await asStandalone(page);
+		await page.goto('/');
+		await planted(page);
+
+		await page.goBack();
+
+		await expect(page.locator('[data-toast]')).toHaveText('한 번 더 누르면 닫힙니다');
+		await expect(page.getByLabel('케이스 코드')).toBeVisible();
+	});
+
+	/**
+	 * 뒤로가기로 나갔다가 안드로이드가 페이지를 메모리에서 복구하면 하이드레이션도
+	 * afterNavigate 도 다시 일어나지 않는다. 감시 항목이 없는 채로 켜져 첫 뒤로가기가
+	 * 예고 없이 앱을 닫았다. 화면에 돌아오는 신호로 다시 심는다.
+	 */
+	test('메모리에서 복구되어도 감시 항목이 다시 심어진다', async ({ page }) => {
+		await asStandalone(page);
+		await page.goto('/');
+		await planted(page);
+
+		// 뒤로가기로 나가는 상황: 감시 항목이 소모된다.
+		// 복구 신호를 곧바로 준다 — 예고가 만료되어 저절로 다시 심어지기 전에
+		// 확인해야 복구 처리가 실제로 일했는지 알 수 있다.
+		await page.goBack();
+		await page.evaluate(() => window.dispatchEvent(new PageTransitionEvent('pageshow')));
+		await page.locator('[data-about-open]').click();
+		await expect(page.locator('[data-diag="감시 항목"]')).toHaveText('있음', { timeout: 400 });
+	});
+
+	test('예고는 잠시 뒤 사라진다', async ({ page }) => {
+		await asStandalone(page);
+		await page.goto('/');
+		await armed(page);
+		await page.goBack();
+		await expect(page.locator('[data-toast]')).toBeVisible();
+		await expect(page.locator('[data-toast]')).toHaveCount(0, { timeout: 5000 });
+	});
+});
+
+/** 브라우저 탭에서는 가로채지 않는다. 가두는 짓이고 닫을 앱도 아니다. */
+test.describe('뒤로가기 (브라우저 탭)', () => {
+	test('뒤로가기가 이전 화면으로 그대로 이동한다', async ({ page }) => {
+		await page.goto('/');
+		await page.locator('nav a:text-is("퀴즈")').click();
+		await expect(page.locator('h1[data-case]')).toBeVisible();
+		await page.goBack();
+		await expect(page.getByLabel('케이스 코드')).toBeVisible();
+		await expect(page.locator('[data-toast]')).toHaveCount(0);
 	});
 });

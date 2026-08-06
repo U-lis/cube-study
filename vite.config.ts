@@ -32,8 +32,9 @@ export default defineConfig({
 		SvelteKitPWA({
 			registerType: 'autoUpdate',
 			manifest: {
-				name: '3-Style Corner Trainer',
-				short_name: '3style',
+				// 홈 화면 라벨은 short_name 이 쓰인다. 앱 이름은 정보 모달과 맞춘다.
+				name: 'CubeStudy',
+				short_name: 'CubeStudy',
 				description: '코너 3-style (UBL 버퍼) 조회 및 퀴즈',
 				lang: 'ko',
 				start_url: '/',

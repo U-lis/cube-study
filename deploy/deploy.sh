@@ -6,6 +6,8 @@
 #   ./deploy/deploy.sh main                 특정 ref 를 배포
 #   DEPLOY_HOST=other ./deploy/deploy.sh    다른 서버로
 #
+# 접속은 Tailscale 을 탄다. 집이든 밖이든 같은 명령이고, 공유기에 열어둔 포트는 없다.
+#
 # 로컬 빌드를 올리지 않는 이유: 배포된 것이 리포의 어느 커밋인지 항상 확실해진다.
 # 커밋되지 않은 로컬 수정이 서버로 새어 나갈 수 없다.
 #
@@ -28,6 +30,17 @@ if ! git ls-remote --exit-code origin "$REF" >/dev/null 2>&1; then
 fi
 LOCAL_SHA=$(git rev-parse "$REF")
 echo "==> 배포 대상: $REF ($(git rev-parse --short "$REF"))"
+
+# Tailscale tailnet 으로 붙는다. 집/밖 구분이 없다 — 집에서는 LAN 다이렉트 경로를
+# 잡고 밖에서는 터널로 간다. 여기서 안 걸러주면 ssh 타임아웃만 뱉고 이유를 알 수 없다.
+if ! ssh -o BatchMode=yes -o ConnectTimeout=10 "$HOST" true 2>/dev/null; then
+	echo "'$HOST' 에 붙지 못했다. tailnet 을 먼저 볼 것:" >&2
+	echo "    tailscale status      # 양쪽 다 떠 있어야 한다" >&2
+	echo "노트북이 로그아웃됐으면 'sudo tailscale up'." >&2
+	echo "서버가 안 보이면 머신 키 만료를 의심할 것 — admin 콘솔에서 key expiry 를 끈다." >&2
+	echo "커밋은 이미 push 되어 있으므로, 연결만 살리고 이 스크립트를 다시 돌리면 된다." >&2
+	exit 1
+fi
 
 ssh "$HOST" REF="$REF" REPO="$REPO" DOCROOT="$DOCROOT" 'bash -seuo pipefail' <<'REMOTE'
 export NVM_DIR="$HOME/.nvm"

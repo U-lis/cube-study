@@ -89,6 +89,8 @@ git push                    # 서버가 origin 에서 받아가므로 push 가 �
 
 **PWA 설치에는 유효한 HTTPS 가 필요하다.** 서비스워커는 secure context 에서만 등록되며 `localhost` 만 예외다. LAN IP 로 그냥 띄우면 설치도 오프라인도 안 된다.
 
+접속은 Tailscale 을 타므로 **집 밖에서도 같은 명령으로 배포된다.** 공유기에 열어둔 포트는 없다.
+
 서버 최초 설정과 운영 메모는 `deploy/README.md`.
 
 ## 라이선스

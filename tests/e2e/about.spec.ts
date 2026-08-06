@@ -65,3 +65,45 @@ test.describe('업데이트', () => {
 		await expect(page.locator('[data-toast]')).toHaveCount(0);
 	});
 });
+
+test.describe('상단 바 토글', () => {
+	/** '시스템' 이라는 글자만 있으면 테마 버튼인 줄 모르고 시스템 정보로 읽힌다. */
+	test('테마 버튼이 상태에 따라 다른 아이콘을 보여준다', async ({ page }) => {
+		await page.goto('/');
+		const toggle = page.locator('[data-theme-toggle]');
+
+		const iconFor = async () => (await toggle.locator('svg').innerHTML()).trim();
+		await expect(toggle).toHaveAttribute('data-theme', 'system');
+		const system = await iconFor();
+
+		await toggle.click();
+		await expect(toggle).toHaveAttribute('data-theme', 'light');
+		const light = await iconFor();
+
+		await toggle.click();
+		await expect(toggle).toHaveAttribute('data-theme', 'dark');
+		const dark = await iconFor();
+
+		expect(new Set([system, light, dark]).size).toBe(3);
+		await expect(toggle).toHaveAttribute('aria-label', /테마 전환/);
+	});
+
+	test('화면 꺼짐 방지를 켜고 끌 수 있고 상태가 유지된다', async ({ page }) => {
+		// 지원하지 않는 브라우저에서는 버튼 자체를 두지 않는다
+		await page.goto('/');
+		const supported = await page.evaluate(() => 'wakeLock' in navigator);
+		test.skip(!supported, 'Screen Wake Lock 미지원');
+
+		const btn = page.locator('[data-wake-lock]');
+		await expect(btn).toHaveAttribute('aria-pressed', 'false');
+
+		await btn.click();
+		await expect(btn).toHaveAttribute('aria-pressed', 'true');
+
+		await page.reload();
+		await expect(page.locator('[data-wake-lock]')).toHaveAttribute('aria-pressed', 'true');
+
+		await page.locator('[data-wake-lock]').click();
+		await expect(page.locator('[data-wake-lock]')).toHaveAttribute('aria-pressed', 'false');
+	});
+});

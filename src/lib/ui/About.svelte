@@ -1,8 +1,6 @@
 <!-- 앱 정보 모달. <dialog> 를 써서 ESC 닫기와 포커스 트랩을 브라우저에 맡긴다. -->
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { sw } from './sw.svelte.js';
-	import { backGuard } from './backguard.svelte.js';
 
 	let dialog: HTMLDialogElement | undefined = $state();
 
@@ -14,21 +12,6 @@
 		{ label: '커밋', value: __COMMIT_HASH__ }
 	];
 
-	/**
-	 * 뒤로가기 가드 진단.
-	 *
-	 * 실기기에서만 나는 문제라 개발 환경에서 재현이 안 된다. 화면에서 상태를
-	 * 읽을 수 있어야 어디가 어긋났는지 안다.
-	 */
-	let diag = $derived([
-		{ label: '표시 모드', value: backGuard.active ? 'standalone' : 'browser' },
-		{
-			label: '감시 항목',
-			value: backGuard.planted ? '있음' : `없음 (시도 ${backGuard.attempts}회)`
-		},
-		{ label: 'history', value: browser ? String(history.length) : '-' },
-		...(backGuard.lastError ? [{ label: '오류', value: backGuard.lastError }] : [])
-	]);
 
 	export function open() {
 		dialog?.showModal();
@@ -44,13 +27,6 @@
 				<dd data-info={row.label}>{row.value}</dd>
 			{/each}
 		</dl>
-		<dl class="diag" data-diag>
-			{#each diag as row (row.label)}
-				<dt>{row.label}</dt>
-				<dd data-diag={row.label}>{row.value}</dd>
-			{/each}
-		</dl>
-
 		<!-- 자동 갱신이 막혔을 때 빠져나올 구멍. 새 버전이 있으면 화면이 새로고침된다. -->
 		<button
 			type="button"
@@ -105,15 +81,6 @@
 		font-family: var(--mono);
 		font-size: 0.9rem;
 		word-break: break-all;
-	}
-	.diag {
-		margin-top: 0.9rem;
-		padding-top: 0.7rem;
-		border-top: 1px solid var(--border);
-	}
-	.diag dd {
-		font-size: 0.8rem;
-		color: var(--muted);
 	}
 	.check {
 		margin-top: 1rem;

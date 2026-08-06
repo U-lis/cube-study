@@ -291,7 +291,7 @@ const armed = (page: import('@playwright/test').Page) =>
  */
 const planted = async (page: import('@playwright/test').Page) => {
 	await armed(page);
-	await page.waitForFunction(() => history.length >= 2, undefined, { timeout: 10_000 });
+	await page.locator('[data-back-planted="true"]').waitFor({ timeout: 10_000 });
 };
 
 test.describe('뒤로가기 (설치된 앱)', () => {
@@ -367,9 +367,10 @@ test.describe('뒤로가기 (설치된 앱)', () => {
 		// 복구 신호를 곧바로 준다 — 예고가 만료되어 저절로 다시 심어지기 전에
 		// 확인해야 복구 처리가 실제로 일했는지 알 수 있다.
 		await page.goBack();
+		await expect(page.locator('[data-back-planted="false"]')).toBeVisible();
+
 		await page.evaluate(() => window.dispatchEvent(new PageTransitionEvent('pageshow')));
-		await page.locator('[data-about-open]').click();
-		await expect(page.locator('[data-diag="감시 항목"]')).toHaveText('있음', { timeout: 400 });
+		await expect(page.locator('[data-back-planted="true"]')).toBeVisible({ timeout: 400 });
 	});
 
 	test('예고는 잠시 뒤 사라진다', async ({ page }) => {

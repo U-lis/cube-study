@@ -41,12 +41,11 @@ class BackGuard {
 	/** 설치된 앱에서만 켜진다. 화면이 안내 문구를 띄울지 판단할 때도 쓴다. */
 	active = $state(false);
 
-	/** 감시 항목이 스택에 있다고 믿는 상태. history.state 내부 구조에 기대지 않는다. */
+	/**
+	 * 감시 항목이 스택에 있다고 믿는 상태. history.state 내부 구조에 기대지 않는다.
+	 * history.length 로는 판별할 수 없다 — 앞쪽(forward) 항목도 함께 세기 때문이다.
+	 */
 	planted = $state(false);
-	/** 심기가 실패한 이유. 실기기에서만 나는 문제라 화면으로 읽을 수 있어야 한다. */
-	lastError = $state('');
-	/** 심기를 시도한 횟수 */
-	attempts = $state(0);
 
 	#timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -95,13 +94,10 @@ class BackGuard {
 	 */
 	#plant(attempt = 0) {
 		if (!this.active || this.planted) return;
-		this.attempts = attempt + 1;
 		try {
 			pushState('', GUARD);
 			this.planted = true;
-			this.lastError = '';
-		} catch (e) {
-			this.lastError = e instanceof Error ? e.message : String(e);
+		} catch {
 			// 하이드레이션이 끝나면 통한다. 그래도 안 되면 조용히 접는다 —
 			// 무한히 재시도하느니 뒤로가기가 평소대로 동작하는 편이 낫다.
 			if (attempt < 40) setTimeout(() => this.#plant(attempt + 1), 50);

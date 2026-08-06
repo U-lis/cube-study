@@ -6,6 +6,7 @@
 	import { settings } from '$lib/ui/settings.svelte.js';
 	import { sw } from '$lib/ui/sw.svelte.js';
 	import { backGuard } from '$lib/ui/backguard.svelte.js';
+	import { wakeLock } from '$lib/ui/wakelock.svelte.js';
 	import About from '$lib/ui/About.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
 	let { children } = $props();
@@ -31,6 +32,7 @@
 	if (browser) {
 		if (document.readyState === 'complete') void sw.register();
 		else window.addEventListener('load', () => void sw.register(), { once: true });
+		wakeLock.start();
 	}
 	/**
 	 * 설치 프롬프트.
@@ -84,19 +86,83 @@
 <div
 	class="shell"
 	data-back-guard={backGuard.active}
+	data-back-planted={backGuard.planted}
 	data-sveltekit-replacestate={backGuard.active ? '' : 'false'}
 >
 	<div class="bar">
 		{#if installPrompt}
 			<button type="button" data-install onclick={install}>설치</button>
 		{/if}
+		{#if wakeLock.supported}
+			<!-- 공식을 보며 큐브를 돌리는 동안 화면에 손이 안 닿아 꺼진다 -->
+			<button
+				type="button"
+				data-wake-lock={wakeLock.enabled}
+				class:on={wakeLock.enabled}
+				onclick={() => wakeLock.toggle()}
+				aria-pressed={wakeLock.enabled}
+				aria-label="화면 자동 꺼짐 방지"
+				title={wakeLock.enabled ? '화면을 켜둡니다' : '화면 자동 꺼짐 방지'}
+			>
+				<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+					<rect
+						x="3"
+						y="4"
+						width="18"
+						height="13"
+						rx="2"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					/>
+					<path d="M9 21h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+					{#if wakeLock.enabled}
+						<circle cx="12" cy="10.5" r="2.5" fill="currentColor" />
+					{/if}
+				</svg>
+			</button>
+		{/if}
+
+		<!--
+			아이콘으로 보여준다. '시스템' 이라는 글자만 있으면 테마 버튼인 줄 모르고
+			시스템 정보를 보여주는 버튼으로 읽힌다.
+		-->
 		<button
 			type="button"
 			data-theme-toggle
 			data-theme={settings.theme}
 			onclick={() => settings.cycleTheme()}
-			aria-label="테마 전환">{THEME_LABEL[settings.theme]}</button
+			aria-label={`테마 전환 (현재 ${THEME_LABEL[settings.theme]})`}
+			title={`테마: ${THEME_LABEL[settings.theme]}`}
 		>
+			<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+				{#if settings.theme === 'light'}
+					<!-- 해 -->
+					<circle cx="12" cy="12" r="4.5" fill="currentColor" />
+					{#each [0, 45, 90, 135, 180, 225, 270, 315] as deg (deg)}
+						<path
+							d="M12 2.5v3"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							transform="rotate({deg} 12 12)"
+						/>
+					{/each}
+				{:else if settings.theme === 'dark'}
+					<!-- 달 -->
+					<path
+						d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"
+						fill="currentColor"
+						stroke="none"
+					/>
+				{:else}
+					<!-- 시스템: 반은 해, 반은 달 -->
+					<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2" />
+					<path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none" />
+				{/if}
+			</svg>
+			<span class="theme-label">{THEME_LABEL[settings.theme]}</span>
+		</button>
 		<button type="button" data-about-open onclick={() => about?.open()} aria-label="앱 정보">
 			<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
 				<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" />
@@ -145,6 +211,23 @@
 	.bar button[data-install] {
 		color: var(--accent);
 		border-color: var(--accent);
+	}
+	/* 켜져 있는 토글은 색으로 알린다. 아이콘만으로는 상태가 안 읽힌다. */
+	.bar button.on {
+		color: var(--accent);
+		border-color: var(--accent);
+	}
+	.bar button svg {
+		flex: none;
+	}
+	/* 아이콘 옆 글자는 넓은 화면에서만. 좁으면 아이콘만 남는다. */
+	.theme-label {
+		margin-left: 0.35rem;
+	}
+	@media (max-width: 400px) {
+		.theme-label {
+			display: none;
+		}
 	}
 	.bar button {
 		display: inline-flex;

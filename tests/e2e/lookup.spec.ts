@@ -102,21 +102,20 @@ test.describe('sticky 결과 (FR-4)', () => {
 		await expect(result(page)).not.toHaveClass(/stale/);
 	});
 
-	/** 다 지우는 것은 "그만 보겠다"는 뜻이라 sticky 예외다 (한 글자만 남으면 stale). */
-	test('키보드로 두 글자를 다 지우면 결과가 사라진다', async ({ page }) => {
+	test('입력을 비워도 결과는 남는다 (치우는 것은 X 의 몫)', async ({ page }) => {
 		await page.goto('/');
 		await input(page).fill('LB');
 		await expect(result(page)).toBeVisible();
 
 		await input(page).fill('L');
-		await expect(result(page)).toHaveClass(/stale/); // 한 글자는 아직 남는다
+		await expect(result(page)).toHaveClass(/stale/);
 
 		await input(page).fill('');
-		await expect(result(page)).toHaveCount(0);
-		await expect(page.locator('.hint')).toBeVisible();
+		await expect(result(page)).toBeVisible();
+		await expect(result(page)).toHaveClass(/stale/);
 	});
 
-	test('X 를 눌러도 결과가 사라진다', async ({ page }) => {
+	test('X 를 누르면 결과가 사라진다', async ({ page }) => {
 		await page.goto('/');
 		await input(page).fill('LB');
 		await expect(result(page)).toBeVisible();
@@ -150,10 +149,47 @@ test.describe('sticky 결과 (FR-4)', () => {
 		await expect(input(page)).toBeFocused();
 	});
 
-	test('딥링크로 들어와도 커서가 잡힌다', async ({ page }) => {
+	/**
+	 * 모바일에서 키보드가 화면 절반을 가린다. 두 글자가 차면 더 칠 것이 없는데
+	 * 정작 보러 온 공식이 안 보인다.
+	 */
+	test('유효한 두 글자가 차면 포커스가 풀린다 (키보드 내림)', async ({ page }) => {
+		await page.goto('/');
+		await expect(input(page)).toBeFocused();
+		await page.keyboard.type('LB');
+		await expect(result(page)).toHaveAttribute('data-case', 'LB');
+		await expect(input(page)).not.toBeFocused();
+	});
+
+	test('딥링크로 들어와도 포커스가 풀려 있다', async ({ page }) => {
 		await page.goto('/?c=LB');
 		await expect(result(page)).toHaveAttribute('data-case', 'LB');
+		await expect(input(page)).not.toBeFocused();
+	});
+
+	/** 무효한 입력은 볼 공식이 없다. 그 자리에서 고치도록 포커스를 유지한다. */
+	test('무효한 두 글자에서는 포커스가 유지된다', async ({ page }) => {
+		await page.goto('/');
 		await expect(input(page)).toBeFocused();
+		await page.keyboard.type('AB'); // 버퍼 스티커
+		await expect(page.locator('[data-reason="buffer"]')).toBeVisible();
+		await expect(input(page)).toBeFocused();
+	});
+
+	/** 다시 탭했다는 것은 새 케이스를 치겠다는 뜻이다. 백스페이스를 요구하지 않는다. */
+	test('다시 포커스하면 입력이 비워지고 결과는 남는다', async ({ page }) => {
+		await page.goto('/');
+		await page.keyboard.type('LB');
+		await expect(input(page)).not.toBeFocused();
+
+		await input(page).click();
+		await expect(input(page)).toHaveValue('');
+		await expect(result(page)).toBeVisible();
+		await expect(result(page)).toHaveClass(/stale/);
+
+		await page.keyboard.type('TU');
+		await expect(result(page)).toHaveAttribute('data-case', 'TU');
+		await expect(result(page)).not.toHaveClass(/stale/);
 	});
 
 	test('값이 없으면 X 가 보이지 않는다', async ({ page }) => {

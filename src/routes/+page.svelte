@@ -35,10 +35,16 @@
 	let result = $derived(ds ? lookup(ds, raw) : ({ status: 'empty' } as const));
 
 	$effect(() => {
-		if (result.status === 'valid') shown = result.entry;
-		// 입력이 완전히 비면 직전 결과를 버린다. 한 글자만 남은 상태(stale)와 달리
-		// 다 지운 것은 "그만 보겠다"는 뜻이다. X 버튼도 값을 비우므로 같이 처리된다.
-		else if (raw === '') shown = null;
+		if (result.status === 'valid') {
+			shown = result.entry;
+			// 두 글자가 유효하게 차면 키보드를 내린다. 더 칠 것이 없는데 모바일에서는
+			// 키보드가 화면 절반을 가려 정작 보러 온 공식이 안 보인다.
+			//
+			// 무효한 입력에서는 포커스를 유지한다. 볼 공식도 없고, 오타를 그 자리에서
+			// 고치는 편이 낫다. 유효한 다른 케이스로 잘못 친 경우는 다시 탭하면
+			// 값이 전체 선택되므로 두 글자만 다시 치면 된다 (CaseInput).
+			caseInput?.blur();
+		}
 	});
 
 	let stale = $derived(shown !== null && result.status !== 'valid');
@@ -47,7 +53,8 @@
 <svelte:head><title>3-Style Corner — 조회</title></svelte:head>
 
 <div class="top">
-	<CaseInput bind:this={caseInput} bind:value={raw} />
+	<!-- X 는 결과까지 치운다. 포커스 초기화(다시 칠 준비)와 구분한다 -->
+	<CaseInput bind:this={caseInput} bind:value={raw} onclear={() => (shown = null)} />
 </div>
 
 <!-- 보조 영역: 내용이 없으면 높이 0. 결과 블록을 밀어내지 않는다. -->

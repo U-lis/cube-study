@@ -8,7 +8,12 @@
 <script lang="ts">
 	import { sanitize } from '$lib/domain/validate.js';
 
-	let { value = $bindable('') }: { value?: string } = $props();
+	// onclear 는 X 버튼에만 붙는다. 포커스 초기화와 달리 "치우겠다"는 명시적 동작이라
+	// 호출부가 직전 결과까지 버릴 수 있게 구분해서 알린다.
+	let {
+		value = $bindable(''),
+		onclear
+	}: { value?: string; onclear?: () => void } = $props();
 
 	let flash = $state(false);
 	let el: HTMLInputElement | undefined = $state();
@@ -29,8 +34,29 @@
 		timer = setTimeout(() => (flash = false), 300);
 	}
 
+	/**
+	 * 포커스가 오면 입력값을 비운다.
+	 *
+	 * 두 글자가 차면 키보드가 내려가므로, 다시 탭했다는 것은 새 케이스를 치겠다는
+	 * 뜻이다. 백스페이스 두 번을 요구할 이유가 없다.
+	 *
+	 * 직전 결과는 지우지 않는다 — 비운 것은 "다시 칠 준비"지 "그만 보겠다"가 아니다.
+	 * 결과까지 치우는 것은 X 버튼의 몫이다 (onclear).
+	 */
+	function onFocus() {
+		value = '';
+	}
+
 	export function focus() {
 		el?.focus();
+	}
+
+	/**
+	 * 포커스를 뗀다. 모바일에서 키보드를 내리는 유일한 방법이다.
+	 * 2글자가 차면 입력할 것이 더 없는데 키보드가 화면 절반을 가린다.
+	 */
+	export function blur() {
+		el?.blur();
 	}
 </script>
 
@@ -41,6 +67,7 @@
 		type="text"
 		value={value}
 		oninput={onInput}
+		onfocus={onFocus}
 		maxlength="2"
 		autocapitalize="off"
 		autocorrect="off"
@@ -56,7 +83,12 @@
 			type="button"
 			class="clear"
 			data-action="clear"
-			onclick={() => (value = '')}
+			onclick={() => {
+				value = '';
+				onclear?.();
+				// 지운 직후는 새로 칠 차례다. 클릭 핸들러 안이라 모바일 키보드도 올라온다.
+				el?.focus();
+			}}
 			aria-label="지우기">×</button
 		>
 	{/if}

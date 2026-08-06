@@ -17,11 +17,36 @@
 	 * 콘솔에 404 가 계속 찍히고, 등록에 성공하더라도 SW 캐시가 HMR 을 가린다.
 	 */
 	if (browser && !dev && 'serviceWorker' in navigator) {
-		const register = () => navigator.serviceWorker.register('/sw.js', { scope: '/' });
+		const register = async () => {
+			const reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+			// 설치된 PWA 는 며칠씩 안 닫힐 수 있다. 다시 열 때(=화면에 돌아올 때)마다
+			// 새 워커가 있는지 직접 물어본다. 브라우저의 24시간 주기만 믿지 않는다.
+			document.addEventListener('visibilitychange', () => {
+				if (document.visibilityState === 'visible') reg.update().catch(() => {});
+			});
+		};
 		// app.html 의 인라인 스크립트와 달리 여기는 하이드레이션 시점이라 load 가 이미
 		// 지나갔을 수 있다. 그 경우 이벤트를 기다리면 영원히 등록되지 않는다.
 		if (document.readyState === 'complete') register();
 		else window.addEventListener('load', register, { once: true });
+
+		/**
+		 * 새 워커가 제어를 넘겨받으면 한 번 새로고침한다.
+		 *
+		 * autoUpdate(skipWaiting + clientsClaim) 는 워커만 바꾼다. 떠 있는 화면은
+		 * 여전히 옛 JS 라, 새로고침하지 않으면 다음에 열 때까지 옛 버전이 보인다.
+		 * 게다가 배포가 옛 청크를 지우므로 그 화면에서 지연 로드가 404 날 수 있다.
+		 *
+		 * 최초 등록 때도 controllerchange 가 오는데 그때는 새로고침할 이유가 없다.
+		 * controller 가 이미 있었는지로 구분한다.
+		 */
+		let reloading = false;
+		const hadController = !!navigator.serviceWorker.controller;
+		navigator.serviceWorker.addEventListener('controllerchange', () => {
+			if (!hadController || reloading) return;
+			reloading = true;
+			location.reload();
+		});
 	}
 	/**
 	 * 설치 프롬프트.

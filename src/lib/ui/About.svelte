@@ -1,5 +1,7 @@
 <!-- 앱 정보 모달. <dialog> 를 써서 ESC 닫기와 포커스 트랩을 브라우저에 맡긴다. -->
 <script lang="ts">
+	import { sw } from './sw.svelte.js';
+
 	let dialog: HTMLDialogElement | undefined = $state();
 
 	const APP_NAME = 'CubeStudy';
@@ -24,6 +26,20 @@
 				<dd data-info={row.label}>{row.value}</dd>
 			{/each}
 		</dl>
+		<!-- 자동 갱신이 막혔을 때 빠져나올 구멍. 새 버전이 있으면 화면이 새로고침된다. -->
+		<button
+			type="button"
+			class="check"
+			data-check-update
+			onclick={() => sw.checkNow()}
+			disabled={sw.checking}
+		>
+			{sw.checking ? '확인 중' : '업데이트 확인'}
+		</button>
+		{#if sw.message}
+			<p class="msg" data-update-message>{sw.message}</p>
+		{/if}
+
 		<p class="copyright">MIT License · © 2026 ulismoon</p>
 		<button type="button" data-about-close onclick={() => dialog?.close()}>닫기</button>
 	</div>
@@ -65,8 +81,23 @@
 		font-size: 0.9rem;
 		word-break: break-all;
 	}
+	.check {
+		margin-top: 1rem;
+		color: var(--fg);
+		background: transparent;
+		border: 1px solid var(--border);
+	}
+	.check:disabled {
+		opacity: 0.5;
+		cursor: default;
+	}
+	.msg {
+		margin: 0.5rem 0 0;
+		font-size: 0.78rem;
+		color: var(--muted);
+	}
 	.copyright {
-		margin: 1rem 0 0.9rem;
+		margin: 0.9rem 0;
 		font-size: 0.75rem;
 		color: var(--muted);
 	}

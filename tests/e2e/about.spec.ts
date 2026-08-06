@@ -45,3 +45,23 @@ test.describe('앱 정보 (About)', () => {
 		}
 	});
 });
+
+test.describe('업데이트', () => {
+	test('정보 모달에서 업데이트를 직접 확인할 수 있다', async ({ page }) => {
+		await page.goto('/');
+		await page.waitForFunction(
+			async () => !!(await navigator.serviceWorker?.getRegistration())?.active,
+			undefined,
+			{ timeout: 30_000 }
+		);
+		await page.locator('[data-about-open]').click();
+		await page.locator('[data-check-update]').click();
+		// 이미 최신이므로 새로고침은 일어나지 않고 결과 문구만 뜬다
+		await expect(page.locator('[data-update-message]')).toHaveText('최신 버전입니다');
+	});
+
+	test('평소에는 업데이트 토스트가 없다', async ({ page }) => {
+		await page.goto('/');
+		await expect(page.locator('[data-toast]')).toHaveCount(0);
+	});
+});

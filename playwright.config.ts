@@ -10,7 +10,7 @@ export default defineConfig({
 		{ name: 'desktop', use: { ...devices['Desktop Chrome'] } }
 	],
 	webServer: {
-		command: 'npm run preview -- --port 4174',
+		command: 'pnpm run preview -- --port 4174',
 		port: 4174,
 		reuseExistingServer: true,
 		timeout: 60_000

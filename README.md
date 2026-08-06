@@ -20,32 +20,34 @@ PDF에서 인덱스를 찾아 스크롤로 뒤지는 대신, 스티커 2글자�
 
 ## 실행
 
+Node 24 + pnpm 10 을 쓴다. `packageManager` 필드가 있으므로 corepack 이 켜져 있으면 버전이 자동으로 맞는다.
+
 ```bash
-npm install
-npm run dev        # 개발 서버 + HMR (http://localhost:5173)
+pnpm install
+pnpm dev           # 개발 서버 + HMR (http://localhost:5173)
 ```
 
 **PWA와 오프라인 동작은 프로덕션 빌드에서만 확인된다.** 개발 서버에는 서비스워커를 등록하지 않는다 — SW 캐시가 HMR 을 가린다.
 
 ```bash
-npm run preview    # 빌드 후 서빙 (http://localhost:4173)
+pnpm preview       # 빌드 후 서빙 (http://localhost:4173)
 ```
 
-`preview` 는 매번 빌드부터 한다. `vite preview` 는 기동 시점의 파일 목록을 붙잡기 때문에, 서버를 띄워둔 채 재빌드하면 해시가 바뀐 청크를 404 로 돌려준다. 그러면 서비스워커 프리캐시가 통째로 실패한다(`bad-precaching-response`). 빌드 없이 서빙만 하려면 `npm run preview:only`.
+`preview` 는 매번 빌드부터 한다. `vite preview` 는 기동 시점의 파일 목록을 붙잡기 때문에, 서버를 띄워둔 채 재빌드하면 해시가 바뀐 청크를 404 로 돌려준다. 그러면 서비스워커 프리캐시가 통째로 실패한다(`bad-precaching-response`). 빌드 없이 서빙만 하려면 `pnpm preview:only`.
 
 ## 테스트
 
 ```bash
-npm test           # 단위 (Vitest)
-npm run test:e2e   # E2E (Playwright, 모바일+데스크탑)
-npx svelte-check   # 타입 검사
+pnpm test          # 단위 (Vitest)
+pnpm test:e2e      # E2E (Playwright, 모바일+데스크탑)
+pnpm check         # 타입 검사 (svelte-check)
 ```
 
 E2E는 Chromium이 필요하다. 없으면 `npx playwright install chromium`.
 
 ### 데이터 회귀 테스트
 
-`npm test`에 378케이스 전수 검증이 포함된다. 데이터나 시뮬레이터를 건드린 변경은 여기서 걸린다.
+`pnpm test`에 378케이스 전수 검증이 포함된다. 데이터나 시뮬레이터를 건드린 변경은 여기서 걸린다.
 
 - 각 알고리즘이 해당 케이스를 실제로 푸는가 (direct / setup / strict)
 - 엣지를 전혀 안 건드리는가
@@ -75,14 +77,19 @@ data/schema-history/   데이터 스키마 v1~v3 기록 (앱은 읽지 않는다
 
 ## 배포
 
-정적 빌드이므로 `build/`를 그대로 서빙하면 된다. 서버 런타임이 필요 없다.
+정적 빌드이므로 서버 런타임이 필요 없다. 홈서버로는 스크립트 하나면 된다.
 
-```nginx
-root /path/to/cube-study/build;
-try_files $uri $uri.html $uri/index.html /index.html;
+```bash
+git push                    # 서버가 origin 에서 받아가므로 push 가 먼저다
+./deploy/deploy.sh          # 현재 브랜치 배포
+./deploy/deploy.sh main     # 특정 ref 배포
 ```
 
-PWA 설치에는 HTTPS가 필요하다.
+서버가 직접 `git clone`/`fetch` 해서 빌드한다. 로컬 산출물을 올리지 않으므로 배포된 것이 어느 커밋인지 항상 확실하고, 커밋되지 않은 로컬 수정이 새어 나갈 수 없다.
+
+**PWA 설치에는 유효한 HTTPS 가 필요하다.** 서비스워커는 secure context 에서만 등록되며 `localhost` 만 예외다. LAN IP 로 그냥 띄우면 설치도 오프라인도 안 된다.
+
+서버 최초 설정과 운영 메모는 `deploy/README.md`.
 
 ## 라이선스
 

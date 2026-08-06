@@ -147,3 +147,12 @@ vite.config.ts.timestamp-*
 
 # vite-plugin-pwa dev output
 dev-dist/
+
+# AI
+.claude/
+
+# SvelteKit
+.svelte-kit/
+build/
+test-results/
+playwright-report/

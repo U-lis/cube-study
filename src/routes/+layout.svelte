@@ -23,6 +23,30 @@
 		if (document.readyState === 'complete') register();
 		else window.addEventListener('load', register, { once: true });
 	}
+	/**
+	 * 설치 프롬프트.
+	 *
+	 * 브라우저는 설치 팝업을 스스로 띄우지 않는다. beforeinstallprompt 를 잡아
+	 * 보관했다가 사용자가 버튼을 눌렀을 때 prompt() 를 불러야 한다.
+	 * 조건 미달이거나 이미 설치됐으면 이벤트가 오지 않으므로 버튼도 안 나온다.
+	 * iOS Safari 는 이 이벤트 자체가 없다 — 공유 시트로만 설치된다.
+	 */
+	let installPrompt = $state<{ prompt: () => Promise<unknown> } | null>(null);
+	if (browser) {
+		window.addEventListener('beforeinstallprompt', (e) => {
+			e.preventDefault(); // 막지 않으면 브라우저가 제 타이밍에 처리해 버린다
+			installPrompt = e as unknown as { prompt: () => Promise<unknown> };
+		});
+		window.addEventListener('appinstalled', () => (installPrompt = null));
+	}
+
+	async function install() {
+		const p = installPrompt;
+		if (!p) return;
+		installPrompt = null; // prompt() 는 이벤트당 한 번만 쓸 수 있다
+		await p.prompt();
+	}
+
 	let about: ReturnType<typeof About> | undefined = $state();
 	const THEME_LABEL = { system: '시스템', light: '라이트', dark: '다크' } as const;
 	const nav = [
@@ -32,8 +56,20 @@
 	];
 </script>
 
+<!--
+	manifest 링크. SvelteKit 이 app.html 을 제어해서 vite-pwa 가 주입하지 못한다.
+	이게 없으면 브라우저가 manifest 를 읽지 않아 설치 대상으로 인식조차 안 한다.
+	dev 빌드에는 manifest 파일이 없으므로 건다.
+-->
+<svelte:head>
+	{#if !dev}<link rel="manifest" href="/manifest.webmanifest" />{/if}
+</svelte:head>
+
 <div class="shell">
 	<div class="bar">
+		{#if installPrompt}
+			<button type="button" data-install onclick={install}>설치</button>
+		{/if}
 		<button
 			type="button"
 			data-theme-toggle
@@ -73,6 +109,11 @@
 	}
 	.bar {
 		gap: 0.4rem;
+	}
+	/* 설치 버튼은 설치 가능할 때만 나타난다. 눈에 띄어야 하지만 강요하지 않는다. */
+	.bar button[data-install] {
+		color: var(--accent);
+		border-color: var(--accent);
 	}
 	.bar button {
 		display: inline-flex;

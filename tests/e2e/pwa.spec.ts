@@ -24,6 +24,48 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 		}
 	});
 
+	/**
+	 * manifest 파일이 있어도 HTML 이 가리키지 않으면 브라우저는 읽지 않는다.
+	 * SvelteKit 이 app.html 을 제어해 vite-pwa 가 이 링크를 주입하지 못하므로
+	 * +layout.svelte 가 직접 넣는다. 빠지면 설치가 통째로 불가능해진다.
+	 */
+	test('모든 페이지가 manifest 를 링크한다', async ({ page }) => {
+		for (const path of ['/', '/quiz', '/anchors', anAnchorPath]) {
+			await page.goto(path);
+			const href = await page
+				.locator('link[rel="manifest"]')
+				.first()
+				.getAttribute('href', { timeout: 5000 });
+			expect(href, `manifest 링크 없음: ${path}`).toBe('/manifest.webmanifest');
+		}
+	});
+
+	test('설치 조건을 만족한다', async ({ page, request }) => {
+		await page.goto('/');
+		const href = await page.locator('link[rel="manifest"]').first().getAttribute('href');
+		const m = await (await request.get(href!)).json();
+
+		// 크롬 설치 조건: name, start_url, display, 192/512 아이콘, 그리고 fetch 를
+		// 처리하는 서비스워커. 하나라도 빠지면 설치 프롬프트가 뜨지 않는다.
+		expect(m.name || m.short_name).toBeTruthy();
+		expect(m.start_url).toBeTruthy();
+		expect(['standalone', 'fullscreen', 'minimal-ui']).toContain(m.display);
+		for (const size of ['192x192', '512x512']) {
+			const icon = m.icons.find(
+				(i: { sizes: string; purpose?: string }) =>
+					i.sizes === size && (i.purpose ?? 'any').split(' ').includes('any')
+			);
+			expect(icon, `${size} any 아이콘 없음`).toBeTruthy();
+			expect((await request.get(icon.src)).ok()).toBe(true);
+		}
+
+		await page.waitForFunction(
+			async () => !!(await navigator.serviceWorker?.getRegistration())?.active,
+			undefined,
+			{ timeout: 30_000 }
+		);
+	});
+
 	test('외부 도메인 요청이 없다', async ({ page }) => {
 		const external: string[] = [];
 		page.on('request', (r) => {

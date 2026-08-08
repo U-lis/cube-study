@@ -9,7 +9,7 @@
  * 아니므로 방향이 틀리면 다른 케이스를 푸는 알고리즘이 된다.
  */
 
-import { invertAlg } from '../cube/notation.js';
+import { invertAlg, splitMoves } from '../cube/notation.js';
 import { ANCHOR_DIRECT, type AnchorName, type CaseEntry, type Dataset } from './types.js';
 
 /** 기준 하나를 방향까지 지정해 가리키는 값. */
@@ -57,4 +57,29 @@ export function anchorRefs(ds: Dataset): AnchorRef[] {
 		{ name, inverse: false },
 		{ name, inverse: true }
 	]);
+}
+
+/**
+ * 기준 무브열을 커뮤테이터 [A, B] 로 분해한다. 순수 커뮤테이터가 아니면 null.
+ *
+ * 무브를 재계산하지 않는다. 원본을 A B A' B' 로 갈라놓고 다시 이어붙여 원본과
+ * 문자 하나까지 같을 때만 인정한다. 상쇄나 최적화가 끼어들 여지가 없다.
+ *
+ * 데이터의 `Anchor` 에는 A/B 가 없다. 기준을 셋업 없이 정방향으로 쓰는 케이스가
+ * 있으면 그 케이스의 direct.A/B 가 곧 답이지만, 6개 중 3개(BU KS KG)에는 그런
+ * 케이스가 없어서 데이터만으로는 절반밖에 못 채운다. 그래서 무브열에서 직접 읽는다.
+ * 나머지 3개(GC TC IV)로는 데이터의 A/B 와 일치하는지 검증할 수 있다.
+ */
+export function decomposeCommutator(alg: string): { A: string; B: string } | null {
+	const m = splitMoves(alg);
+	const n = m.length;
+	// A B A' B' 이므로 길이는 2(|A|+|B|) 다. 홀수면 볼 것도 없다.
+	if (n < 4 || n % 2 !== 0) return null;
+	for (let a = 1; a < n / 2; a++) {
+		const b = n / 2 - a;
+		const A = m.slice(0, a).join(' ');
+		const B = m.slice(a, a + b).join(' ');
+		if (`${A} ${B} ${invertAlg(A)} ${invertAlg(B)}` === alg) return { A, B };
+	}
+	return null;
 }

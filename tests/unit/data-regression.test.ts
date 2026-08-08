@@ -75,4 +75,17 @@ describe('시뮬레이터 회귀 (1134건)', () => {
 		);
 		expect(bad.map(([k]) => k)).toEqual([]);
 	});
+
+	/**
+	 * 조회 화면의 역케이스 링크가 출처(?from=)를 그대로 실어 보내는 근거다.
+	 * 역케이스가 다른 기준에 속하게 되면 "← GC" 가 지금 보는 케이스를 담지 않은
+	 * 페이지를 가리키게 된다. 그때는 링크에서 출처를 떼야 한다.
+	 */
+	it('역케이스는 같은 기준에 속한다 (378)', () => {
+		const bad = entries.filter(([, c]) => {
+			const inv = data.cases[c.inverse];
+			return inv && inv.setup.anchor !== c.setup.anchor;
+		});
+		expect(bad.map(([k]) => k)).toEqual([]);
+	});
 });

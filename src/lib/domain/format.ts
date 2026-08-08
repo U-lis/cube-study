@@ -9,7 +9,7 @@
  * compact 는 상쇄로 파트 경계가 소실되므로 구분 표시가 불가능하다.
  */
 
-import { anchorRef, refLabel } from './anchor.js';
+import { anchorRef, decomposeCommutator, refLabel } from './anchor.js';
 import { type CaseEntry } from './types.js';
 
 export type PartRole = 'insert' | 'interchange' | 'setup' | 'anchor' | 'plain' | 'punct';
@@ -62,4 +62,23 @@ export function plainAlg(entry: CaseEntry, mode: Mode, notation: Notation): stri
 export function displayMoves(entry: CaseEntry, mode: Mode, notation: Notation): number {
 	const src = mode === 'direct' ? entry.direct : entry.setup;
 	return notation === 'compact' ? src.moves : src.strict.moves;
+}
+
+/**
+ * 기준 무브열의 [A, B] 표기. 분해되지 않으면 null 이고, 그때는 화면이 이 줄을
+ * 통째로 걸러야 한다 — 무브열만 보여주면 되지 빈 대괄호를 띄울 이유가 없다.
+ *
+ * 색은 조회 화면의 direct strict 와 같다. 같은 것을 두 화면에서 다른 색으로
+ * 보여주면 외우는 사람이 둘을 다른 개념으로 받아들인다.
+ */
+export function formatCommutator(alg: string): AlgPart[] | null {
+	const d = decomposeCommutator(alg);
+	if (!d) return null;
+	return [
+		p('[', 'punct'),
+		p(d.A, 'insert'),
+		p(',', 'punct'),
+		p(d.B, 'interchange'),
+		p(']', 'punct')
+	];
 }

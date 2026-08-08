@@ -7,7 +7,7 @@ interface CaseData {
 const parsed = data as unknown as {
 	meta: { anchorLearnOrder?: string[] };
 	cases: Record<string, CaseData>;
-	anchors: Record<string, { count: number }>;
+	anchors: Record<string, { count: number; alg: string }>;
 };
 /** 기준 이름·개수·순서는 전부 데이터에서 읽는다. */
 const anchorNames = parsed.meta.anchorLearnOrder ?? Object.keys(parsed.anchors);
@@ -340,5 +340,96 @@ test.describe('기준공식 브라우저 (FR-11, FR-12)', () => {
 		await page.goto(`/anchors/${anchorNames[0]}`);
 		await page.locator('a[href^="/?c="]').first().click();
 		await expect(page.locator('section.case')).toBeVisible();
+	});
+
+	test('파생공식이 알파벳순이다', async ({ page }) => {
+		const first = anchorNames[0];
+		await page.goto(`/anchors/${first}`);
+		const codes = await page.locator('li .code').allTextContents();
+		expect(codes.length).toBeGreaterThan(1);
+		expect(codes).toEqual([...codes].sort());
+	});
+
+	test('기준 목록에 [A, B] 가 무브열과 함께 나온다', async ({ page }) => {
+		await page.goto('/anchors');
+		for (const name of anchorNames) {
+			const card = page.locator(`[data-anchor="${name}"]`);
+			// 대괄호 표기와 무브열이 둘 다 있어야 한다. 하나로 갈음하지 않는다.
+			await expect(card).toContainText('[');
+			await expect(card).toContainText(',');
+			await expect(card).toContainText(']');
+			const algs = card.locator('.alg');
+			expect(await algs.count()).toBe(2);
+		}
+	});
+
+	test('기준 상세에도 [A, B] 가 나온다', async ({ page }) => {
+		await page.goto(`/anchors/${anchorNames[0]}`);
+		const box = page.locator('.anchor');
+		await expect(box).toContainText('[');
+		expect(await box.locator('.alg').count()).toBe(2);
+	});
+
+	/**
+	 * 대괄호 안의 무브를 이어붙이면 기준 무브열이 그대로 나와야 한다.
+	 * 표기를 보고 외운 사람이 실제와 다른 것을 외우면 안 된다.
+	 */
+	test('[A, B] 를 펼치면 기준 무브열과 같다', async ({ page }) => {
+		await page.goto('/anchors');
+		for (const name of anchorNames) {
+			const comm = page.locator(`[data-anchor="${name}"] .alg`).first();
+			const txt = (await comm.textContent())!.trim();
+			const m = txt.match(/^\[\s*(.+?)\s*,\s*(.+?)\s*\]$/);
+			expect(m, `${name}: ${txt}`).not.toBeNull();
+			const [, A, B] = m!;
+			const inv = (a: string) =>
+				a
+					.split(/\s+/)
+					.reverse()
+					.map((t) => (t.endsWith("'") ? t.slice(0, -1) : t.endsWith('2') ? t : `${t}'`))
+					.join(' ');
+			expect(`${A} ${B} ${inv(A)} ${inv(B)}`, name).toBe(parsed.anchors[name].alg);
+		}
+	});
+});
+
+test.describe('상위로 이동 (뒤로가기 대체)', () => {
+	test('기준 상세에서 기준 목록으로', async ({ page }) => {
+		await page.goto(`/anchors/${anchorNames[0]}`);
+		await page.locator('[data-up-link]').click();
+		await expect(page).toHaveURL(/\/anchors$/);
+	});
+
+	test('기준에서 들어간 조회 화면은 그 기준으로 돌아간다', async ({ page }) => {
+		const first = anchorNames[0];
+		await page.goto(`/anchors/${first}`);
+		await page.locator('a[href^="/?c="]').first().click();
+		const up = page.locator('[data-up-link]');
+		// 목적지를 버튼에 적어둔다 — 눌러봐야 아는 뒤로가기와 다른 점이다
+		await expect(up).toHaveText(first);
+		await up.click();
+		await expect(page).toHaveURL(new RegExp(`/anchors/${first}$`));
+	});
+
+	test('탭으로 직접 온 조회 화면에는 링크가 없다', async ({ page }) => {
+		await page.goto('/');
+		await expect(page.locator('[data-up-link]')).toHaveCount(0);
+	});
+
+	test('역케이스로 넘어가도 출처가 남는다', async ({ page }) => {
+		const first = anchorNames[0];
+		await page.goto(`/anchors/${first}`);
+		await page.locator('a[href^="/?c="]').first().click();
+		await page.locator('[data-inverse]').click();
+		// 역케이스는 같은 기준에 속하므로(data-regression) 목적지가 여전히 유효하다
+		await expect(page.locator('[data-up-link]')).toHaveText(first);
+	});
+
+	test('출처는 새로고침해도 유지된다 (히스토리가 아니라 URL 에 있다)', async ({ page }) => {
+		const first = anchorNames[0];
+		await page.goto(`/anchors/${first}`);
+		await page.locator('a[href^="/?c="]').first().click();
+		await page.reload();
+		await expect(page.locator('[data-up-link]')).toHaveText(first);
 	});
 });

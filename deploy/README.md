@@ -4,10 +4,43 @@
 
 ## 평소
 
+**실제 앱에 반영하는 것은 릴리스 하나뿐이다.** 개발 중 확인은 로컬 서버에서 한다.
+
+```bash
+pnpm dev            # 개발 중 (http://localhost:5173)
+pnpm preview        # PWA·오프라인 확인 (http://localhost:4173)
+```
+
+폰에 깔린 앱을 갱신하려면 버전을 올린다. 검사 → 버전 → 태그 → push → 배포 →
+검증이 한 줄로 이어진다.
+
+```bash
+./deploy/release.sh 0.2.0
+```
+
+`CHANGELOG.md` 에 해당 버전 항목이 없거나, main 이 아니거나, 워킹트리가
+지저분하거나, 테스트가 깨지면 아무것도 하지 않고 멈춘다. **태그와
+`package.json` 버전을 같이 올리는 것도 이 스크립트의 일이다** — 앱은
+`package.json` 을 정본으로 버전을 표시하므로 태그만 올리면 화면에는 옛
+버전이 뜬다.
+
+### 왜 GitHub Actions 가 아닌가
+
+홈서버는 tailnet 안에 있고 공유기에 열어둔 포트가 없다. GitHub 러너는 서버에
+닿지 못한다. 서버에 self-hosted 러너를 두면 되고(아웃바운드로 붙으므로 NAT 뒤에서도
+돈다) 그건 진짜 "태그 push 하면 배포" 가 되지만, 그러면 배포 검증 결과를 GitHub
+로그로 보러 가야 한다. `deploy.sh` 의 값어치는 프리캐시 전수 대조를 배포한 사람이
+그 자리에서 보는 것이라, 그 피드백을 잃으면서까지 옮길 이유가 없다.
+
+### 임의의 ref 를 올릴 때
+
+릴리스가 아니라 특정 커밋을 서버에 띄워보고 싶을 때 쓴다.
+
 ```bash
 git push                    # 서버가 origin 에서 받아가므로 push 가 먼저다
 ./deploy/deploy.sh          # 현재 브랜치
 ./deploy/deploy.sh main     # 특정 ref
+./deploy/deploy.sh v0.1.0   # 태그
 ```
 
 **어디서든 배포된다.** 접속은 Tailscale tailnet 을 타므로 집 안팎이 같다 — 집에서는

@@ -8,7 +8,18 @@
 	import { anchorOrder, anchorRef, refAlg, refLabel } from '$lib/domain/anchor.js';
 	import { type CaseEntry, type Dataset } from '$lib/domain/types.js';
 
-	let { entry, ds, stale = false }: { entry: CaseEntry; ds: Dataset; stale?: boolean } = $props();
+	/**
+	 * from: 어느 기준을 거쳐 이 화면에 왔는가. 역케이스 링크에 그대로 실어 보낸다.
+	 * 안 실어 보내면 역케이스를 한 번 타는 순간 돌아갈 길이 사라진다.
+	 * 역케이스는 378/378 이 같은 기준에 속하므로(tests/unit/data-regression) 목적지는
+	 * 여전히 지금 보는 케이스를 담고 있는 페이지다.
+	 */
+	let {
+		entry,
+		ds,
+		stale = false,
+		from = null
+	}: { entry: CaseEntry; ds: Dataset; stale?: boolean; from?: string | null } = $props();
 
 	let mode = $derived(settings.mode);
 	let notation = $derived(settings.notation);
@@ -122,7 +133,9 @@
 	</div>
 
 	<footer>
-		<a href="/?c={entry.inverse}" data-inverse={entry.inverse}>역 케이스 {entry.inverse}</a>
+		<a href="/?c={entry.inverse}{from ? `&from=${from}` : ''}" data-inverse={entry.inverse}
+			>역 케이스 {entry.inverse}</a
+		>
 	</footer>
 </section>
 

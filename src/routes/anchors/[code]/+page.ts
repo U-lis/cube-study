@@ -16,9 +16,12 @@ export async function load({ params }) {
 	const isDirect = params.code === 'direct';
 	const anchorName = isDirect ? ANCHOR_DIRECT : params.code;
 
+	// 알파벳순. 셋업 수 순으로 두면 찾는 케이스가 목록 어디에 있는지 알 수 없어
+	// 매번 전체를 훑게 된다. 코드는 Speffz 대문자뿐이라 단순 비교로 충분하고,
+	// localeCompare 와 달리 로케일에 따라 순서가 바뀌지 않는다.
 	const cases = Object.values(ds.cases)
 		.filter((c) => c.setup.anchor === anchorName)
-		.sort((a, b) => a.setup.moves - b.setup.moves || a.case.localeCompare(b.case));
+		.sort((a, b) => (a.case < b.case ? -1 : a.case > b.case ? 1 : 0));
 
 	return { code: params.code, isDirect, anchor: isDirect ? null : ds.anchors[params.code], cases };
 }

@@ -1,5 +1,8 @@
 # cube-study
 
+[![CI](https://github.com/U-lis/cube-study/actions/workflows/ci.yml/badge.svg)](https://github.com/U-lis/cube-study/actions/workflows/ci.yml)
+[![사이트 점검](https://github.com/U-lis/cube-study/actions/workflows/site-check.yml/badge.svg)](https://github.com/U-lis/cube-study/actions/workflows/site-check.yml)
+
 3BLD(눈가리고 큐브 맞추기) 학습용 앱. 현재 **코너 3-style (UBL 버퍼)** 조회와 퀴즈를 제공한다.
 
 버전과 커밋 해시는 앱 우상단 정보 버튼에서 확인할 수 있다. 버전의 정본은 `package.json` 하나이며 빌드 타임에 주입된다.
@@ -44,6 +47,24 @@ pnpm check         # 타입 검사 (svelte-check)
 ```
 
 E2E는 Chromium이 필요하다. 없으면 `npx playwright install chromium`.
+
+```bash
+bash tests/deploy/run.sh    # 배포 스크립트 셸 테스트
+```
+
+배포 스크립트도 테스트가 있다. 임시 디렉터리에 가짜 저장소를 만들어 돌리므로
+홈서버도 ssh 도 네트워크도 필요 없다. 태그가 옮겨갔을 때 서버가 따라가는지,
+annotated 태그에서 커밋을 제대로 뽑는지 — 둘 다 실제로 릴리스를 반쪽으로
+만들었던 버그다.
+
+## CI
+
+PR 과 main push 마다 타입 검사·단위·E2E·배포 스크립트 검사가 돈다.
+**배포는 하지 않는다** — 홈서버는 tailnet 안이라 GitHub 러너가 닿지 못한다.
+
+하루 한 번 배포된 사이트를 따로 점검한다. 인증서 만료 임박, 기본 경로 응답,
+서비스워커 프리캐시 전수 200. 커밋과 무관하게 조용히 썩는 것들이라 CI 로는
+안 잡힌다 — 인증서가 6개월간 만료 상태였던 전례가 있다.
 
 ### 데이터 회귀 테스트
 

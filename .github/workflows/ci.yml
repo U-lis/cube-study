@@ -1,0 +1,78 @@
+# PR 과 main push 마다 도는 검사.
+#
+# 홈서버는 tailnet 안에 있어 GitHub 러너가 닿지 못한다. 여기서는 배포를 하지
+# 않는다 — 코드와 배포 스크립트의 "동작" 만 본다. 실제 배포와 그 검증은
+# deploy/release.sh 가 로컬에서 담당한다.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 같은 브랜치에 연달아 밀면 앞의 실행을 취소한다. 러너 시간을 아끼고,
+# 결과가 뒤늦게 뒤집혀 혼란을 주는 것도 막는다.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    name: 타입·단위·E2E
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: 타입 검사
+        run: pnpm run check
+
+      - name: 단위 테스트
+        run: pnpm test
+
+      # 브라우저 바이너리는 버전당 한 번만 받는다.
+      - name: Playwright 브라우저 캐시
+        uses: actions/cache@v5
+        id: pw-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Playwright 설치
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: E2E
+        run: pnpm test:e2e
+
+      # 실패했을 때 무엇이 어떻게 깨졌는지 보러 로컬에서 재현하지 않아도 되게 한다.
+      - name: 실패 흔적 업로드
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-traces
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  deploy-scripts:
+    name: 배포 스크립트
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: shellcheck
+        run: shellcheck -x deploy/*.sh tests/deploy/*.sh
+
+      # 가짜 저장소로 git 동작을 검증한다. 홈서버도 ssh 도 쓰지 않는다.
+      - name: 셸 테스트
+        run: bash tests/deploy/run.sh

@@ -20,7 +20,10 @@ REPO="${DEPLOY_REPO:-$HOME/apps/cube-study}"   # 서버상의 경로
 DOCROOT="${DEPLOY_DOCROOT:-/var/www/cube-study}"
 URL="${DEPLOY_URL:-https://cube.siot-ieung.duckdns.org}"
 
-cd "$(dirname "$0")/.."
+HERE="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=deploy/lib.sh
+. "$HERE/lib.sh"
+cd "$HERE/.."
 REF="${1:-$(git rev-parse --abbrev-ref HEAD)}"
 
 # 배포하려는 ref 가 원격에 올라가 있어야 서버가 받아갈 수 있다.
@@ -28,10 +31,8 @@ if ! git ls-remote --exit-code origin "$REF" >/dev/null 2>&1; then
 	echo "origin 에 '$REF' 가 없다. 먼저 push 할 것." >&2
 	exit 1
 fi
-# annotated 태그는 rev-parse 가 커밋이 아니라 태그 객체 SHA 를 준다. 그대로 쓰면
-# 서버가 올바른 커밋을 배포하고도 마지막 대조에서 어긋난 것으로 판정된다.
-LOCAL_SHA=$(git rev-parse "$REF^{commit}")
-echo "==> 배포 대상: $REF ($(git rev-parse --short "$REF^{commit}"))"
+LOCAL_SHA=$(resolve_commit "$REF")
+echo "==> 배포 대상: $REF (${LOCAL_SHA:0:7})"
 
 # Tailscale tailnet 으로 붙는다. 집/밖 구분이 없다 — 집에서는 LAN 다이렉트 경로를
 # 잡고 밖에서는 터널로 간다. 여기서 안 걸러주면 ssh 타임아웃만 뱉고 이유를 알 수 없다.
@@ -44,39 +45,11 @@ if ! ssh -o BatchMode=yes -o ConnectTimeout=10 "$HOST" true 2>/dev/null; then
 	exit 1
 fi
 
-ssh "$HOST" REF="$REF" REPO="$REPO" DOCROOT="$DOCROOT" 'bash -seuo pipefail' <<'REMOTE'
-export NVM_DIR="$HOME/.nvm"
-# 비대화형 셸이라 프로필이 안 읽힌다. nvm 을 직접 로드한다.
-. "$NVM_DIR/nvm.sh"
-nvm use 24 >/dev/null
-# packageManager 필드에 적힌 pnpm 버전을 corepack 이 맞춰준다.
-corepack enable >/dev/null 2>&1 || true
-
-cd "$REPO"
-echo "==> fetch"
-git fetch --all --prune --tags -q
-git checkout -q --detach "origin/$REF" 2>/dev/null || git checkout -q --detach "$REF"
-git reset --hard -q
-git clean -fdq -e node_modules -e .pnpm-store
-echo "    $(git rev-parse --short HEAD) $(git log -1 --format=%s)"
-
-echo "==> 의존성"
-pnpm install --frozen-lockfile --reporter=silent
-
-echo "==> 빌드"
-pnpm run build >/dev/null
-
-# 해시 붙은 자산을 먼저 올리고 HTML·서비스워커를 마지막에 올린다. 반대로 하면
-# 새 HTML 이 아직 없는 청크를 가리키는 순간이 생기고, 그 사이에 들어온 클라이언트는
-# 프리캐시가 통째로 실패한다 (bad-precaching-response).
-echo "==> docroot 반영"
-rsync -a --exclude='*.html' --exclude='sw.js' "$REPO/build/" "$DOCROOT/"
-rsync -a --delete "$REPO/build/" "$DOCROOT/"
-
-echo "==> 배포된 커밋: $(git rev-parse HEAD)"
-REMOTE
+ssh "$HOST" REF="$REF" REPO="$REPO" DOCROOT="$DOCROOT" 'bash -s' < "$HERE/remote.sh"
 
 echo "==> 원격이 배포한 커밋 대조"
+# $REPO 는 여기서 펼쳐져야 한다 — 서버 경로를 로컬이 정한다.
+# shellcheck disable=SC2029
 REMOTE_SHA=$(ssh "$HOST" "git -C '$REPO' rev-parse HEAD")
 if [ "$REMOTE_SHA" != "$LOCAL_SHA" ]; then
 	echo "    로컬 $LOCAL_SHA / 서버 $REMOTE_SHA — 어긋남" >&2

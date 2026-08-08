@@ -179,6 +179,9 @@ test.describe('sticky 결과 (FR-4)', () => {
 	/** 다시 탭했다는 것은 새 케이스를 치겠다는 뜻이다. 백스페이스를 요구하지 않는다. */
 	test('다시 포커스하면 입력이 비워지고 결과는 남는다', async ({ page }) => {
 		await page.goto('/');
+		// 하이드레이션 전에 치면 키가 새고, 값이 안 차면 blur 도 일어나지 않는다.
+		// 커서가 놓인 것이 앱이 살아났다는 신호다 (바로 위 테스트와 같은 대기).
+		await expect(input(page)).toBeFocused();
 		await page.keyboard.type('LB');
 		await expect(input(page)).not.toBeFocused();
 
@@ -404,6 +407,7 @@ test.describe('상위로 이동 (뒤로가기 대체)', () => {
 		const first = anchorNames[0];
 		await page.goto(`/anchors/${first}`);
 		await page.locator('a[href^="/?c="]').first().click();
+		await page.waitForURL(/[?&]from=/);
 		const up = page.locator('[data-up-link]');
 		// 목적지를 버튼에 적어둔다 — 눌러봐야 아는 뒤로가기와 다른 점이다
 		await expect(up).toHaveText(first);
@@ -420,6 +424,8 @@ test.describe('상위로 이동 (뒤로가기 대체)', () => {
 		const first = anchorNames[0];
 		await page.goto(`/anchors/${first}`);
 		await page.locator('a[href^="/?c="]').first().click();
+		// 도착을 기다리지 않고 다음 동작을 하면 아직 옛 페이지에 있을 수 있다.
+		await page.waitForURL(/[?&]from=/);
 		await page.locator('[data-inverse]').click();
 		// 역케이스는 같은 기준에 속하므로(data-regression) 목적지가 여전히 유효하다
 		await expect(page.locator('[data-up-link]')).toHaveText(first);
@@ -429,6 +435,9 @@ test.describe('상위로 이동 (뒤로가기 대체)', () => {
 		const first = anchorNames[0];
 		await page.goto(`/anchors/${first}`);
 		await page.locator('a[href^="/?c="]').first().click();
+		// reload 는 재시도가 없다. 도착 전에 부르면 옛 주소를 다시 열어버리고,
+		// 그러면 이 테스트는 조회 화면이 아니라 기준 상세를 검사하게 된다.
+		await page.waitForURL(/[?&]from=/);
 		await page.reload();
 		await expect(page.locator('[data-up-link]')).toHaveText(first);
 	});

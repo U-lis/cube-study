@@ -21,11 +21,11 @@ jobs:
     name: 타입·단위·E2E
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: pnpm
@@ -40,7 +40,7 @@ jobs:
 
       # 브라우저 바이너리는 버전당 한 번만 받는다.
       - name: Playwright 브라우저 캐시
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: pw-cache
         with:
           path: ~/.cache/ms-playwright
@@ -55,7 +55,7 @@ jobs:
       # 실패했을 때 무엇이 어떻게 깨졌는지 보러 로컬에서 재현하지 않아도 되게 한다.
       - name: 실패 흔적 업로드
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-traces
           path: |
@@ -68,7 +68,7 @@ jobs:
     name: 배포 스크립트
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: shellcheck
         run: shellcheck -x deploy/*.sh tests/deploy/*.sh

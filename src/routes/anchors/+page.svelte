@@ -2,6 +2,7 @@
 <script lang="ts">
 	import Alg from '$lib/ui/Alg.svelte';
 	import { targetText } from '$lib/domain/validate.js';
+	import { formatCommutator } from '$lib/domain/format.js';
 
 	let { data } = $props();
 	let rows = $derived(data.rows);
@@ -14,12 +15,21 @@
 
 <ul>
 	{#each rows as r (r.name)}
+		<!--
+			[A, B] 를 무브열 위에 둔다. 이 화면만 켜두고 기준 여섯 개를 외우는
+			용도라, 구조를 먼저 보고 무브로 확인하는 순서가 맞다.
+			분해되지 않는 기준은 이 줄을 통째로 걸러 빈 대괄호를 만들지 않는다.
+		-->
+		{@const comm = formatCommutator(r.alg)}
 		<li>
 			<a href="/anchors/{r.name}" data-anchor={r.name}>
 				<div class="head">
 					<span class="name">{r.name}</span>
 					<span class="count" data-count={r.count}>{r.count}</span>
 				</div>
+				{#if comm}
+					<Alg parts={comm} size="sm" />
+				{/if}
 				<Alg parts={[{ text: r.alg, role: 'plain' }]} size="sm" />
 				<div class="entries">
 					<span>{targetText(r.entry1)}</span>

@@ -1,15 +1,24 @@
 <script lang="ts">
 	import Alg from '$lib/ui/Alg.svelte';
 	import { targetText } from '$lib/domain/validate.js';
+	import { formatCommutator } from '$lib/domain/format.js';
+	import UpLink from '$lib/ui/UpLink.svelte';
 	let { data } = $props();
+
+	let comm = $derived(data.anchor ? formatCommutator(data.anchor.alg) : null);
 </script>
 
 <svelte:head><title>3-Style Corner — {data.code}</title></svelte:head>
+
+<UpLink href="/anchors" label="기준공식" />
 
 <h1>{data.isDirect ? '기준 없음' : data.code}</h1>
 
 {#if data.anchor}
 	<div class="anchor">
+		{#if comm}
+			<Alg parts={comm} size="md" />
+		{/if}
 		<Alg parts={[{ text: data.anchor.alg, role: 'plain' }]} size="md" />
 		<div class="entries">
 			<span>{targetText(data.anchor.entry1)}</span>
@@ -23,7 +32,7 @@
 <ul>
 	{#each data.cases as c (c.case)}
 		<li>
-			<a href="/?c={c.case}">
+			<a href="/?c={c.case}&from={data.code}">
 				<span class="code">{c.case}</span>
 				{#if c.setup.S}
 					<Alg parts={[{ text: c.setup.S, role: 'setup' }]} size="sm" />
@@ -48,7 +57,7 @@
 		font-size: 1.8rem;
 		letter-spacing: 0.1em;
 		color: var(--accent);
-		margin: 1rem 0 0.6rem;
+		margin: 0 0 0.6rem;
 	}
 	.anchor {
 		padding: 0.7rem;

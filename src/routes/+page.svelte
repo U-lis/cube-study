@@ -1,8 +1,10 @@
 <!-- 조회 (FR-3 ~ FR-10). sticky 결과: 입력이 줄어도 직전 결과를 지우지 않는다. -->
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { page } from '$app/state';
 	import CaseInput from '$lib/ui/CaseInput.svelte';
 	import CaseView from '$lib/ui/CaseView.svelte';
+	import UpLink from '$lib/ui/UpLink.svelte';
 	import { lookup, reasonText } from '$lib/domain/validate.js';
 	import { loadDataset } from '$lib/data/loader.js';
 	import type { CaseEntry, Dataset } from '$lib/domain/types.js';
@@ -25,6 +27,22 @@
 
 	// page.url 은 컴포넌트 최상위에서 읽어야 한다 (비동기 콜백 안에서는 컨텍스트가 없다).
 	let queryCase = $derived(page.url.searchParams.get('c'));
+
+	/**
+	 * 어느 기준에서 넘어왔는가. 기준 상세의 케이스 링크가 실어 보낸다.
+	 * 하단 탭으로 직접 들어오면 from 이 없고, 그때는 링크도 없다.
+	 *
+	 * 이 화면은 프리렌더된다. 프리렌더 중에는 쿼리라는 것이 존재하지 않으므로
+	 * searchParams 를 읽으면 빌드가 죽는다 — 브라우저에서만 읽는다.
+	 * (queryCase 가 멀쩡한 것은 $effect 안에서만 쓰여 서버에서 평가되지 않기
+	 * 때문이다. 마크업에서 쓰는 값은 그 보호를 못 받는다.)
+	 *
+	 * 데이터를 보고 실재하는 기준인지 확인하지는 않는다. 확인하려면 데이터셋
+	 * 로드가 끝나야 하고, 그러면 링크가 한 박자 늦게 나타나며 화면을 민다.
+	 * 주소를 손으로 고쳐 없는 기준을 적는 경우를 막자고 치를 값이 아니다.
+	 */
+	let from = $derived(browser ? page.url.searchParams.get('from') : null);
+	let upLabel = $derived(from === 'direct' ? '기준 없음' : from);
 
 	loadDataset().then((d) => (ds = d));
 
@@ -51,6 +69,10 @@
 </script>
 
 <svelte:head><title>3-Style Corner — 조회</title></svelte:head>
+
+{#if from}
+	<UpLink href="/anchors/{from}" label={upLabel ?? ''} />
+{/if}
 
 <div class="top">
 	<!-- X 는 결과까지 치운다. 포커스 초기화(다시 칠 준비)와 구분한다 -->

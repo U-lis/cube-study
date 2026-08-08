@@ -93,7 +93,7 @@
 </div>
 
 {#if shown && ds}
-	<CaseView entry={shown} {ds} {stale} />
+	<CaseView entry={shown} {ds} {stale} {from} />
 {:else if ds}
 	<p class="hint">스티커 2글자를 입력하세요. 버퍼는 UBL (A/E/R)입니다.</p>
 {/if}

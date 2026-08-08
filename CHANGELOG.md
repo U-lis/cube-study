@@ -5,7 +5,9 @@
 
 버전의 정본은 `package.json` 하나이며 빌드 타임에 앱으로 주입된다.
 
-## [미출시]
+## [0.2.1] - 2026-08-08
+
+앱 동작은 그대로다. 검사·감시·배포 도구만 손봤다.
 
 ### 추가
 
@@ -106,5 +108,6 @@
 - 스키마 호환 — v2 와 배포본을 같은 도메인 함수에 먹여 확인한다. 앱이 읽을 수 있는 하한은 schemaVersion 2 다 (v1 은 `strict` 필드가 없다)
 - 단위 120건, E2E 198건. E2E 는 모바일·데스크탑 두 프로필로 돈다
 
+[0.2.1]: https://github.com/U-lis/cube-study/releases/tag/v0.2.1
 [0.2.0]: https://github.com/U-lis/cube-study/releases/tag/v0.2.0
 [0.1.0]: https://github.com/U-lis/cube-study/releases/tag/v0.1.0

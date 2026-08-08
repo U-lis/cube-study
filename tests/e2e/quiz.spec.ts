@@ -184,7 +184,7 @@ test.describe('setup 입력 방식', () => {
 		await expect(page.locator('[data-anchor-pick]')).toHaveCount(0);
 	});
 
-	test('setup 으로 바꾸면 기준 버튼 10개가 제출 버튼을 대신한다', async ({ page }) => {
+	test('setup 으로 바꾸면 기준 버튼이 제출 버튼을 대신한다', async ({ page }) => {
 		await page.goto('/quiz');
 		await setInput(page, 'setup');
 		// 기준마다 정·역 두 칸이다. 개수는 데이터가 정한다.

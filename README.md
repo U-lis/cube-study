@@ -79,10 +79,18 @@ data/schema-history/   데이터 스키마 v1~v3 기록 (앱은 읽지 않는다
 
 정적 빌드이므로 서버 런타임이 필요 없다. 홈서버로는 스크립트 하나면 된다.
 
+개발 중 확인은 로컬에서 하고, **폰에 깔린 앱에 반영하는 것은 릴리스 하나뿐이다.**
+
+```bash
+./deploy/release.sh 0.2.0   # 검사 → 버전 → 태그 → push → 배포 → 검증
+```
+
+릴리스가 아니라 특정 ref 를 서버에 띄워볼 때는 배포 스크립트를 직접 부른다.
+
 ```bash
 git push                    # 서버가 origin 에서 받아가므로 push 가 먼저다
 ./deploy/deploy.sh          # 현재 브랜치 배포
-./deploy/deploy.sh main     # 특정 ref 배포
+./deploy/deploy.sh v0.1.0   # 특정 ref 배포
 ```
 
 서버가 직접 `git clone`/`fetch` 해서 빌드한다. 로컬 산출물을 올리지 않으므로 배포된 것이 어느 커밋인지 항상 확실하고, 커밋되지 않은 로컬 수정이 새어 나갈 수 없다.

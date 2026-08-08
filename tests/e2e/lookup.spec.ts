@@ -315,7 +315,10 @@ test.describe('기준공식 브라우저 (FR-11, FR-12)', () => {
 	test('기준 목록이 데이터의 학습 순서대로 나온다', async ({ page }) => {
 		await page.goto('/anchors');
 		await expect(page.locator('[data-anchor]')).toHaveCount(anchorNames.length);
-		const counts = await page.locator('[data-count]').allTextContents();
+		// FR-MC-11: 표시가 `{체크}/{전체}` 로 바뀌었다. 텍스트 대신 data-count 속성으로 검증한다.
+		const counts = await page
+			.locator('[data-count]')
+			.evaluateAll((els) => els.map((el) => el.getAttribute('data-count')));
 		expect(counts.slice(0, anchorNames.length)).toEqual(
 			anchorNames.map((n) => String(parsed.anchors[n].count))
 		);

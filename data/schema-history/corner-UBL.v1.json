@@ -1,0 +1,10859 @@
+{
+ "meta": {
+  "buffer": "UBL",
+  "bufferStickers": [
+   "A",
+   "E",
+   "R"
+  ],
+  "primarySticker": "A",
+  "scheme": "Speffz",
+  "totalCases": 378,
+  "colorScheme": {
+   "U": "W",
+   "D": "Y",
+   "F": "G",
+   "B": "B",
+   "R": "R",
+   "L": "O"
+  },
+  "notation": "case XY = buffer piece -> X position, X piece -> Y position, Y piece -> buffer",
+  "verification": "all algorithms verified: memo direction, corners solved, edges untouched"
+ },
+ "stickers": {
+  "A": {
+   "cubie": "UBL",
+   "face": "U"
+  },
+  "E": {
+   "cubie": "UBL",
+   "face": "L"
+  },
+  "R": {
+   "cubie": "UBL",
+   "face": "B"
+  },
+  "B": {
+   "cubie": "UBR",
+   "face": "U"
+  },
+  "N": {
+   "cubie": "UBR",
+   "face": "R"
+  },
+  "Q": {
+   "cubie": "UBR",
+   "face": "B"
+  },
+  "C": {
+   "cubie": "UFR",
+   "face": "U"
+  },
+  "M": {
+   "cubie": "UFR",
+   "face": "R"
+  },
+  "J": {
+   "cubie": "UFR",
+   "face": "F"
+  },
+  "D": {
+   "cubie": "UFL",
+   "face": "U"
+  },
+  "F": {
+   "cubie": "UFL",
+   "face": "L"
+  },
+  "I": {
+   "cubie": "UFL",
+   "face": "F"
+  },
+  "U": {
+   "cubie": "DFL",
+   "face": "D"
+  },
+  "G": {
+   "cubie": "DFL",
+   "face": "L"
+  },
+  "L": {
+   "cubie": "DFL",
+   "face": "F"
+  },
+  "V": {
+   "cubie": "DFR",
+   "face": "D"
+  },
+  "P": {
+   "cubie": "DFR",
+   "face": "R"
+  },
+  "K": {
+   "cubie": "DFR",
+   "face": "F"
+  },
+  "W": {
+   "cubie": "DBR",
+   "face": "D"
+  },
+  "O": {
+   "cubie": "DBR",
+   "face": "R"
+  },
+  "T": {
+   "cubie": "DBR",
+   "face": "B"
+  },
+  "X": {
+   "cubie": "DBL",
+   "face": "D"
+  },
+  "H": {
+   "cubie": "DBL",
+   "face": "L"
+  },
+  "S": {
+   "cubie": "DBL",
+   "face": "B"
+  }
+ },
+ "anchors": {
+  "LB": {
+   "alg": "R D2 R' U R D2 R' U'",
+   "entry1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "entry2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "count": 100,
+   "moves": 8
+  },
+  "TU": {
+   "alg": "L2 U R' U' L2 U R U'",
+   "entry1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "entry2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "count": 83,
+   "moves": 8
+  },
+  "SC": {
+   "alg": "R' D2 R U2 R' D2 R U2",
+   "entry1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "entry2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "count": 60,
+   "moves": 8
+  },
+  "NG": {
+   "alg": "U' F U B U' F' U B'",
+   "entry1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "entry2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "count": 46,
+   "moves": 8
+  },
+  "UN": {
+   "alg": "U R U' L2 U R' U' L2",
+   "entry1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "entry2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "count": 35,
+   "moves": 8
+  },
+  "WM": {
+   "alg": "B2 D' F D B2 D' F' D",
+   "entry1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "entry2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "count": 18,
+   "moves": 8
+  },
+  "NU": {
+   "alg": "L2 U R U' L2 U R' U'",
+   "entry1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "entry2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "count": 12,
+   "moves": 8
+  },
+  "KD": {
+   "alg": "U L D2 L' U' L D2 L'",
+   "entry1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "entry2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "count": 9,
+   "moves": 8
+  },
+  "UB": {
+   "alg": "L2 D R2 D' L2 D R2 D'",
+   "entry1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "entry2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "count": 8,
+   "moves": 8
+  },
+  "KS": {
+   "alg": "R U2 R' D2 R U2 R' D2",
+   "entry1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "entry2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "count": 1,
+   "moves": 8
+  }
+ },
+ "cases": {
+  "KG": {
+   "case": "KG",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "R U2 R' D R U2 R' D'",
+    "moves": 8,
+    "type": "pure",
+    "A": "R U2 R'",
+    "B": "D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 R' D2 R' U R D2 R' U' R2 L2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "L2 R2"
+   },
+   "inverse": "GK"
+  },
+  "GK": {
+   "case": "GK",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D R U2 R' D' R U2 R'",
+    "moves": 8,
+    "type": "pure",
+    "A": "D",
+    "B": "R U2 R'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F U R D2 R' U R D2 R' U2 F'",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "F U"
+   },
+   "inverse": "KG"
+  },
+  "KO": {
+   "case": "KO",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R U2 R' D' R U2 R' D",
+    "moves": 8,
+    "type": "pure",
+    "A": "R U2 R'",
+    "B": "D'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 B' R D2 R' U R D2 R' U' B D2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "D2 B'"
+   },
+   "inverse": "OK"
+  },
+  "OK": {
+   "case": "OK",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D' R U2 R' D R U2 R'",
+    "moves": 8,
+    "type": "pure",
+    "A": "D'",
+    "B": "R U2 R'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' D2 L2 U R U' L2 U R' U' D2 R",
+    "moves": 12,
+    "anchor": "NU",
+    "S": "R' D2"
+   },
+   "inverse": "KO"
+  },
+  "KS": {
+   "case": "KS",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R U2 R' D2 R U2 R' D2",
+    "moves": 8,
+    "type": "pure",
+    "A": "R U2 R'",
+    "B": "D2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D' B2 L2 U R' U' L2 U R U' B2 D",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D' B2"
+   },
+   "inverse": "SK"
+  },
+  "SK": {
+   "case": "SK",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D2 R U2 R' D2 R U2 R'",
+    "moves": 8,
+    "type": "pure",
+    "A": "D2",
+    "B": "R U2 R'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B' D' R D2 R' U R D2 R' U' D B",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "B' D'"
+   },
+   "inverse": "KS"
+  },
+  "OB": {
+   "case": "OB",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R D R' U R D' R' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "R D R'",
+    "B": "U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D' F R D2 R' U R D2 R' U' F' D",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "D' F"
+   },
+   "inverse": "BO"
+  },
+  "BO": {
+   "case": "BO",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U R D R' U' R D' R'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U",
+    "B": "R D R'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R F L2 U R' U' L2 U R U' F' R'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R F"
+   },
+   "inverse": "OB"
+  },
+  "HB": {
+   "case": "HB",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R D' R' U R D R' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "R D' R'",
+    "B": "U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D R D2 R' U R D2 R' U' D'",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "D"
+   },
+   "inverse": "BH"
+  },
+  "BH": {
+   "case": "BH",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U R D' R' U' R D R'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U",
+    "B": "R D' R'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B' D2 U' F U B U' F' U B' D2 B",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "B' D2"
+   },
+   "inverse": "HB"
+  },
+  "LB": {
+   "case": "LB",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R D2 R' U R D2 R' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "R D2 R'",
+    "B": "U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R D2 R' U R D2 R' U'",
+    "moves": 8,
+    "anchor": "LB",
+    "S": ""
+   },
+   "inverse": "BL"
+  },
+  "BL": {
+   "case": "BL",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U R D2 R' U' R D2 R'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U",
+    "B": "R D2 R'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B' U' L2 U R' U' L2 U R B",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "B' U'"
+   },
+   "inverse": "LB"
+  },
+  "TP": {
+   "case": "TP",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R' U R D R' U' R D'",
+    "moves": 8,
+    "type": "pure",
+    "A": "R' U R",
+    "B": "D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F L2 U R' U' L2 U R U' F'",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "F"
+   },
+   "inverse": "PT"
+  },
+  "PT": {
+   "case": "PT",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "D R' U R D' R' U' R",
+    "moves": 8,
+    "type": "pure",
+    "A": "D",
+    "B": "R' U R",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F U R' U' L2 U R U' L2 F'",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "F L2"
+   },
+   "inverse": "TP"
+  },
+  "TH": {
+   "case": "TH",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "R' U R D' R' U' R D",
+    "moves": 8,
+    "type": "pure",
+    "A": "R' U R",
+    "B": "D'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B' D U' F U B U' F' U B' D' B",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "B' D"
+   },
+   "inverse": "HT"
+  },
+  "HT": {
+   "case": "HT",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "D' R' U R D R' U' R",
+    "moves": 8,
+    "type": "pure",
+    "A": "D'",
+    "B": "R' U R",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' D R D2 R' U R D2 R' U' D' R",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R' D"
+   },
+   "inverse": "TH"
+  },
+  "TL": {
+   "case": "TL",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "R' U R D2 R' U' R D2",
+    "moves": 8,
+    "type": "pure",
+    "A": "R' U R",
+    "B": "D2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' U R D2 R' U' R D2",
+    "moves": 8,
+    "anchor": "LB",
+    "S": "D2 R'"
+   },
+   "inverse": "LT"
+  },
+  "LT": {
+   "case": "LT",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "D2 R' U R D2 R' U' R",
+    "moves": 8,
+    "type": "pure",
+    "A": "D2",
+    "B": "R' U R",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 R' U R D2 R' U' R",
+    "moves": 8,
+    "anchor": "LB",
+    "S": "R'"
+   },
+   "inverse": "TL"
+  },
+  "GC": {
+   "case": "GC",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R' D R U2 R' D' R U2",
+    "moves": 8,
+    "type": "pure",
+    "A": "R' D R",
+    "B": "U2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D' R' D2 R U2 R' D2 R U2 D",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "D'"
+   },
+   "inverse": "CG"
+  },
+  "CG": {
+   "case": "CG",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U2 R' D R U2 R' D' R",
+    "moves": 8,
+    "type": "pure",
+    "A": "U2",
+    "B": "R' D R",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 R2 D2 R' U R D2 R' U' R' L2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "L2 R"
+   },
+   "inverse": "GC"
+  },
+  "PC": {
+   "case": "PC",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R' D' R U2 R' D R U2",
+    "moves": 8,
+    "type": "pure",
+    "A": "R' D' R",
+    "B": "U2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D F2 L2 U R' U' L2 U R U' F2 D'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D F2"
+   },
+   "inverse": "CP"
+  },
+  "CP": {
+   "case": "CP",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U2 R' D' R U2 R' D R",
+    "moves": 8,
+    "type": "pure",
+    "A": "U2",
+    "B": "R' D' R",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 D2 U R U' L2 U R' U' L2 D2 R2",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "R2 D2"
+   },
+   "inverse": "PC"
+  },
+  "SC": {
+   "case": "SC",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R' D2 R U2 R' D2 R U2",
+    "moves": 8,
+    "type": "pure",
+    "A": "R' D2 R",
+    "B": "U2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U L' R D2 R' U R D2 R' U' L U'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "U L'"
+   },
+   "inverse": "CS"
+  },
+  "CS": {
+   "case": "CS",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U2 R' D2 R U2 R' D2 R",
+    "moves": 8,
+    "type": "pure",
+    "A": "U2",
+    "B": "R' D2 R",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U' L' R D2 R' U R D2 R' U' L U",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "U' L'"
+   },
+   "inverse": "SC"
+  },
+  "DO": {
+   "case": "DO",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L D L' U L D' L' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L D L'",
+    "B": "U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F' B2 L2 U R' U' L2 U R U' B2 F",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F' B2"
+   },
+   "inverse": "OD"
+  },
+  "OD": {
+   "case": "OD",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U L D L' U' L D' L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U",
+    "B": "L D L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' F' U' F U B U' F' U B' F R",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "R' F'"
+   },
+   "inverse": "DO"
+  },
+  "CO": {
+   "case": "CO",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L D L' U2 L D' L' U2",
+    "moves": 8,
+    "type": "pure",
+    "A": "L D L'",
+    "B": "U2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D U2 R' D2 R U2 R' D2 R D'",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "D U2"
+   },
+   "inverse": "OC"
+  },
+  "OC": {
+   "case": "OC",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U2 L D L' U2 L D' L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U2",
+    "B": "L D L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D R' D2 R U2 R' D2 R U2 D'",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "D"
+   },
+   "inverse": "CO"
+  },
+  "DH": {
+   "case": "DH",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "L D' L' U L D L' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L D' L'",
+    "B": "U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D U R D2 R' U R D2 R' U2 D'",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "D U"
+   },
+   "inverse": "HD"
+  },
+  "HD": {
+   "case": "HD",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U L D' L' U' L D L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U",
+    "B": "L D' L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F2 D' L2 U R' U' L2 U R U' D F2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F2 D'"
+   },
+   "inverse": "DH"
+  },
+  "CH": {
+   "case": "CH",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "L D' L' U2 L D L' U2",
+    "moves": 8,
+    "type": "pure",
+    "A": "L D' L'",
+    "B": "U2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U L' U' F U B U' F' U B' L U'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "U L'"
+   },
+   "inverse": "HC"
+  },
+  "HC": {
+   "case": "HC",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U2 L D' L' U2 L D L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U2",
+    "B": "L D' L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D' F2 L2 U R' U' L2 U R U' F2 D",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D' F2"
+   },
+   "inverse": "CH"
+  },
+  "DK": {
+   "case": "DK",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L D2 L' U L D2 L' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L D2 L'",
+    "B": "U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U F R D2 R' U R D2 R' U' F' U'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "U F"
+   },
+   "inverse": "KD"
+  },
+  "KD": {
+   "case": "KD",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U L D2 L' U' L D2 L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U",
+    "B": "L D2 L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' F B2 D' F D B2 D' F' D F' R",
+    "moves": 12,
+    "anchor": "WM",
+    "S": "R' F"
+   },
+   "inverse": "DK"
+  },
+  "BK": {
+   "case": "BK",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L D2 L' U' L D2 L' U",
+    "moves": 8,
+    "type": "pure",
+    "A": "L D2 L'",
+    "B": "U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R F2 L2 U R' U' L2 U R U' F2 R'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R F2"
+   },
+   "inverse": "KB"
+  },
+  "KB": {
+   "case": "KB",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U' L D2 L' U L D2 L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U'",
+    "B": "L D2 L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F R D2 R' U R D2 R' U' F'",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "F"
+   },
+   "inverse": "BK"
+  },
+  "CK": {
+   "case": "CK",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L D2 L' U2 L D2 L' U2",
+    "moves": 8,
+    "type": "pure",
+    "A": "L D2 L'",
+    "B": "U2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 U2 R' D2 R U2 R' D2 R D2",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "D2 U2"
+   },
+   "inverse": "KC"
+  },
+  "KC": {
+   "case": "KC",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U2 L D2 L' U2 L D2 L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U2",
+    "B": "L D2 L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 R' D2 R U2 R' D2 R U2 D2",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "D2"
+   },
+   "inverse": "CK"
+  },
+  "HL": {
+   "case": "HL",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L' U L D' L' U' L D",
+    "moves": 8,
+    "type": "pure",
+    "A": "L' U L",
+    "B": "D'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 D U L D2 L' U' L D2 L' D' L2",
+    "moves": 12,
+    "anchor": "KD",
+    "S": "L2 D"
+   },
+   "inverse": "LH"
+  },
+  "LH": {
+   "case": "LH",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "D' L' U L D L' U' L",
+    "moves": 8,
+    "type": "pure",
+    "A": "D'",
+    "B": "L' U L",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 F L2 U R' U' L2 U R U' F' D2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D2 F"
+   },
+   "inverse": "HL"
+  },
+  "HP": {
+   "case": "HP",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L' U L D2 L' U' L D2",
+    "moves": 8,
+    "type": "pure",
+    "A": "L' U L",
+    "B": "D2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D' R' U R D2 R' U' R D'",
+    "moves": 9,
+    "anchor": "LB",
+    "S": "D R'"
+   },
+   "inverse": "PH"
+  },
+  "PH": {
+   "case": "PH",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "D2 L' U L D2 L' U' L",
+    "moves": 8,
+    "type": "pure",
+    "A": "D2",
+    "B": "L' U L",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D R' U R D2 R' U' R D",
+    "moves": 9,
+    "anchor": "LB",
+    "S": "D' R'"
+   },
+   "inverse": "HP"
+  },
+  "GD": {
+   "case": "GD",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L' D L U' L' D' L U",
+    "moves": 8,
+    "type": "pure",
+    "A": "L' D L",
+    "B": "U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D U L D2 L' U' L D2 L' D'",
+    "moves": 10,
+    "anchor": "KD",
+    "S": "D"
+   },
+   "inverse": "DG"
+  },
+  "DG": {
+   "case": "DG",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U' L' D L U L' D' L",
+    "moves": 8,
+    "type": "pure",
+    "A": "U'",
+    "B": "L' D L",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F2 D B2 D' F D B2 D' F",
+    "moves": 9,
+    "anchor": "WM",
+    "S": "F2 D"
+   },
+   "inverse": "GD"
+  },
+  "PD": {
+   "case": "PD",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L' D' L U' L' D L U",
+    "moves": 8,
+    "type": "pure",
+    "A": "L' D' L",
+    "B": "U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L D' L2 U R' U' L2 U R U' D L'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "L D'"
+   },
+   "inverse": "DP"
+  },
+  "DP": {
+   "case": "DP",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U' L' D' L U L' D L",
+    "moves": 8,
+    "type": "pure",
+    "A": "U'",
+    "B": "L' D' L",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D' U R D2 R' U R D2 R' U2 D",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "D' U"
+   },
+   "inverse": "PD"
+  },
+  "TD": {
+   "case": "TD",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L' D2 L U' L' D2 L U",
+    "moves": 8,
+    "type": "pure",
+    "A": "L' D2 L",
+    "B": "U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U' L B2 D' F D B2 D' F' D L' U",
+    "moves": 12,
+    "anchor": "WM",
+    "S": "U' L"
+   },
+   "inverse": "DT"
+  },
+  "DT": {
+   "case": "DT",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U' L' D2 L U L' D2 L",
+    "moves": 8,
+    "type": "pure",
+    "A": "U'",
+    "B": "L' D2 L",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 U R D2 R' U R D2 R' U2 D2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "D2 U"
+   },
+   "inverse": "TD"
+  },
+  "GS": {
+   "case": "GS",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "F U' F' D F U F' D'",
+    "moves": 8,
+    "type": "pure",
+    "A": "F U' F'",
+    "B": "D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 U R D2 R' U R D2 R' U2 L2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "L2 U"
+   },
+   "inverse": "SG"
+  },
+  "SG": {
+   "case": "SG",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "D F U' F' D' F U F'",
+    "moves": 8,
+    "type": "pure",
+    "A": "D",
+    "B": "F U' F'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B' R D2 R' U R D2 R' U' B",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "B'"
+   },
+   "inverse": "GS"
+  },
+  "GO": {
+   "case": "GO",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "F U' F' D2 F U F' D2",
+    "moves": 8,
+    "type": "pure",
+    "A": "F U' F'",
+    "B": "D2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B2 L2 U R' U' L2 U R U' B2",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "B2"
+   },
+   "inverse": "OG"
+  },
+  "OG": {
+   "case": "OG",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "D2 F U' F' D2 F U F'",
+    "moves": 8,
+    "type": "pure",
+    "A": "D2",
+    "B": "F U' F'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B2 U R' U' L2 U R U' L2 B2",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "B2 L2"
+   },
+   "inverse": "GO"
+  },
+  "TC": {
+   "case": "TC",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "F D' F' U2 F D F' U2",
+    "moves": 8,
+    "type": "pure",
+    "A": "F D' F'",
+    "B": "U2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F2 L2 U R' U' L2 U R U' F2",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "F2"
+   },
+   "inverse": "CT"
+  },
+  "CT": {
+   "case": "CT",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U2 F D' F' U2 F D F'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U2",
+    "B": "F D' F'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' F R D2 R' U R D2 R' U' F' R",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R' F"
+   },
+   "inverse": "TC"
+  },
+  "PL": {
+   "case": "PL",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F' U2 F D F' U2 F D'",
+    "moves": 8,
+    "type": "pure",
+    "A": "F' U2 F",
+    "B": "D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D F L2 U R' U' L2 U R U' F' D'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D F"
+   },
+   "inverse": "LP"
+  },
+  "LP": {
+   "case": "LP",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D F' U2 F D' F' U2 F",
+    "moves": 8,
+    "type": "pure",
+    "A": "D",
+    "B": "F' U2 F",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F' D2 R' D2 R U2 R' D2 R U2 D2 F",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "F' D2"
+   },
+   "inverse": "PL"
+  },
+  "SD": {
+   "case": "SD",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "F' D F U' F' D' F U",
+    "moves": 8,
+    "type": "pure",
+    "A": "F' D F",
+    "B": "U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F' B' R D2 R' U R D2 R' U' B F",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "F' B'"
+   },
+   "inverse": "DS"
+  },
+  "DS": {
+   "case": "DS",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U' F' D F U F' D' F",
+    "moves": 8,
+    "type": "pure",
+    "A": "U'",
+    "B": "F' D F",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L B' U' F U B U' F' U L'",
+    "moves": 10,
+    "anchor": "NG",
+    "S": "L B'"
+   },
+   "inverse": "SD"
+  },
+  "LD": {
+   "case": "LD",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "F' D' F U' F' D F U",
+    "moves": 8,
+    "type": "pure",
+    "A": "F' D' F",
+    "B": "U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 B' R D2 R' U R D2 R' U' B L2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "L2 B'"
+   },
+   "inverse": "DL"
+  },
+  "DL": {
+   "case": "DL",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U' F' D' F U F' D F",
+    "moves": 8,
+    "type": "pure",
+    "A": "U'",
+    "B": "F' D' F",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U R D2 R' U R D2 R' U2",
+    "moves": 9,
+    "anchor": "LB",
+    "S": "U"
+   },
+   "inverse": "LD"
+  },
+  "BS": {
+   "case": "BS",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "B D B' U' B D' B' U",
+    "moves": 8,
+    "type": "pure",
+    "A": "B D B'",
+    "B": "U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L' F' R D2 R' U R D2 R' U' F L",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "L' F'"
+   },
+   "inverse": "SB"
+  },
+  "SB": {
+   "case": "SB",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U' B D B' U B D' B'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U'",
+    "B": "B D B'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 F R D2 R' U R D2 R' U' F' D2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "D2 F"
+   },
+   "inverse": "BS"
+  },
+  "CL": {
+   "case": "CL",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "B D' B' U2 B D B' U2",
+    "moves": 8,
+    "type": "pure",
+    "A": "B D' B'",
+    "B": "U2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F2 R L2 D R2 D' L2 D R2 D' R' F2",
+    "moves": 12,
+    "anchor": "UB",
+    "S": "F2 R"
+   },
+   "inverse": "LC"
+  },
+  "LC": {
+   "case": "LC",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U2 B D' B' U2 B D B'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U2",
+    "B": "B D' B'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 F2 L2 U R' U' L2 U R U' F2 D2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D2 F2"
+   },
+   "inverse": "CL"
+  },
+  "BP": {
+   "case": "BP",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "B D2 B' U' B D2 B' U",
+    "moves": 8,
+    "type": "pure",
+    "A": "B D2 B'",
+    "B": "U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F R L2 U R' U' L2 U R U' R' F'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F R"
+   },
+   "inverse": "PB"
+  },
+  "PB": {
+   "case": "PB",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U' B D2 B' U B D2 B'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U'",
+    "B": "B D2 B'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D' R D2 R' U R D2 R' U' D",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "D'"
+   },
+   "inverse": "BP"
+  },
+  "SO": {
+   "case": "SO",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "B' U' B D B' U B D'",
+    "moves": 8,
+    "type": "pure",
+    "A": "B' U' B",
+    "B": "D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B2 D2 R D2 R' U R D2 R' U' D2 B2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "B2 D2"
+   },
+   "inverse": "OS"
+  },
+  "OS": {
+   "case": "OS",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "D B' U' B D' B' U B",
+    "moves": 8,
+    "type": "pure",
+    "A": "D",
+    "B": "B' U' B",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D B' R D2 R' U R D2 R' U' B D'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "D B'"
+   },
+   "inverse": "SO"
+  },
+  "TB": {
+   "case": "TB",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "B' D' B U B' D B U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "B' D' B",
+    "B": "U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 R D2 R' U R D2 R' U' D2",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "D2"
+   },
+   "inverse": "BT"
+  },
+  "BT": {
+   "case": "BT",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U B' D' B U' B' D B",
+    "moves": 8,
+    "type": "pure",
+    "A": "U",
+    "B": "B' D' B",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' F2 R D2 R' U R D2 R' U' F2 R",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R' F2"
+   },
+   "inverse": "TB"
+  },
+  "GB": {
+   "case": "GB",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "B' D2 B U B' D2 B U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "B' D2 B",
+    "B": "U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D F R D2 R' U R D2 R' U' F' D'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "D F"
+   },
+   "inverse": "BG"
+  },
+  "BG": {
+   "case": "BG",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U B' D2 B U' B' D2 B",
+    "moves": 8,
+    "type": "pure",
+    "A": "U",
+    "B": "B' D2 B",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D L D2 L' U' L D2 L' U D'",
+    "moves": 10,
+    "anchor": "KD",
+    "S": "D U'"
+   },
+   "inverse": "GB"
+  },
+  "IN": {
+   "case": "IN",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U R U' L U R' U' L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U R U'",
+    "B": "L",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L D U' F U B U' F' U B' D' L'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "L D"
+   },
+   "inverse": "NI"
+  },
+  "NI": {
+   "case": "NI",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L U R U' L' U R' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L",
+    "B": "U R U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 B L2 U R' U' L2 U R U' B' L2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "L2 B"
+   },
+   "inverse": "IN"
+  },
+  "SN": {
+   "case": "SN",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U R U' L' U R' U' L",
+    "moves": 8,
+    "type": "pure",
+    "A": "U R U'",
+    "B": "L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L B L2 U R' U' L2 U R U' B' L'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "L B"
+   },
+   "inverse": "NS"
+  },
+  "NS": {
+   "case": "NS",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L' U R U' L U R' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L'",
+    "B": "U R U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D U' F U B U' F' U B' D'",
+    "moves": 10,
+    "anchor": "NG",
+    "S": "D"
+   },
+   "inverse": "SN"
+  },
+  "UN": {
+   "case": "UN",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U R U' L2 U R' U' L2",
+    "moves": 8,
+    "type": "pure",
+    "A": "U R U'",
+    "B": "L2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U R U' L2 U R' U' L2",
+    "moves": 8,
+    "anchor": "UN",
+    "S": ""
+   },
+   "inverse": "NU"
+  },
+  "NU": {
+   "case": "NU",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L2 U R U' L2 U R' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L2",
+    "B": "U R U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D F U' F U B U' F' U B' F' D'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "D F"
+   },
+   "inverse": "UN"
+  },
+  "IT": {
+   "case": "IT",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U R' U' L U R U' L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U R' U'",
+    "B": "L",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F' D2 R' U R D2 R' U' R F",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "F' R'"
+   },
+   "inverse": "TI"
+  },
+  "TI": {
+   "case": "TI",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L U R' U' L' U R U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L",
+    "B": "U R' U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B U R' D2 R U2 R' D2 R U B'",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "B U"
+   },
+   "inverse": "IT"
+  },
+  "ST": {
+   "case": "ST",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U R' U' L' U R U' L",
+    "moves": 8,
+    "type": "pure",
+    "A": "U R' U'",
+    "B": "L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B' D R D2 R' U R D2 R' U' D' B",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "B' D"
+   },
+   "inverse": "TS"
+  },
+  "TS": {
+   "case": "TS",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L' U R' U' L U R U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L'",
+    "B": "U R' U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B2 D2 U' F U B U' F' U B' D2 B2",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "B2 D2"
+   },
+   "inverse": "ST"
+  },
+  "UT": {
+   "case": "UT",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U R' U' L2 U R U' L2",
+    "moves": 8,
+    "type": "pure",
+    "A": "U R' U'",
+    "B": "L2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U B R D2 R' U R D2 R' U' B' U'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "U B"
+   },
+   "inverse": "TU"
+  },
+  "TU": {
+   "case": "TU",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L2 U R' U' L2 U R U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L2",
+    "B": "U R' U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 U R' U' L2 U R U'",
+    "moves": 8,
+    "anchor": "TU",
+    "S": ""
+   },
+   "inverse": "UT"
+  },
+  "IV": {
+   "case": "IV",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U R2 U' L U R2 U' L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U R2 U'",
+    "B": "L",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 F' R D2 R' U R D2 R' U' F R2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R2 F'"
+   },
+   "inverse": "VI"
+  },
+  "VI": {
+   "case": "VI",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L U R2 U' L' U R2 U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L",
+    "B": "U R2 U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U F L2 U R U' L2 U R' U' F' U'",
+    "moves": 12,
+    "anchor": "NU",
+    "S": "U F"
+   },
+   "inverse": "IV"
+  },
+  "SV": {
+   "case": "SV",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U R2 U' L' U R2 U' L",
+    "moves": 8,
+    "type": "pure",
+    "A": "U R2 U'",
+    "B": "L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F B' R D2 R' U R D2 R' U' B F'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "F B'"
+   },
+   "inverse": "VS"
+  },
+  "VS": {
+   "case": "VS",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L' U R2 U' L U R2 U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L'",
+    "B": "U R2 U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D' R' U R U' L2 U R' U' L2 R D",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "D' R'"
+   },
+   "inverse": "SV"
+  },
+  "UV": {
+   "case": "UV",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U R2 U' L2 U R2 U' L2",
+    "moves": 8,
+    "type": "pure",
+    "A": "U R2 U'",
+    "B": "L2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' U R' U' L2 U R U' L2 R",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "R' L2"
+   },
+   "inverse": "VU"
+  },
+  "VU": {
+   "case": "VU",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L2 U R2 U' L2 U R2 U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L2",
+    "B": "U R2 U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' L2 U R' U' L2 U R U' R",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "R'"
+   },
+   "inverse": "UV"
+  },
+  "MN": {
+   "case": "MN",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R U' L U R' U' L' U",
+    "moves": 8,
+    "type": "pure",
+    "A": "R",
+    "B": "U' L U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R D2 U' F U B U' F' U B' D2 R'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "R D2"
+   },
+   "inverse": "NM"
+  },
+  "NM": {
+   "case": "NM",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U' L U R U' L' U R'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' L U",
+    "B": "R",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F2 U' F U B U' F' U B' F2",
+    "moves": 10,
+    "anchor": "NG",
+    "S": "F2"
+   },
+   "inverse": "MN"
+  },
+  "KN": {
+   "case": "KN",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U F' U' B' U F U' B",
+    "moves": 8,
+    "type": "pure",
+    "A": "U F' U'",
+    "B": "B'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' B2 D' F D B2 D' F' D R",
+    "moves": 10,
+    "anchor": "WM",
+    "S": "R'"
+   },
+   "inverse": "NK"
+  },
+  "NK": {
+   "case": "NK",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "B' U F' U' B U F U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "B'",
+    "B": "U F' U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R D R' D2 R U2 R' D2 R U2 D' R'",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "R D"
+   },
+   "inverse": "KN"
+  },
+  "IL": {
+   "case": "IL",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U B U' F U B' U' F'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U B U'",
+    "B": "F",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 B' U' F U B U' F' U L2",
+    "moves": 10,
+    "anchor": "NG",
+    "S": "L2 B'"
+   },
+   "inverse": "LI"
+  },
+  "LI": {
+   "case": "LI",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F U B U' F' U B' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "F",
+    "B": "U B U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F U B U' F' U B' U'",
+    "moves": 8,
+    "anchor": "NG",
+    "S": "U"
+   },
+   "inverse": "IL"
+  },
+  "IJ": {
+   "case": "IJ",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L' U' R' U L U' R U",
+    "moves": 8,
+    "type": "pure",
+    "A": "L'",
+    "B": "U' R' U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R F' R D2 R' U R D2 R' U' F R'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R F'"
+   },
+   "inverse": "JI"
+  },
+  "JI": {
+   "case": "JI",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U' R' U L' U' R U L",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' R' U",
+    "B": "L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U2 F2 U' F U B U' F' U B' F2 U2",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "U2 F2"
+   },
+   "inverse": "IJ"
+  },
+  "IK": {
+   "case": "IK",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U B U' F2 U B' U' F2",
+    "moves": 8,
+    "type": "pure",
+    "A": "U B U'",
+    "B": "F2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F' R2 D2 R' U R D2 R' U' R' F",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "F' R"
+   },
+   "inverse": "KI"
+  },
+  "KI": {
+   "case": "KI",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F2 U B U' F2 U B' U'",
+    "moves": 8,
+    "type": "pure",
+    "A": "F2",
+    "B": "U B U'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F R2 D2 R' U R D2 R' U' R' F'",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "F R"
+   },
+   "inverse": "IK"
+  },
+  "PI": {
+   "case": "PI",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U' R U L' U' R' U L",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' R U",
+    "B": "L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L F' R' D2 R U2 R' D2 R U2 F L'",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "L F'"
+   },
+   "inverse": "IP"
+  },
+  "IP": {
+   "case": "IP",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L' U' R U L U' R' U",
+    "moves": 8,
+    "type": "pure",
+    "A": "L'",
+    "B": "U' R U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F R2 L2 U R' U' L2 U R U' R2 F'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F R2"
+   },
+   "inverse": "PI"
+  },
+  "OI": {
+   "case": "OI",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U' R2 U L' U' R2 U L",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' R2 U",
+    "B": "L'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 U L2 U R U' L2 U R' U2 D2",
+    "moves": 11,
+    "anchor": "NU",
+    "S": "D2 U"
+   },
+   "inverse": "IO"
+  },
+  "IO": {
+   "case": "IO",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L' U' R2 U L U' R2 U",
+    "moves": 8,
+    "type": "pure",
+    "A": "L'",
+    "B": "U' R2 U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 B2 R D2 R' U R D2 R' U' B2 L2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "L2 B2"
+   },
+   "inverse": "OI"
+  },
+  "NO": {
+   "case": "NO",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U' L U R' U' L' U R",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' L U",
+    "B": "R'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 U' F U B U' F' U B' D2",
+    "moves": 10,
+    "anchor": "NG",
+    "S": "D2"
+   },
+   "inverse": "ON"
+  },
+  "ON": {
+   "case": "ON",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R' U' L U R U' L' U",
+    "moves": 8,
+    "type": "pure",
+    "A": "R'",
+    "B": "U' L U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B D R D2 R' U R D2 R' U' D' B'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "B D"
+   },
+   "inverse": "NO"
+  },
+  "NP": {
+   "case": "NP",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U' L U R2 U' L' U R2",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' L U",
+    "B": "R2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F L2 U R U' L2 U R' U' F'",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "F L2"
+   },
+   "inverse": "PN"
+  },
+  "PN": {
+   "case": "PN",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R2 U' L U R2 U' L' U",
+    "moves": 8,
+    "type": "pure",
+    "A": "R2",
+    "B": "U' L U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F U R U' L2 U R' U' L2 F'",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "F"
+   },
+   "inverse": "NP"
+  },
+  "NG": {
+   "case": "NG",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U' F U B U' F' U B'",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' F U",
+    "B": "B",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U' F U B U' F' U B'",
+    "moves": 8,
+    "anchor": "NG",
+    "S": ""
+   },
+   "inverse": "GN"
+  },
+  "GN": {
+   "case": "GN",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "B U' F U B' U' F' U",
+    "moves": 8,
+    "type": "pure",
+    "A": "B",
+    "B": "U' F U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R B2 L2 U R' U' L2 U R U' B2 R'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R B2"
+   },
+   "inverse": "NG"
+  },
+  "HG": {
+   "case": "HG",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U' F U B' U' F' U B",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' F U",
+    "B": "B'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U B L2 U R' U' L2 U R U' B' U'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "U B"
+   },
+   "inverse": "GH"
+  },
+  "GH": {
+   "case": "GH",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "B' U' F U B U' F' U",
+    "moves": 8,
+    "type": "pure",
+    "A": "B'",
+    "B": "U' F U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "B' U' F U B U' F' U",
+    "moves": 8,
+    "anchor": "NG",
+    "S": "B'"
+   },
+   "inverse": "HG"
+  },
+  "WG": {
+   "case": "WG",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U' F U B2 U' F' U B2",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' F U",
+    "B": "B2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 D2 R' U R D2 R' U' R L2",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "L2 R'"
+   },
+   "inverse": "GW"
+  },
+  "GW": {
+   "case": "GW",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "B2 U' F U B2 U' F' U",
+    "moves": 8,
+    "type": "pure",
+    "A": "B2",
+    "B": "U' F U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 D' R' D2 R U2 R' D2 R U2 D R2",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "R2 D'"
+   },
+   "inverse": "WG"
+  },
+  "HI": {
+   "case": "HI",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U' F' U B' U' F U B",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' F' U",
+    "B": "B'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L B' R D2 R' U R D2 R' U' B L'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "L B'"
+   },
+   "inverse": "IH"
+  },
+  "IH": {
+   "case": "IH",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "B' U' F' U B U' F U",
+    "moves": 8,
+    "type": "pure",
+    "A": "B'",
+    "B": "U' F' U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L' U R D2 R' U R D2 R' U2 L",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "L' U"
+   },
+   "inverse": "HI"
+  },
+  "WI": {
+   "case": "WI",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U' F' U B2 U' F U B2",
+    "moves": 8,
+    "type": "pure",
+    "A": "U' F' U",
+    "B": "B2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L R D2 R U2 R' D2 R U2 R2 L'",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "L R2"
+   },
+   "inverse": "IW"
+  },
+  "IW": {
+   "case": "IW",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "B2 U' F' U B2 U' F U",
+    "moves": 8,
+    "type": "pure",
+    "A": "B2",
+    "B": "U' F' U",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F' D2 L2 U R' U' L2 U R U' D2 F",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F' D2"
+   },
+   "inverse": "WI"
+  },
+  "PU": {
+   "case": "PU",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D R D' L2 D R' D' L2",
+    "moves": 8,
+    "type": "pure",
+    "A": "D R D'",
+    "B": "L2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 L2 U R U' L2 U R' U' R2",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "R2 L2"
+   },
+   "inverse": "UP"
+  },
+  "UP": {
+   "case": "UP",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L2 D R D' L2 D R' D'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L2",
+    "B": "D R D'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 U R U' L2 U R' U' L2 R2",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "R2"
+   },
+   "inverse": "PU"
+  },
+  "JU": {
+   "case": "JU",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D R' D' L2 D R D' L2",
+    "moves": 8,
+    "type": "pure",
+    "A": "D R' D'",
+    "B": "L2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 L2 U R' U' L2 U R U' R2",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "R2"
+   },
+   "inverse": "UJ"
+  },
+  "UJ": {
+   "case": "UJ",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L2 D R' D' L2 D R D'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L2",
+    "B": "D R' D'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 U R' U' L2 U R U' L2 R2",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "R2 L2"
+   },
+   "inverse": "JU"
+  },
+  "BU": {
+   "case": "BU",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D R2 D' L2 D R2 D' L2",
+    "moves": 8,
+    "type": "pure",
+    "A": "D R2 D'",
+    "B": "L2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R L2 U R' U' L2 U R U' R'",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "R"
+   },
+   "inverse": "UB"
+  },
+  "UB": {
+   "case": "UB",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L2 D R2 D' L2 D R2 D'",
+    "moves": 8,
+    "type": "pure",
+    "A": "L2",
+    "B": "D R2 D'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F' D' R D2 R' U R D2 R' U' D F",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "F' D'"
+   },
+   "inverse": "BU"
+  },
+  "OP": {
+   "case": "OP",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D L D' R' D L' D' R",
+    "moves": 8,
+    "type": "pure",
+    "A": "D L D'",
+    "B": "R'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F' D R' D2 R U2 R' D2 R U2 D' F",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "F' D"
+   },
+   "inverse": "PO"
+  },
+  "PO": {
+   "case": "PO",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R' D L D' R D L' D'",
+    "moves": 8,
+    "type": "pure",
+    "A": "R'",
+    "B": "D L D'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 F2 U' F U B U' F' U B' F2 R2",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "R2 F2"
+   },
+   "inverse": "OP"
+  },
+  "OM": {
+   "case": "OM",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D L D' R2 D L' D' R2",
+    "moves": 8,
+    "type": "pure",
+    "A": "D L D'",
+    "B": "R2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F2 R' U' F U B U' F' U B' R F2",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "F2 R'"
+   },
+   "inverse": "MO"
+  },
+  "MO": {
+   "case": "MO",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R2 D L D' R2 D L' D'",
+    "moves": 8,
+    "type": "pure",
+    "A": "R2",
+    "B": "D L D'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F2 B2 L2 U R' U' L2 U R U' B2 F2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F2 B2"
+   },
+   "inverse": "OM"
+  },
+  "MS": {
+   "case": "MS",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "D' R2 D L D' R2 D L'",
+    "moves": 8,
+    "type": "pure",
+    "A": "D' R2 D",
+    "B": "L",
+    "S": ""
+   },
+   "setup": {
+    "alg": "U' L U' F U B U' F' U B' L' U",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "U' L"
+   },
+   "inverse": "SM"
+  },
+  "SM": {
+   "case": "SM",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L D' R2 D L' D' R2 D",
+    "moves": 8,
+    "type": "pure",
+    "A": "L",
+    "B": "D' R2 D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "L2 U2 R D2 R' U R D2 R' U L2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "L2 U2"
+   },
+   "inverse": "MS"
+  },
+  "VT": {
+   "case": "VT",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "D' L2 D R D' L2 D R'",
+    "moves": 8,
+    "type": "pure",
+    "A": "D' L2 D",
+    "B": "R",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' D2 R D2 R' U R D2 R' U' D2 R",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R' D2"
+   },
+   "inverse": "TV"
+  },
+  "TV": {
+   "case": "TV",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R D' L2 D R' D' L2 D",
+    "moves": 8,
+    "type": "pure",
+    "A": "R",
+    "B": "D' L2 D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 F2 R D2 R' U R D2 R' U' F2 R2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R2 F2"
+   },
+   "inverse": "VT"
+  },
+  "VJ": {
+   "case": "VJ",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D' L2 D R' D' L2 D R",
+    "moves": 8,
+    "type": "pure",
+    "A": "D' L2 D",
+    "B": "R'",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F2 U R D2 R' U R D2 R' U2 F2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "F2 U"
+   },
+   "inverse": "JV"
+  },
+  "JV": {
+   "case": "JV",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R' D' L2 D R D' L2 D",
+    "moves": 8,
+    "type": "pure",
+    "A": "R'",
+    "B": "D' L2 D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 D2 R D2 R' U R D2 R' U' D2 R2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R2 D2"
+   },
+   "inverse": "VJ"
+  },
+  "VB": {
+   "case": "VB",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "D' L2 D R2 D' L2 D R2",
+    "moves": 8,
+    "type": "pure",
+    "A": "D' L2 D",
+    "B": "R2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F' B R' D2 R U2 R' D2 R U2 B' F",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "F' B"
+   },
+   "inverse": "BV"
+  },
+  "BV": {
+   "case": "BV",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R2 D' L2 D R2 D' L2 D",
+    "moves": 8,
+    "type": "pure",
+    "A": "R2",
+    "B": "D' L2 D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D' R L2 U R' U' L2 U R U' R' D",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D' R"
+   },
+   "inverse": "VB"
+  },
+  "MW": {
+   "case": "MW",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D' F D B2 D' F' D B2",
+    "moves": 8,
+    "type": "pure",
+    "A": "D' F D",
+    "B": "B2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 D R' D2 R U2 R' D2 R U2 D' R2",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "R2 D"
+   },
+   "inverse": "WM"
+  },
+  "WM": {
+   "case": "WM",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "B2 D' F D B2 D' F' D",
+    "moves": 8,
+    "type": "pure",
+    "A": "B2",
+    "B": "D' F D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "D2 R U R U' L2 U R' U' L2 R' D2",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "D2 R"
+   },
+   "inverse": "MW"
+  },
+  "KW": {
+   "case": "KW",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D' F' D B2 D' F D B2",
+    "moves": 8,
+    "type": "pure",
+    "A": "D' F' D",
+    "B": "B2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F D2 L2 U R' U' L2 U R U' D2 F'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F D2"
+   },
+   "inverse": "WK"
+  },
+  "WK": {
+   "case": "WK",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "B2 D' F' D B2 D' F D",
+    "moves": 8,
+    "type": "pure",
+    "A": "B2",
+    "B": "D' F' D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R D2 R' D2 R U2 R' D2 R U2 D2 R'",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "R D2"
+   },
+   "inverse": "KW"
+  },
+  "LK": {
+   "case": "LK",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D' B D F D' B' D F'",
+    "moves": 8,
+    "type": "pure",
+    "A": "D' B D",
+    "B": "F",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R' D2 L2 U R' U' L2 U R U' D2 R",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R' D2"
+   },
+   "inverse": "KL"
+  },
+  "KL": {
+   "case": "KL",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F D' B D F' D' B' D",
+    "moves": 8,
+    "type": "pure",
+    "A": "F",
+    "B": "D' B D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F2 U B U' F' U B' U' F'",
+    "moves": 9,
+    "anchor": "NG",
+    "S": "F U"
+   },
+   "inverse": "LK"
+  },
+  "LJ": {
+   "case": "LJ",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D' B D F2 D' B' D F2",
+    "moves": 8,
+    "type": "pure",
+    "A": "D' B D",
+    "B": "F2",
+    "S": ""
+   },
+   "setup": {
+    "alg": "R2 D2 R' U R D2 R' U' R'",
+    "moves": 9,
+    "anchor": "LB",
+    "S": "R"
+   },
+   "inverse": "JL"
+  },
+  "JL": {
+   "case": "JL",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F2 D' B D F2 D' B' D",
+    "moves": 8,
+    "type": "pure",
+    "A": "F2",
+    "B": "D' B D",
+    "S": ""
+   },
+   "setup": {
+    "alg": "F2 R2 D2 R' U R D2 R' U' R' F2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "F2 R"
+   },
+   "inverse": "LJ"
+  },
+  "IG": {
+   "case": "IG",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U2 R U' L2 U R' U' L2 U'",
+    "moves": 9,
+    "type": "conj",
+    "A": "U R U'",
+    "B": "L2",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "F' R' D2 R' U R D2 R' U' R2 F",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "F' R2"
+   },
+   "inverse": "GI"
+  },
+  "GI": {
+   "case": "GI",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U L2 U R U' L2 U R' U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "L2",
+    "B": "U R U'",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "B2 U L2 U R' U' L2 U R U2 B2",
+    "moves": 11,
+    "anchor": "TU",
+    "S": "B2 U"
+   },
+   "inverse": "IG"
+  },
+  "HN": {
+   "case": "HN",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U2 L2 U' R' U L2 U' R U'",
+    "moves": 9,
+    "type": "conj",
+    "A": "U L2 U'",
+    "B": "R'",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "D2 F U R U' L2 U R' U' L2 F' D2",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "D2 F"
+   },
+   "inverse": "NH"
+  },
+  "NH": {
+   "case": "NH",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U R' U L2 U' R U L2 U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "R'",
+    "B": "U L2 U'",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "D2 F L2 U R U' L2 U R' U' F' D2",
+    "moves": 12,
+    "anchor": "NU",
+    "S": "D2 F"
+   },
+   "inverse": "HN"
+  },
+  "XN": {
+   "case": "XN",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U2 F U' B2 U F' U' B2 U'",
+    "moves": 9,
+    "type": "conj",
+    "A": "U F U'",
+    "B": "B2",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "D U R U' L2 U R' U' L2 D'",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "D"
+   },
+   "inverse": "NX"
+  },
+  "NX": {
+   "case": "NX",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U B2 U F U' B2 U F' U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "B2",
+    "B": "U F U'",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "R2 D L2 U R' U' L2 U R U' D' R2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R2 D"
+   },
+   "inverse": "XN"
+  },
+  "XP": {
+   "case": "XP",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U2 F' U' B2 U F U' B2 U'",
+    "moves": 9,
+    "type": "conj",
+    "A": "U F' U'",
+    "B": "B2",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "D U R' U' L2 U R U' L2 D'",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "D L2"
+   },
+   "inverse": "PX"
+  },
+  "PX": {
+   "case": "PX",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U B2 U F' U' B2 U F U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "B2",
+    "B": "U F' U'",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "D L2 U R' U' L2 U R U' D'",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "D"
+   },
+   "inverse": "XP"
+  },
+  "NL": {
+   "case": "NL",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "B' U F2 U' B U F2 U'",
+    "moves": 8,
+    "type": "conj",
+    "A": "U' B' U",
+    "B": "F2",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "F' D' U' F U B U' F' U B' D F",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "F' D'"
+   },
+   "inverse": "LN"
+  },
+  "LN": {
+   "case": "LN",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U F2 U' B' U F2 U' B",
+    "moves": 8,
+    "type": "conj",
+    "A": "F2",
+    "B": "U' B' U",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "D F U R U' L2 U R' U' L2 F' D'",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "D F"
+   },
+   "inverse": "NL"
+  },
+  "US": {
+   "case": "US",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "D2 B2 D' F' D B2 D' F D'",
+    "moves": 9,
+    "type": "conj",
+    "A": "B2",
+    "B": "D' F' D",
+    "S": "D2"
+   },
+   "setup": {
+    "alg": "F2 U2 R' D2 R U2 R' D2 R F2",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "F2 U2"
+   },
+   "inverse": "SU"
+  },
+  "SU": {
+   "case": "SU",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D F' D B2 D' F D B2 D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' F' D",
+    "B": "B2",
+    "S": "D2"
+   },
+   "setup": {
+    "alg": "F2 R' D2 R U2 R' D2 R U2 F2",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "F2"
+   },
+   "inverse": "US"
+  },
+  "UM": {
+   "case": "UM",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L D' R2 D L2 D' R2 D L",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' R2 D",
+    "B": "L2",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "R U R U' L2 U R' U' L2 R'",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "R"
+   },
+   "inverse": "MU"
+  },
+  "MU": {
+   "case": "MU",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L' D' R2 D L2 D' R2 D L'",
+    "moves": 9,
+    "type": "conj",
+    "A": "L2",
+    "B": "D' R2 D",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "U2 R2 D2 R' U R D2 R' U' R' U2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "U2 R"
+   },
+   "inverse": "UM"
+  },
+  "UD": {
+   "case": "UD",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U D R2 D' L2 D R2 D' L2 U'",
+    "moves": 10,
+    "type": "conj",
+    "A": "D R2 D'",
+    "B": "L2",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "U R L2 U R' U' L2 U R U' R' U'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "U R"
+   },
+   "inverse": "DU"
+  },
+  "DU": {
+   "case": "DU",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U L2 D R2 D' L2 D R2 D' U'",
+    "moves": 10,
+    "type": "conj",
+    "A": "L2",
+    "B": "D R2 D'",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "U L2 D R2 D' L2 D R2 D' U'",
+    "moves": 10,
+    "anchor": "UB",
+    "S": "U"
+   },
+   "inverse": "UD"
+  },
+  "JT": {
+   "case": "JT",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R' D' L2 D R2 D' L2 D R'",
+    "moves": 9,
+    "type": "conj",
+    "A": "R2",
+    "B": "D' L2 D",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "F2 D2 R' U R D2 R' U' R F2",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "F2 R'"
+   },
+   "inverse": "TJ"
+  },
+  "TJ": {
+   "case": "TJ",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "R D' L2 D R2 D' L2 D R",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' L2 D",
+    "B": "R2",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "D2 R2 D2 R' U R D2 R' U' R' D2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "D2 R"
+   },
+   "inverse": "JT"
+  },
+  "LX": {
+   "case": "LX",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D2 R D' L2 D R' D' L2 D'",
+    "moves": 9,
+    "type": "conj",
+    "A": "D R D'",
+    "B": "L2",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "B' L2 R D2 R' U R D2 R' U' L2 B",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "B' L2"
+   },
+   "inverse": "XL"
+  },
+  "XL": {
+   "case": "XL",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D L2 D R D' L2 D R' D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "L2",
+    "B": "D R D'",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "L' F R' D2 R U2 R' D2 R U2 F' L",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "L' F"
+   },
+   "inverse": "LX"
+  },
+  "JX": {
+   "case": "JX",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D2 R' D' L2 D R D' L2 D'",
+    "moves": 9,
+    "type": "conj",
+    "A": "D R' D'",
+    "B": "L2",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "D R2 L2 U R' U' L2 U R U' R2 D'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D R2"
+   },
+   "inverse": "XJ"
+  },
+  "XJ": {
+   "case": "XJ",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D L2 D R' D' L2 D R D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "L2",
+    "B": "D R' D'",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "U L U' F U B U' F' U B' L' U'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "U L"
+   },
+   "inverse": "JX"
+  },
+  "KM": {
+   "case": "KM",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D2 L D' R2 D L' D' R2 D'",
+    "moves": 9,
+    "type": "conj",
+    "A": "D L D'",
+    "B": "R2",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "F R' D2 R' U R D2 R' U' R2 F'",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "F R2"
+   },
+   "inverse": "MK"
+  },
+  "MK": {
+   "case": "MK",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D R2 D L D' R2 D L' D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "R2",
+    "B": "D L D'",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "D' R U' F U B U' F' U B' R' D",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "D' R"
+   },
+   "inverse": "KM"
+  },
+  "HJ": {
+   "case": "HJ",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "B D F2 D' B' D F2 D'",
+    "moves": 8,
+    "type": "conj",
+    "A": "D' B D",
+    "B": "F2",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "D R2 D2 R' U R D2 R' U' R' D'",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "D R"
+   },
+   "inverse": "JH"
+  },
+  "JH": {
+   "case": "JH",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "D F2 D' B D F2 D' B'",
+    "moves": 8,
+    "type": "conj",
+    "A": "F2",
+    "B": "D' B D",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "U L U R U' L2 U R' U' L U'",
+    "moves": 11,
+    "anchor": "UN",
+    "S": "U L"
+   },
+   "inverse": "HJ"
+  },
+  "GV": {
+   "case": "GV",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "F' D B2 D' F D B2 D'",
+    "moves": 8,
+    "type": "conj",
+    "A": "D' F' D",
+    "B": "B2",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "D' F2 R' D2 R U2 R' D2 R U2 F2 D",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "D' F2"
+   },
+   "inverse": "VG"
+  },
+  "VG": {
+   "case": "VG",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "D B2 D' F' D B2 D' F",
+    "moves": 8,
+    "type": "conj",
+    "A": "B2",
+    "B": "D' F' D",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "U' L U L D2 L' U' L D2 L2 U",
+    "moves": 11,
+    "anchor": "KD",
+    "S": "U' L"
+   },
+   "inverse": "GV"
+  },
+  "MV": {
+   "case": "MV",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "F D B2 D' F' D B2 D'",
+    "moves": 8,
+    "type": "conj",
+    "A": "D' F D",
+    "B": "B2",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "F D B2 D' F' D B2 D'",
+    "moves": 8,
+    "anchor": "WM",
+    "S": "D B2"
+   },
+   "inverse": "VM"
+  },
+  "VM": {
+   "case": "VM",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D B2 D' F D B2 D' F'",
+    "moves": 8,
+    "type": "conj",
+    "A": "B2",
+    "B": "D' F D",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "R' F L2 U R' U' L2 U R U' F' R",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R' F"
+   },
+   "inverse": "MV"
+  },
+  "DV": {
+   "case": "DV",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U D' L2 D R2 D' L2 D R2 U'",
+    "moves": 10,
+    "type": "conj",
+    "A": "D' L2 D",
+    "B": "R2",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "F R U' F U B U' F' U B' R' F'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "F R"
+   },
+   "inverse": "VD"
+  },
+  "VD": {
+   "case": "VD",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U R2 D' L2 D R2 D' L2 D U'",
+    "moves": 10,
+    "type": "conj",
+    "A": "R2",
+    "B": "D' L2 D",
+    "S": "U"
+   },
+   "setup": {
+    "alg": "F' R U' F U B U' F' U B' R' F",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "F' R"
+   },
+   "inverse": "DV"
+  },
+  "VN": {
+   "case": "VN",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "B U' F2 U B' U' F2 U",
+    "moves": 8,
+    "type": "conj",
+    "A": "U B U'",
+    "B": "F2",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "B D' L2 U R' U' L2 U R U' D B'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "B D'"
+   },
+   "inverse": "NV"
+  },
+  "NV": {
+   "case": "NV",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U' F2 U B U' F2 U B'",
+    "moves": 8,
+    "type": "conj",
+    "A": "F2",
+    "B": "U B U'",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "R2 D' R D2 R' U R D2 R' U' D R2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R2 D'"
+   },
+   "inverse": "VN"
+  },
+  "VH": {
+   "case": "VH",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "B' U' F2 U B U' F2 U",
+    "moves": 8,
+    "type": "conj",
+    "A": "U B' U'",
+    "B": "F2",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "D' U R' U' L2 U R U' L2 D",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "D' L2"
+   },
+   "inverse": "HV"
+  },
+  "HV": {
+   "case": "HV",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U' F2 U B' U' F2 U B",
+    "moves": 8,
+    "type": "conj",
+    "A": "F2",
+    "B": "U B' U'",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "R2 D R D2 R' U R D2 R' U' D' R2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R2 D"
+   },
+   "inverse": "VH"
+  },
+  "XK": {
+   "case": "XK",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U2 R U L2 U' R' U L2 U",
+    "moves": 9,
+    "type": "conj",
+    "A": "U' R U",
+    "B": "L2",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "D R' U R U' L2 U R' U' L2 R D'",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "D R'"
+   },
+   "inverse": "KX"
+  },
+  "KX": {
+   "case": "KX",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U' L2 U' R U L2 U' R' U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "L2",
+    "B": "U' R U",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "D R' L2 U R U' L2 U R' U' R D'",
+    "moves": 12,
+    "anchor": "NU",
+    "S": "D R'"
+   },
+   "inverse": "XK"
+  },
+  "XI": {
+   "case": "XI",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U2 R' U L2 U' R U L2 U",
+    "moves": 9,
+    "type": "conj",
+    "A": "U' R' U",
+    "B": "L2",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "L B' L2 D R2 D' L2 D R2 D' B L'",
+    "moves": 12,
+    "anchor": "UB",
+    "S": "L B'"
+   },
+   "inverse": "IX"
+  },
+  "IX": {
+   "case": "IX",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U' L2 U' R' U L2 U' R U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "L2",
+    "B": "U' R' U",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "B2 U' B2 D' F D B2 D' F' D U B2",
+    "moves": 12,
+    "anchor": "WM",
+    "S": "B2 U'"
+   },
+   "inverse": "XI"
+  },
+  "LW": {
+   "case": "LW",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U2 R2 U L U' R2 U L' U",
+    "moves": 9,
+    "type": "conj",
+    "A": "U' R2 U",
+    "B": "L",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "D2 L2 U R' U' L2 U R U' D2",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "D2"
+   },
+   "inverse": "WL"
+  },
+  "WL": {
+   "case": "WL",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U' L U' R2 U L' U' R2 U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "L",
+    "B": "U' R2 U",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "D2 U R' U' L2 U R U' L2 D2",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "D2 L2"
+   },
+   "inverse": "LW"
+  },
+  "NW": {
+   "case": "NW",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R D' R U2 R' D R U2 R2",
+    "moves": 9,
+    "type": "conj",
+    "A": "D'",
+    "B": "R U2 R'",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "D' F U' F U B U' F' U B' F' D",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "D' F"
+   },
+   "inverse": "WN"
+  },
+  "WN": {
+   "case": "WN",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R2 U2 R' D' R U2 R' D R'",
+    "moves": 9,
+    "type": "conj",
+    "A": "R U2 R'",
+    "B": "D'",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "D2 U R U' L2 U R' U' L2 D2",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "D2"
+   },
+   "inverse": "NW"
+  },
+  "XW": {
+   "case": "XW",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U2 R2 U L2 U' R2 U L2 U",
+    "moves": 9,
+    "type": "conj",
+    "A": "U' R2 U",
+    "B": "L2",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "D2 R' L2 U R' U' L2 U R U' R D2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D2 R'"
+   },
+   "inverse": "WX"
+  },
+  "WX": {
+   "case": "WX",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U' L2 U' R2 U L2 U' R2 U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "L2",
+    "B": "U' R2 U",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "D2 R2 L2 D R2 D' L2 D R2 D' R2 D2",
+    "moves": 12,
+    "anchor": "UB",
+    "S": "D2 R2"
+   },
+   "inverse": "XW"
+  },
+  "NT": {
+   "case": "NT",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U2 F' U B2 U' F U B2 U",
+    "moves": 9,
+    "type": "conj",
+    "A": "U' F' U",
+    "B": "B2",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "U B2 R' D2 R U2 R' D2 R U2 B2 U'",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "U B2"
+   },
+   "inverse": "TN"
+  },
+  "TN": {
+   "case": "TN",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "U' B2 U' F' U B2 U' F U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "B2",
+    "B": "U' F' U",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "D' F U R U' L2 U R' U' L2 F' D",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "D' F"
+   },
+   "inverse": "NT"
+  },
+  "WD": {
+   "case": "WD",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U' D L2 D' R2 D L2 D' R2 U",
+    "moves": 10,
+    "type": "conj",
+    "A": "D L2 D'",
+    "B": "R2",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "B L R D2 R' U R D2 R' U' L' B'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "B L"
+   },
+   "inverse": "DW"
+  },
+  "DW": {
+   "case": "DW",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U' R2 D L2 D' R2 D L2 D' U",
+    "moves": 10,
+    "type": "conj",
+    "A": "R2",
+    "B": "D L2 D'",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "B' L R D2 R' U R D2 R' U' L' B",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "B' L"
+   },
+   "inverse": "WD"
+  },
+  "MX": {
+   "case": "MX",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D2 F D B2 D' F' D B2 D",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' F D",
+    "B": "B2",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "U L R D2 R' U R D2 R' U' L' U'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "U L"
+   },
+   "inverse": "XM"
+  },
+  "XM": {
+   "case": "XM",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D' B2 D' F D B2 D' F' D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "B2",
+    "B": "D' F D",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "U' L U R U' L2 U R' U' L U",
+    "moves": 11,
+    "anchor": "UN",
+    "S": "U' L"
+   },
+   "inverse": "MX"
+  },
+  "OX": {
+   "case": "OX",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D2 F' D B2 D' F D B2 D",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' F' D",
+    "B": "B2",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "U' L' U R' U' L2 U R U' L' U",
+    "moves": 11,
+    "anchor": "TU",
+    "S": "U' L"
+   },
+   "inverse": "XO"
+  },
+  "XO": {
+   "case": "XO",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D' B2 D' F' D B2 D' F D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "B2",
+    "B": "D' F' D",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "U' L U R' U' L2 U R U' L U",
+    "moves": 11,
+    "anchor": "TU",
+    "S": "U' L'"
+   },
+   "inverse": "OX"
+  },
+  "DX": {
+   "case": "DX",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U' D' R2 D L2 D' R2 D L2 U",
+    "moves": 10,
+    "type": "conj",
+    "A": "D' R2 D",
+    "B": "L2",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "L B' L2 U R U' L2 U R' U' B L'",
+    "moves": 12,
+    "anchor": "NU",
+    "S": "L B'"
+   },
+   "inverse": "XD"
+  },
+  "XD": {
+   "case": "XD",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U' L2 D' R2 D L2 D' R2 D U",
+    "moves": 10,
+    "type": "conj",
+    "A": "L2",
+    "B": "D' R2 D",
+    "S": "U'"
+   },
+   "setup": {
+    "alg": "L B' U R U' L2 U R' U' L2 B L'",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "L B'"
+   },
+   "inverse": "DX"
+  },
+  "PJ": {
+   "case": "PJ",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D2 B D F2 D' B' D F2 D",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' B D",
+    "B": "F2",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "D' R2 D2 R' U R D2 R' U' R' D",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "D' R"
+   },
+   "inverse": "JP"
+  },
+  "JP": {
+   "case": "JP",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D' F2 D' B D F2 D' B' D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "F2",
+    "B": "D' B D",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "U2 D B2 D' F D B2 D' F' U2",
+    "moves": 10,
+    "anchor": "WM",
+    "S": "U2 D"
+   },
+   "inverse": "PJ"
+  },
+  "IS": {
+   "case": "IS",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U' F U' B2 U F' U' B2 U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U F U'",
+    "B": "B2",
+    "S": "U2"
+   },
+   "setup": {
+    "alg": "D U2 R U' L2 U R' U' L2 U' D'",
+    "moves": 11,
+    "anchor": "UN",
+    "S": "D U"
+   },
+   "inverse": "SI"
+  },
+  "SI": {
+   "case": "SI",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U2 B2 U F U' B2 U F' U",
+    "moves": 9,
+    "type": "conj",
+    "A": "B2",
+    "B": "U F U'",
+    "S": "U2"
+   },
+   "setup": {
+    "alg": "F2 D2 R U2 R' D2 R U2 R' F2",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "F2 R"
+   },
+   "inverse": "IS"
+  },
+  "UO": {
+   "case": "UO",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L' U' R2 U L2 U' R2 U L'",
+    "moves": 9,
+    "type": "conj",
+    "A": "L2",
+    "B": "U' R2 U",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "R' U R U' L2 U R' U' L2 R",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "R'"
+   },
+   "inverse": "OU"
+  },
+  "OU": {
+   "case": "OU",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L U' R2 U L2 U' R2 U L",
+    "moves": 9,
+    "type": "conj",
+    "A": "U' R2 U",
+    "B": "L2",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "B2 D2 R' U R D2 R' U' R B2",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "B2 R'"
+   },
+   "inverse": "UO"
+  },
+  "UI": {
+   "case": "UI",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U B' U F2 U' B U F2 U2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U' B' U",
+    "B": "F2",
+    "S": "U2"
+   },
+   "setup": {
+    "alg": "L2 F2 R' D2 R U2 R' D2 R U2 F2 L2",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "L2 F2"
+   },
+   "inverse": "IU"
+  },
+  "IU": {
+   "case": "IU",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U2 F2 U' B' U F2 U' B U'",
+    "moves": 9,
+    "type": "conj",
+    "A": "F2",
+    "B": "U' B' U",
+    "S": "U2"
+   },
+   "setup": {
+    "alg": "F2 D2 R' D2 R U2 R' D2 R U2 D2 F2",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "F2 D2"
+   },
+   "inverse": "UI"
+  },
+  "GM": {
+   "case": "GM",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D' L D' R2 D L' D' R2 D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "L",
+    "B": "D' R2 D",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "B2 U2 L2 U R' U' L2 U R U B2",
+    "moves": 11,
+    "anchor": "TU",
+    "S": "B2 U2"
+   },
+   "inverse": "MG"
+  },
+  "MG": {
+   "case": "MG",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "D2 R2 D L D' R2 D L' D",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' R2 D",
+    "B": "L",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "R U' F U B U' F' U B' R'",
+    "moves": 10,
+    "anchor": "NG",
+    "S": "R"
+   },
+   "inverse": "GM"
+  },
+  "JW": {
+   "case": "JW",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D' R' D' L2 D R D' L2 D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "R'",
+    "B": "D' L2 D",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "D2 R2 L2 U R' U' L2 U R U' R2 D2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D2 R2"
+   },
+   "inverse": "WJ"
+  },
+  "WJ": {
+   "case": "WJ",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D2 L2 D R' D' L2 D R D",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' L2 D",
+    "B": "R'",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "R F R D2 R' U R D2 R' U' F' R'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R F"
+   },
+   "inverse": "JW"
+  },
+  "HW": {
+   "case": "HW",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D' R D' L2 D R' D' L2 D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "R",
+    "B": "D' L2 D",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "B2 D2 U R U' L2 U R' U' L2 D2 B2",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "B2 D2"
+   },
+   "inverse": "WH"
+  },
+  "WH": {
+   "case": "WH",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "D2 L2 D R D' L2 D R' D",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' L2 D",
+    "B": "R",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "D2 R2 U R U' L2 U R' U' L2 R2 D2",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "D2 R2"
+   },
+   "inverse": "HW"
+  },
+  "BW": {
+   "case": "BW",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D' R2 D' L2 D R2 D' L2 D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "R2",
+    "B": "D' L2 D",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "D2 R L2 U R' U' L2 U R U' R' D2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D2 R"
+   },
+   "inverse": "WB"
+  },
+  "WB": {
+   "case": "WB",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "D2 L2 D R2 D' L2 D R2 D",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' L2 D",
+    "B": "R2",
+    "S": "D'"
+   },
+   "setup": {
+    "alg": "B R2 D2 R U2 R' D2 R U2 R B'",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "B R'"
+   },
+   "inverse": "BW"
+  },
+  "XB": {
+   "case": "XB",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "D L2 D R2 D' L2 D R2 D2",
+    "moves": 9,
+    "type": "conj",
+    "A": "L2",
+    "B": "D R2 D'",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "B R D2 R U2 R' D2 R U2 R2 B'",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "B R2"
+   },
+   "inverse": "BX"
+  },
+  "BX": {
+   "case": "BX",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D2 R2 D' L2 D R2 D' L2 D'",
+    "moves": 9,
+    "type": "conj",
+    "A": "D R2 D'",
+    "B": "L2",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "D R L2 U R' U' L2 U R U' R' D'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D R"
+   },
+   "inverse": "XB"
+  },
+  "XU": {
+   "case": "XU",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D U R2 U' L2 U R2 U' L2 D'",
+    "moves": 10,
+    "type": "conj",
+    "A": "U R2 U'",
+    "B": "L2",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "B' L2 U' F U B U' F' U B' L2 B",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "B' L2"
+   },
+   "inverse": "UX"
+  },
+  "UX": {
+   "case": "UX",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D L2 U R2 U' L2 U R2 U' D'",
+    "moves": 10,
+    "type": "conj",
+    "A": "L2",
+    "B": "U R2 U'",
+    "S": "D"
+   },
+   "setup": {
+    "alg": "D R' L2 U R' U' L2 U R U' R D'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D R'"
+   },
+   "inverse": "XU"
+  },
+  "VW": {
+   "case": "VW",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L' D R' U2 R D' R' U2 R L",
+    "moves": 10,
+    "type": "conj",
+    "A": "D",
+    "B": "R' U2 R",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "F' D' F D B2 D' F' D B2 F",
+    "moves": 10,
+    "anchor": "WM",
+    "S": "F' B2"
+   },
+   "inverse": "WV"
+  },
+  "WV": {
+   "case": "WV",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L' R' U2 R D R' U2 R D' L",
+    "moves": 10,
+    "type": "conj",
+    "A": "R' U2 R",
+    "B": "D",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "D' R' L2 U R' U' L2 U R U' R D",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D' R'"
+   },
+   "inverse": "VW"
+  },
+  "JK": {
+   "case": "JK",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F' U B U' F' U B' U' F2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U B U'",
+    "B": "F'",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "F' U B U' F' U B' U' F2",
+    "moves": 9,
+    "anchor": "NG",
+    "S": "F2 U"
+   },
+   "inverse": "KJ"
+  },
+  "KJ": {
+   "case": "KJ",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F2 U B U' F U B' U' F",
+    "moves": 9,
+    "type": "conj",
+    "A": "F'",
+    "B": "U B U'",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "R' F' B2 D' F D B2 D' F' D F R",
+    "moves": 12,
+    "anchor": "WM",
+    "S": "R' F'"
+   },
+   "inverse": "JK"
+  },
+  "ND": {
+   "case": "ND",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L U' L D' L' U L D L2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U'",
+    "B": "L D' L'",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "L D R D2 R' U R D2 R' U' D' L'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "L D"
+   },
+   "inverse": "DN"
+  },
+  "DN": {
+   "case": "DN",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L2 D' L' U' L D L' U L'",
+    "moves": 9,
+    "type": "conj",
+    "A": "L D' L'",
+    "B": "U'",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "U F2 R D2 R' U R D2 R' U' F2 U'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "U F2"
+   },
+   "inverse": "ND"
+  },
+  "NJ": {
+   "case": "NJ",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "R2 D R' U R D' R' U' R'",
+    "moves": 9,
+    "type": "conj",
+    "A": "R D R'",
+    "B": "U",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "F D' U' F U B U' F' U B' D F'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "F D'"
+   },
+   "inverse": "JN"
+  },
+  "JN": {
+   "case": "JN",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R U R D R' U' R D' R2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U",
+    "B": "R D R'",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "U' F' R D2 R' U R D2 R' U' F U",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "U' F'"
+   },
+   "inverse": "NJ"
+  },
+  "CB": {
+   "case": "CB",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L R' D2 R U R' D2 R U' L'",
+    "moves": 10,
+    "type": "conj",
+    "A": "R' D2 R",
+    "B": "U",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "F D' R D2 R' U R D2 R' U' D F'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "F D'"
+   },
+   "inverse": "BC"
+  },
+  "BC": {
+   "case": "BC",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L U R' D2 R U' R' D2 R L'",
+    "moves": 10,
+    "type": "conj",
+    "A": "U",
+    "B": "R' D2 R",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "F2 R L2 U R' U' L2 U R U' R' F2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F2 R"
+   },
+   "inverse": "CB"
+  },
+  "CI": {
+   "case": "CI",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L R' D2 R U2 R' D2 R U2 L'",
+    "moves": 10,
+    "type": "conj",
+    "A": "R' D2 R",
+    "B": "U2",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "L R' D2 R U2 R' D2 R U2 L'",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "L"
+   },
+   "inverse": "IC"
+  },
+  "IC": {
+   "case": "IC",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L U2 R' D2 R U2 R' D2 R L'",
+    "moves": 10,
+    "type": "conj",
+    "A": "U2",
+    "B": "R' D2 R",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "L U2 R' D2 R U2 R' D2 R L'",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "L U2"
+   },
+   "inverse": "CI"
+  },
+  "DJ": {
+   "case": "DJ",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L2 D' L' U2 L D L' U2 L'",
+    "moves": 9,
+    "type": "conj",
+    "A": "L D' L'",
+    "B": "U2",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "L' U2 L2 U R U' L2 U R' U L",
+    "moves": 11,
+    "anchor": "NU",
+    "S": "L' U2"
+   },
+   "inverse": "JD"
+  },
+  "JD": {
+   "case": "JD",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L U2 L D' L' U2 L D L2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "L D' L'",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "F2 R' D2 R' U R D2 R' U' R2 F2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "F2 R2"
+   },
+   "inverse": "DJ"
+  },
+  "JG": {
+   "case": "JG",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F' U R2 U' L U R2 U' L' F",
+    "moves": 10,
+    "type": "conj",
+    "A": "U R2 U'",
+    "B": "L",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "F U L D2 L' U' L D2 L' F'",
+    "moves": 10,
+    "anchor": "KD",
+    "S": "F"
+   },
+   "inverse": "GJ"
+  },
+  "GJ": {
+   "case": "GJ",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F' L U R2 U' L' U R2 U' F",
+    "moves": 10,
+    "type": "conj",
+    "A": "L",
+    "B": "U R2 U'",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "B' U' R D2 R' U R D2 R' B",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "B' U'"
+   },
+   "inverse": "JG"
+  },
+  "LO": {
+   "case": "LO",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "F' R U2 R' D' R U2 R' D F",
+    "moves": 10,
+    "type": "conj",
+    "A": "R U2 R'",
+    "B": "D'",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "R2 F' U L D2 L' U' L D2 L' F R2",
+    "moves": 12,
+    "anchor": "KD",
+    "S": "R2 F'"
+   },
+   "inverse": "OL"
+  },
+  "OL": {
+   "case": "OL",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F' D' R U2 R' D R U2 R' F",
+    "moves": 10,
+    "type": "conj",
+    "A": "D'",
+    "B": "R U2 R'",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "D F' R' D2 R U2 R' D2 R U2 F D'",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "D F'"
+   },
+   "inverse": "LO"
+  },
+  "IB": {
+   "case": "IB",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L2 D R2 D' L D R2 D' L",
+    "moves": 9,
+    "type": "conj",
+    "A": "L'",
+    "B": "D R2 D'",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "F' R D2 R' U R D2 R' U' F",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "F'"
+   },
+   "inverse": "BI"
+  },
+  "BI": {
+   "case": "BI",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L' D R2 D' L' D R2 D' L2",
+    "moves": 9,
+    "type": "conj",
+    "A": "D R2 D'",
+    "B": "L'",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "F2 L D2 L' U' L D2 L' U F2",
+    "moves": 10,
+    "anchor": "KD",
+    "S": "F2 U'"
+   },
+   "inverse": "IB"
+  },
+  "OJ": {
+   "case": "OJ",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F D' R U2 R' D R U2 R' F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "D'",
+    "B": "R U2 R'",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "R D' R D2 R' U R D2 R' U' D R'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R D'"
+   },
+   "inverse": "JO"
+  },
+  "JO": {
+   "case": "JO",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "F R U2 R' D' R U2 R' D F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "R U2 R'",
+    "B": "D'",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "R' D' U R U' L2 U R' U' L2 D R",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "R' D'"
+   },
+   "inverse": "OJ"
+  },
+  "MP": {
+   "case": "MP",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R U' L U R U' L' U R2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U' L U",
+    "B": "R",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "F R' L2 U R' U' L2 U R U' R F'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F R'"
+   },
+   "inverse": "PM"
+  },
+  "PM": {
+   "case": "PM",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R2 U' L U R' U' L' U R'",
+    "moves": 9,
+    "type": "conj",
+    "A": "R",
+    "B": "U' L U",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "R2 D2 U' F U B U' F' U B' D2 R2",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "R2 D2"
+   },
+   "inverse": "MP"
+  },
+  "CQ": {
+   "case": "CQ",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R' U2 L D2 L' U2 L D2 L' R",
+    "moves": 10,
+    "type": "conj",
+    "A": "U2",
+    "B": "L D2 L'",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "R' D2 R' D2 R U2 R' D2 R U2 D2 R",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "R' D2"
+   },
+   "inverse": "QC"
+  },
+  "QC": {
+   "case": "QC",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R' L D2 L' U2 L D2 L' U2 R",
+    "moves": 10,
+    "type": "conj",
+    "A": "L D2 L'",
+    "B": "U2",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "U2 L R' D2 R U2 R' D2 R U2 L' U2",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "U2 L"
+   },
+   "inverse": "CQ"
+  },
+  "VQ": {
+   "case": "VQ",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L' U2 L' D' L U2 L' D L2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "L' D' L",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "R' F2 L2 U R' U' L2 U R U' F2 R",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R' F2"
+   },
+   "inverse": "QV"
+  },
+  "QV": {
+   "case": "QV",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L2 D' L U2 L' D L U2 L",
+    "moves": 9,
+    "type": "conj",
+    "A": "L' D' L",
+    "B": "U2",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "R2 F R D2 R' U R D2 R' U' F' R2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R2 F"
+   },
+   "inverse": "VQ"
+  },
+  "GP": {
+   "case": "GP",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L' D2 R U' R' D2 R U R' L",
+    "moves": 10,
+    "type": "conj",
+    "A": "D2",
+    "B": "R U' R'",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "R' B2 L2 U R' U' L2 U R U' B2 R",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R' B2"
+   },
+   "inverse": "PG"
+  },
+  "PG": {
+   "case": "PG",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "L' R U' R' D2 R U R' D2 L",
+    "moves": 10,
+    "type": "conj",
+    "A": "R U' R'",
+    "B": "D2",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "R2 U' F U B U' F' U B' R2",
+    "moves": 10,
+    "anchor": "NG",
+    "S": "R2"
+   },
+   "inverse": "GP"
+  },
+  "BJ": {
+   "case": "BJ",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "R2 D' L2 D R D' L2 D R",
+    "moves": 9,
+    "type": "conj",
+    "A": "R'",
+    "B": "D' L2 D",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "R D2 R D2 R' U R D2 R' U' D2 R'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R D2"
+   },
+   "inverse": "JB"
+  },
+  "JB": {
+   "case": "JB",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R' D' L2 D R' D' L2 D R2",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' L2 D",
+    "B": "R'",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "F2 R D2 R' U R D2 R' U' F2",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "F2"
+   },
+   "inverse": "BJ"
+  },
+  "PS": {
+   "case": "PS",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L2 U' R U L U' R' U L",
+    "moves": 9,
+    "type": "conj",
+    "A": "L'",
+    "B": "U' R U",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "F' U2 R' D2 R U2 R' D2 R F",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "F' U2"
+   },
+   "inverse": "SP"
+  },
+  "SP": {
+   "case": "SP",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L' U' R U L' U' R' U L2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U' R U",
+    "B": "L'",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "F' R' D2 R U2 R' D2 R U2 F",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "F'"
+   },
+   "inverse": "PS"
+  },
+  "JS": {
+   "case": "JS",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L2 U' R' U L U' R U L",
+    "moves": 9,
+    "type": "conj",
+    "A": "L'",
+    "B": "U' R' U",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "L2 U F U B U' F' U B' U2 L2",
+    "moves": 11,
+    "anchor": "NG",
+    "S": "L2 U2"
+   },
+   "inverse": "SJ"
+  },
+  "SJ": {
+   "case": "SJ",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L' U' R' U L' U' R U L2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U' R' U",
+    "B": "L'",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "F D2 R U2 R' D2 R U2 R' F'",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "F R"
+   },
+   "inverse": "JS"
+  },
+  "QS": {
+   "case": "QS",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R' U2 R' D2 R U2 R' D2 R2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "R' D2 R",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "D L2 R D2 R' U R D2 R' U' L2 D'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "D L2"
+   },
+   "inverse": "SQ"
+  },
+  "SQ": {
+   "case": "SQ",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R2 D2 R U2 R' D2 R U2 R",
+    "moves": 9,
+    "type": "conj",
+    "A": "R' D2 R",
+    "B": "U2",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "R2 D2 R U2 R' D2 R U2 R",
+    "moves": 9,
+    "anchor": "SC",
+    "S": "R'"
+   },
+   "inverse": "QS"
+  },
+  "QL": {
+   "case": "QL",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L' U2 R D' R' U2 R D R' L",
+    "moves": 10,
+    "type": "conj",
+    "A": "U2",
+    "B": "R D' R'",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "D R B2 D' F D B2 D' F' D R' D'",
+    "moves": 12,
+    "anchor": "WM",
+    "S": "D R"
+   },
+   "inverse": "LQ"
+  },
+  "LQ": {
+   "case": "LQ",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L' R D' R' U2 R D R' U2 L",
+    "moves": 10,
+    "type": "conj",
+    "A": "R D' R'",
+    "B": "U2",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "R D2 L2 U R' U' L2 U R U' D2 R'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R D2"
+   },
+   "inverse": "QL"
+  },
+  "IM": {
+   "case": "IM",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L D' R2 D L D' R2 D L2",
+    "moves": 9,
+    "type": "conj",
+    "A": "D' R2 D",
+    "B": "L",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "U2 F2 R D2 R' U R D2 R' U' F2 U2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "U2 F2"
+   },
+   "inverse": "MI"
+  },
+  "MI": {
+   "case": "MI",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L2 D' R2 D L' D' R2 D L'",
+    "moves": 9,
+    "type": "conj",
+    "A": "L",
+    "B": "D' R2 D",
+    "S": "L"
+   },
+   "setup": {
+    "alg": "L' U2 R D2 R' U R D2 R' U L",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "L' U2"
+   },
+   "inverse": "IM"
+  },
+  "TQ": {
+   "case": "TQ",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L' R D R' U2 R D' R' U2 L",
+    "moves": 10,
+    "type": "conj",
+    "A": "R D R'",
+    "B": "U2",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "D2 L2 U' F U B U' F' U B' L2 D2",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "D2 L2"
+   },
+   "inverse": "QT"
+  },
+  "QT": {
+   "case": "QT",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L' U2 R D R' U2 R D' R' L",
+    "moves": 10,
+    "type": "conj",
+    "A": "U2",
+    "B": "R D R'",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "L2 B U' F U B U' F' U B2 L2",
+    "moves": 11,
+    "anchor": "NG",
+    "S": "L2 B"
+   },
+   "inverse": "TQ"
+  },
+  "IQ": {
+   "case": "IQ",
+   "target1": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L' R D2 R' U2 R D2 R' U2 L",
+    "moves": 10,
+    "type": "conj",
+    "A": "R D2 R'",
+    "B": "U2",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "F' L2 U' F U B U' F' U B' L2 F",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "F' L2"
+   },
+   "inverse": "QI"
+  },
+  "QI": {
+   "case": "QI",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "I",
+    "cubie": "UFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "L' U2 R D2 R' U2 R D2 R' L",
+    "moves": 10,
+    "type": "conj",
+    "A": "U2",
+    "B": "R D2 R'",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "L R2 D2 R U2 R' D2 R U2 R L'",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "L R'"
+   },
+   "inverse": "IQ"
+  },
+  "DM": {
+   "case": "DM",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L' U L' D L U' L' D' L2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U",
+    "B": "L' D L",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "U F' R D2 R' U R D2 R' U' F U'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "U F'"
+   },
+   "inverse": "MD"
+  },
+  "MD": {
+   "case": "MD",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L2 D L U L' D' L U' L",
+    "moves": 9,
+    "type": "conj",
+    "A": "L' D L",
+    "B": "U",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "R F' U' F U B U' F' U B' F R'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "R F'"
+   },
+   "inverse": "DM"
+  },
+  "QD": {
+   "case": "QD",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L2 D L U2 L' D' L U2 L",
+    "moves": 9,
+    "type": "conj",
+    "A": "L' D L",
+    "B": "U2",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "F' L2 R D2 R' U R D2 R' U' L2 F",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "F' L2"
+   },
+   "inverse": "DQ"
+  },
+  "DQ": {
+   "case": "DQ",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L' U2 L' D L U2 L' D' L2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "L' D L",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "U B R' D2 R U2 R' D2 R U2 B' U'",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "U B"
+   },
+   "inverse": "QD"
+  },
+  "QW": {
+   "case": "QW",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L2 D2 L U2 L' D2 L U2 L",
+    "moves": 9,
+    "type": "conj",
+    "A": "L' D2 L",
+    "B": "U2",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "U' F' L2 U R' U' L2 U R U' F U",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "U' F'"
+   },
+   "inverse": "WQ"
+  },
+  "WQ": {
+   "case": "WQ",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L' U2 L' D2 L U2 L' D2 L2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "L' D2 L",
+    "S": "L'"
+   },
+   "setup": {
+    "alg": "B2 R D2 R U2 R' D2 R U2 R2 B2",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "B2 R2"
+   },
+   "inverse": "QW"
+  },
+  "LM": {
+   "case": "LM",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "F U R2 U' L U R2 U' L' F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "U R2 U'",
+    "B": "L",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "B' R U' L2 U R' U' L2 U B",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "B' U'"
+   },
+   "inverse": "ML"
+  },
+  "ML": {
+   "case": "ML",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F L U R2 U' L' U R2 U' F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "L",
+    "B": "U R2 U'",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "B' U' L2 U R U' L2 U R' B",
+    "moves": 10,
+    "anchor": "NU",
+    "S": "B' U'"
+   },
+   "inverse": "LM"
+  },
+  "QG": {
+   "case": "QG",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "R' U2 R' D R U2 R' D' R2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "R' D R",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "L2 R D2 R' U R D2 R' U' L2",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "L2"
+   },
+   "inverse": "GQ"
+  },
+  "GQ": {
+   "case": "GQ",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R2 D R U2 R' D' R U2 R",
+    "moves": 9,
+    "type": "conj",
+    "A": "R' D R",
+    "B": "U2",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "D' R2 D2 R U2 R' D2 R U2 R D",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "D' R'"
+   },
+   "inverse": "QG"
+  },
+  "MT": {
+   "case": "MT",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "B R' D2 R U R' D2 R U' B'",
+    "moves": 10,
+    "type": "conj",
+    "A": "R' D2 R",
+    "B": "U",
+    "S": "B"
+   },
+   "setup": {
+    "alg": "R' D' R D2 R' U R D2 R' U' D R",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "R' D'"
+   },
+   "inverse": "TM"
+  },
+  "TM": {
+   "case": "TM",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "B U R' D2 R U' R' D2 R B'",
+    "moves": 10,
+    "type": "conj",
+    "A": "U",
+    "B": "R' D2 R",
+    "S": "B"
+   },
+   "setup": {
+    "alg": "R D' U R U' L2 U R' U' L2 D R'",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "R D'"
+   },
+   "inverse": "MT"
+  },
+  "TG": {
+   "case": "TG",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F' R D' L2 D R' D' L2 D F",
+    "moves": 10,
+    "type": "conj",
+    "A": "R",
+    "B": "D' L2 D",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "R2 F U L D2 L' U' L D2 L' F' R2",
+    "moves": 12,
+    "anchor": "KD",
+    "S": "R2 F"
+   },
+   "inverse": "GT"
+  },
+  "GT": {
+   "case": "GT",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "F' D' L2 D R D' L2 D R' F",
+    "moves": 10,
+    "type": "conj",
+    "A": "D' L2 D",
+    "B": "R",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "D' F' R' D2 R U2 R' D2 R U2 F D",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "D' F'"
+   },
+   "inverse": "TG"
+  },
+  "LV": {
+   "case": "LV",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R' D2 R' U R D2 R' U' R2",
+    "moves": 9,
+    "type": "conj",
+    "A": "D2",
+    "B": "R' U R",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "R' D2 R' U R D2 R' U' R2",
+    "moves": 9,
+    "anchor": "LB",
+    "S": "R2"
+   },
+   "inverse": "VL"
+  },
+  "VL": {
+   "case": "VL",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "R2 U R D2 R' U' R D2 R",
+    "moves": 9,
+    "type": "conj",
+    "A": "R' U R",
+    "B": "D2",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "F U L2 U R U' L2 U R' U2 F'",
+    "moves": 11,
+    "anchor": "NU",
+    "S": "F U"
+   },
+   "inverse": "LV"
+  },
+  "PQ": {
+   "case": "PQ",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R' U2 L D L' U2 L D' L' R",
+    "moves": 10,
+    "type": "conj",
+    "A": "U2",
+    "B": "L D L'",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "R' D R' D2 R U2 R' D2 R U2 D' R",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "R' D"
+   },
+   "inverse": "QP"
+  },
+  "QP": {
+   "case": "QP",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R' L D L' U2 L D' L' U2 R",
+    "moves": 10,
+    "type": "conj",
+    "A": "L D L'",
+    "B": "U2",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "R B2 D' F D B2 D' F' D R'",
+    "moves": 10,
+    "anchor": "WM",
+    "S": "R"
+   },
+   "inverse": "PQ"
+  },
+  "SW": {
+   "case": "SW",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R D2 R U2 R' D2 R U2 R2",
+    "moves": 9,
+    "type": "conj",
+    "A": "D2",
+    "B": "R U2 R'",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "R D2 R U2 R' D2 R U2 R2",
+    "moves": 9,
+    "anchor": "SC",
+    "S": "R2"
+   },
+   "inverse": "WS"
+  },
+  "WS": {
+   "case": "WS",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R2 U2 R' D2 R U2 R' D2 R'",
+    "moves": 9,
+    "type": "conj",
+    "A": "R U2 R'",
+    "B": "D2",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "R2 U2 R' D2 R U2 R' D2 R'",
+    "moves": 9,
+    "anchor": "SC",
+    "S": "R2 U2"
+   },
+   "inverse": "SW"
+  },
+  "QM": {
+   "case": "QM",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R' U2 R' D' R U2 R' D R2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "R' D' R",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "F2 L2 R D2 R' U R D2 R' U' L2 F2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "F2 L2"
+   },
+   "inverse": "MQ"
+  },
+  "MQ": {
+   "case": "MQ",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R2 D' R U2 R' D R U2 R",
+    "moves": 9,
+    "type": "conj",
+    "A": "R' D' R",
+    "B": "U2",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "L2 U' R D2 R' U R D2 R' L2",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "L2 U'"
+   },
+   "inverse": "QM"
+  },
+  "KH": {
+   "case": "KH",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "B2 U F' U' B U F U' B",
+    "moves": 9,
+    "type": "conj",
+    "A": "B'",
+    "B": "U F' U'",
+    "S": "B'"
+   },
+   "setup": {
+    "alg": "D2 F' R' D2 R U2 R' D2 R U2 F D2",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "D2 F'"
+   },
+   "inverse": "HK"
+  },
+  "HK": {
+   "case": "HK",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "B' U F' U' B' U F U' B2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U F' U'",
+    "B": "B'",
+    "S": "B'"
+   },
+   "setup": {
+    "alg": "B' R' B2 D' F D B2 D' F' D R B",
+    "moves": 12,
+    "anchor": "WM",
+    "S": "B' R'"
+   },
+   "inverse": "KH"
+  },
+  "HO": {
+   "case": "HO",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "R L' U L D2 L' U' L D2 R'",
+    "moves": 10,
+    "type": "conj",
+    "A": "L' U L",
+    "B": "D2",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "D2 R2 U' F U B U' F' U B' R2 D2",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "D2 R2"
+   },
+   "inverse": "OH"
+  },
+  "OH": {
+   "case": "OH",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "R D2 L' U L D2 L' U' L R'",
+    "moves": 10,
+    "type": "conj",
+    "A": "D2",
+    "B": "L' U L",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "B' D L2 U R U' L2 U R' U' D' B",
+    "moves": 12,
+    "anchor": "NU",
+    "S": "B' D"
+   },
+   "inverse": "HO"
+  },
+  "BD": {
+   "case": "BD",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R L' D2 L U' L' D2 L U R'",
+    "moves": 10,
+    "type": "conj",
+    "A": "L' D2 L",
+    "B": "U'",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "U' R' U L D2 L' U' L D2 L' R U",
+    "moves": 12,
+    "anchor": "KD",
+    "S": "U' R'"
+   },
+   "inverse": "DB"
+  },
+  "DB": {
+   "case": "DB",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R U' L' D2 L U L' D2 L R'",
+    "moves": 10,
+    "type": "conj",
+    "A": "U'",
+    "B": "L' D2 L",
+    "S": "R"
+   },
+   "setup": {
+    "alg": "F B R' D2 R U2 R' D2 R U2 B' F'",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "F B"
+   },
+   "inverse": "BD"
+  },
+  "QH": {
+   "case": "QH",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "R' L D' L' U2 L D L' U2 R",
+    "moves": 10,
+    "type": "conj",
+    "A": "L D' L'",
+    "B": "U2",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "U' F R' D2 R U2 R' D2 R U2 F' U",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "U' F"
+   },
+   "inverse": "HQ"
+  },
+  "HQ": {
+   "case": "HQ",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R' U2 L D' L' U2 L D L' R",
+    "moves": 10,
+    "type": "conj",
+    "A": "U2",
+    "B": "L D' L'",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "D L2 U' F U B U' F' U B' L2 D'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "D L2"
+   },
+   "inverse": "QH"
+  },
+  "DC": {
+   "case": "DC",
+   "target1": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R' L D2 L' U L D2 L' U' R",
+    "moves": 10,
+    "type": "conj",
+    "A": "L D2 L'",
+    "B": "U",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "F2 R' L2 U R' U' L2 U R U' R F2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F2 R'"
+   },
+   "inverse": "CD"
+  },
+  "CD": {
+   "case": "CD",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "D",
+    "cubie": "UFL",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R' U L D2 L' U' L D2 L' R",
+    "moves": 10,
+    "type": "conj",
+    "A": "U",
+    "B": "L D2 L'",
+    "S": "R'"
+   },
+   "setup": {
+    "alg": "R2 F B2 D' F D B2 D' F' D F' R2",
+    "moves": 12,
+    "anchor": "WM",
+    "S": "R2 F"
+   },
+   "inverse": "DC"
+  },
+  "HM": {
+   "case": "HM",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "B' U F U' B' U F' U' B2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U F U'",
+    "B": "B'",
+    "S": "B'"
+   },
+   "setup": {
+    "alg": "F D' L2 U R' U' L2 U R U' D F'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F D'"
+   },
+   "inverse": "MH"
+  },
+  "MH": {
+   "case": "MH",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "B2 U F U' B U F' U' B",
+    "moves": 9,
+    "type": "conj",
+    "A": "B'",
+    "B": "U F U'",
+    "S": "B'"
+   },
+   "setup": {
+    "alg": "F2 B' U' F U B U' F' U F2",
+    "moves": 10,
+    "anchor": "NG",
+    "S": "F2 B'"
+   },
+   "inverse": "HM"
+  },
+  "TK": {
+   "case": "TK",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F R' U R D2 R' U' R D2 F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "R' U R",
+    "B": "D2",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "D' R2 U' F U B U' F' U B' R2 D",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "D' R2"
+   },
+   "inverse": "KT"
+  },
+  "KT": {
+   "case": "KT",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "F D2 R' U R D2 R' U' R F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "D2",
+    "B": "R' U R",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "F D2 R' U R D2 R' U' R F'",
+    "moves": 10,
+    "anchor": "LB",
+    "S": "F R'"
+   },
+   "inverse": "TK"
+  },
+  "VF": {
+   "case": "VF",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "B' U2 B' D B U2 B' D' B2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "B' D B",
+    "S": "B'"
+   },
+   "setup": {
+    "alg": "R' F' L2 U R' U' L2 U R U' F R",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R' F'"
+   },
+   "inverse": "FV"
+  },
+  "FV": {
+   "case": "FV",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "B2 D B U2 B' D' B U2 B",
+    "moves": 9,
+    "type": "conj",
+    "A": "B' D B",
+    "B": "U2",
+    "S": "B'"
+   },
+   "setup": {
+    "alg": "L D L2 U R' U' L2 U R U' D' L'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "L D"
+   },
+   "inverse": "VF"
+  },
+  "CF": {
+   "case": "CF",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F R' D' R U2 R' D R U2 F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "R' D' R",
+    "B": "U2",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "F2 R2 U R U' L2 U R' U' L2 R2 F2",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "F2 R2"
+   },
+   "inverse": "FC"
+  },
+  "FC": {
+   "case": "FC",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "F U2 R' D' R U2 R' D R F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "U2",
+    "B": "R' D' R",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "U2 F2 U R U' L2 U R' U' L2 F2 U2",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "U2 F2"
+   },
+   "inverse": "CF"
+  },
+  "SF": {
+   "case": "SF",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F R' D2 R U2 R' D2 R U2 F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "R' D2 R",
+    "B": "U2",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "F R' D2 R U2 R' D2 R U2 F'",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "F"
+   },
+   "inverse": "FS"
+  },
+  "FS": {
+   "case": "FS",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "F U2 R' D2 R U2 R' D2 R F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "U2",
+    "B": "R' D2 R",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "F U2 R' D2 R U2 R' D2 R F'",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "F U2"
+   },
+   "inverse": "SF"
+  },
+  "FO": {
+   "case": "FO",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "F2 R' D L D' R D L' D' F2",
+    "moves": 10,
+    "type": "conj",
+    "A": "R'",
+    "B": "D L D'",
+    "S": "F2"
+   },
+   "setup": {
+    "alg": "B' U R' D2 R U2 R' D2 R U B",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "B' U"
+   },
+   "inverse": "OF"
+  },
+  "OF": {
+   "case": "OF",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F2 D L D' R' D L' D' R F2",
+    "moves": 10,
+    "type": "conj",
+    "A": "D L D'",
+    "B": "R'",
+    "S": "F2"
+   },
+   "setup": {
+    "alg": "B' L' R D2 R' U R D2 R' U' L B",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "B' L'"
+   },
+   "inverse": "FO"
+  },
+  "FH": {
+   "case": "FH",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F U2 F D2 F' U2 F D2 F2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "F D2 F'",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "B L' U R' U' L2 U R U' L' B'",
+    "moves": 11,
+    "anchor": "TU",
+    "S": "B L"
+   },
+   "inverse": "HF"
+  },
+  "HF": {
+   "case": "HF",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F2 D2 F' U2 F D2 F' U2 F'",
+    "moves": 9,
+    "type": "conj",
+    "A": "F D2 F'",
+    "B": "U2",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "B L U R' U' L2 U R U' L B'",
+    "moves": 11,
+    "anchor": "TU",
+    "S": "B L'"
+   },
+   "inverse": "FH"
+  },
+  "FJ": {
+   "case": "FJ",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F U2 F D F' U2 F D' F2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "F D F'",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "U2 B R' D2 R U2 R' D2 R U2 B' U2",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "U2 B"
+   },
+   "inverse": "JF"
+  },
+  "JF": {
+   "case": "JF",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F2 D F' U2 F D' F' U2 F'",
+    "moves": 9,
+    "type": "conj",
+    "A": "F D F'",
+    "B": "U2",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "R2 F' L2 U R' U' L2 U R U' F R2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R2 F'"
+   },
+   "inverse": "FJ"
+  },
+  "VO": {
+   "case": "VO",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "F2 U' F' D2 F U F' D2 F'",
+    "moves": 9,
+    "type": "conj",
+    "A": "F U' F'",
+    "B": "D2",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "F B2 L2 U R' U' L2 U R U' B2 F'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F B2"
+   },
+   "inverse": "OV"
+  },
+  "OV": {
+   "case": "OV",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "F D2 F U' F' D2 F U F2",
+    "moves": 9,
+    "type": "conj",
+    "A": "D2",
+    "B": "F U' F'",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "D R D2 R U2 R' D2 R U2 R2 D'",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "D R2"
+   },
+   "inverse": "VO"
+  },
+  "TF": {
+   "case": "TF",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F2 D' F' U2 F D F' U2 F'",
+    "moves": 9,
+    "type": "conj",
+    "A": "F D' F'",
+    "B": "U2",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "F' L2 U R' U' L2 U R U' F",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "F'"
+   },
+   "inverse": "FT"
+  },
+  "FT": {
+   "case": "FT",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "F U2 F D' F' U2 F D F2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "F D' F'",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "F' U R' U' L2 U R U' L2 F",
+    "moves": 10,
+    "anchor": "TU",
+    "S": "F' L2"
+   },
+   "inverse": "TF"
+  },
+  "FK": {
+   "case": "FK",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F2 U' R U L' U' R' U L F2",
+    "moves": 10,
+    "type": "conj",
+    "A": "U' R U",
+    "B": "L'",
+    "S": "F2"
+   },
+   "setup": {
+    "alg": "F' R L2 D R2 D' L2 D R2 D' R' F",
+    "moves": 12,
+    "anchor": "UB",
+    "S": "F' R"
+   },
+   "inverse": "KF"
+  },
+  "KF": {
+   "case": "KF",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F2 L' U' R U L U' R' U F2",
+    "moves": 10,
+    "type": "conj",
+    "A": "L'",
+    "B": "U' R U",
+    "S": "F2"
+   },
+   "setup": {
+    "alg": "F' R2 L2 U R' U' L2 U R U' R2 F",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F' R2"
+   },
+   "inverse": "FK"
+  },
+  "NC": {
+   "case": "NC",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "F U' L U R2 U' L' U R2 F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "U' L U",
+    "B": "R2",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "F2 L2 U R U' L2 U R' U' F2",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "F2 L2"
+   },
+   "inverse": "CN"
+  },
+  "CN": {
+   "case": "CN",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "F R2 U' L U R2 U' L' U F'",
+    "moves": 10,
+    "type": "conj",
+    "A": "R2",
+    "B": "U' L U",
+    "S": "F"
+   },
+   "setup": {
+    "alg": "F2 U R U' L2 U R' U' L2 F2",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "F2"
+   },
+   "inverse": "NC"
+  },
+  "MB": {
+   "case": "MB",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "B U2 B D B' U2 B D' B2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "B D B'",
+    "S": "B"
+   },
+   "setup": {
+    "alg": "B R' D2 R U2 R' D2 R U2 B'",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "B"
+   },
+   "inverse": "BM"
+  },
+  "BM": {
+   "case": "BM",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "B2 D B' U2 B D' B' U2 B'",
+    "moves": 9,
+    "type": "conj",
+    "A": "B D B'",
+    "B": "U2",
+    "S": "B"
+   },
+   "setup": {
+    "alg": "B U2 R' D2 R U2 R' D2 R B'",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "B U2"
+   },
+   "inverse": "MB"
+  },
+  "LS": {
+   "case": "LS",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "F' R U2 R' D2 R U2 R' D2 F",
+    "moves": 10,
+    "type": "conj",
+    "A": "R U2 R'",
+    "B": "D2",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "U B' L2 U R' U' L2 U R U' B U'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "U B'"
+   },
+   "inverse": "SL"
+  },
+  "SL": {
+   "case": "SL",
+   "target1": {
+    "sticker": "S",
+    "cubie": "DBL",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "F' D2 R U2 R' D2 R U2 R' F",
+    "moves": 10,
+    "type": "conj",
+    "A": "D2",
+    "B": "R U2 R'",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "F' D2 R U2 R' D2 R U2 R' F",
+    "moves": 10,
+    "anchor": "SC",
+    "S": "F' R"
+   },
+   "inverse": "LS"
+  },
+  "HU": {
+   "case": "HU",
+   "target1": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "F' D2 F' U2 F D2 F' U2 F2",
+    "moves": 9,
+    "type": "conj",
+    "A": "D2",
+    "B": "F' U2 F",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "D R' D2 R' U R D2 R' U' R2 D'",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "D R2"
+   },
+   "inverse": "UH"
+  },
+  "UH": {
+   "case": "UH",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "H",
+    "cubie": "DBL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F2 U2 F D2 F' U2 F D2 F",
+    "moves": 9,
+    "type": "conj",
+    "A": "F' U2 F",
+    "B": "D2",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "B' L2 U R U' L2 U R' U' B",
+    "moves": 10,
+    "anchor": "UN",
+    "S": "B' L2"
+   },
+   "inverse": "HU"
+  },
+  "FN": {
+   "case": "FN",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "F' U R U' L2 U R' U' L2 F",
+    "moves": 10,
+    "type": "conj",
+    "A": "U R U'",
+    "B": "L2",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "B2 L U R' U' L2 U R U' L B2",
+    "moves": 11,
+    "anchor": "TU",
+    "S": "B2 L'"
+   },
+   "inverse": "NF"
+  },
+  "NF": {
+   "case": "NF",
+   "target1": {
+    "sticker": "N",
+    "cubie": "UBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F' L2 U R U' L2 U R' U' F",
+    "moves": 10,
+    "type": "conj",
+    "A": "L2",
+    "B": "U R U'",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "B2 L' U R' U' L2 U R U' L' B2",
+    "moves": 11,
+    "anchor": "TU",
+    "S": "B2 L"
+   },
+   "inverse": "FN"
+  },
+  "FG": {
+   "case": "FG",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F' U R2 U' L2 U R2 U' L2 F",
+    "moves": 10,
+    "type": "conj",
+    "A": "U R2 U'",
+    "B": "L2",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "U L2 U' F U B U' F' U B' L2 U'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "U L2"
+   },
+   "inverse": "GF"
+  },
+  "GF": {
+   "case": "GF",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "F' L2 U R2 U' L2 U R2 U' F",
+    "moves": 10,
+    "type": "conj",
+    "A": "L2",
+    "B": "U R2 U'",
+    "S": "F'"
+   },
+   "setup": {
+    "alg": "F' R' L2 U R' U' L2 U R U' R F",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F' R'"
+   },
+   "inverse": "FG"
+  },
+  "UF": {
+   "case": "UF",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "B' U2 B' D2 B U2 B' D2 B2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "B' D2 B",
+    "S": "B'"
+   },
+   "setup": {
+    "alg": "U L2 R D2 R' U R D2 R' U' L2 U'",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "U L2"
+   },
+   "inverse": "FU"
+  },
+  "FU": {
+   "case": "FU",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "B2 D2 B U2 B' D2 B U2 B",
+    "moves": 9,
+    "type": "conj",
+    "A": "B' D2 B",
+    "B": "U2",
+    "S": "B'"
+   },
+   "setup": {
+    "alg": "F' R2 U R U' L2 U R' U' L2 R2 F",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "F' R2"
+   },
+   "inverse": "UF"
+  },
+  "BF": {
+   "case": "BF",
+   "target1": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "B' U2 B' D' B U2 B' D B2",
+    "moves": 9,
+    "type": "conj",
+    "A": "U2",
+    "B": "B' D' B",
+    "S": "B'"
+   },
+   "setup": {
+    "alg": "R F' L2 U R' U' L2 U R U' F R'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "R F'"
+   },
+   "inverse": "FB"
+  },
+  "FB": {
+   "case": "FB",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "B",
+    "cubie": "UBR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "B2 D' B U2 B' D B U2 B",
+    "moves": 9,
+    "type": "conj",
+    "A": "B' D' B",
+    "B": "U2",
+    "S": "B'"
+   },
+   "setup": {
+    "alg": "F2 D' R D2 R' U R D2 R' U' D F2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "F2 D'"
+   },
+   "inverse": "BF"
+  },
+  "XT": {
+   "case": "XT",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "D2 R2 U R D2 R' U' R D2 R D2",
+    "moves": 11,
+    "type": "conj",
+    "A": "R' U R",
+    "B": "D2",
+    "S": "D2 R'"
+   },
+   "setup": {
+    "alg": "L2 U L2 U R' U' L2 U R U2 L2",
+    "moves": 11,
+    "anchor": "TU",
+    "S": "L2 U"
+   },
+   "inverse": "TX"
+  },
+  "TX": {
+   "case": "TX",
+   "target1": {
+    "sticker": "T",
+    "cubie": "DBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D2 R' D2 R' U R D2 R' U' R2 D2",
+    "moves": 11,
+    "type": "conj",
+    "A": "D2",
+    "B": "R' U R",
+    "S": "D2 R'"
+   },
+   "setup": {
+    "alg": "D2 R' D2 R' U R D2 R' U' R2 D2",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "D2 R2"
+   },
+   "inverse": "XT"
+  },
+  "FP": {
+   "case": "FP",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L U' L2 U' R U L2 U' R' U2 L'",
+    "moves": 11,
+    "type": "conj",
+    "A": "L2",
+    "B": "U' R U",
+    "S": "L U'"
+   },
+   "setup": {
+    "alg": "R2 F' U R U' L2 U R' U' L2 F R2",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "R2 F'"
+   },
+   "inverse": "PF"
+  },
+  "PF": {
+   "case": "PF",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "L U2 R U L2 U' R' U L2 U L'",
+    "moves": 11,
+    "type": "conj",
+    "A": "U' R U",
+    "B": "L2",
+    "S": "L U'"
+   },
+   "setup": {
+    "alg": "D F' L2 U R' U' L2 U R U' F D'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D F'"
+   },
+   "inverse": "FP"
+  },
+  "XF": {
+   "case": "XF",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U R' U2 R' D2 R U2 R' D2 R2 U'",
+    "moves": 11,
+    "type": "conj",
+    "A": "U2",
+    "B": "R' D2 R",
+    "S": "U R'"
+   },
+   "setup": {
+    "alg": "U R' U2 R' D2 R U2 R' D2 R2 U'",
+    "moves": 11,
+    "anchor": "KS",
+    "S": "U R2"
+   },
+   "inverse": "FX"
+  },
+  "FX": {
+   "case": "FX",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U R2 D2 R U2 R' D2 R U2 R U'",
+    "moves": 11,
+    "type": "conj",
+    "A": "R' D2 R",
+    "B": "U2",
+    "S": "U R'"
+   },
+   "setup": {
+    "alg": "F2 D L2 U R' U' L2 U R U' D' F2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F2 D"
+   },
+   "inverse": "XF"
+  },
+  "KU": {
+   "case": "KU",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D2 R D2 R U2 R' D2 R U2 R2 D2",
+    "moves": 11,
+    "type": "conj",
+    "A": "D2",
+    "B": "R U2 R'",
+    "S": "D2 R"
+   },
+   "setup": {
+    "alg": "D2 R D2 R U2 R' D2 R U2 R2 D2",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "D2 R2"
+   },
+   "inverse": "UK"
+  },
+  "UK": {
+   "case": "UK",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D2 R2 U2 R' D2 R U2 R' D2 R' D2",
+    "moves": 11,
+    "type": "conj",
+    "A": "R U2 R'",
+    "B": "D2",
+    "S": "D2 R"
+   },
+   "setup": {
+    "alg": "F2 L R' D2 R U2 R' D2 R U2 L' F2",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "F2 L"
+   },
+   "inverse": "KU"
+  },
+  "QO": {
+   "case": "QO",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D R' U2 R' D2 R U2 R' D2 R2 D'",
+    "moves": 11,
+    "type": "conj",
+    "A": "U2",
+    "B": "R' D2 R",
+    "S": "D R'"
+   },
+   "setup": {
+    "alg": "D2 L2 R D2 R' U R D2 R' U' L2 D2",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "D2 L2"
+   },
+   "inverse": "OQ"
+  },
+  "OQ": {
+   "case": "OQ",
+   "target1": {
+    "sticker": "O",
+    "cubie": "DBR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "D R2 D2 R U2 R' D2 R U2 R D'",
+    "moves": 11,
+    "type": "conj",
+    "A": "R' D2 R",
+    "B": "U2",
+    "S": "D R'"
+   },
+   "setup": {
+    "alg": "D R2 D2 R U2 R' D2 R U2 R D'",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "D R'"
+   },
+   "inverse": "QO"
+  },
+  "UQ": {
+   "case": "UQ",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U2 R U2 R D2 R' U2 R D2 R2 U2",
+    "moves": 11,
+    "type": "conj",
+    "A": "U2",
+    "B": "R D2 R'",
+    "S": "U2 R"
+   },
+   "setup": {
+    "alg": "U2 L2 R' D2 R U2 R' D2 R U2 L2 U2",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "U2 L2"
+   },
+   "inverse": "QU"
+  },
+  "QU": {
+   "case": "QU",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U2 R2 D2 R' U2 R D2 R' U2 R' U2",
+    "moves": 11,
+    "type": "conj",
+    "A": "R D2 R'",
+    "B": "U2",
+    "S": "U2 R"
+   },
+   "setup": {
+    "alg": "F' R B2 D' F D B2 D' F' D R' F",
+    "moves": 12,
+    "anchor": "WM",
+    "S": "F' R"
+   },
+   "inverse": "UQ"
+  },
+  "FW": {
+   "case": "FW",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L' U2 R' U' L2 U R U' L2 U' L",
+    "moves": 11,
+    "type": "conj",
+    "A": "U R' U'",
+    "B": "L2",
+    "S": "L' U"
+   },
+   "setup": {
+    "alg": "L2 B2 U R U' L2 U R' U' L2 B2 L2",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "L2 B2"
+   },
+   "inverse": "WF"
+  },
+  "WF": {
+   "case": "WF",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "L' U L2 U R' U' L2 U R U2 L",
+    "moves": 11,
+    "type": "conj",
+    "A": "L2",
+    "B": "U R' U'",
+    "S": "L' U"
+   },
+   "setup": {
+    "alg": "L' U L2 U R' U' L2 U R U2 L",
+    "moves": 11,
+    "anchor": "TU",
+    "S": "L' U"
+   },
+   "inverse": "FW"
+  },
+  "FL": {
+   "case": "FL",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "U' R U2 R D2 R' U2 R D2 R2 U",
+    "moves": 11,
+    "type": "conj",
+    "A": "U2",
+    "B": "R D2 R'",
+    "S": "U' R"
+   },
+   "setup": {
+    "alg": "U' L2 R' D2 R U2 R' D2 R U2 L2 U",
+    "moves": 12,
+    "anchor": "SC",
+    "S": "U' L2"
+   },
+   "inverse": "LF"
+  },
+  "LF": {
+   "case": "LF",
+   "target1": {
+    "sticker": "L",
+    "cubie": "DFL",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "U' R2 D2 R' U2 R D2 R' U2 R' U",
+    "moves": 11,
+    "type": "conj",
+    "A": "R D2 R'",
+    "B": "U2",
+    "S": "U' R"
+   },
+   "setup": {
+    "alg": "D2 F' L2 U R' U' L2 U R U' F D2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "D2 F'"
+   },
+   "inverse": "FL"
+  },
+  "QK": {
+   "case": "QK",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "D' R' U2 R' D R U2 R' D' R2 D",
+    "moves": 11,
+    "type": "conj",
+    "A": "U2",
+    "B": "R' D R",
+    "S": "D' R'"
+   },
+   "setup": {
+    "alg": "D' L2 R D2 R' U R D2 R' U' L2 D",
+    "moves": 12,
+    "anchor": "LB",
+    "S": "D' L2"
+   },
+   "inverse": "KQ"
+  },
+  "KQ": {
+   "case": "KQ",
+   "target1": {
+    "sticker": "K",
+    "cubie": "DFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "D' R2 D R U2 R' D' R U2 R D",
+    "moves": 11,
+    "type": "conj",
+    "A": "R' D R",
+    "B": "U2",
+    "S": "D' R'"
+   },
+   "setup": {
+    "alg": "D2 R2 D2 R U2 R' D2 R U2 R D2",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "D2 R'"
+   },
+   "inverse": "QK"
+  },
+  "PW": {
+   "case": "PW",
+   "target1": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D' R' D2 R' U R D2 R' U' R2 D",
+    "moves": 11,
+    "type": "conj",
+    "A": "D2",
+    "B": "R' U R",
+    "S": "D' R'"
+   },
+   "setup": {
+    "alg": "D' R' D2 R' U R D2 R' U' R2 D",
+    "moves": 11,
+    "anchor": "LB",
+    "S": "D' R2"
+   },
+   "inverse": "WP"
+  },
+  "WP": {
+   "case": "WP",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "P",
+    "cubie": "DFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "D' R2 U R D2 R' U' R D2 R D",
+    "moves": 11,
+    "type": "conj",
+    "A": "R' U R",
+    "B": "D2",
+    "S": "D' R'"
+   },
+   "setup": {
+    "alg": "R2 F2 U R U' L2 U R' U' L2 F2 R2",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "R2 F2"
+   },
+   "inverse": "PW"
+  },
+  "XQ": {
+   "case": "XQ",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "U2 R U2 R D' R' U2 R D R2 U2",
+    "moves": 11,
+    "type": "conj",
+    "A": "U2",
+    "B": "R D' R'",
+    "S": "U2 R"
+   },
+   "setup": {
+    "alg": "L' F' L2 U R U' L2 U R' U' F L",
+    "moves": 12,
+    "anchor": "NU",
+    "S": "L' F'"
+   },
+   "inverse": "QX"
+  },
+  "QX": {
+   "case": "QX",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U2 R2 D' R' U2 R D R' U2 R' U2",
+    "moves": 11,
+    "type": "conj",
+    "A": "R D' R'",
+    "B": "U2",
+    "S": "U2 R"
+   },
+   "setup": {
+    "alg": "L' F' U R U' L2 U R' U' L2 F L",
+    "moves": 12,
+    "anchor": "UN",
+    "S": "L' F'"
+   },
+   "inverse": "XQ"
+  },
+  "GX": {
+   "case": "GX",
+   "target1": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "D' R D2 R U2 R' D2 R U2 R2 D",
+    "moves": 11,
+    "type": "conj",
+    "A": "D2",
+    "B": "R U2 R'",
+    "S": "D' R"
+   },
+   "setup": {
+    "alg": "D' R D2 R U2 R' D2 R U2 R2 D",
+    "moves": 11,
+    "anchor": "SC",
+    "S": "D' R2"
+   },
+   "inverse": "XG"
+  },
+  "XG": {
+   "case": "XG",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "G",
+    "cubie": "DFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "D' R2 U2 R' D2 R U2 R' D2 R' D",
+    "moves": 11,
+    "type": "conj",
+    "A": "R U2 R'",
+    "B": "D2",
+    "S": "D' R"
+   },
+   "setup": {
+    "alg": "F2 D' B2 D' F D B2 D' F' D2 F2",
+    "moves": 11,
+    "anchor": "WM",
+    "S": "F2 D'"
+   },
+   "inverse": "GX"
+  },
+  "CV": {
+   "case": "CV",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "L U2 L' U R2 U' L U R2 U L'",
+    "moves": 11,
+    "type": "conj",
+    "A": "U' L' U",
+    "B": "R2",
+    "S": "L U'"
+   },
+   "setup": {
+    "alg": "F R2 U' F U B U' F' U B' R2 F'",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "F R2"
+   },
+   "inverse": "VC"
+  },
+  "VC": {
+   "case": "VC",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "L U' R2 U' L' U R2 U' L U2 L'",
+    "moves": 11,
+    "type": "conj",
+    "A": "R2",
+    "B": "U' L' U",
+    "S": "L U'"
+   },
+   "setup": {
+    "alg": "F2 U L2 D R2 D' L2 D R2 D' U' F2",
+    "moves": 12,
+    "anchor": "UB",
+    "S": "F2 U"
+   },
+   "inverse": "CV"
+  },
+  "QF": {
+   "case": "QF",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "L D L2 D R2 D' L2 D R2 D2 L'",
+    "moves": 11,
+    "type": "conj",
+    "A": "L2",
+    "B": "D R2 D'",
+    "S": "L D"
+   },
+   "setup": {
+    "alg": "F2 R B2 D' F D B2 D' F' D R' F2",
+    "moves": 12,
+    "anchor": "WM",
+    "S": "F2 R"
+   },
+   "inverse": "FQ"
+  },
+  "FQ": {
+   "case": "FQ",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "L D2 R2 D' L2 D R2 D' L2 D' L'",
+    "moves": 11,
+    "type": "conj",
+    "A": "D R2 D'",
+    "B": "L2",
+    "S": "L D"
+   },
+   "setup": {
+    "alg": "L2 B' L2 U R' U' L2 U R U' B L2",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "L2 B'"
+   },
+   "inverse": "QF"
+  },
+  "CX": {
+   "case": "CX",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R' U' L2 U' R U L2 U' R' U2 R",
+    "moves": 11,
+    "type": "conj",
+    "A": "L2",
+    "B": "U' R U",
+    "S": "R' U'"
+   },
+   "setup": {
+    "alg": "F D L2 U R' U' L2 U R U' D' F'",
+    "moves": 12,
+    "anchor": "TU",
+    "S": "F D"
+   },
+   "inverse": "XC"
+  },
+  "XC": {
+   "case": "XC",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R' U2 R U L2 U' R' U L2 U R",
+    "moves": 11,
+    "type": "conj",
+    "A": "U' R U",
+    "B": "L2",
+    "S": "R' U'"
+   },
+   "setup": {
+    "alg": "L2 U2 L2 D R2 D' L2 D R2 D' U2 L2",
+    "moves": 12,
+    "anchor": "UB",
+    "S": "L2 U2"
+   },
+   "inverse": "CX"
+  },
+  "FM": {
+   "case": "FM",
+   "target1": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "target2": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "direct": {
+    "alg": "L' D' L2 D' R2 D L2 D' R2 D2 L",
+    "moves": 11,
+    "type": "conj",
+    "A": "L2",
+    "B": "D' R2 D",
+    "S": "L' D'"
+   },
+   "setup": {
+    "alg": "F2 R2 U' F U B U' F' U B' R2 F2",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "F2 R2"
+   },
+   "inverse": "MF"
+  },
+  "MF": {
+   "case": "MF",
+   "target1": {
+    "sticker": "M",
+    "cubie": "UFR",
+    "face": "R"
+   },
+   "target2": {
+    "sticker": "F",
+    "cubie": "UFL",
+    "face": "L"
+   },
+   "direct": {
+    "alg": "L' D2 R2 D L2 D' R2 D L2 D L",
+    "moves": 11,
+    "type": "conj",
+    "A": "D' R2 D",
+    "B": "L2",
+    "S": "L' D'"
+   },
+   "setup": {
+    "alg": "R F' L2 U R U' L2 U R' U' F R'",
+    "moves": 12,
+    "anchor": "NU",
+    "S": "R F'"
+   },
+   "inverse": "FM"
+  },
+  "VX": {
+   "case": "VX",
+   "target1": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R D2 R' D' L2 D R D' L2 D' R'",
+    "moves": 11,
+    "type": "conj",
+    "A": "D R' D'",
+    "B": "L2",
+    "S": "R D"
+   },
+   "setup": {
+    "alg": "B' R B2 D' F D B2 D' F' D R' B",
+    "moves": 12,
+    "anchor": "WM",
+    "S": "B' R"
+   },
+   "inverse": "XV"
+  },
+  "XV": {
+   "case": "XV",
+   "target1": {
+    "sticker": "X",
+    "cubie": "DBL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "V",
+    "cubie": "DFR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R D L2 D R' D' L2 D R D2 R'",
+    "moves": 11,
+    "type": "conj",
+    "A": "L2",
+    "B": "D R' D'",
+    "S": "R D"
+   },
+   "setup": {
+    "alg": "F' D' B2 D' F D B2 D' F' D2 F",
+    "moves": 11,
+    "anchor": "WM",
+    "S": "F' D'"
+   },
+   "inverse": "VX"
+  },
+  "JQ": {
+   "case": "JQ",
+   "target1": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "target2": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "direct": {
+    "alg": "R D' R2 D' L2 D R2 D' L2 D2 R'",
+    "moves": 11,
+    "type": "conj",
+    "A": "R2",
+    "B": "D' L2 D",
+    "S": "R D'"
+   },
+   "setup": {
+    "alg": "F2 L2 U' F U B U' F' U B' L2 F2",
+    "moves": 12,
+    "anchor": "NG",
+    "S": "F2 L2"
+   },
+   "inverse": "QJ"
+  },
+  "QJ": {
+   "case": "QJ",
+   "target1": {
+    "sticker": "Q",
+    "cubie": "UBR",
+    "face": "B"
+   },
+   "target2": {
+    "sticker": "J",
+    "cubie": "UFR",
+    "face": "F"
+   },
+   "direct": {
+    "alg": "R D2 L2 D R2 D' L2 D R2 D R'",
+    "moves": 11,
+    "type": "conj",
+    "A": "D' L2 D",
+    "B": "R2",
+    "S": "R D'"
+   },
+   "setup": {
+    "alg": "R D2 L2 D R2 D' L2 D R2 D R'",
+    "moves": 11,
+    "anchor": "UB",
+    "S": "R D2"
+   },
+   "inverse": "JQ"
+  },
+  "UW": {
+   "case": "UW",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R' U2 R U2 R D2 R' U2 R D2 R2 U2 R",
+    "moves": 13,
+    "type": "conj",
+    "A": "U2",
+    "B": "R D2 R'",
+    "S": "R' U2 R"
+   },
+   "setup": {
+    "alg": "U L D2 L' D R2 D' L D R2 D L' U'",
+    "moves": 13,
+    "anchor": "(직접)",
+    "S": ""
+   },
+   "inverse": "WU"
+  },
+  "WU": {
+   "case": "WU",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R' U2 R2 D2 R' U2 R D2 R' U2 R' U2 R",
+    "moves": 13,
+    "type": "conj",
+    "A": "R D2 R'",
+    "B": "U2",
+    "S": "R' U2 R"
+   },
+   "setup": {
+    "alg": "U L D' R2 D' L' D R2 D' L D2 L' U'",
+    "moves": 13,
+    "anchor": "(직접)",
+    "S": ""
+   },
+   "inverse": "UW"
+  },
+  "WC": {
+   "case": "WC",
+   "target1": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "R D' R2 D R U2 R' D' R U2 R D R'",
+    "moves": 13,
+    "type": "conj",
+    "A": "R' D R",
+    "B": "U2",
+    "S": "R D' R'"
+   },
+   "setup": {
+    "alg": "U L' U2 L U' R2 U L' U' R2 U' L U'",
+    "moves": 13,
+    "anchor": "(직접)",
+    "S": ""
+   },
+   "inverse": "CW"
+  },
+  "CW": {
+   "case": "CW",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "W",
+    "cubie": "DBR",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "R D' R' U2 R' D R U2 R' D' R2 D R'",
+    "moves": 13,
+    "type": "conj",
+    "A": "U2",
+    "B": "R' D R",
+    "S": "R D' R'"
+   },
+   "setup": {
+    "alg": "U L' U R2 U L U' R2 U L' U2 L U'",
+    "moves": 13,
+    "anchor": "(직접)",
+    "S": ""
+   },
+   "inverse": "WC"
+  },
+  "UC": {
+   "case": "UC",
+   "target1": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "target2": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "direct": {
+    "alg": "U R U L2 U R' U' L2 U R U2 R' U'",
+    "moves": 13,
+    "type": "conj",
+    "A": "L2",
+    "B": "U R' U'",
+    "S": "U R U"
+   },
+   "setup": {
+    "alg": "U L2 D L2 D R2 D' L2 D R2 D2 L2 U'",
+    "moves": 13,
+    "anchor": "(직접)",
+    "S": ""
+   },
+   "inverse": "CU"
+  },
+  "CU": {
+   "case": "CU",
+   "target1": {
+    "sticker": "C",
+    "cubie": "UFR",
+    "face": "U"
+   },
+   "target2": {
+    "sticker": "U",
+    "cubie": "DFL",
+    "face": "D"
+   },
+   "direct": {
+    "alg": "U R U2 R' U' L2 U R U' L2 U' R' U'",
+    "moves": 13,
+    "type": "conj",
+    "A": "U R' U'",
+    "B": "L2",
+    "S": "U R U"
+   },
+   "setup": {
+    "alg": "U L2 D2 R2 D' L2 D R2 D' L2 D' L2 U'",
+    "moves": 13,
+    "anchor": "(직접)",
+    "S": ""
+   },
+   "inverse": "UC"
+  }
+ }
+}

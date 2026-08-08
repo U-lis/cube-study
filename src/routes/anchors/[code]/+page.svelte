@@ -3,6 +3,7 @@
 	import { targetText } from '$lib/domain/validate.js';
 	import { formatCommutator } from '$lib/domain/format.js';
 	import UpLink from '$lib/ui/UpLink.svelte';
+	import { memorize } from '$lib/ui/memorize.svelte.js';
 	let { data } = $props();
 
 	let comm = $derived(data.anchor ? formatCommutator(data.anchor.alg) : null);
@@ -31,7 +32,21 @@
 
 <ul>
 	{#each data.cases as c (c.case)}
-		<li>
+		<!--
+			FR-MC-3(b): 이 화면은 셋업 무브를 나열하는 화면이라 체크박스는 항상
+			setup 기준으로 고정한다. 전역 mode 가 direct 여도 여기 표시는 setup.
+			AD-7: 체크박스를 <a> 밖 형제로 둔다. <a> 안에 넣으면 클릭이 링크
+			이동을 트리거하고 접근성도 깨진다.
+		-->
+		<li data-case-row={c.case}>
+			<label class="memo" data-memorize-setup={c.case}>
+				<input
+					type="checkbox"
+					checked={memorize.isChecked('setup', c.case)}
+					onchange={() => memorize.toggle('setup', c.case)}
+					data-memorize-input
+				/>
+			</label>
 			<a href="/?c={c.case}&from={data.code}">
 				<span class="code">{c.case}</span>
 				{#if c.setup.S}
@@ -85,7 +100,33 @@
 		flex-direction: column;
 		gap: 0.3rem;
 	}
+	li {
+		display: flex;
+		align-items: stretch;
+		gap: 0.4rem;
+	}
+	/*
+	 * FR-MC-4: 터치 대상 44px 이상. 라벨 너비도 고정해 <a> 그리드가 밀리지 않는다.
+	 * AD-7: <a> 밖 형제이므로 클릭 이벤트가 링크와 독립이다.
+	 */
+	.memo {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		min-height: 44px;
+		flex: 0 0 44px;
+		cursor: pointer;
+	}
+	.memo input[type='checkbox'] {
+		width: 20px;
+		height: 20px;
+		margin: 0;
+		cursor: pointer;
+	}
 	a {
+		flex: 1 1 auto;
+		min-width: 0;
 		display: grid;
 		grid-template-columns: 3.2rem 1fr 1.2rem auto;
 		align-items: center;

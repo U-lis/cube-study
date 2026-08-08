@@ -137,12 +137,12 @@ export type MemorizeChecked = { setup: Set<CaseCode>; direct: Set<CaseCode> };
 
 | Phase | 범위 | 담당 FR/NFR | 상태 |
 |-------|------|-------------|------|
-| 1 | 도메인 로직 기반 — `memorize.ts` + `memorize.svelte.ts` + 단위 테스트 | FR-MC-1, 2, 5~9, 12, 19; NFR-MC-1, 3, 4 | Pending |
-| 2 | 체크박스 UI — `CaseView.svelte` + `anchors/[code]/+page.svelte` | FR-MC-3, 4, 5; NFR-MC-2, 4 | Pending |
-| 3 | 진도 표시 — `anchors/+page.svelte` + `anchors/[code]/+page.svelte` | FR-MC-10, 11, 12; NFR-MC-5 | Pending |
-| 4 | "외운거 안보기" 토글 — `anchors/[code]/+page.svelte` | FR-MC-13~17; NFR-MC-2 | Pending |
-| 5 | 퀴즈 "암기한 것만" — `quiz/+page.svelte` | FR-MC-18~20 | Pending |
-| 6 | About "전체 해제" — `About.svelte` | FR-MC-21~22 | Pending |
+| 1 | 도메인 로직 기반 — `memorize.ts` + `memorize.svelte.ts` + 단위 테스트 | FR-MC-1, 2, 5~9, 12, 19; NFR-MC-1, 3, 4 | Complete |
+| 2 | 체크박스 UI — `CaseView.svelte` + `anchors/[code]/+page.svelte` | FR-MC-3, 4, 5; NFR-MC-2, 4 | Complete |
+| 3 | 진도 표시 — `anchors/+page.svelte` + `anchors/[code]/+page.svelte` | FR-MC-10, 11, 12; NFR-MC-5 | Complete |
+| 4 | "외운거 안보기" 토글 — `anchors/[code]/+page.svelte` | FR-MC-13~17; NFR-MC-2 | Complete |
+| 5 | 퀴즈 "암기한 것만" — `quiz/+page.svelte` | FR-MC-18~20 | Complete |
+| 6 | About "전체 해제" — `About.svelte` | FR-MC-21~22 | Complete |
 
 ---
 

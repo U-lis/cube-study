@@ -28,8 +28,10 @@ if ! git ls-remote --exit-code origin "$REF" >/dev/null 2>&1; then
 	echo "origin 에 '$REF' 가 없다. 먼저 push 할 것." >&2
 	exit 1
 fi
-LOCAL_SHA=$(git rev-parse "$REF")
-echo "==> 배포 대상: $REF ($(git rev-parse --short "$REF"))"
+# annotated 태그는 rev-parse 가 커밋이 아니라 태그 객체 SHA 를 준다. 그대로 쓰면
+# 서버가 올바른 커밋을 배포하고도 마지막 대조에서 어긋난 것으로 판정된다.
+LOCAL_SHA=$(git rev-parse "$REF^{commit}")
+echo "==> 배포 대상: $REF ($(git rev-parse --short "$REF^{commit}"))"
 
 # Tailscale tailnet 으로 붙는다. 집/밖 구분이 없다 — 집에서는 LAN 다이렉트 경로를
 # 잡고 밖에서는 터널로 간다. 여기서 안 걸러주면 ssh 타임아웃만 뱉고 이유를 알 수 없다.

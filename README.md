@@ -84,7 +84,7 @@ src/lib/
 ├── domain/       타입, 입력 검증, 표기 생성, 퀴즈 채점, 기준공식 취급, 암기 상태 (memorize.ts)
 └── ui/           컴포넌트, 표시 설정, 암기 Svelte 스토어 (memorize.svelte.ts)
 
-data/schema-history/   데이터 스키마 v1~v3 기록 (앱은 읽지 않는다)
+data/schema-history/   데이터 스키마 v1~v6 기록 (앱은 읽지 않는다)
 ```
 
 데이터셋 로더는 `loadDataset({ pieceType, buffer })` 시그니처를 쓴다. UFR 버퍼·엣지 3-style을 추가할 때 `loader.ts` 내부만 바뀌고 호출부는 그대로다.

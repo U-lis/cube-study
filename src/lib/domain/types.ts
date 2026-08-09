@@ -42,9 +42,11 @@ export interface StrictInfo {
 	alg: string;
 	moves: number;
 	/**
-	 * 완전히 소멸한 무브 쌍의 수 (v3 정의). `R R'` 처럼 둘이 통째로 사라진 횟수만
-	 * 센다. `U U → U2` 같은 합쳐짐은 무브가 하나 줄지만 여기 잡히지 않으므로
-	 * `cancels` 는 `strict.moves - moves` 와 다를 수 있다 (v2 에서는 같았다).
+	 * 상쇄로 줄어든 무브 수. `strict.moves - moves` 와 항상 같다.
+	 *
+	 * v3~v5 는 이 값을 `(strict.moves - moves) / 2` 로 계산했는데, 상쇄가 늘 무브
+	 * 둘을 지운다고 가정한 것이라 틀렸다 (`R R → R2` 는 하나만 준다). 378×2 중
+	 * 470건이 어긋나 있었고 v6 이 고쳤다.
 	 */
 	cancels: number;
 }
@@ -82,6 +84,15 @@ export interface SetupAlg {
 	 * v2 데이터에는 없는 필드라 optional 이다 (없으면 정방향).
 	 */
 	usesInverse?: boolean;
+	/** v6+. 셋업 무브 수. `S` 의 토큰 수와 같다. */
+	setupMoves?: number;
+	/**
+	 * v6+. 최종 무브 수가 나온 과정. 예: `"3+8+3=14 → 상쇄 6 → 8"`.
+	 *
+	 * 셋업 길이와 최종 무브 수가 안 맞아 보이는 것을 설명하려고 데이터가 들고 있다.
+	 * 화면에서 둘을 나란히 보여주면 반드시 이 질문이 나온다.
+	 */
+	breakdown?: string;
 	/**
 	 * v5+. 셋업 없이 기준공식을 그대로 쓰는 케이스인가. 기준마다 자기 이름의
 	 * 케이스 쌍(XY / YX)을 직접 담당하도록 데이터가 보장한다.

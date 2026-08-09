@@ -128,6 +128,12 @@
 <ul>
 	{#each data.cases as c (c.case)}
 		<!--
+			무브 수는 싣지 않는다. 옆에 보이는 것은 셋업뿐인데 수는 셋업+기준+역셋업을
+			상쇄까지 적용한 최종 길이라 단위가 다르다. 셋업 3수 옆에 8수가 적혀 있으면
+			"3수인데 왜 8수" 가 된다 (CP 가 실제로 그렇다: 3+8+3=14 → 상쇄 6 → 8).
+			데이터의 setup.breakdown 이 그 과정을 들고 있으니, 설명이 필요해지면
+			상세 쪽에서 꺼내 쓴다.
+
 			FR-MC-3(b): 이 화면은 셋업 무브를 나열하는 화면이라 체크박스는 항상
 			setup 기준으로 고정한다. 전역 mode 가 direct 여도 여기 표시는 setup.
 			AD-7: 체크박스는 <a> 밖 형제다. 회색 칸 안(수 오른쪽)에 있는 것처럼
@@ -153,7 +159,6 @@
 				{:else}
 					<span class="inverse"></span>
 				{/if}
-				<span class="moves">{c.setup.moves}수</span>
 			</a>
 			<label class="memo" data-memorize-setup={c.case}>
 				<input
@@ -368,7 +373,7 @@
 		flex: 1 1 auto;
 		min-width: 0;
 		display: grid;
-		grid-template-columns: 3.2rem 1fr 1.2rem auto;
+		grid-template-columns: 3.2rem 1fr 1.2rem;
 		align-items: center;
 		gap: 0.6rem;
 		padding: 0.55rem 0 0.55rem 0.7rem;
@@ -381,8 +386,7 @@
 		font-weight: 600;
 		letter-spacing: 0.1em;
 	}
-	.nosetup,
-	.moves {
+	.nosetup {
 		font-family: var(--mono);
 		font-size: 0.8rem;
 		color: var(--muted);

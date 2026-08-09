@@ -82,26 +82,48 @@ describe('strict 필드 (direct + setup)', () => {
 	});
 
 	/**
-	 * v3 의 cancels 는 "완전히 소멸한 무브 쌍의 수"다. v2 의 "줄어든 무브 수"와
-	 * 다르다 — `U U → U2` 는 무브가 하나 줄지만 소멸한 쌍은 없다.
+	 * cancels 는 "상쇄로 줄어든 무브 수"다 (v2 정의, v6 에서 복원).
+	 *
+	 * v3~v5 는 이것을 `(strict.moves - moves) / 2` 로 계산했는데, 상쇄가 늘 무브
+	 * 둘을 지운다고 가정한 것이라 틀렸다. `R R → R2` 는 토큰이 하나만 준다.
+	 * 378×2 중 470건이 어긋나 있었고 v6 이 나눗셈을 걷어내며 고쳤다.
+	 *
+	 * 그동안 이 테스트는 그 잘못된 값을 "완전 소멸한 쌍의 수" 로 해석해 통과시키고
+	 * 있었다. 두 정의가 우연히 맞아떨어지는 구간이 넓었기 때문이다. 정의를 데이터가
+	 * 말하는 대로 되돌린다.
 	 */
-	it('strict.cancels = 완전 소멸한 쌍의 수 (756)', () => {
+	it('strict.cancels = 상쇄로 줄어든 무브 수 (756)', () => {
 		const bad: string[] = [];
 		for (const [k, c] of entries)
 			for (const m of modes) {
 				const x = pick(c, m);
-				if (x.strict.cancels !== annihilations(x.strict.alg)) bad.push(`${k}/${m}`);
+				if (x.strict.cancels !== x.strict.moves - x.moves) bad.push(`${k}/${m}`);
 			}
 		expect(bad).toEqual([]);
 	});
 
-	it('cancels 는 줄어든 무브 수 이하다 (소멸 1쌍당 2수) (756)', () => {
+	/**
+	 * 완전 소멸한 쌍은 무브를 둘씩 지우므로, 줄어든 무브 수는 그 두 배 이상이다.
+	 * 두 값이 다른 개념이라는 것을 못박아 둔다 — 이 부등식이 깨지면 어느 한쪽의
+	 * 계산이 다시 틀어진 것이다.
+	 */
+	it('줄어든 무브 수 >= 완전 소멸한 쌍의 2배 (756)', () => {
 		const bad: string[] = [];
 		for (const [k, c] of entries)
 			for (const m of modes) {
 				const x = pick(c, m);
-				if (x.strict.cancels * 2 > x.strict.moves - x.moves) bad.push(`${k}/${m}`);
+				if (annihilations(x.strict.alg) * 2 > x.strict.moves - x.moves) bad.push(`${k}/${m}`);
 			}
+		expect(bad).toEqual([]);
+	});
+
+	/** v6 신규. setupMoves 는 셋업 무브 수 그대로다. */
+	it('setup.setupMoves = |S| (378)', () => {
+		const bad: string[] = [];
+		for (const [k, c] of entries) {
+			const n = c.setup.setupMoves;
+			if (n !== undefined && n !== moveCount(c.setup.S)) bad.push(k);
+		}
 		expect(bad).toEqual([]);
 	});
 });

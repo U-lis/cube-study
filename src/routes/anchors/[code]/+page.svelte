@@ -106,16 +106,24 @@
 				/>
 			{/if}
 		</svg>
+		<span class="hide-label">암기 숨김</span>
 		<input
 			type="checkbox"
 			role="switch"
-			aria-label="외운거 안보기"
+			aria-label="암기 숨김"
 			checked={memorize.hideMemorized}
 			onchange={(e) => (memorize.hideMemorized = e.currentTarget.checked)}
 			data-hide-input
 		/>
 	</label>
 </div>
+
+<!--
+	체크박스 열의 머리글. 줄마다 "암기" 를 붙이면 112번 반복되어 배경 소음이 된다.
+	표에서 하듯 열 이름을 한 번만 적고, 각 줄은 체크박스만 갖는다.
+	폭·정렬을 아래 .memo 와 맞춰야 열 위에 정확히 선다.
+-->
+<p class="col-head" aria-hidden="true"><span>암기</span></p>
 
 <ul>
 	{#each data.cases as c (c.case)}
@@ -150,6 +158,7 @@
 			<label class="memo" data-memorize-setup={c.case}>
 				<input
 					type="checkbox"
+					aria-label="{c.case} 암기"
 					checked={memorize.isChecked('setup', c.case)}
 					onchange={() => memorize.toggle('setup', c.case)}
 					data-memorize-input
@@ -231,6 +240,27 @@
 	}
 	.hide-toggle svg {
 		flex: none;
+	}
+	.hide-label {
+		font-size: 0.8rem;
+		white-space: nowrap;
+	}
+	/*
+	 * 체크박스 열 머리글. 오른쪽 44px 열 위에 세운다 (.memo 와 같은 폭).
+	 * <li> 테두리 1px 만큼 안쪽으로 들어가야 눈으로 맞는다.
+	 * 스크린리더에는 각 체크박스의 aria-label 이 있으므로 중복 낭독을 막는다.
+	 */
+	.col-head {
+		display: flex;
+		justify-content: flex-end;
+		margin: 0 0 0.25rem;
+		padding-right: 1px;
+		font-size: 0.7rem;
+		color: var(--muted);
+	}
+	.col-head span {
+		width: 44px;
+		text-align: center;
 	}
 	/*
 	 * 스위치. input 자체를 트랙으로 그리고 ::before 를 손잡이로 쓴다.

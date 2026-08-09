@@ -121,7 +121,7 @@
 					{/if}
 				</svg>
 				<!-- 아이콘만으로는 무슨 버튼인지 알 수 없다. 상태는 색이, 정체는 글자가 맡는다. -->
-				<span class="btn-label">화면 유지</span>
+				<span class="btn-label">화면 켜기</span>
 			</button>
 		{/if}
 

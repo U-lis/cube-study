@@ -38,7 +38,16 @@
 
 <svelte:head><title>3-Style Corner — {data.code}</title></svelte:head>
 
-<UpLink href="/anchors" label="기준공식" />
+<!--
+	목록을 훑는 동안 기준공식이 화면 밖으로 나가지 않게 상단에 고정한다. 이 화면은
+	기준을 보며 셋업을 익히는 화면이라, 기준이 사라지면 목록의 셋업이 무엇에 붙는
+	셋업인지 알 수 없어 매번 위로 올라가 확인하게 된다.
+
+	진도와 토글, 열 머리글까지 함께 고정한다. 머리글이 따라붙지 않으면 스크롤 뒤엔
+	오른쪽 체크박스 열이 이름 없는 칸이 된다.
+-->
+<div class="head" data-anchor-head>
+	<UpLink href="/anchors" label="기준공식" />
 
 <h1>{data.isDirect ? '기준 없음' : data.code}</h1>
 
@@ -124,6 +133,7 @@
 	폭·정렬을 아래 .memo 와 맞춰야 열 위에 정확히 선다.
 -->
 <p class="col-head" aria-hidden="true"><span>암기</span></p>
+</div>
 
 <ul>
 	{#each data.cases as c (c.case)}
@@ -203,6 +213,27 @@
 		font-family: var(--mono);
 		font-size: 0.8rem;
 		color: var(--muted);
+	}
+	/*
+	 * 고정 머리. 배경은 반드시 불투명해야 한다 — 투명하면 아래 <li> 가 비쳐
+	 * 지나간다. 좌우는 main 의 padding 안이라 목록과 폭이 같아 새어 나오지 않는다.
+	 * <li> 가 배경을 갖고 있으므로 z-index 로 위에 세운다.
+	 */
+	.head {
+		position: sticky;
+		top: 0;
+		z-index: 1;
+		background: var(--bg);
+	}
+	/*
+	 * 낮은 화면(가로 방향 폰 등)에서는 고정하지 않는다. 이 머리는 170px 남짓이라
+	 * 세로 400px 화면에서 절반을 먹고 목록이 서너 줄만 남는다 — 고정의 목적이
+	 * 목록을 훑기 위한 것인데 훑을 자리가 없어진다.
+	 */
+	@media (max-height: 560px) {
+		.head {
+			position: static;
+		}
 	}
 	.count {
 		font-size: 0.85rem;

@@ -4,8 +4,8 @@
  * 이 타입은 데이터를 서술할 뿐이며, 데이터를 생성하거나 변형하지 않는다.
  *
  * 코드는 기준공식의 개수·이름·목록을 절대 하드코딩하지 않는다. 전부 데이터에서
- * 읽는다 (domain/anchor.ts). v2→v3 에서 기준이 10개→6개, (직접) 6케이스→0개로
- * 바뀌었고 같은 일이 또 일어날 수 있다.
+ * 읽는다 (domain/anchor.ts). 기준은 v2 10개 → v3 6개 → v5 5개로 두 번 바뀌었고,
+ * (직접) 케이스도 6개 → 0개가 됐다. 같은 일이 또 일어난다고 보는 편이 맞다.
  *
  * v3 에서 늘어난 것은 meta 의 선택 필드와 setup.usesInverse 뿐이라, v2 형태의
  * 파일도 그대로 로드된다.
@@ -76,12 +76,18 @@ export interface SetupAlg {
 	/** 셋업 무브. 없으면 빈 문자열 */
 	S: string;
 	/**
-	 * 기준공식을 거꾸로 돌리는가 (v3, 378 중 188건). true 면 실제 구조는
-	 * `[S: anchor⁻¹]` 다. alg 에는 이미 반영되어 있고, 기준 무브열을 직접
-	 * 보여주거나 조립할 때만 뒤집어야 한다 — domain/anchor.ts 가 담당한다.
+	 * 기준공식을 거꾸로 돌리는가. true 면 실제 구조는 `[S: anchor⁻¹]` 다.
+	 * alg 에는 이미 반영되어 있고, 기준 무브열을 직접 보여주거나 조립할 때만
+	 * 뒤집어야 한다 — domain/anchor.ts 가 담당한다.
 	 * v2 데이터에는 없는 필드라 optional 이다 (없으면 정방향).
 	 */
 	usesInverse?: boolean;
+	/**
+	 * v5+. 셋업 없이 기준공식을 그대로 쓰는 케이스인가. 기준마다 자기 이름의
+	 * 케이스 쌍(XY / YX)을 직접 담당하도록 데이터가 보장한다.
+	 * 표시에 쓰지 않아도 무방하다 — S 가 비었는지로도 같은 판단이 된다.
+	 */
+	isAnchorCase?: boolean;
 	strict: StrictInfo;
 }
 
@@ -105,6 +111,12 @@ export interface Anchor {
 	count: number;
 	entry1: Target;
 	entry2: Target;
+	/** v5+. 이 기준이 셋업 없이 직접 담당하는 케이스 쌍 (예: ['KG', 'GK']) */
+	ownCases?: CaseCode[];
+	/** v5+. 이 기준 하나만으로 도달 가능한 케이스 수 (셋업 0~3수 허용) */
+	soloReach?: number;
+	/** v5+. 이 기준 하나만 쓸 때의 평균 무브 수 */
+	soloAvgMoves?: number;
 }
 
 export interface DatasetMeta {
@@ -123,6 +135,19 @@ export interface DatasetMeta {
 	anchorCount?: number;
 	anchorNote?: string;
 	avgMoves?: { direct: number; setup: number };
+	/**
+	 * v5+. 기준을 하나씩 늘릴 때의 평균 무브 수 변화.
+	 *
+	 * 기준을 늘리는 목적이 커버리지가 아니라 단축이라는 것이 여기서 드러난다 —
+	 * 하나만 알아도 거의 다 도달하고, 추가는 평균을 줄인다.
+	 */
+	learningCurve?: { anchors: AnchorName[]; avgMoves: number; unreachable: number }[];
+	/** v5+. 커버리지가 제약이 아니라는 설명 */
+	coverageNote?: string;
+	/** v5+. 케이스를 어느 기준에 배정하는지의 규칙 */
+	assignmentRule?: string;
+	/** v5+. 배정이 만족하는 성질 (상호배타·완결·역쌍 동일·자기 케이스 소유) */
+	partitionNote?: string;
 }
 
 export interface Dataset {

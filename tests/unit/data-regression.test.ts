@@ -19,7 +19,7 @@ describe('데이터 무결성', () => {
 	it('378 케이스', () => {
 		expect(entries.length).toBe(378);
 	});
-	// 기준 개수는 데이터가 정한다 (v2 10개 → v3 6개). 개수 대신 정합성만 고정한다.
+	// 기준 개수는 데이터가 정한다 (v2 10개 → v3 6개 → v5 5개). 개수 대신 정합성만 고정한다.
 	it('anchor.count 합 + (직접) 케이스 = 전체 케이스 수', () => {
 		const sum = Object.values(data.anchors).reduce((a, x) => a + x.count, 0);
 		const direct = entries.filter(([, c]) => c.setup.anchor === ANCHOR_DIRECT).length;

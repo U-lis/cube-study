@@ -1,0 +1,11916 @@
+{
+"note": "케이스별 각 기준 경로. 아는 기준만으로 풀 때 사용.",
+"anchors": [
+"KG",
+"IV",
+"BU",
+"TC",
+"KS"
+],
+"cases": {
+"BC": {
+"KG": {
+"moves": 13,
+"S": "R2 F R",
+"inv": true,
+"alg": "R2 F R D R U2 R' D' R U2 R2 F' R2"
+},
+"IV": {
+"moves": 12,
+"S": "B R' L'",
+"inv": false,
+"alg": "B R' L' U R2 U' L U R2 U' R B'"
+},
+"BU": {
+"moves": 10,
+"S": "F2",
+"inv": false,
+"alg": "F2 D R2 D' L2 D R2 D' L2 F2"
+},
+"TC": {
+"moves": 13,
+"S": "F' R F",
+"inv": false,
+"alg": "F' R F2 D' F' U2 F D F' U2 F' R' F"
+},
+"KS": {
+"moves": 12,
+"S": "F B",
+"inv": false,
+"alg": "F B R U2 R' D2 R U2 R' D2 B' F'"
+}
+},
+"BD": {
+"KG": {
+"moves": 14,
+"S": "R D2 F'",
+"inv": false,
+"alg": "R D2 F' R U2 R' D R U2 R' D' F D2 R'"
+},
+"IV": {
+"moves": 14,
+"S": "U' R' F2",
+"inv": false,
+"alg": "U' R' F2 U R2 U' L U R2 U' L' F2 R U"
+},
+"BU": {
+"moves": 10,
+"S": "F2 D'",
+"inv": false,
+"alg": "F2 R2 D' L2 D R2 D' L2 D F2"
+},
+"TC": {
+"moves": 14,
+"S": "L R' D'",
+"inv": false,
+"alg": "L R' D' F D' F' U2 F D F' U2 D R L'"
+},
+"KS": {
+"moves": 12,
+"S": "F B R'",
+"inv": false,
+"alg": "F B U2 R' D2 R U2 R' D2 R B' F'"
+}
+},
+"BF": {
+"KG": {
+"moves": 11,
+"S": "U R2 D'",
+"inv": true,
+"alg": "U R' U2 R' D' R U2 R' D R2 U'"
+},
+"IV": {
+"moves": 14,
+"S": "R' F' D",
+"inv": false,
+"alg": "R' F' D U R2 U' L U R2 U' L' D' F R"
+},
+"BU": {
+"moves": 10,
+"S": "F'",
+"inv": false,
+"alg": "F' D R2 D' L2 D R2 D' L2 F"
+},
+"TC": {
+"moves": 11,
+"S": "R F",
+"inv": false,
+"alg": "R F2 D' F' U2 F D F' U2 F' R'"
+},
+"KS": {
+"moves": 12,
+"S": "B F2",
+"inv": false,
+"alg": "B F2 R U2 R' D2 R U2 R' D2 F2 B'"
+}
+},
+"BG": {
+"KG": {
+"moves": 13,
+"S": "D' B D2",
+"inv": true,
+"alg": "D' B D' R U2 R' D' R U2 R' D2 B' D"
+},
+"IV": {
+"moves": 12,
+"S": "D' R2 L'",
+"inv": false,
+"alg": "D' R2 L' U R2 U' L U R2 U' R2 D"
+},
+"BU": {
+"moves": 10,
+"S": "F' D'",
+"inv": false,
+"alg": "F' R2 D' L2 D R2 D' L2 D F"
+},
+"TC": {
+"moves": 12,
+"S": "D R",
+"inv": false,
+"alg": "D R F D' F' U2 F D F' U2 R' D'"
+},
+"KS": {
+"moves": 12,
+"S": "B F2 R'",
+"inv": false,
+"alg": "B F2 U2 R' D2 R U2 R' D2 R F2 B'"
+}
+},
+"BH": {
+"KG": {
+"moves": 13,
+"S": "L U' D",
+"inv": false,
+"alg": "L U' D R U2 R' D R U2 R' D2 U L'"
+},
+"IV": {
+"moves": 12,
+"S": "B R L'",
+"inv": false,
+"alg": "B R L' U R2 U' L U R2 U' R' B'"
+},
+"BU": {
+"moves": 12,
+"S": "D2 F",
+"inv": false,
+"alg": "D2 F D R2 D' L2 D R2 D' L2 F' D2"
+},
+"TC": {
+"moves": 11,
+"S": "R D' F'",
+"inv": true,
+"alg": "R D' F' U2 F D' F' U2 F D2 R'"
+},
+"KS": {
+"moves": 12,
+"S": "D2 B",
+"inv": false,
+"alg": "D2 B R U2 R' D2 R U2 R' D2 B' D2"
+}
+},
+"BI": {
+"KG": {
+"moves": 13,
+"S": "F' L2 R2",
+"inv": true,
+"alg": "F' L2 R2 D R U2 R' D' R U2 R L2 F"
+},
+"IV": {
+"moves": 10,
+"S": "R2",
+"inv": true,
+"alg": "R2 L U R2 U' L' U R2 U' R2"
+},
+"BU": {
+"moves": 14,
+"S": "F' D F",
+"inv": false,
+"alg": "F' D F D R2 D' L2 D R2 D' L2 F' D' F"
+},
+"TC": {
+"moves": 12,
+"S": "U R2 F'",
+"inv": true,
+"alg": "U R2 F' U2 F D' F' U2 F D R2 U'"
+},
+"KS": {
+"moves": 13,
+"S": "B2 L' D",
+"inv": false,
+"alg": "B2 L' D R U2 R' D2 R U2 R' D L B2"
+}
+},
+"BJ": {
+"KG": {
+"moves": 12,
+"S": "R' F",
+"inv": false,
+"alg": "R' F R U2 R' D R U2 R' D' F' R"
+},
+"IV": {
+"moves": 12,
+"S": "F' R2",
+"inv": true,
+"alg": "F' R2 L U R2 U' L' U R2 U' R2 F"
+},
+"BU": {
+"moves": 13,
+"S": "L F' L'",
+"inv": false,
+"alg": "L F' L' D R2 D' L2 D R2 D' L' F L'"
+},
+"TC": {
+"moves": 12,
+"S": "F R",
+"inv": false,
+"alg": "F R F D' F' U2 F D F' U2 R' F'"
+},
+"KS": {
+"moves": 14,
+"S": "L F U'",
+"inv": false,
+"alg": "L F U' R U2 R' D2 R U2 R' D2 U F' L'"
+}
+},
+"BK": {
+"KG": {
+"moves": 13,
+"S": "R2 F R2",
+"inv": true,
+"alg": "R2 F R2 D R U2 R' D' R U2 R F' R2"
+},
+"IV": {
+"moves": 10,
+"S": "B L'",
+"inv": false,
+"alg": "B L' U R2 U' L U R2 U' B'"
+},
+"BU": {
+"moves": 12,
+"S": "D' F' D'",
+"inv": false,
+"alg": "D' F' R2 D' L2 D R2 D' L2 D F D"
+},
+"TC": {
+"moves": 10,
+"S": "R",
+"inv": false,
+"alg": "R F D' F' U2 F D F' U2 R'"
+},
+"KS": {
+"moves": 12,
+"S": "L U'",
+"inv": false,
+"alg": "L U' R U2 R' D2 R U2 R' D2 U L'"
+}
+},
+"BL": {
+"KG": {
+"moves": 11,
+"S": "L2 R2",
+"inv": true,
+"alg": "L2 R2 D R U2 R' D' R U2 R L2"
+},
+"IV": {
+"moves": 12,
+"S": "F R2",
+"inv": true,
+"alg": "F R2 L U R2 U' L' U R2 U' R2 F'"
+},
+"BU": {
+"moves": 12,
+"S": "D F",
+"inv": false,
+"alg": "D F D R2 D' L2 D R2 D' L2 F' D'"
+},
+"TC": {
+"moves": 12,
+"S": "F' R",
+"inv": false,
+"alg": "F' R F D' F' U2 F D F' U2 R' F"
+},
+"KS": {
+"moves": 11,
+"S": "L U' R'",
+"inv": false,
+"alg": "L U R' D2 R U2 R' D2 R U L'"
+}
+},
+"BM": {
+"KG": {
+"moves": 12,
+"S": "B D R'",
+"inv": false,
+"alg": "B D U2 R' D R U2 R' D' R D' B'"
+},
+"IV": {
+"moves": 12,
+"S": "R D' U'",
+"inv": false,
+"alg": "R D' R2 U' L U R2 U' L' U D R'"
+},
+"BU": {
+"moves": 10,
+"S": "F D'",
+"inv": false,
+"alg": "F R2 D' L2 D R2 D' L2 D F'"
+},
+"TC": {
+"moves": 12,
+"S": "R2 B2 F'",
+"inv": false,
+"alg": "R2 B2 D' F' U2 F D F' U2 F B2 R2"
+},
+"KS": {
+"moves": 10,
+"S": "B R'",
+"inv": false,
+"alg": "B U2 R' D2 R U2 R' D2 R B'"
+}
+},
+"BO": {
+"KG": {
+"moves": 13,
+"S": "L U' D2",
+"inv": true,
+"alg": "L U' D' R U2 R' D' R U2 R' D2 U L'"
+},
+"IV": {
+"moves": 12,
+"S": "D R2 L'",
+"inv": false,
+"alg": "D R2 L' U R2 U' L U R2 U' R2 D'"
+},
+"BU": {
+"moves": 12,
+"S": "D2 F' D'",
+"inv": false,
+"alg": "D2 F' R2 D' L2 D R2 D' L2 D F D2"
+},
+"TC": {
+"moves": 10,
+"S": "R F'",
+"inv": false,
+"alg": "R D' F' U2 F D F' U2 F R'"
+},
+"KS": {
+"moves": 13,
+"S": "U' F' D'",
+"inv": false,
+"alg": "U' F' D' R U2 R' D2 R U2 R' D' F U"
+}
+},
+"BP": {
+"KG": {
+"moves": 12,
+"S": "U' F' R'",
+"inv": false,
+"alg": "U' F' U2 R' D R U2 R' D' R F U"
+},
+"IV": {
+"moves": 14,
+"S": "R D2 F",
+"inv": false,
+"alg": "R D2 F U R2 U' L U R2 U' L' F' D2 R'"
+},
+"BU": {
+"moves": 10,
+"S": "F",
+"inv": false,
+"alg": "F D R2 D' L2 D R2 D' L2 F'"
+},
+"TC": {
+"moves": 13,
+"S": "F R F2",
+"inv": false,
+"alg": "F R F' D' F' U2 F D F' U2 F2 R' F'"
+},
+"KS": {
+"moves": 10,
+"S": "B",
+"inv": false,
+"alg": "B R U2 R' D2 R U2 R' D2 B'"
+}
+},
+"BS": {
+"KG": {
+"moves": 11,
+"S": "B D2",
+"inv": true,
+"alg": "B D' R U2 R' D' R U2 R' D2 B'"
+},
+"IV": {
+"moves": 10,
+"S": "R2 L'",
+"inv": false,
+"alg": "R2 L' U R2 U' L U R2 U' R2"
+},
+"BU": {
+"moves": 12,
+"S": "D F' D'",
+"inv": false,
+"alg": "D F' R2 D' L2 D R2 D' L2 D F D'"
+},
+"TC": {
+"moves": 12,
+"S": "D' R F'",
+"inv": false,
+"alg": "D' R D' F' U2 F D F' U2 F R' D"
+},
+"KS": {
+"moves": 12,
+"S": "R' F",
+"inv": false,
+"alg": "R' F R U2 R' D2 R U2 R' D2 F' R"
+}
+},
+"BT": {
+"KG": {
+"moves": 11,
+"S": "B2 D2",
+"inv": true,
+"alg": "B2 D' R U2 R' D' R U2 R' D2 B2"
+},
+"IV": {
+"moves": 12,
+"S": "B R2 L'",
+"inv": false,
+"alg": "B R2 L' U R2 U' L U R2 U' R2 B'"
+},
+"BU": {
+"moves": 12,
+"S": "D' F",
+"inv": false,
+"alg": "D' F D R2 D' L2 D R2 D' L2 F' D"
+},
+"TC": {
+"moves": 13,
+"S": "L2 U' F2",
+"inv": false,
+"alg": "L2 U' F' D' F' U2 F D F' U2 F2 U L2"
+},
+"KS": {
+"moves": 12,
+"S": "D' B",
+"inv": false,
+"alg": "D' B R U2 R' D2 R U2 R' D2 B' D"
+}
+},
+"BU": {
+"KG": {
+"moves": 14,
+"S": "R' D F",
+"inv": false,
+"alg": "R' D F R U2 R' D R U2 R' D' F' D' R"
+},
+"IV": {
+"moves": 14,
+"S": "B L' D2",
+"inv": false,
+"alg": "B L' D2 U R2 U' L U R2 U' L' D2 L B'"
+},
+"BU": {
+"moves": 8,
+"S": "",
+"inv": false,
+"alg": "D R2 D' L2 D R2 D' L2"
+},
+"TC": {
+"moves": 11,
+"S": "R F2",
+"inv": false,
+"alg": "R F' D' F' U2 F D F' U2 F2 R'"
+},
+"KS": {
+"moves": 12,
+"S": "F' B",
+"inv": false,
+"alg": "F' B R U2 R' D2 R U2 R' D2 B' F"
+}
+},
+"BV": {
+"KG": {
+"moves": 12,
+"S": "B2 L' D'",
+"inv": true,
+"alg": "B2 L' R U2 R' D' R U2 R' D L B2"
+},
+"IV": {
+"moves": 10,
+"S": "L U' L'",
+"inv": false,
+"alg": "L U' L' U R2 U' L U R2 L'"
+},
+"BU": {
+"moves": 8,
+"S": "D'",
+"inv": false,
+"alg": "R2 D' L2 D R2 D' L2 D"
+},
+"TC": {
+"moves": 13,
+"S": "D' R F2",
+"inv": false,
+"alg": "D' R F' D' F' U2 F D F' U2 F2 R' D"
+},
+"KS": {
+"moves": 12,
+"S": "F' B R'",
+"inv": false,
+"alg": "F' B U2 R' D2 R U2 R' D2 R B' F"
+}
+},
+"BW": {
+"KG": {
+"moves": 13,
+"S": "U' F' R",
+"inv": false,
+"alg": "U' F' R2 U2 R' D R U2 R' D' R' F U"
+},
+"IV": {
+"moves": 14,
+"S": "U' R F2",
+"inv": false,
+"alg": "U' R F2 U R2 U' L U R2 U' L' F2 R' U"
+},
+"BU": {
+"moves": 9,
+"S": "D2",
+"inv": false,
+"alg": "D' R2 D' L2 D R2 D' L2 D2"
+},
+"TC": {
+"moves": 13,
+"S": "D2 R F2",
+"inv": false,
+"alg": "D2 R F' D' F' U2 F D F' U2 F2 R' D2"
+},
+"KS": {
+"moves": 11,
+"S": "B R2",
+"inv": false,
+"alg": "B R' U2 R' D2 R U2 R' D2 R2 B'"
+}
+},
+"BX": {
+"KG": {
+"moves": 14,
+"S": "R D2 L2",
+"inv": false,
+"alg": "R D2 L2 R U2 R' D R U2 R' D' L2 D2 R'"
+},
+"IV": {
+"moves": 14,
+"S": "R' F' D2",
+"inv": false,
+"alg": "R' F' D2 U R2 U' L U R2 U' L' D2 F R"
+},
+"BU": {
+"moves": 9,
+"S": "D",
+"inv": false,
+"alg": "D2 R2 D' L2 D R2 D' L2 D'"
+},
+"TC": {
+"moves": 13,
+"S": "D R F2",
+"inv": false,
+"alg": "D R F' D' F' U2 F D F' U2 F2 R' D'"
+},
+"KS": {
+"moves": 11,
+"S": "B R",
+"inv": false,
+"alg": "B R2 U2 R' D2 R U2 R' D2 R' B'"
+}
+},
+"CB": {
+"KG": {
+"moves": 13,
+"S": "R2 F R",
+"inv": false,
+"alg": "R2 F R2 U2 R' D R U2 R' D' R' F' R2"
+},
+"IV": {
+"moves": 12,
+"S": "B R' L'",
+"inv": true,
+"alg": "B R' U R2 U' L' U R2 U' L R B'"
+},
+"BU": {
+"moves": 10,
+"S": "F2 L2",
+"inv": false,
+"alg": "F2 L2 D R2 D' L2 D R2 D' F2"
+},
+"TC": {
+"moves": 13,
+"S": "F' R F",
+"inv": true,
+"alg": "F' R F U2 F D' F' U2 F D F2 R' F"
+},
+"KS": {
+"moves": 12,
+"S": "F B D2",
+"inv": false,
+"alg": "F B D2 R U2 R' D2 R U2 R' B' F'"
+}
+},
+"CD": {
+"KG": {
+"moves": 13,
+"S": "R F' R2",
+"inv": false,
+"alg": "R F' R' U2 R' D R U2 R' D' R2 F R'"
+},
+"IV": {
+"moves": 12,
+"S": "R' F2",
+"inv": false,
+"alg": "R' F2 U R2 U' L U R2 U' L' F2 R"
+},
+"BU": {
+"moves": 12,
+"S": "U F2 D'",
+"inv": false,
+"alg": "U F2 R2 D' L2 D R2 D' L2 D F2 U'"
+},
+"TC": {
+"moves": 13,
+"S": "F2 R' F2",
+"inv": true,
+"alg": "F2 R' F2 U2 F D' F' U2 F D F R F2"
+},
+"KS": {
+"moves": 14,
+"S": "L U2 F",
+"inv": false,
+"alg": "L U2 F R U2 R' D2 R U2 R' D2 F' U2 L'"
+}
+},
+"CF": {
+"KG": {
+"moves": 10,
+"S": "F R' D'",
+"inv": false,
+"alg": "F R' D' R U2 R' D R U2 F'"
+},
+"IV": {
+"moves": 12,
+"S": "U2 F U'",
+"inv": true,
+"alg": "U2 F U' L U R2 U' L' U R2 F' U2"
+},
+"BU": {
+"moves": 13,
+"S": "L U' L'",
+"inv": false,
+"alg": "L U' L' D R2 D' L2 D R2 D' L' U L'"
+},
+"TC": {
+"moves": 12,
+"S": "F D",
+"inv": false,
+"alg": "F D F D' F' U2 F D F' U2 D' F'"
+},
+"KS": {
+"moves": 13,
+"S": "U L R2",
+"inv": true,
+"alg": "U L R2 D2 R U2 R' D2 R U2 R L' U'"
+}
+},
+"CG": {
+"KG": {
+"moves": 8,
+"S": "R'",
+"inv": false,
+"alg": "U2 R' D R U2 R' D' R"
+},
+"IV": {
+"moves": 12,
+"S": "R2 D' L'",
+"inv": false,
+"alg": "R2 D' L' U R2 U' L U R2 U' D R2"
+},
+"BU": {
+"moves": 14,
+"S": "F U F",
+"inv": false,
+"alg": "F U F D R2 D' L2 D R2 D' L2 F' U' F'"
+},
+"TC": {
+"moves": 13,
+"S": "F' R' F",
+"inv": true,
+"alg": "F' R' F U2 F D' F' U2 F D F2 R F"
+},
+"KS": {
+"moves": 10,
+"S": "D' R'",
+"inv": false,
+"alg": "D' U2 R' D2 R U2 R' D2 R D"
+}
+},
+"CH": {
+"KG": {
+"moves": 10,
+"S": "D2 R' D'",
+"inv": true,
+"alg": "D2 U2 R' D' R U2 R' D R D2"
+},
+"IV": {
+"moves": 12,
+"S": "F B' U'",
+"inv": true,
+"alg": "F B' U' L U R2 U' L' U R2 B F'"
+},
+"BU": {
+"moves": 13,
+"S": "U B2 L",
+"inv": false,
+"alg": "U B2 L D R2 D' L2 D R2 D' L B2 U'"
+},
+"TC": {
+"moves": 10,
+"S": "D' U2",
+"inv": false,
+"alg": "D' U2 F D' F' U2 F D F' D"
+}
+},
+"CI": {
+"KG": {
+"moves": 12,
+"S": "L D R'",
+"inv": true,
+"alg": "L D R' D R U2 R' D' R U2 D' L'"
+},
+"IV": {
+"moves": 12,
+"S": "R2 D'",
+"inv": true,
+"alg": "R2 D' L U R2 U' L' U R2 U' D R2"
+},
+"TC": {
+"moves": 13,
+"S": "F' D2 F",
+"inv": true,
+"alg": "F' D2 F U2 F D' F' U2 F D F2 D2 F"
+},
+"KS": {
+"moves": 10,
+"S": "L U2 R'",
+"inv": false,
+"alg": "L R' D2 R U2 R' D2 R U2 L'"
+}
+},
+"CK": {
+"KG": {
+"moves": 10,
+"S": "D' R'",
+"inv": false,
+"alg": "D' U2 R' D R U2 R' D' R D"
+},
+"IV": {
+"moves": 12,
+"S": "F2 D",
+"inv": true,
+"alg": "F2 D L U R2 U' L' U R2 U' D' F2"
+},
+"BU": {
+"moves": 13,
+"S": "R2 B D",
+"inv": true,
+"alg": "R2 B D L2 D R2 D' L2 D R2 D2 B' R2"
+},
+"TC": {
+"moves": 8,
+"S": "F D F'",
+"inv": false,
+"alg": "U2 F D F' U2 F D' F'"
+},
+"KS": {
+"moves": 10,
+"S": "D2 R'",
+"inv": false,
+"alg": "D2 U2 R' D2 R U2 R' D2 R D2"
+}
+},
+"CL": {
+"KG": {
+"moves": 10,
+"S": "D R' D'",
+"inv": true,
+"alg": "D U2 R' D' R U2 R' D R D'"
+},
+"IV": {
+"moves": 13,
+"S": "L F2 L2",
+"inv": true,
+"alg": "L F2 L' U R2 U' L' U R2 U' L2 F2 L'"
+},
+"BU": {
+"moves": 12,
+"S": "F2 R L2",
+"inv": false,
+"alg": "F2 R L2 D R2 D' L2 D R2 D' R' F2"
+},
+"TC": {
+"moves": 10,
+"S": "D2 U2",
+"inv": false,
+"alg": "D2 U2 F D' F' U2 F D F' D2"
+},
+"KS": {
+"moves": 13,
+"S": "U L2 R2",
+"inv": false,
+"alg": "U L2 R' U2 R' D2 R U2 R' D2 R2 L2 U'"
+}
+},
+"CN": {
+"KG": {
+"moves": 13,
+"S": "R D2 R2",
+"inv": false,
+"alg": "R D2 R' U2 R' D R U2 R' D' R2 D2 R'"
+},
+"IV": {
+"moves": 10,
+"S": "F U'",
+"inv": false,
+"alg": "F R2 U' L U R2 U' L' U F'"
+},
+"TC": {
+"moves": 12,
+"S": "B D'",
+"inv": false,
+"alg": "B D' F D' F' U2 F D F' U2 D B'"
+},
+"KS": {
+"moves": 13,
+"S": "R D R2",
+"inv": false,
+"alg": "R D R' U2 R' D2 R U2 R' D2 R2 D' R'"
+}
+},
+"CO": {
+"KG": {
+"moves": 10,
+"S": "D2 R'",
+"inv": false,
+"alg": "D2 U2 R' D R U2 R' D' R D2"
+},
+"IV": {
+"moves": 12,
+"S": "F2 D L'",
+"inv": false,
+"alg": "F2 D L' U R2 U' L U R2 U' D' F2"
+},
+"BU": {
+"moves": 11,
+"S": "B2 R' D'",
+"inv": false,
+"alg": "B2 R D' L2 D R2 D' L2 D R B2"
+},
+"TC": {
+"moves": 14,
+"S": "F' U' L",
+"inv": true,
+"alg": "F' U' L U2 F D' F' U2 F D F' L' U F"
+},
+"KS": {
+"moves": 10,
+"S": "D R'",
+"inv": false,
+"alg": "D U2 R' D2 R U2 R' D2 R D'"
+}
+},
+"CP": {
+"KG": {
+"moves": 8,
+"S": "U2 R' D'",
+"inv": false,
+"alg": "U2 R' D' R U2 R' D R"
+},
+"IV": {
+"moves": 13,
+"S": "L2 F' U",
+"inv": false,
+"alg": "L2 F' U2 R2 U' L U R2 U' L' U' F L2"
+},
+"BU": {
+"moves": 14,
+"S": "R U' F'",
+"inv": false,
+"alg": "R U' F' D R2 D' L2 D R2 D' L2 F U R'"
+},
+"TC": {
+"moves": 10,
+"S": "D U2",
+"inv": false,
+"alg": "D U2 F D' F' U2 F D F' D'"
+}
+},
+"CQ": {
+"KG": {
+"moves": 12,
+"S": "R' D' R'",
+"inv": true,
+"alg": "R' D' R' D R U2 R' D' R U2 D R"
+},
+"IV": {
+"moves": 12,
+"S": "U' F2 U'",
+"inv": false,
+"alg": "U' F2 R2 U' L U R2 U' L' U F2 U"
+},
+"BU": {
+"moves": 13,
+"S": "R B D",
+"inv": false,
+"alg": "R B D2 R2 D' L2 D R2 D' L2 D' B' R'"
+},
+"TC": {
+"moves": 13,
+"S": "L' R U'",
+"inv": false,
+"alg": "L' R U' F D' F' U2 F D F' U' R' L"
+},
+"KS": {
+"moves": 12,
+"S": "R' D2 R'",
+"inv": true,
+"alg": "R' D2 R' D2 R U2 R' D2 R U2 D2 R"
+}
+},
+"CS": {
+"KG": {
+"moves": 10,
+"S": "D R'",
+"inv": false,
+"alg": "D U2 R' D R U2 R' D' R D'"
+},
+"IV": {
+"moves": 13,
+"S": "B2 D' U2",
+"inv": false,
+"alg": "B2 D' U' R2 U' L U R2 U' L' U2 D B2"
+},
+"BU": {
+"moves": 12,
+"S": "F B' D'",
+"inv": false,
+"alg": "F B' R2 D' L2 D R2 D' L2 D B F'"
+},
+"TC": {
+"moves": 14,
+"S": "L B L2",
+"inv": false,
+"alg": "L B L2 F D' F' U2 F D F' U2 L2 B' L'"
+},
+"KS": {
+"moves": 8,
+"S": "R'",
+"inv": false,
+"alg": "U2 R' D2 R U2 R' D2 R"
+}
+},
+"CT": {
+"KG": {
+"moves": 10,
+"S": "D' R' D'",
+"inv": true,
+"alg": "D' U2 R' D' R U2 R' D R D"
+},
+"IV": {
+"moves": 11,
+"S": "B2 R U'",
+"inv": false,
+"alg": "B2 R' U' L U R2 U' L' U R' B2"
+},
+"BU": {
+"moves": 12,
+"S": "F2 R' L2",
+"inv": false,
+"alg": "F2 R' L2 D R2 D' L2 D R2 D' R F2"
+},
+"TC": {
+"moves": 8,
+"S": "U2",
+"inv": false,
+"alg": "U2 F D' F' U2 F D F'"
+},
+"KS": {
+"moves": 13,
+"S": "F2 B2 D'",
+"inv": false,
+"alg": "F2 B2 D' R U2 R' D2 R U2 R' D' B2 F2"
+}
+},
+"CU": {
+"KG": {
+"moves": 13,
+"S": "B' U' R2",
+"inv": false,
+"alg": "B' U' R' U2 R' D R U2 R' D' R2 U B"
+},
+"BU": {
+"moves": 13,
+"S": "D R2 D2",
+"inv": true,
+"alg": "D R2 D2 L2 D R2 D' L2 D R2 D R2 D'"
+},
+"TC": {
+"moves": 13,
+"S": "F D F",
+"inv": false,
+"alg": "F D F2 D' F' U2 F D F' U2 F' D' F'"
+},
+"KS": {
+"moves": 13,
+"S": "R' D2 R",
+"inv": true,
+"alg": "R' D2 R D2 R U2 R' D2 R U2 R2 D2 R"
+}
+},
+"CV": {
+"KG": {
+"moves": 14,
+"S": "L U L",
+"inv": false,
+"alg": "L U L R U2 R' D R U2 R' D' L' U' L'"
+},
+"IV": {
+"moves": 11,
+"S": "L U2 L'",
+"inv": false,
+"alg": "L U2 L' U R2 U' L U R2 U L'"
+},
+"BU": {
+"moves": 11,
+"S": "R2 D2 L2",
+"inv": false,
+"alg": "R2 D2 L2 D R2 D' L2 D R2 D R2"
+},
+"TC": {
+"moves": 14,
+"S": "L' U2 R'",
+"inv": false,
+"alg": "L' U2 R' F D' F' U2 F D F' U2 R U2 L"
+},
+"KS": {
+"moves": 13,
+"S": "F R' D'",
+"inv": false,
+"alg": "F R' D' R U2 R' D2 R U2 R' D' R F'"
+}
+},
+"CW": {
+"KG": {
+"moves": 13,
+"S": "R D' R2",
+"inv": false,
+"alg": "R D' R' U2 R' D R U2 R' D' R2 D R'"
+},
+"BU": {
+"moves": 13,
+"S": "D' R2 D2",
+"inv": true,
+"alg": "D' R2 D2 L2 D R2 D' L2 D R2 D R2 D"
+},
+"TC": {
+"moves": 13,
+"S": "L' U F",
+"inv": true,
+"alg": "L' U F U2 F D' F' U2 F D F2 U' L"
+},
+"KS": {
+"moves": 13,
+"S": "R D2 R2",
+"inv": false,
+"alg": "R D2 R' U2 R' D2 R U2 R' D2 R2 D2 R'"
+}
+},
+"CX": {
+"KG": {
+"moves": 13,
+"S": "R' D' R",
+"inv": true,
+"alg": "R' D' R D R U2 R' D' R U2 R2 D R"
+},
+"IV": {
+"moves": 12,
+"S": "R' D2 L'",
+"inv": true,
+"alg": "R' D2 U R2 U' L' U R2 U' L D2 R"
+},
+"BU": {
+"moves": 12,
+"S": "L2 U2",
+"inv": false,
+"alg": "L2 U2 D R2 D' L2 D R2 D' L2 U2 L2"
+},
+"TC": {
+"moves": 13,
+"S": "F D F2",
+"inv": false,
+"alg": "F D F' D' F' U2 F D F' U2 F2 D' F'"
+},
+"KS": {
+"moves": 13,
+"S": "F' U R2",
+"inv": true,
+"alg": "F' U R2 D2 R U2 R' D2 R U2 R U' F"
+}
+},
+"DB": {
+"KG": {
+"moves": 14,
+"S": "R D2 F'",
+"inv": true,
+"alg": "R D2 F' D R U2 R' D' R U2 R' F D2 R'"
+},
+"IV": {
+"moves": 14,
+"S": "U' R' F2",
+"inv": true,
+"alg": "U' R' F2 L U R2 U' L' U R2 U' F2 R U"
+},
+"BU": {
+"moves": 10,
+"S": "F2 D' L2",
+"inv": false,
+"alg": "F2 D' L2 D R2 D' L2 D R2 F2"
+},
+"TC": {
+"moves": 14,
+"S": "L R' D'",
+"inv": true,
+"alg": "L R' D' U2 F D' F' U2 F D F' D R L'"
+},
+"KS": {
+"moves": 12,
+"S": "F B R'",
+"inv": true,
+"alg": "F B R' D2 R U2 R' D2 R U2 B' F'"
+}
+},
+"DC": {
+"KG": {
+"moves": 13,
+"S": "R F' R2",
+"inv": true,
+"alg": "R F' R2 D R U2 R' D' R U2 R F R'"
+},
+"IV": {
+"moves": 12,
+"S": "R' F2",
+"inv": true,
+"alg": "R' F2 L U R2 U' L' U R2 U' F2 R"
+},
+"BU": {
+"moves": 12,
+"S": "U F2 D'",
+"inv": true,
+"alg": "U F2 D' L2 D R2 D' L2 D R2 F2 U'"
+},
+"TC": {
+"moves": 13,
+"S": "F2 R' F2",
+"inv": false,
+"alg": "F2 R' F' D' F' U2 F D F' U2 F2 R F2"
+},
+"KS": {
+"moves": 14,
+"S": "L U2 F",
+"inv": true,
+"alg": "L U2 F D2 R U2 R' D2 R U2 R' F' U2 L'"
+}
+},
+"DG": {
+"KG": {
+"moves": 13,
+"S": "L' U D",
+"inv": false,
+"alg": "L' U D R U2 R' D R U2 R' D2 U' L"
+},
+"IV": {
+"moves": 12,
+"S": "D' F2 L'",
+"inv": false,
+"alg": "D' F2 L' U R2 U' L U R2 U' F2 D"
+},
+"BU": {
+"moves": 12,
+"S": "U F' D'",
+"inv": true,
+"alg": "U F' D' L2 D R2 D' L2 D R2 F U'"
+},
+"TC": {
+"moves": 11,
+"S": "L2 D2 F'",
+"inv": false,
+"alg": "L2 D F' U2 F D F' U2 F D2 L2"
+},
+"KS": {
+"moves": 13,
+"S": "D2 F' D",
+"inv": false,
+"alg": "D2 F' D R U2 R' D2 R U2 R' D F D2"
+}
+},
+"DH": {
+"KG": {
+"moves": 12,
+"S": "D F'",
+"inv": true,
+"alg": "D F' D R U2 R' D' R U2 R' F D'"
+},
+"IV": {
+"moves": 14,
+"S": "U' L F",
+"inv": true,
+"alg": "U' L F L U R2 U' L' U R2 U' F' L' U"
+},
+"BU": {
+"moves": 13,
+"S": "B2 D L",
+"inv": false,
+"alg": "B2 D L D R2 D' L2 D R2 D' L D' B2"
+},
+"TC": {
+"moves": 11,
+"S": "L D2 F'",
+"inv": false,
+"alg": "L D F' U2 F D F' U2 F D2 L'"
+},
+"KS": {
+"moves": 14,
+"S": "U' F U2",
+"inv": false,
+"alg": "U' F U2 R U2 R' D2 R U2 R' D2 U2 F' U"
+}
+},
+"DJ": {
+"KG": {
+"moves": 11,
+"S": "U2 R2 D'",
+"inv": false,
+"alg": "U2 R2 D' R U2 R' D R U2 R U2"
+},
+"IV": {
+"moves": 13,
+"S": "L' F U",
+"inv": true,
+"alg": "L' F U L U R2 U' L' U R2 U2 F' L"
+},
+"BU": {
+"moves": 12,
+"S": "R' U D'",
+"inv": true,
+"alg": "R' U D' L2 D R2 D' L2 D R2 U' R"
+},
+"TC": {
+"moves": 12,
+"S": "L D' U2",
+"inv": false,
+"alg": "L D' U2 F D' F' U2 F D F' D L'"
+},
+"KS": {
+"moves": 14,
+"S": "F' D L",
+"inv": true,
+"alg": "F' D L D2 R U2 R' D2 R U2 R' L' D' F"
+}
+},
+"DK": {
+"KG": {
+"moves": 13,
+"S": "R' F' R",
+"inv": true,
+"alg": "R' F' R D R U2 R' D' R U2 R2 F R"
+},
+"IV": {
+"moves": 10,
+"S": "F2",
+"inv": true,
+"alg": "F2 L U R2 U' L' U R2 U' F2"
+},
+"BU": {
+"moves": 13,
+"S": "R' U D2",
+"inv": true,
+"alg": "R' U D2 L2 D R2 D' L2 D R2 D U' R"
+},
+"TC": {
+"moves": 12,
+"S": "U R U2",
+"inv": false,
+"alg": "U R U2 F D' F' U2 F D F' R' U'"
+},
+"KS": {
+"moves": 13,
+"S": "D F' D",
+"inv": false,
+"alg": "D F' D R U2 R' D2 R U2 R' D F D'"
+}
+},
+"DL": {
+"KG": {
+"moves": 10,
+"S": "F'",
+"inv": true,
+"alg": "F' D R U2 R' D' R U2 R' F"
+},
+"IV": {
+"moves": 12,
+"S": "L2 F' L'",
+"inv": false,
+"alg": "L2 F' L' U R2 U' L U R2 U' F L2"
+},
+"BU": {
+"moves": 14,
+"S": "U D F",
+"inv": true,
+"alg": "U D F L2 D R2 D' L2 D R2 D' F' D' U'"
+},
+"TC": {
+"moves": 14,
+"S": "U F' R",
+"inv": true,
+"alg": "U F' R U2 F D' F' U2 F D F' R' F U'"
+},
+"KS": {
+"moves": 14,
+"S": "U D B",
+"inv": true,
+"alg": "U D B D2 R U2 R' D2 R U2 R' B' D' U'"
+}
+},
+"DM": {
+"KG": {
+"moves": 12,
+"S": "R' F' R'",
+"inv": true,
+"alg": "R' F' R' D R U2 R' D' R U2 F R"
+},
+"IV": {
+"moves": 12,
+"S": "U R2",
+"inv": false,
+"alg": "U R2 U R2 U' L U R2 U' L' R2 U'"
+},
+"BU": {
+"moves": 13,
+"S": "R2 B' L'",
+"inv": false,
+"alg": "R2 B' L' D R2 D' L2 D R2 D' L' B R2"
+},
+"TC": {
+"moves": 12,
+"S": "U2 R2 F'",
+"inv": false,
+"alg": "U2 R2 D' F' U2 F D F' U2 F R2 U2"
+},
+"KS": {
+"moves": 13,
+"S": "R2 F' D",
+"inv": false,
+"alg": "R2 F' D R U2 R' D2 R U2 R' D F R2"
+}
+},
+"DN": {
+"KG": {
+"moves": 12,
+"S": "U' F2",
+"inv": false,
+"alg": "U' F2 R U2 R' D R U2 R' D' F2 U"
+},
+"IV": {
+"moves": 14,
+"S": "R' U R2",
+"inv": false,
+"alg": "R' U R2 U R2 U' L U R2 U' L' R2 U' R"
+},
+"BU": {
+"moves": 13,
+"S": "R B' L'",
+"inv": false,
+"alg": "R B' L' D R2 D' L2 D R2 D' L' B R'"
+},
+"TC": {
+"moves": 13,
+"S": "R B2 F",
+"inv": false,
+"alg": "R B2 F2 D' F' U2 F D F' U2 F' B2 R'"
+},
+"KS": {
+"moves": 13,
+"S": "R F' D",
+"inv": false,
+"alg": "R F' D R U2 R' D2 R U2 R' D F R'"
+}
+},
+"DO": {
+"KG": {
+"moves": 12,
+"S": "R F' R'",
+"inv": true,
+"alg": "R F' R' D R U2 R' D' R U2 F R'"
+},
+"IV": {
+"moves": 11,
+"S": "F R' U'",
+"inv": false,
+"alg": "F R U' L U R2 U' L' U R F'"
+},
+"BU": {
+"moves": 11,
+"S": "B' L'",
+"inv": false,
+"alg": "B' L' D R2 D' L2 D R2 D' L' B"
+},
+"TC": {
+"moves": 11,
+"S": "L D' F'",
+"inv": true,
+"alg": "L D' F' U2 F D' F' U2 F D2 L'"
+},
+"KS": {
+"moves": 11,
+"S": "F' D",
+"inv": false,
+"alg": "F' D R U2 R' D2 R U2 R' D F"
+}
+},
+"DP": {
+"KG": {
+"moves": 10,
+"S": "F' U2 R'",
+"inv": false,
+"alg": "F' R' D R U2 R' D' R U2 F"
+},
+"IV": {
+"moves": 14,
+"S": "R U R2",
+"inv": false,
+"alg": "R U R2 U R2 U' L U R2 U' L' R2 U' R'"
+},
+"BU": {
+"moves": 12,
+"S": "U F L2",
+"inv": false,
+"alg": "U F L2 D R2 D' L2 D R2 D' F' U'"
+},
+"TC": {
+"moves": 13,
+"S": "L D' F2",
+"inv": true,
+"alg": "L D' F2 U2 F D' F' U2 F D F D L'"
+},
+"KS": {
+"moves": 12,
+"S": "F' D' R'",
+"inv": true,
+"alg": "F' D' R' D2 R U2 R' D2 R U2 D F"
+}
+},
+"DQ": {
+"KG": {
+"moves": 11,
+"S": "L' U' R'",
+"inv": false,
+"alg": "L' U R' D R U2 R' D' R U L"
+},
+"IV": {
+"moves": 12,
+"S": "L D2 U'",
+"inv": true,
+"alg": "L D2 U' L U R2 U' L' U R2 D2 L'"
+},
+"BU": {
+"moves": 12,
+"S": "U F D'",
+"inv": true,
+"alg": "U F D' L2 D R2 D' L2 D R2 F' U'"
+},
+"TC": {
+"moves": 12,
+"S": "F2 R'",
+"inv": false,
+"alg": "F2 R' F D' F' U2 F D F' U2 R F2"
+},
+"KS": {
+"moves": 12,
+"S": "U B R'",
+"inv": true,
+"alg": "U B R' D2 R U2 R' D2 R U2 B' U'"
+}
+},
+"DS": {
+"KG": {
+"moves": 11,
+"S": "F' D",
+"inv": false,
+"alg": "F' D R U2 R' D R U2 R' D2 F"
+},
+"IV": {
+"moves": 10,
+"S": "F2 L'",
+"inv": false,
+"alg": "F2 L' U R2 U' L U R2 U' F2"
+},
+"BU": {
+"moves": 13,
+"S": "F U L'",
+"inv": false,
+"alg": "F U L' D R2 D' L2 D R2 D' L' U' F'"
+},
+"TC": {
+"moves": 13,
+"S": "D' B2 F",
+"inv": false,
+"alg": "D' B2 F2 D' F' U2 F D F' U2 F' B2 D"
+},
+"KS": {
+"moves": 13,
+"S": "D' F' D",
+"inv": false,
+"alg": "D' F' D R U2 R' D2 R U2 R' D F D"
+}
+},
+"DT": {
+"KG": {
+"moves": 12,
+"S": "D' F' R'",
+"inv": true,
+"alg": "D' F' R' D R U2 R' D' R U2 F D"
+},
+"IV": {
+"moves": 14,
+"S": "F' R2 F'",
+"inv": true,
+"alg": "F' R2 F' L U R2 U' L' U R2 U' F R2 F"
+},
+"BU": {
+"moves": 12,
+"S": "R U D'",
+"inv": true,
+"alg": "R U D' L2 D R2 D' L2 D R2 U' R'"
+},
+"TC": {
+"moves": 14,
+"S": "L R2 D'",
+"inv": true,
+"alg": "L R2 D' U2 F D' F' U2 F D F' D R2 L'"
+},
+"KS": {
+"moves": 13,
+"S": "L' U D",
+"inv": false,
+"alg": "L' U D R U2 R' D2 R U2 R' D U' L"
+}
+},
+"DU": {
+"KG": {
+"moves": 13,
+"S": "D2 F' R",
+"inv": true,
+"alg": "D2 F' R D R U2 R' D' R U2 R2 F D2"
+},
+"IV": {
+"moves": 14,
+"S": "D2 R F2",
+"inv": true,
+"alg": "D2 R F2 L U R2 U' L' U R2 U' F2 R' D2"
+},
+"BU": {
+"moves": 10,
+"S": "U L2",
+"inv": false,
+"alg": "U L2 D R2 D' L2 D R2 D' U'"
+},
+"TC": {
+"moves": 13,
+"S": "U R F2",
+"inv": true,
+"alg": "U R F2 U2 F D' F' U2 F D F R' U'"
+},
+"KS": {
+"moves": 13,
+"S": "F' R' D",
+"inv": false,
+"alg": "F' R' D R U2 R' D2 R U2 R' D R F"
+}
+},
+"DV": {
+"KG": {
+"moves": 12,
+"S": "B2 L D'",
+"inv": true,
+"alg": "B2 L R U2 R' D' R U2 R' D L' B2"
+},
+"IV": {
+"moves": 14,
+"S": "D R F2",
+"inv": true,
+"alg": "D R F2 L U R2 U' L' U R2 U' F2 R' D'"
+},
+"BU": {
+"moves": 10,
+"S": "U D' L2",
+"inv": false,
+"alg": "U D' L2 D R2 D' L2 D R2 U'"
+},
+"TC": {
+"moves": 14,
+"S": "L R D'",
+"inv": true,
+"alg": "L R D' U2 F D' F' U2 F D F' D R' L'"
+},
+"KS": {
+"moves": 13,
+"S": "F R2 D'",
+"inv": false,
+"alg": "F R2 D' R U2 R' D2 R U2 R' D' R2 F'"
+}
+},
+"DW": {
+"KG": {
+"moves": 11,
+"S": "F' R",
+"inv": true,
+"alg": "F' R D R U2 R' D' R U2 R2 F"
+},
+"IV": {
+"moves": 12,
+"S": "R F2",
+"inv": true,
+"alg": "R F2 L U R2 U' L' U R2 U' F2 R'"
+},
+"BU": {
+"moves": 11,
+"S": "U D2 L2",
+"inv": false,
+"alg": "U D2 L2 D R2 D' L2 D R2 D U'"
+},
+"TC": {
+"moves": 14,
+"S": "R U R",
+"inv": true,
+"alg": "R U R U2 F D' F' U2 F D F' R' U' R'"
+},
+"KS": {
+"moves": 13,
+"S": "U B R2",
+"inv": true,
+"alg": "U B R2 D2 R U2 R' D2 R U2 R B' U'"
+}
+},
+"DX": {
+"KG": {
+"moves": 13,
+"S": "L' U R2",
+"inv": true,
+"alg": "L' U R2 D R U2 R' D' R U2 R U' L"
+},
+"IV": {
+"moves": 14,
+"S": "D' R F2",
+"inv": true,
+"alg": "D' R F2 L U R2 U' L' U R2 U' F2 R' D"
+},
+"BU": {
+"moves": 11,
+"S": "U D L2",
+"inv": false,
+"alg": "U D L2 D R2 D' L2 D R2 D2 U'"
+},
+"TC": {
+"moves": 14,
+"S": "U2 B' R2",
+"inv": false,
+"alg": "U2 B' R2 F D' F' U2 F D F' U2 R2 B U2"
+},
+"KS": {
+"moves": 13,
+"S": "F' D' R",
+"inv": true,
+"alg": "F' D' R D2 R U2 R' D2 R U2 R2 D F"
+}
+},
+"FB": {
+"KG": {
+"moves": 11,
+"S": "U R2 D'",
+"inv": false,
+"alg": "U R2 D' R U2 R' D R U2 R U'"
+},
+"IV": {
+"moves": 14,
+"S": "R' F' D",
+"inv": true,
+"alg": "R' F' D L U R2 U' L' U R2 U' D' F R"
+},
+"BU": {
+"moves": 10,
+"S": "F' L2",
+"inv": false,
+"alg": "F' L2 D R2 D' L2 D R2 D' F"
+},
+"TC": {
+"moves": 11,
+"S": "R F U2",
+"inv": false,
+"alg": "R F U2 F D' F' U2 F D F2 R'"
+},
+"KS": {
+"moves": 12,
+"S": "B F2 D2",
+"inv": false,
+"alg": "B F2 D2 R U2 R' D2 R U2 R' F2 B'"
+}
+},
+"FC": {
+"KG": {
+"moves": 10,
+"S": "F R' D'",
+"inv": true,
+"alg": "F U2 R' D' R U2 R' D R F'"
+},
+"IV": {
+"moves": 12,
+"S": "U2 F U'",
+"inv": false,
+"alg": "U2 F R2 U' L U R2 U' L' U F' U2"
+},
+"BU": {
+"moves": 13,
+"S": "L U' L",
+"inv": false,
+"alg": "L U' L D R2 D' L2 D R2 D' L U L'"
+},
+"TC": {
+"moves": 12,
+"S": "F D U2",
+"inv": false,
+"alg": "F D U2 F D' F' U2 F D F' D' F'"
+},
+"KS": {
+"moves": 13,
+"S": "U L R2",
+"inv": false,
+"alg": "U L R' U2 R' D2 R U2 R' D2 R2 L' U'"
+}
+},
+"FG": {
+"KG": {
+"moves": 12,
+"S": "U2 B R'",
+"inv": true,
+"alg": "U2 B R' D R U2 R' D' R U2 B' U2"
+},
+"IV": {
+"moves": 12,
+"S": "L D2",
+"inv": false,
+"alg": "L D2 U R2 U' L U R2 U' L' D2 L'"
+},
+"BU": {
+"moves": 12,
+"S": "F' R2 L2",
+"inv": false,
+"alg": "F' R2 L2 D R2 D' L2 D R2 D' R2 F"
+},
+"TC": {
+"moves": 13,
+"S": "F' R' F2",
+"inv": true,
+"alg": "F' R' F2 U2 F D' F' U2 F D F R F"
+},
+"KS": {
+"moves": 12,
+"S": "D' F R'",
+"inv": false,
+"alg": "D' F U2 R' D2 R U2 R' D2 R F' D"
+}
+},
+"FH": {
+"KG": {
+"moves": 14,
+"S": "F2 U' L'",
+"inv": true,
+"alg": "F2 U' L' D R U2 R' D' R U2 R' L U F2"
+},
+"IV": {
+"moves": 12,
+"S": "F2 B' U'",
+"inv": true,
+"alg": "F2 B' U' L U R2 U' L' U R2 B F2"
+},
+"BU": {
+"moves": 12,
+"S": "L' U L2",
+"inv": false,
+"alg": "L' U L2 D R2 D' L2 D R2 D' U' L"
+},
+"TC": {
+"moves": 11,
+"S": "D' F U2",
+"inv": false,
+"alg": "D' F U2 F D' F' U2 F D F2 D"
+}
+},
+"FJ": {
+"KG": {
+"moves": 12,
+"S": "R' F R'",
+"inv": false,
+"alg": "R' F U2 R' D R U2 R' D' R F' R"
+},
+"IV": {
+"moves": 12,
+"S": "F' D",
+"inv": true,
+"alg": "F' D L U R2 U' L' U R2 U' D' F"
+},
+"BU": {
+"moves": 12,
+"S": "R F' L2",
+"inv": false,
+"alg": "R F' L2 D R2 D' L2 D R2 D' F R'"
+},
+"TC": {
+"moves": 9,
+"S": "F2 D F'",
+"inv": false,
+"alg": "F U2 F D F' U2 F D' F2"
+},
+"KS": {
+"moves": 12,
+"S": "F D2 R'",
+"inv": false,
+"alg": "F D2 U2 R' D2 R U2 R' D2 R D2 F'"
+}
+},
+"FK": {
+"KG": {
+"moves": 14,
+"S": "F' D F",
+"inv": true,
+"alg": "F' D F D R U2 R' D' R U2 R' F' D' F"
+},
+"IV": {
+"moves": 14,
+"S": "D' L D2",
+"inv": false,
+"alg": "D' L D2 U R2 U' L U R2 U' L' D2 L' D"
+},
+"BU": {
+"moves": 12,
+"S": "F' R L2",
+"inv": false,
+"alg": "F' R L2 D R2 D' L2 D R2 D' R' F"
+},
+"TC": {
+"moves": 12,
+"S": "F D2 U2",
+"inv": false,
+"alg": "F D2 U2 F D' F' U2 F D F' D2 F'"
+},
+"KS": {
+"moves": 12,
+"S": "D2 F R'",
+"inv": false,
+"alg": "D2 F U2 R' D2 R U2 R' D2 R F' D2"
+}
+},
+"FL": {
+"KG": {
+"moves": 14,
+"S": "B2 D L",
+"inv": false,
+"alg": "B2 D L R U2 R' D R U2 R' D' L' D' B2"
+},
+"IV": {
+"moves": 14,
+"S": "F R2 D'",
+"inv": true,
+"alg": "F R2 D' L U R2 U' L' U R2 U' D R2 F'"
+},
+"BU": {
+"moves": 13,
+"S": "D2 B L",
+"inv": false,
+"alg": "D2 B L D R2 D' L2 D R2 D' L B' D2"
+},
+"TC": {
+"moves": 11,
+"S": "D2 F U2",
+"inv": false,
+"alg": "D2 F U2 F D' F' U2 F D F2 D2"
+},
+"KS": {
+"moves": 12,
+"S": "U' L2 R'",
+"inv": true,
+"alg": "U' L2 R' D2 R U2 R' D2 R U2 L2 U"
+}
+},
+"FM": {
+"KG": {
+"moves": 14,
+"S": "L2 F' L'",
+"inv": true,
+"alg": "L2 F' L' D R U2 R' D' R U2 R' L F L2"
+},
+"IV": {
+"moves": 12,
+"S": "R F2 U'",
+"inv": false,
+"alg": "R F2 R2 U' L U R2 U' L' U F2 R'"
+},
+"BU": {
+"moves": 12,
+"S": "L' U2",
+"inv": false,
+"alg": "L' U2 D R2 D' L2 D R2 D' L2 U2 L"
+},
+"TC": {
+"moves": 12,
+"S": "B2 L U2",
+"inv": false,
+"alg": "B2 L U2 F D' F' U2 F D F' L' B2"
+},
+"KS": {
+"moves": 13,
+"S": "F2 R' D'",
+"inv": false,
+"alg": "F2 R' D' R U2 R' D2 R U2 R' D' R F2"
+}
+},
+"FN": {
+"IV": {
+"moves": 10,
+"S": "F2 U'",
+"inv": false,
+"alg": "F2 R2 U' L U R2 U' L' U F2"
+},
+"BU": {
+"moves": 13,
+"S": "B2 R' L'",
+"inv": false,
+"alg": "B2 R' L' D R2 D' L2 D R2 D' L' R B2"
+},
+"TC": {
+"moves": 13,
+"S": "R2 D F",
+"inv": true,
+"alg": "R2 D F U2 F D' F' U2 F D F2 D' R2"
+},
+"KS": {
+"moves": 12,
+"S": "U' L R'",
+"inv": false,
+"alg": "U' L U2 R' D2 R U2 R' D2 R L' U"
+}
+},
+"FO": {
+"KG": {
+"moves": 12,
+"S": "F D2 R'",
+"inv": false,
+"alg": "F D2 U2 R' D R U2 R' D' R D2 F'"
+},
+"IV": {
+"moves": 12,
+"S": "R' F2 U'",
+"inv": false,
+"alg": "R' F2 R2 U' L U R2 U' L' U F2 R"
+},
+"BU": {
+"moves": 13,
+"S": "L B2 D2",
+"inv": false,
+"alg": "L B2 D' R2 D' L2 D R2 D' L2 D2 B2 L'"
+},
+"TC": {
+"moves": 12,
+"S": "U' L U2",
+"inv": false,
+"alg": "U' L U2 F D' F' U2 F D F' L' U"
+},
+"KS": {
+"moves": 11,
+"S": "B' U' R'",
+"inv": false,
+"alg": "B' U R' D2 R U2 R' D2 R U B"
+}
+},
+"FP": {
+"KG": {
+"moves": 13,
+"S": "L D' R",
+"inv": true,
+"alg": "L D' R D R U2 R' D' R U2 R2 D L'"
+},
+"IV": {
+"moves": 12,
+"S": "L D2 L'",
+"inv": true,
+"alg": "L D2 U R2 U' L' U R2 U' L D2 L'"
+},
+"BU": {
+"moves": 13,
+"S": "D B L",
+"inv": false,
+"alg": "D B L D R2 D' L2 D R2 D' L B' D'"
+},
+"TC": {
+"moves": 11,
+"S": "D F U2",
+"inv": false,
+"alg": "D F U2 F D' F' U2 F D F2 D'"
+}
+},
+"FQ": {
+"KG": {
+"moves": 13,
+"S": "B2 L' R",
+"inv": false,
+"alg": "B2 L' R2 U2 R' D R U2 R' D' R' L B2"
+},
+"BU": {
+"moves": 11,
+"S": "L D",
+"inv": false,
+"alg": "L D2 R2 D' L2 D R2 D' L2 D' L'"
+},
+"TC": {
+"moves": 13,
+"S": "L2 B' F2",
+"inv": false,
+"alg": "L2 B' F' D' F' U2 F D F' U2 F2 B L2"
+},
+"KS": {
+"moves": 13,
+"S": "L B R",
+"inv": false,
+"alg": "L B R2 U2 R' D2 R U2 R' D2 R' B' L'"
+}
+},
+"FS": {
+"KG": {
+"moves": 12,
+"S": "U' L R'",
+"inv": false,
+"alg": "U' L U2 R' D R U2 R' D' R L' U"
+},
+"IV": {
+"moves": 14,
+"S": "D L D2",
+"inv": false,
+"alg": "D L D2 U R2 U' L U R2 U' L' D2 L' D'"
+},
+"BU": {
+"moves": 12,
+"S": "F2 B' D'",
+"inv": false,
+"alg": "F2 B' R2 D' L2 D R2 D' L2 D B F2"
+},
+"TC": {
+"moves": 12,
+"S": "U2 B",
+"inv": false,
+"alg": "U2 B F D' F' U2 F D F' U2 B' U2"
+},
+"KS": {
+"moves": 10,
+"S": "F R'",
+"inv": false,
+"alg": "F U2 R' D2 R U2 R' D2 R F'"
+}
+},
+"FT": {
+"KG": {
+"moves": 12,
+"S": "R F R'",
+"inv": false,
+"alg": "R F U2 R' D R U2 R' D' R F' R'"
+},
+"IV": {
+"moves": 14,
+"S": "R2 F' D",
+"inv": true,
+"alg": "R2 F' D L U R2 U' L' U R2 U' D' F R2"
+},
+"BU": {
+"moves": 11,
+"S": "B L",
+"inv": false,
+"alg": "B L D R2 D' L2 D R2 D' L B'"
+},
+"TC": {
+"moves": 9,
+"S": "F U2",
+"inv": false,
+"alg": "F U2 F D' F' U2 F D F2"
+},
+"KS": {
+"moves": 13,
+"S": "U B2 R",
+"inv": true,
+"alg": "U B2 R D2 R U2 R' D2 R U2 R2 B2 U'"
+}
+},
+"FU": {
+"KG": {
+"moves": 10,
+"S": "F2 R' D'",
+"inv": false,
+"alg": "F2 R' D' R U2 R' D R U2 F2"
+},
+"BU": {
+"moves": 13,
+"S": "L U D",
+"inv": true,
+"alg": "L U D L2 D R2 D' L2 D R2 D2 U' L'"
+},
+"TC": {
+"moves": 12,
+"S": "F2 D",
+"inv": false,
+"alg": "F2 D F D' F' U2 F D F' U2 D' F2"
+},
+"KS": {
+"moves": 13,
+"S": "U D' R2",
+"inv": true,
+"alg": "U D' R2 D2 R U2 R' D2 R U2 R D U'"
+}
+},
+"FV": {
+"KG": {
+"moves": 10,
+"S": "F R'",
+"inv": false,
+"alg": "F U2 R' D R U2 R' D' R F'"
+},
+"IV": {
+"moves": 14,
+"S": "R F' D",
+"inv": true,
+"alg": "R F' D L U R2 U' L' U R2 U' D' F R'"
+},
+"BU": {
+"moves": 12,
+"S": "R2 F' L2",
+"inv": false,
+"alg": "R2 F' L2 D R2 D' L2 D R2 D' F R2"
+},
+"TC": {
+"moves": 11,
+"S": "R' F U2",
+"inv": false,
+"alg": "R' F U2 F D' F' U2 F D F2 R"
+},
+"KS": {
+"moves": 12,
+"S": "F D' R'",
+"inv": false,
+"alg": "F D' U2 R' D2 R U2 R' D2 R D F'"
+}
+},
+"FW": {
+"KG": {
+"moves": 12,
+"S": "D' F R'",
+"inv": false,
+"alg": "D' F U2 R' D R U2 R' D' R F' D"
+},
+"BU": {
+"moves": 13,
+"S": "L R' D",
+"inv": false,
+"alg": "L R' D2 R2 D' L2 D R2 D' L2 D' R L'"
+},
+"TC": {
+"moves": 13,
+"S": "D' R' F",
+"inv": true,
+"alg": "D' R' F U2 F D' F' U2 F D F2 R D"
+},
+"KS": {
+"moves": 13,
+"S": "U D R2",
+"inv": true,
+"alg": "U D R2 D2 R U2 R' D2 R U2 R D' U'"
+}
+},
+"FX": {
+"KG": {
+"moves": 12,
+"S": "D2 F R'",
+"inv": false,
+"alg": "D2 F U2 R' D R U2 R' D' R F' D2"
+},
+"IV": {
+"moves": 14,
+"S": "B' R D'",
+"inv": true,
+"alg": "B' R D' L U R2 U' L' U R2 U' D R' B"
+},
+"BU": {
+"moves": 13,
+"S": "U B' D2",
+"inv": true,
+"alg": "U B' D2 L2 D R2 D' L2 D R2 D B U'"
+},
+"TC": {
+"moves": 13,
+"S": "D2 R' F",
+"inv": true,
+"alg": "D2 R' F U2 F D' F' U2 F D F2 R D2"
+},
+"KS": {
+"moves": 11,
+"S": "U R2 D2",
+"inv": false,
+"alg": "U R2 D2 R U2 R' D2 R U2 R U'"
+}
+},
+"GB": {
+"KG": {
+"moves": 13,
+"S": "D' B D2",
+"inv": false,
+"alg": "D' B D2 R U2 R' D R U2 R' D B' D"
+},
+"IV": {
+"moves": 12,
+"S": "D' R2 L'",
+"inv": true,
+"alg": "D' R2 U R2 U' L' U R2 U' L R2 D"
+},
+"BU": {
+"moves": 10,
+"S": "F' D' L2",
+"inv": false,
+"alg": "F' D' L2 D R2 D' L2 D R2 F"
+},
+"TC": {
+"moves": 12,
+"S": "D R U2",
+"inv": false,
+"alg": "D R U2 F D' F' U2 F D F' R' D'"
+},
+"KS": {
+"moves": 12,
+"S": "B F2 R'",
+"inv": true,
+"alg": "B F2 R' D2 R U2 R' D2 R U2 F2 B'"
+}
+},
+"GC": {
+"KG": {
+"moves": 8,
+"S": "U2 R'",
+"inv": false,
+"alg": "R' D R U2 R' D' R U2"
+},
+"IV": {
+"moves": 12,
+"S": "R2 D' L'",
+"inv": true,
+"alg": "R2 D' U R2 U' L' U R2 U' L D R2"
+},
+"BU": {
+"moves": 14,
+"S": "F U F",
+"inv": true,
+"alg": "F U F L2 D R2 D' L2 D R2 D' F' U' F'"
+},
+"TC": {
+"moves": 13,
+"S": "F' R' F",
+"inv": false,
+"alg": "F' R' F2 D' F' U2 F D F' U2 F' R F"
+},
+"KS": {
+"moves": 10,
+"S": "D' U2 R'",
+"inv": false,
+"alg": "D' R' D2 R U2 R' D2 R U2 D"
+}
+},
+"GD": {
+"KG": {
+"moves": 13,
+"S": "L' U D",
+"inv": true,
+"alg": "L' U D2 R U2 R' D' R U2 R' D' U' L"
+},
+"IV": {
+"moves": 12,
+"S": "D F2",
+"inv": false,
+"alg": "D F2 U R2 U' L U R2 U' L' F2 D'"
+},
+"BU": {
+"moves": 12,
+"S": "U F' D'",
+"inv": false,
+"alg": "U F' R2 D' L2 D R2 D' L2 D F U'"
+},
+"TC": {
+"moves": 11,
+"S": "L2 D2 F'",
+"inv": true,
+"alg": "L2 D2 F' U2 F D' F' U2 F D' L2"
+},
+"KS": {
+"moves": 13,
+"S": "D2 F' D'",
+"inv": false,
+"alg": "D2 F' D' R U2 R' D2 R U2 R' D' F D2"
+}
+},
+"GF": {
+"KG": {
+"moves": 12,
+"S": "U2 B R'",
+"inv": false,
+"alg": "U2 B U2 R' D R U2 R' D' R B' U2"
+},
+"IV": {
+"moves": 12,
+"S": "L D2",
+"inv": true,
+"alg": "L D2 L U R2 U' L' U R2 U' D2 L'"
+},
+"BU": {
+"moves": 12,
+"S": "F' R2",
+"inv": false,
+"alg": "F' R2 D R2 D' L2 D R2 D' L2 R2 F"
+},
+"TC": {
+"moves": 13,
+"S": "F' R' F2",
+"inv": false,
+"alg": "F' R' F' D' F' U2 F D F' U2 F2 R F"
+},
+"KS": {
+"moves": 12,
+"S": "D' F R'",
+"inv": true,
+"alg": "D' F R' D2 R U2 R' D2 R U2 F' D"
+}
+},
+"GH": {
+"KG": {
+"moves": 12,
+"S": "U2 B' R'",
+"inv": false,
+"alg": "U2 B' U2 R' D R U2 R' D' R B U2"
+},
+"IV": {
+"moves": 12,
+"S": "D' R L'",
+"inv": true,
+"alg": "D' R U R2 U' L' U R2 U' L R' D"
+},
+"BU": {
+"moves": 14,
+"S": "F' D' R'",
+"inv": true,
+"alg": "F' D' R' L2 D R2 D' L2 D R2 D' R D F"
+},
+"TC": {
+"moves": 13,
+"S": "F' D' F2",
+"inv": true,
+"alg": "F' D' F2 U2 F D' F' U2 F D F D F"
+},
+"KS": {
+"moves": 13,
+"S": "U B' D'",
+"inv": false,
+"alg": "U B' D' R U2 R' D2 R U2 R' D' B U'"
+}
+},
+"GI": {
+"KG": {
+"moves": 12,
+"S": "D2 F2 D'",
+"inv": false,
+"alg": "D2 F2 D' R U2 R' D R U2 R' F2 D2"
+},
+"IV": {
+"moves": 12,
+"S": "U F' U'",
+"inv": true,
+"alg": "U F' U' L U R2 U' L' U R2 F U'"
+},
+"BU": {
+"moves": 14,
+"S": "B2 U R'",
+"inv": false,
+"alg": "B2 U R' D R2 D' L2 D R2 D' L2 R U' B2"
+},
+"TC": {
+"moves": 13,
+"S": "D' B2 U",
+"inv": false,
+"alg": "D' B2 U F D' F' U2 F D F' U B2 D"
+},
+"KS": {
+"moves": 12,
+"S": "D L D2",
+"inv": false,
+"alg": "D L D2 R U2 R' D2 R U2 R' L' D'"
+}
+},
+"GJ": {
+"KG": {
+"moves": 12,
+"S": "D2 F D'",
+"inv": false,
+"alg": "D2 F D' R U2 R' D R U2 R' F' D2"
+},
+"IV": {
+"moves": 10,
+"S": "F'",
+"inv": true,
+"alg": "F' L U R2 U' L' U R2 U' F"
+},
+"BU": {
+"moves": 12,
+"S": "R F' D'",
+"inv": true,
+"alg": "R F' D' L2 D R2 D' L2 D R2 F R'"
+},
+"TC": {
+"moves": 14,
+"S": "R D R",
+"inv": true,
+"alg": "R D R U2 F D' F' U2 F D F' R' D' R'"
+},
+"KS": {
+"moves": 12,
+"S": "D' F D2",
+"inv": false,
+"alg": "D' F D2 R U2 R' D2 R U2 R' F' D"
+}
+},
+"GK": {
+"KG": {
+"moves": 8,
+"S": "R U2 R'",
+"inv": false,
+"alg": "D R U2 R' D' R U2 R'"
+},
+"IV": {
+"moves": 11,
+"S": "L' U L'",
+"inv": true,
+"alg": "L' U2 R2 U' L' U R2 U' L U' L"
+},
+"BU": {
+"moves": 14,
+"S": "F' D' R",
+"inv": true,
+"alg": "F' D' R L2 D R2 D' L2 D R2 D' R' D F"
+},
+"TC": {
+"moves": 14,
+"S": "D R D",
+"inv": true,
+"alg": "D R D U2 F D' F' U2 F D F' D' R' D'"
+},
+"KS": {
+"moves": 12,
+"S": "R D' R'",
+"inv": true,
+"alg": "R D' R' D2 R U2 R' D2 R U2 D R'"
+}
+},
+"GM": {
+"KG": {
+"moves": 13,
+"S": "D' R2 D2",
+"inv": false,
+"alg": "D' R2 D2 R U2 R' D R U2 R' D R2 D"
+},
+"IV": {
+"moves": 11,
+"S": "D2 R U'",
+"inv": false,
+"alg": "D2 R' U' L U R2 U' L' U R' D2"
+},
+"BU": {
+"moves": 12,
+"S": "U2 R",
+"inv": false,
+"alg": "U2 R D R2 D' L2 D R2 D' L2 R' U2"
+},
+"TC": {
+"moves": 12,
+"S": "L2 D2 U2",
+"inv": false,
+"alg": "L2 D2 U2 F D' F' U2 F D F' D2 L2"
+},
+"KS": {
+"moves": 11,
+"S": "R2 D",
+"inv": false,
+"alg": "R2 D R U2 R' D2 R U2 R' D R2"
+}
+},
+"GN": {
+"KG": {
+"moves": 13,
+"S": "D' R D2",
+"inv": false,
+"alg": "D' R D2 R U2 R' D R U2 R' D R' D"
+},
+"IV": {
+"moves": 13,
+"S": "U2 R' L",
+"inv": true,
+"alg": "U2 R' L2 U R2 U' L' U R2 U' L' R U2"
+},
+"BU": {
+"moves": 13,
+"S": "L' U2 L",
+"inv": false,
+"alg": "L' U2 L D R2 D' L2 D R2 D' L U2 L"
+},
+"TC": {
+"moves": 13,
+"S": "L D' U'",
+"inv": false,
+"alg": "L D' U' F D' F' U2 F D F' U' D L'"
+},
+"KS": {
+"moves": 11,
+"S": "R D",
+"inv": false,
+"alg": "R D R U2 R' D2 R U2 R' D R'"
+}
+},
+"GO": {
+"KG": {
+"moves": 14,
+"S": "U2 R' B",
+"inv": false,
+"alg": "U2 R' B R U2 R' D R U2 R' D' B' R U2"
+},
+"IV": {
+"moves": 11,
+"S": "F2 R' U'",
+"inv": false,
+"alg": "F2 R U' L U R2 U' L' U R F2"
+},
+"BU": {
+"moves": 12,
+"S": "B2 R'",
+"inv": false,
+"alg": "B2 R' D R2 D' L2 D R2 D' L2 R B2"
+},
+"TC": {
+"moves": 11,
+"S": "B2 F2",
+"inv": false,
+"alg": "B2 F' D' F' U2 F D F' U2 F2 B2"
+},
+"KS": {
+"moves": 9,
+"S": "D",
+"inv": false,
+"alg": "D R U2 R' D2 R U2 R' D"
+}
+},
+"GP": {
+"KG": {
+"moves": 14,
+"S": "B' U' L2",
+"inv": false,
+"alg": "B' U' L2 R U2 R' D R U2 R' D' L2 U B"
+},
+"IV": {
+"moves": 13,
+"S": "U2 L U",
+"inv": true,
+"alg": "U2 L U L U R2 U' L' U R2 U2 L' U2"
+},
+"BU": {
+"moves": 12,
+"S": "F U L2",
+"inv": false,
+"alg": "F U L2 D R2 D' L2 D R2 D' U' F'"
+},
+"TC": {
+"moves": 13,
+"S": "R' B2 F2",
+"inv": false,
+"alg": "R' B2 F' D' F' U2 F D F' U2 F2 B2 R"
+},
+"KS": {
+"moves": 11,
+"S": "R' D",
+"inv": false,
+"alg": "R' D R U2 R' D2 R U2 R' D R"
+}
+},
+"GQ": {
+"KG": {
+"moves": 9,
+"S": "R' U2 R'",
+"inv": false,
+"alg": "R2 D R U2 R' D' R U2 R"
+},
+"IV": {
+"moves": 12,
+"S": "R D' L'",
+"inv": true,
+"alg": "R D' U R2 U' L' U R2 U' L D R'"
+},
+"BU": {
+"moves": 13,
+"S": "D' B' D2",
+"inv": true,
+"alg": "D' B' D2 L2 D R2 D' L2 D R2 D B D"
+},
+"TC": {
+"moves": 12,
+"S": "F' R'",
+"inv": false,
+"alg": "F' R' F D' F' U2 F D F' U2 R F"
+},
+"KS": {
+"moves": 11,
+"S": "D' R2 D2",
+"inv": false,
+"alg": "D' R2 D2 R U2 R' D2 R U2 R D"
+}
+},
+"GS": {
+"KG": {
+"moves": 9,
+"S": "D",
+"inv": false,
+"alg": "D R U2 R' D R U2 R' D2"
+},
+"IV": {
+"moves": 10,
+"S": "F' L'",
+"inv": false,
+"alg": "F' L' U R2 U' L U R2 U' F"
+},
+"BU": {
+"moves": 13,
+"S": "F2 U L'",
+"inv": false,
+"alg": "F2 U L' D R2 D' L2 D R2 D' L' U' F2"
+},
+"TC": {
+"moves": 13,
+"S": "B2 U' F2",
+"inv": false,
+"alg": "B2 U' F' D' F' U2 F D F' U2 F2 U B2"
+},
+"KS": {
+"moves": 14,
+"S": "F' R F",
+"inv": false,
+"alg": "F' R F R U2 R' D2 R U2 R' D2 F' R' F"
+}
+},
+"GT": {
+"KG": {
+"moves": 12,
+"S": "D2 F' D'",
+"inv": false,
+"alg": "D2 F' D' R U2 R' D R U2 R' F D2"
+},
+"IV": {
+"moves": 12,
+"S": "R2 F'",
+"inv": true,
+"alg": "R2 F' L U R2 U' L' U R2 U' F R2"
+},
+"BU": {
+"moves": 12,
+"S": "R' F' D'",
+"inv": true,
+"alg": "R' F' D' L2 D R2 D' L2 D R2 F R"
+},
+"TC": {
+"moves": 13,
+"S": "U F U",
+"inv": false,
+"alg": "U F U F D' F' U2 F D F' U F' U'"
+},
+"KS": {
+"moves": 12,
+"S": "D' F' R'",
+"inv": true,
+"alg": "D' F' R' D2 R U2 R' D2 R U2 F D"
+}
+},
+"GV": {
+"KG": {
+"moves": 14,
+"S": "L2 U B",
+"inv": false,
+"alg": "L2 U B R U2 R' D R U2 R' D' B' U' L2"
+},
+"IV": {
+"moves": 12,
+"S": "U L2 U'",
+"inv": false,
+"alg": "U L2 R2 U' L U R2 U' L' U L2 U'"
+},
+"BU": {
+"moves": 12,
+"S": "R2 F' D'",
+"inv": true,
+"alg": "R2 F' D' L2 D R2 D' L2 D R2 F R2"
+},
+"TC": {
+"moves": 10,
+"S": "L2 D F'",
+"inv": false,
+"alg": "L2 F' U2 F D F' U2 F D' L2"
+},
+"KS": {
+"moves": 12,
+"S": "D' F2 R'",
+"inv": true,
+"alg": "D' F2 R' D2 R U2 R' D2 R U2 F2 D"
+}
+},
+"GW": {
+"KG": {
+"moves": 9,
+"S": "R2 U2 R'",
+"inv": false,
+"alg": "R D R U2 R' D' R U2 R2"
+},
+"IV": {
+"moves": 10,
+"S": "D' L'",
+"inv": true,
+"alg": "D' U R2 U' L' U R2 U' L D"
+},
+"BU": {
+"moves": 13,
+"S": "F U D2",
+"inv": true,
+"alg": "F U D2 L2 D R2 D' L2 D R2 D U' F'"
+},
+"TC": {
+"moves": 14,
+"S": "L' U' L'",
+"inv": false,
+"alg": "L' U' L' F D' F' U2 F D F' U2 L U L"
+},
+"KS": {
+"moves": 12,
+"S": "R2 D' R'",
+"inv": true,
+"alg": "R2 D' R' D2 R U2 R' D2 R U2 D R2"
+}
+},
+"GX": {
+"KG": {
+"moves": 13,
+"S": "B2 U' R",
+"inv": false,
+"alg": "B2 U' R2 U2 R' D R U2 R' D' R' U B2"
+},
+"IV": {
+"moves": 14,
+"S": "D' L' D'",
+"inv": true,
+"alg": "D' L' D' L U R2 U' L' U R2 U' D L D"
+},
+"BU": {
+"moves": 13,
+"S": "F U D",
+"inv": true,
+"alg": "F U D L2 D R2 D' L2 D R2 D2 U' F'"
+},
+"TC": {
+"moves": 12,
+"S": "D2 B2 F'",
+"inv": true,
+"alg": "D2 B2 F' U2 F D' F' U2 F D B2 D2"
+},
+"KS": {
+"moves": 11,
+"S": "D' R D2",
+"inv": false,
+"alg": "D' R D2 R U2 R' D2 R U2 R2 D"
+}
+},
+"HB": {
+"KG": {
+"moves": 13,
+"S": "L U' D",
+"inv": true,
+"alg": "L U' D2 R U2 R' D' R U2 R' D' U L'"
+},
+"IV": {
+"moves": 12,
+"S": "B R L'",
+"inv": true,
+"alg": "B R U R2 U' L' U R2 U' L R' B'"
+},
+"BU": {
+"moves": 12,
+"S": "D2 F L2",
+"inv": false,
+"alg": "D2 F L2 D R2 D' L2 D R2 D' F' D2"
+},
+"TC": {
+"moves": 11,
+"S": "R D' F'",
+"inv": false,
+"alg": "R D2 F' U2 F D F' U2 F D R'"
+},
+"KS": {
+"moves": 12,
+"S": "D2 B D2",
+"inv": false,
+"alg": "D2 B D2 R U2 R' D2 R U2 R' B' D2"
+}
+},
+"HC": {
+"KG": {
+"moves": 10,
+"S": "D2 R' D'",
+"inv": false,
+"alg": "D2 R' D' R U2 R' D R U2 D2"
+},
+"IV": {
+"moves": 12,
+"S": "F B' U'",
+"inv": false,
+"alg": "F B' R2 U' L U R2 U' L' U B F'"
+},
+"BU": {
+"moves": 13,
+"S": "U B2 L'",
+"inv": false,
+"alg": "U B2 L' D R2 D' L2 D R2 D' L' B2 U'"
+},
+"TC": {
+"moves": 10,
+"S": "D'",
+"inv": false,
+"alg": "D' F D' F' U2 F D F' U2 D"
+}
+},
+"HD": {
+"KG": {
+"moves": 12,
+"S": "D F'",
+"inv": false,
+"alg": "D F' R U2 R' D R U2 R' D' F D'"
+},
+"IV": {
+"moves": 14,
+"S": "U' L F",
+"inv": false,
+"alg": "U' L F U R2 U' L U R2 U' L' F' L' U"
+},
+"BU": {
+"moves": 13,
+"S": "B2 D L'",
+"inv": false,
+"alg": "B2 D L' D R2 D' L2 D R2 D' L' D' B2"
+},
+"TC": {
+"moves": 11,
+"S": "L D2 F'",
+"inv": true,
+"alg": "L D2 F' U2 F D' F' U2 F D' L'"
+},
+"KS": {
+"moves": 14,
+"S": "U' F U2",
+"inv": true,
+"alg": "U' F U2 D2 R U2 R' D2 R U2 R' U2 F' U"
+}
+},
+"HF": {
+"KG": {
+"moves": 14,
+"S": "F2 U' L'",
+"inv": false,
+"alg": "F2 U' L' R U2 R' D R U2 R' D' L U F2"
+},
+"IV": {
+"moves": 12,
+"S": "F2 B' U'",
+"inv": false,
+"alg": "F2 B' R2 U' L U R2 U' L' U B F2"
+},
+"BU": {
+"moves": 12,
+"S": "L' U",
+"inv": false,
+"alg": "L' U D R2 D' L2 D R2 D' L2 U' L"
+},
+"TC": {
+"moves": 11,
+"S": "D' F",
+"inv": false,
+"alg": "D' F2 D' F' U2 F D F' U2 F' D"
+}
+},
+"HG": {
+"KG": {
+"moves": 12,
+"S": "U2 B' R'",
+"inv": true,
+"alg": "U2 B' R' D R U2 R' D' R U2 B U2"
+},
+"IV": {
+"moves": 12,
+"S": "D' R L'",
+"inv": false,
+"alg": "D' R L' U R2 U' L U R2 U' R' D"
+},
+"BU": {
+"moves": 14,
+"S": "F' D' R'",
+"inv": false,
+"alg": "F' D' R' D R2 D' L2 D R2 D' L2 R D F"
+},
+"TC": {
+"moves": 13,
+"S": "F' D' F2",
+"inv": false,
+"alg": "F' D' F' D' F' U2 F D F' U2 F2 D F"
+},
+"KS": {
+"moves": 13,
+"S": "U B' D",
+"inv": false,
+"alg": "U B' D R U2 R' D2 R U2 R' D B U'"
+}
+},
+"HI": {
+"KG": {
+"moves": 11,
+"S": "L D",
+"inv": true,
+"alg": "L D2 R U2 R' D' R U2 R' D' L'"
+},
+"IV": {
+"moves": 12,
+"S": "D' R",
+"inv": true,
+"alg": "D' R L U R2 U' L' U R2 U' R' D"
+},
+"BU": {
+"moves": 13,
+"S": "U2 F' L'",
+"inv": false,
+"alg": "U2 F' L' D R2 D' L2 D R2 D' L' F U2"
+},
+"TC": {
+"moves": 11,
+"S": "F' D2 F'",
+"inv": true,
+"alg": "F' D2 F' U2 F D' F' U2 F D' F"
+},
+"KS": {
+"moves": 14,
+"S": "U2 F U'",
+"inv": false,
+"alg": "U2 F U' R U2 R' D2 R U2 R' D2 U F' U2"
+}
+},
+"HJ": {
+"KG": {
+"moves": 12,
+"S": "D L2 R'",
+"inv": false,
+"alg": "D L2 U2 R' D R U2 R' D' R L2 D'"
+},
+"IV": {
+"moves": 14,
+"S": "L' U R2",
+"inv": true,
+"alg": "L' U R2 L U R2 U' L' U R2 U' R2 U' L"
+},
+"BU": {
+"moves": 11,
+"S": "D' R' D'",
+"inv": false,
+"alg": "D' R D' L2 D R2 D' L2 D R D"
+},
+"TC": {
+"moves": 11,
+"S": "R2 D' F'",
+"inv": false,
+"alg": "R2 D2 F' U2 F D F' U2 F D R2"
+},
+"KS": {
+"moves": 14,
+"S": "L F U",
+"inv": false,
+"alg": "L F U R U2 R' D2 R U2 R' D2 U' F' L'"
+}
+},
+"HK": {
+"KG": {
+"moves": 12,
+"S": "D F' D'",
+"inv": true,
+"alg": "D F' R U2 R' D' R U2 R' D F D'"
+},
+"IV": {
+"moves": 14,
+"S": "D R2 F",
+"inv": false,
+"alg": "D R2 F U R2 U' L U R2 U' L' F' R2 D'"
+},
+"BU": {
+"moves": 12,
+"S": "L' U D'",
+"inv": false,
+"alg": "L' U R2 D' L2 D R2 D' L2 D U' L"
+},
+"TC": {
+"moves": 11,
+"S": "F D2 F'",
+"inv": true,
+"alg": "F D2 F' U2 F D' F' U2 F D' F'"
+},
+"KS": {
+"moves": 12,
+"S": "D2 F' R'",
+"inv": false,
+"alg": "D2 F' U2 R' D2 R U2 R' D2 R F D2"
+}
+},
+"HL": {
+"KG": {
+"moves": 13,
+"S": "L U D",
+"inv": true,
+"alg": "L U D2 R U2 R' D' R U2 R' D' U' L'"
+},
+"IV": {
+"moves": 12,
+"S": "B' D U'",
+"inv": false,
+"alg": "B' D R2 U' L U R2 U' L' U D' B"
+},
+"BU": {
+"moves": 14,
+"S": "D2 F R'",
+"inv": true,
+"alg": "D2 F R' L2 D R2 D' L2 D R2 D' R F' D2"
+},
+"TC": {
+"moves": 9,
+"S": "D2 F' U2",
+"inv": false,
+"alg": "D2 F' U2 F D' F' U2 F D'"
+},
+"KS": {
+"moves": 14,
+"S": "U2 F U",
+"inv": false,
+"alg": "U2 F U R U2 R' D2 R U2 R' D2 U' F' U2"
+}
+},
+"HM": {
+"KG": {
+"moves": 14,
+"S": "R' U' L'",
+"inv": false,
+"alg": "R' U' L' R U2 R' D R U2 R' D' L U R"
+},
+"IV": {
+"moves": 12,
+"S": "U2 R' L'",
+"inv": false,
+"alg": "U2 R' L' U R2 U' L U R2 U' R U2"
+},
+"BU": {
+"moves": 14,
+"S": "D' R' F",
+"inv": false,
+"alg": "D' R' F D R2 D' L2 D R2 D' L2 F' R D"
+},
+"TC": {
+"moves": 12,
+"S": "B L'",
+"inv": false,
+"alg": "B L' F D' F' U2 F D F' U2 L B'"
+},
+"KS": {
+"moves": 12,
+"S": "U2 F",
+"inv": false,
+"alg": "U2 F R U2 R' D2 R U2 R' D2 F' U2"
+}
+},
+"HN": {
+"KG": {
+"moves": 11,
+"S": "L2 U R'",
+"inv": false,
+"alg": "L2 U' R' D R U2 R' D' R U' L2"
+},
+"IV": {
+"moves": 10,
+"S": "D2 U'",
+"inv": false,
+"alg": "D2 R2 U' L U R2 U' L' U D2"
+},
+"BU": {
+"moves": 13,
+"S": "U2 R L",
+"inv": false,
+"alg": "U2 R L D R2 D' L2 D R2 D' L R' U2"
+},
+"TC": {
+"moves": 14,
+"S": "R2 F' D'",
+"inv": false,
+"alg": "R2 F' D' F D' F' U2 F D F' U2 D F R2"
+},
+"KS": {
+"moves": 14,
+"S": "R' U2 F",
+"inv": false,
+"alg": "R' U2 F R U2 R' D2 R U2 R' D2 F' U2 R"
+}
+},
+"HO": {
+"KG": {
+"moves": 13,
+"S": "U' L' R",
+"inv": false,
+"alg": "U' L' R2 U2 R' D R U2 R' D' R' L U"
+},
+"IV": {
+"moves": 12,
+"S": "R' D2 U'",
+"inv": false,
+"alg": "R' D2 R2 U' L U R2 U' L' U D2 R"
+},
+"BU": {
+"moves": 12,
+"S": "D B'",
+"inv": false,
+"alg": "D B' D R2 D' L2 D R2 D' L2 B D'"
+},
+"TC": {
+"moves": 14,
+"S": "U2 L' R2",
+"inv": true,
+"alg": "U2 L' R2 U2 F D' F' U2 F D F' R2 L U2"
+},
+"KS": {
+"moves": 12,
+"S": "D F'",
+"inv": false,
+"alg": "D F' R U2 R' D2 R U2 R' D2 F D'"
+}
+},
+"HP": {
+"KG": {
+"moves": 12,
+"S": "U' L'",
+"inv": false,
+"alg": "U' L' R U2 R' D R U2 R' D' L U"
+},
+"IV": {
+"moves": 10,
+"S": "B' U'",
+"inv": false,
+"alg": "B' R2 U' L U R2 U' L' U B"
+},
+"BU": {
+"moves": 14,
+"S": "F2 L' U",
+"inv": false,
+"alg": "F2 L' U D R2 D' L2 D R2 D' L2 U' L F2"
+},
+"TC": {
+"moves": 12,
+"S": "F' D'",
+"inv": false,
+"alg": "F' D' F D' F' U2 F D F' U2 D F"
+},
+"KS": {
+"moves": 14,
+"S": "R U2 F",
+"inv": false,
+"alg": "R U2 F R U2 R' D2 R U2 R' D2 F' U2 R'"
+}
+},
+"HQ": {
+"KG": {
+"moves": 12,
+"S": "U2 L R'",
+"inv": false,
+"alg": "U2 L U2 R' D R U2 R' D' R L' U2"
+},
+"IV": {
+"moves": 12,
+"S": "B' D' U'",
+"inv": false,
+"alg": "B' D' R2 U' L U R2 U' L' U D B"
+},
+"BU": {
+"moves": 12,
+"S": "L' F2 D'",
+"inv": false,
+"alg": "L' F2 R2 D' L2 D R2 D' L2 D F2 L"
+},
+"TC": {
+"moves": 12,
+"S": "R' D'",
+"inv": false,
+"alg": "R' D' F D' F' U2 F D F' U2 D R"
+},
+"KS": {
+"moves": 12,
+"S": "U' F R'",
+"inv": false,
+"alg": "U' F U2 R' D2 R U2 R' D2 R F' U"
+}
+},
+"HT": {
+"KG": {
+"moves": 13,
+"S": "L2 U R",
+"inv": false,
+"alg": "L2 U R2 U2 R' D R U2 R' D' R' U' L2"
+},
+"IV": {
+"moves": 13,
+"S": "U' D2 L",
+"inv": true,
+"alg": "U' D2 L2 U R2 U' L' U R2 U' L' D2 U"
+},
+"BU": {
+"moves": 13,
+"S": "L' B' L",
+"inv": false,
+"alg": "L' B' L D R2 D' L2 D R2 D' L B L"
+},
+"TC": {
+"moves": 9,
+"S": "D' F'",
+"inv": false,
+"alg": "D2 F' U2 F D F' U2 F D"
+},
+"KS": {
+"moves": 12,
+"S": "U2 B' R'",
+"inv": true,
+"alg": "U2 B' R' D2 R U2 R' D2 R U2 B U2"
+}
+},
+"HU": {
+"KG": {
+"moves": 12,
+"S": "D L2",
+"inv": false,
+"alg": "D L2 R U2 R' D R U2 R' D' L2 D'"
+},
+"IV": {
+"moves": 12,
+"S": "F' B' U'",
+"inv": false,
+"alg": "F' B' R2 U' L U R2 U' L' U B F"
+},
+"BU": {
+"moves": 13,
+"S": "D' R' D",
+"inv": false,
+"alg": "D' R' D2 R2 D' L2 D R2 D' L2 D' R D"
+},
+"TC": {
+"moves": 12,
+"S": "F2 D'",
+"inv": false,
+"alg": "F2 D' F D' F' U2 F D F' U2 D F2"
+},
+"KS": {
+"moves": 13,
+"S": "B2 U' D",
+"inv": false,
+"alg": "B2 U' D R U2 R' D2 R U2 R' D U B2"
+}
+},
+"HV": {
+"KG": {
+"moves": 12,
+"S": "L2 U",
+"inv": false,
+"alg": "L2 U R U2 R' D R U2 R' D' U' L2"
+},
+"IV": {
+"moves": 12,
+"S": "U L' U'",
+"inv": false,
+"alg": "U L' R2 U' L U R2 U' L' U L U'"
+},
+"BU": {
+"moves": 12,
+"S": "D' R'",
+"inv": false,
+"alg": "D' R' D R2 D' L2 D R2 D' L2 R D"
+},
+"TC": {
+"moves": 11,
+"S": "R' D' F'",
+"inv": false,
+"alg": "R' D2 F' U2 F D F' U2 F D R"
+},
+"KS": {
+"moves": 13,
+"S": "D L2 D'",
+"inv": false,
+"alg": "D L2 D' R U2 R' D2 R U2 R' D' L2 D'"
+}
+},
+"HW": {
+"KG": {
+"moves": 11,
+"S": "B2 R D'",
+"inv": true,
+"alg": "B2 R2 U2 R' D' R U2 R' D R' B2"
+},
+"IV": {
+"moves": 12,
+"S": "B' D2 U'",
+"inv": false,
+"alg": "B' D2 R2 U' L U R2 U' L' U D2 B"
+},
+"TC": {
+"moves": 12,
+"S": "R2 D'",
+"inv": false,
+"alg": "R2 D' F D' F' U2 F D F' U2 D R2"
+},
+"KS": {
+"moves": 13,
+"S": "L2 U D'",
+"inv": false,
+"alg": "L2 U D' R U2 R' D2 R U2 R' D' U' L2"
+}
+},
+"IB": {
+"KG": {
+"moves": 13,
+"S": "F' L2 R2",
+"inv": false,
+"alg": "F' L2 R' U2 R' D R U2 R' D' R2 L2 F"
+},
+"IV": {
+"moves": 10,
+"S": "R2",
+"inv": false,
+"alg": "R2 U R2 U' L U R2 U' L' R2"
+},
+"BU": {
+"moves": 14,
+"S": "F' D F",
+"inv": true,
+"alg": "F' D F L2 D R2 D' L2 D R2 D' F' D' F"
+},
+"TC": {
+"moves": 12,
+"S": "U R2 F'",
+"inv": false,
+"alg": "U R2 D' F' U2 F D F' U2 F R2 U'"
+},
+"KS": {
+"moves": 13,
+"S": "B2 L' D'",
+"inv": false,
+"alg": "B2 L' D' R U2 R' D2 R U2 R' D' L B2"
+}
+},
+"IC": {
+"KG": {
+"moves": 12,
+"S": "L D R'",
+"inv": false,
+"alg": "L D U2 R' D R U2 R' D' R D' L'"
+},
+"IV": {
+"moves": 12,
+"S": "R2 D'",
+"inv": false,
+"alg": "R2 D' U R2 U' L U R2 U' L' D R2"
+},
+"TC": {
+"moves": 13,
+"S": "F' D2 F",
+"inv": false,
+"alg": "F' D2 F2 D' F' U2 F D F' U2 F' D2 F"
+},
+"KS": {
+"moves": 10,
+"S": "L R'",
+"inv": false,
+"alg": "L U2 R' D2 R U2 R' D2 R L'"
+}
+},
+"IG": {
+"KG": {
+"moves": 12,
+"S": "D2 F2 D'",
+"inv": true,
+"alg": "D2 F2 R U2 R' D' R U2 R' D F2 D2"
+},
+"IV": {
+"moves": 12,
+"S": "U F' U'",
+"inv": false,
+"alg": "U F' R2 U' L U R2 U' L' U F U'"
+},
+"BU": {
+"moves": 14,
+"S": "B2 U R'",
+"inv": true,
+"alg": "B2 U R' L2 D R2 D' L2 D R2 D' R U' B2"
+},
+"TC": {
+"moves": 13,
+"S": "D' B2 U'",
+"inv": false,
+"alg": "D' B2 U' F D' F' U2 F D F' U' B2 D"
+},
+"KS": {
+"moves": 12,
+"S": "D L",
+"inv": false,
+"alg": "D L R U2 R' D2 R U2 R' D2 L' D'"
+}
+},
+"IH": {
+"KG": {
+"moves": 11,
+"S": "L D",
+"inv": false,
+"alg": "L D R U2 R' D R U2 R' D2 L'"
+},
+"IV": {
+"moves": 12,
+"S": "D' R",
+"inv": false,
+"alg": "D' R U R2 U' L U R2 U' L' R' D"
+},
+"BU": {
+"moves": 13,
+"S": "U2 F' L",
+"inv": false,
+"alg": "U2 F' L D R2 D' L2 D R2 D' L F U2"
+},
+"TC": {
+"moves": 11,
+"S": "F' D2 F'",
+"inv": false,
+"alg": "F' D F' U2 F D F' U2 F D2 F"
+},
+"KS": {
+"moves": 14,
+"S": "U2 F U'",
+"inv": true,
+"alg": "U2 F U' D2 R U2 R' D2 R U2 R' U F' U2"
+}
+},
+"IJ": {
+"KG": {
+"moves": 12,
+"S": "L2 B' R'",
+"inv": false,
+"alg": "L2 B' U2 R' D R U2 R' D' R B L2"
+},
+"IV": {
+"moves": 10,
+"S": "R'",
+"inv": false,
+"alg": "R' U R2 U' L U R2 U' L' R"
+},
+"BU": {
+"moves": 14,
+"S": "F R F2",
+"inv": false,
+"alg": "F R F2 D R2 D' L2 D R2 D' L2 F2 R' F'"
+},
+"TC": {
+"moves": 14,
+"S": "R F2 R",
+"inv": true,
+"alg": "R F2 R U2 F D' F' U2 F D F' R' F2 R'"
+},
+"KS": {
+"moves": 12,
+"S": "L F",
+"inv": false,
+"alg": "L F R U2 R' D2 R U2 R' D2 F' L'"
+}
+},
+"IK": {
+"KG": {
+"moves": 12,
+"S": "D F2 D'",
+"inv": true,
+"alg": "D F2 R U2 R' D' R U2 R' D F2 D'"
+},
+"IV": {
+"moves": 11,
+"S": "B U L'",
+"inv": false,
+"alg": "B U L' U R2 U' L U R2 U2 B'"
+},
+"BU": {
+"moves": 14,
+"S": "U R2 F",
+"inv": false,
+"alg": "U R2 F D R2 D' L2 D R2 D' L2 F' R2 U'"
+},
+"TC": {
+"moves": 13,
+"S": "B2 R' U",
+"inv": false,
+"alg": "B2 R' U F D' F' U2 F D F' U R B2"
+},
+"KS": {
+"moves": 10,
+"S": "L",
+"inv": false,
+"alg": "L R U2 R' D2 R U2 R' D2 L'"
+}
+},
+"IL": {
+"KG": {
+"moves": 13,
+"S": "D' L D",
+"inv": false,
+"alg": "D' L D R U2 R' D R U2 R' D2 L' D"
+},
+"IV": {
+"moves": 12,
+"S": "D2 R",
+"inv": false,
+"alg": "D2 R U R2 U' L U R2 U' L' R' D2"
+},
+"BU": {
+"moves": 14,
+"S": "D F R",
+"inv": false,
+"alg": "D F R D R2 D' L2 D R2 D' L2 R' F' D'"
+},
+"TC": {
+"moves": 14,
+"S": "F' R D2",
+"inv": false,
+"alg": "F' R D2 F D' F' U2 F D F' U2 D2 R' F"
+},
+"KS": {
+"moves": 13,
+"S": "U R D",
+"inv": false,
+"alg": "U R D R U2 R' D2 R U2 R' D R' U'"
+}
+},
+"IM": {
+"KG": {
+"moves": 10,
+"S": "F2",
+"inv": false,
+"alg": "F2 R U2 R' D R U2 R' D' F2"
+},
+"IV": {
+"moves": 12,
+"S": "L F L'",
+"inv": false,
+"alg": "L F L' U R2 U' L U R2 U' F' L'"
+},
+"BU": {
+"moves": 13,
+"S": "L U L'",
+"inv": false,
+"alg": "L U L' D R2 D' L2 D R2 D' L' U' L'"
+},
+"TC": {
+"moves": 14,
+"S": "U2 F R",
+"inv": true,
+"alg": "U2 F R U2 F D' F' U2 F D F' R' F' U2"
+},
+"KS": {
+"moves": 14,
+"S": "R2 D' L",
+"inv": false,
+"alg": "R2 D' L R U2 R' D2 R U2 R' D2 L' D R2"
+}
+},
+"IN": {
+"KG": {
+"moves": 12,
+"S": "R' F2",
+"inv": false,
+"alg": "R' F2 R U2 R' D R U2 R' D' F2 R"
+},
+"IV": {
+"moves": 12,
+"S": "U' R'",
+"inv": false,
+"alg": "U' R' U R2 U' L U R2 U' L' R U"
+},
+"BU": {
+"moves": 14,
+"S": "R2 F R",
+"inv": false,
+"alg": "R2 F R D R2 D' L2 D R2 D' L2 R' F' R2"
+},
+"TC": {
+"moves": 12,
+"S": "F R2 F'",
+"inv": false,
+"alg": "F R2 D' F' U2 F D F' U2 F R2 F'"
+},
+"KS": {
+"moves": 13,
+"S": "L2 B' D'",
+"inv": false,
+"alg": "L2 B' D' R U2 R' D2 R U2 R' D' B L2"
+}
+},
+"IO": {
+"KG": {
+"moves": 10,
+"S": "F2 D'",
+"inv": true,
+"alg": "F2 R U2 R' D' R U2 R' D F2"
+},
+"IV": {
+"moves": 14,
+"S": "R' U' R'",
+"inv": false,
+"alg": "R' U' R' U R2 U' L U R2 U' L' R U R"
+},
+"BU": {
+"moves": 14,
+"S": "R F R",
+"inv": false,
+"alg": "R F R D R2 D' L2 D R2 D' L2 R' F' R'"
+},
+"TC": {
+"moves": 13,
+"S": "D B2 U'",
+"inv": false,
+"alg": "D B2 U' F D' F' U2 F D F' U' B2 D'"
+},
+"KS": {
+"moves": 12,
+"S": "D' L",
+"inv": false,
+"alg": "D' L R U2 R' D2 R U2 R' D2 L' D"
+}
+},
+"IP": {
+"KG": {
+"moves": 12,
+"S": "R F2",
+"inv": false,
+"alg": "R F2 R U2 R' D R U2 R' D' F2 R'"
+},
+"IV": {
+"moves": 12,
+"S": "D R",
+"inv": false,
+"alg": "D R U R2 U' L U R2 U' L' R' D'"
+},
+"BU": {
+"moves": 12,
+"S": "F R",
+"inv": false,
+"alg": "F R D R2 D' L2 D R2 D' L2 R' F'"
+},
+"TC": {
+"moves": 12,
+"S": "F' D2",
+"inv": false,
+"alg": "F' D2 F D' F' U2 F D F' U2 D2 F"
+},
+"KS": {
+"moves": 12,
+"S": "B U",
+"inv": false,
+"alg": "B U R U2 R' D2 R U2 R' D2 U' B'"
+}
+},
+"IQ": {
+"KG": {
+"moves": 13,
+"S": "L D R2",
+"inv": false,
+"alg": "L D R' U2 R' D R U2 R' D' R2 D' L'"
+},
+"IV": {
+"moves": 12,
+"S": "R D'",
+"inv": false,
+"alg": "R D' U R2 U' L U R2 U' L' D R'"
+},
+"BU": {
+"moves": 13,
+"S": "F R D2",
+"inv": false,
+"alg": "F R D' R2 D' L2 D R2 D' L2 D2 R' F'"
+},
+"TC": {
+"moves": 13,
+"S": "U2 R U'",
+"inv": false,
+"alg": "U2 R U' F D' F' U2 F D F' U' R' U2"
+},
+"KS": {
+"moves": 11,
+"S": "L R2",
+"inv": false,
+"alg": "L R' U2 R' D2 R U2 R' D2 R2 L'"
+}
+},
+"IS": {
+"KG": {
+"moves": 12,
+"S": "D' F2 D'",
+"inv": true,
+"alg": "D' F2 R U2 R' D' R U2 R' D F2 D"
+},
+"IV": {
+"moves": 12,
+"S": "L' D",
+"inv": false,
+"alg": "L' D U R2 U' L U R2 U' L' D' L"
+},
+"BU": {
+"moves": 12,
+"S": "F' B'",
+"inv": false,
+"alg": "F' B' D R2 D' L2 D R2 D' L2 B F"
+},
+"TC": {
+"moves": 11,
+"S": "B2 U'",
+"inv": false,
+"alg": "B2 U' F D' F' U2 F D F' U' B2"
+},
+"KS": {
+"moves": 10,
+"S": "F2",
+"inv": false,
+"alg": "F2 R U2 R' D2 R U2 R' D2 F2"
+}
+},
+"IT": {
+"KG": {
+"moves": 13,
+"S": "D L D",
+"inv": false,
+"alg": "D L D R U2 R' D R U2 R' D2 L' D'"
+},
+"IV": {
+"moves": 10,
+"S": "R",
+"inv": false,
+"alg": "R U R2 U' L U R2 U' L' R'"
+},
+"BU": {
+"moves": 11,
+"S": "F R D'",
+"inv": false,
+"alg": "F R' D' L2 D R2 D' L2 D R' F'"
+},
+"TC": {
+"moves": 14,
+"S": "U' L R2",
+"inv": false,
+"alg": "U' L R2 F D' F' U2 F D F' U2 R2 L' U"
+},
+"KS": {
+"moves": 11,
+"S": "B U R'",
+"inv": false,
+"alg": "B U' R' D2 R U2 R' D2 R U' B'"
+}
+},
+"IU": {
+"KG": {
+"moves": 12,
+"S": "F2 D' R'",
+"inv": true,
+"alg": "F2 D' R' D R U2 R' D' R U2 D F2"
+},
+"IV": {
+"moves": 10,
+"S": "D",
+"inv": false,
+"alg": "D U R2 U' L U R2 U' L' D'"
+},
+"BU": {
+"moves": 14,
+"S": "F R F'",
+"inv": false,
+"alg": "F R F' D R2 D' L2 D R2 D' L2 F R' F'"
+},
+"TC": {
+"moves": 9,
+"S": "F' D F'",
+"inv": true,
+"alg": "F' D F' U2 F D' F' U2 F2"
+},
+"KS": {
+"moves": 12,
+"S": "F2 D2 R'",
+"inv": true,
+"alg": "F2 D2 R' D2 R U2 R' D2 R U2 D2 F2"
+}
+},
+"IV": {
+"KG": {
+"moves": 12,
+"S": "L2 B'",
+"inv": false,
+"alg": "L2 B' R U2 R' D R U2 R' D' B L2"
+},
+"IV": {
+"moves": 8,
+"S": "",
+"inv": false,
+"alg": "U R2 U' L U R2 U' L'"
+},
+"BU": {
+"moves": 14,
+"S": "D2 L B'",
+"inv": false,
+"alg": "D2 L B' D R2 D' L2 D R2 D' L2 B L' D2"
+},
+"TC": {
+"moves": 12,
+"S": "B2 U F'",
+"inv": true,
+"alg": "B2 U F' U2 F D' F' U2 F D U' B2"
+},
+"KS": {
+"moves": 13,
+"S": "D L R",
+"inv": false,
+"alg": "D L R2 U2 R' D2 R U2 R' D2 R' L' D'"
+}
+},
+"IW": {
+"KG": {
+"moves": 14,
+"S": "L' D' L'",
+"inv": false,
+"alg": "L' D' L' R U2 R' D R U2 R' D' L D L"
+},
+"IV": {
+"moves": 10,
+"S": "D'",
+"inv": false,
+"alg": "D' U R2 U' L U R2 U' L' D"
+},
+"BU": {
+"moves": 13,
+"S": "B U2 L'",
+"inv": false,
+"alg": "B U2 L' D R2 D' L2 D R2 D' L' U2 B'"
+},
+"TC": {
+"moves": 12,
+"S": "F R2",
+"inv": false,
+"alg": "F R2 F D' F' U2 F D F' U2 R2 F'"
+},
+"KS": {
+"moves": 11,
+"S": "L R",
+"inv": false,
+"alg": "L R2 U2 R' D2 R U2 R' D2 R' L'"
+}
+},
+"IX": {
+"KG": {
+"moves": 13,
+"S": "F2 D' R",
+"inv": true,
+"alg": "F2 D' R D R U2 R' D' R U2 R2 D F2"
+},
+"IV": {
+"moves": 10,
+"S": "D2",
+"inv": false,
+"alg": "D2 U R2 U' L U R2 U' L' D2"
+},
+"BU": {
+"moves": 12,
+"S": "L B'",
+"inv": false,
+"alg": "L B' D R2 D' L2 D R2 D' L2 B L'"
+},
+"TC": {
+"moves": 14,
+"S": "D' F R2",
+"inv": false,
+"alg": "D' F R2 F D' F' U2 F D F' U2 R2 F' D"
+},
+"KS": {
+"moves": 12,
+"S": "L F'",
+"inv": false,
+"alg": "L F' R U2 R' D2 R U2 R' D2 F L'"
+}
+},
+"JB": {
+"KG": {
+"moves": 12,
+"S": "R' F",
+"inv": true,
+"alg": "R' F D R U2 R' D' R U2 R' F' R"
+},
+"IV": {
+"moves": 12,
+"S": "F' R2",
+"inv": false,
+"alg": "F' R2 U R2 U' L U R2 U' L' R2 F"
+},
+"BU": {
+"moves": 13,
+"S": "L F' L",
+"inv": false,
+"alg": "L F' L D R2 D' L2 D R2 D' L F L'"
+},
+"TC": {
+"moves": 12,
+"S": "F R U2",
+"inv": false,
+"alg": "F R U2 F D' F' U2 F D F' R' F'"
+},
+"KS": {
+"moves": 14,
+"S": "L F U'",
+"inv": true,
+"alg": "L F U' D2 R U2 R' D2 R U2 R' U F' L'"
+}
+},
+"JD": {
+"KG": {
+"moves": 11,
+"S": "U2 R2 D'",
+"inv": true,
+"alg": "U2 R' U2 R' D' R U2 R' D R2 U2"
+},
+"IV": {
+"moves": 13,
+"S": "L' F U",
+"inv": false,
+"alg": "L' F U2 R2 U' L U R2 U' L' U' F' L"
+},
+"BU": {
+"moves": 12,
+"S": "R' U D'",
+"inv": false,
+"alg": "R' U R2 D' L2 D R2 D' L2 D U' R"
+},
+"TC": {
+"moves": 12,
+"S": "L D'",
+"inv": false,
+"alg": "L D' F D' F' U2 F D F' U2 D L'"
+},
+"KS": {
+"moves": 14,
+"S": "F' D L",
+"inv": false,
+"alg": "F' D L R U2 R' D2 R U2 R' D2 L' D' F"
+}
+},
+"JF": {
+"KG": {
+"moves": 12,
+"S": "R' F R'",
+"inv": true,
+"alg": "R' F R' D R U2 R' D' R U2 F' R"
+},
+"IV": {
+"moves": 12,
+"S": "F' D",
+"inv": false,
+"alg": "F' D U R2 U' L U R2 U' L' D' F"
+},
+"BU": {
+"moves": 12,
+"S": "R F'",
+"inv": false,
+"alg": "R F' D R2 D' L2 D R2 D' L2 F R'"
+},
+"TC": {
+"moves": 9,
+"S": "F2 D F'",
+"inv": true,
+"alg": "F2 D F' U2 F D' F' U2 F'"
+},
+"KS": {
+"moves": 12,
+"S": "F D2 R'",
+"inv": true,
+"alg": "F D2 R' D2 R U2 R' D2 R U2 D2 F'"
+}
+},
+"JG": {
+"KG": {
+"moves": 12,
+"S": "D2 F D'",
+"inv": true,
+"alg": "D2 F R U2 R' D' R U2 R' D F' D2"
+},
+"IV": {
+"moves": 10,
+"S": "F'",
+"inv": false,
+"alg": "F' U R2 U' L U R2 U' L' F"
+},
+"BU": {
+"moves": 12,
+"S": "R F' D'",
+"inv": false,
+"alg": "R F' R2 D' L2 D R2 D' L2 D F R'"
+},
+"TC": {
+"moves": 14,
+"S": "R D R",
+"inv": false,
+"alg": "R D R F D' F' U2 F D F' U2 R' D' R'"
+},
+"KS": {
+"moves": 12,
+"S": "D' F",
+"inv": false,
+"alg": "D' F R U2 R' D2 R U2 R' D2 F' D"
+}
+},
+"JH": {
+"KG": {
+"moves": 12,
+"S": "D L2 R'",
+"inv": true,
+"alg": "D L2 R' D R U2 R' D' R U2 L2 D'"
+},
+"IV": {
+"moves": 14,
+"S": "L' U R2",
+"inv": false,
+"alg": "L' U R2 U R2 U' L U R2 U' L' R2 U' L"
+},
+"BU": {
+"moves": 11,
+"S": "D' R D'",
+"inv": false,
+"alg": "D' R' D' L2 D R2 D' L2 D R' D"
+},
+"TC": {
+"moves": 11,
+"S": "R2 D' F'",
+"inv": true,
+"alg": "R2 D' F' U2 F D' F' U2 F D2 R2"
+},
+"KS": {
+"moves": 14,
+"S": "L F U",
+"inv": true,
+"alg": "L F U D2 R U2 R' D2 R U2 R' U' F' L'"
+}
+},
+"JI": {
+"KG": {
+"moves": 12,
+"S": "L2 B' R'",
+"inv": true,
+"alg": "L2 B' R' D R U2 R' D' R U2 B L2"
+},
+"IV": {
+"moves": 10,
+"S": "R'",
+"inv": true,
+"alg": "R' L U R2 U' L' U R2 U' R"
+},
+"BU": {
+"moves": 14,
+"S": "F R F2",
+"inv": true,
+"alg": "F R F2 L2 D R2 D' L2 D R2 D' F2 R' F'"
+},
+"TC": {
+"moves": 14,
+"S": "R F2 R",
+"inv": false,
+"alg": "R F2 R F D' F' U2 F D F' U2 R' F2 R'"
+},
+"KS": {
+"moves": 12,
+"S": "L F D2",
+"inv": false,
+"alg": "L F D2 R U2 R' D2 R U2 R' F' L'"
+}
+},
+"JK": {
+"KG": {
+"moves": 12,
+"S": "D F D'",
+"inv": true,
+"alg": "D F R U2 R' D' R U2 R' D F' D'"
+},
+"IV": {
+"moves": 11,
+"S": "L' U",
+"inv": false,
+"alg": "L' U2 R2 U' L U R2 U' L' U' L"
+},
+"BU": {
+"moves": 12,
+"S": "R F2",
+"inv": false,
+"alg": "R F2 D R2 D' L2 D R2 D' L2 F2 R'"
+},
+"TC": {
+"moves": 14,
+"S": "R2 U2 L",
+"inv": true,
+"alg": "R2 U2 L U2 F D' F' U2 F D F' L' U2 R2"
+},
+"KS": {
+"moves": 12,
+"S": "D2 F",
+"inv": false,
+"alg": "D2 F R U2 R' D2 R U2 R' D2 F' D2"
+}
+},
+"JL": {
+"KG": {
+"moves": 10,
+"S": "L2 U2 R'",
+"inv": false,
+"alg": "L2 R' D R U2 R' D' R U2 L2"
+},
+"IV": {
+"moves": 13,
+"S": "U' R2 L",
+"inv": true,
+"alg": "U' R2 L2 U R2 U' L' U R2 U' L' R2 U"
+},
+"BU": {
+"moves": 11,
+"S": "D2 R D'",
+"inv": false,
+"alg": "D2 R' D' L2 D R2 D' L2 D R' D2"
+},
+"TC": {
+"moves": 14,
+"S": "R F' R",
+"inv": false,
+"alg": "R F' R F D' F' U2 F D F' U2 R' F R'"
+},
+"KS": {
+"moves": 12,
+"S": "L2 D' R'",
+"inv": true,
+"alg": "L2 D' R' D2 R U2 R' D2 R U2 D L2"
+}
+},
+"JN": {
+"KG": {
+"moves": 14,
+"S": "L' U F2",
+"inv": false,
+"alg": "L' U F2 R U2 R' D R U2 R' D' F2 U' L"
+},
+"IV": {
+"moves": 12,
+"S": "U' R2",
+"inv": false,
+"alg": "U' R2 U R2 U' L U R2 U' L' R2 U"
+},
+"BU": {
+"moves": 14,
+"S": "R2 F R'",
+"inv": false,
+"alg": "R2 F R' D R2 D' L2 D R2 D' L2 R F' R2"
+},
+"TC": {
+"moves": 10,
+"S": "R2 F'",
+"inv": false,
+"alg": "R2 D' F' U2 F D F' U2 F R2"
+},
+"KS": {
+"moves": 14,
+"S": "R2 B U'",
+"inv": false,
+"alg": "R2 B U' R U2 R' D2 R U2 R' D2 U B' R2"
+}
+},
+"JO": {
+"KG": {
+"moves": 10,
+"S": "F D'",
+"inv": true,
+"alg": "F R U2 R' D' R U2 R' D F'"
+},
+"IV": {
+"moves": 12,
+"S": "D R' L'",
+"inv": false,
+"alg": "D R' L' U R2 U' L U R2 U' R D'"
+},
+"BU": {
+"moves": 12,
+"S": "R F",
+"inv": false,
+"alg": "R F D R2 D' L2 D R2 D' L2 F' R'"
+},
+"TC": {
+"moves": 14,
+"S": "F R D",
+"inv": true,
+"alg": "F R D U2 F D' F' U2 F D F' D' R' F'"
+},
+"KS": {
+"moves": 12,
+"S": "D F",
+"inv": false,
+"alg": "D F R U2 R' D2 R U2 R' D2 F' D'"
+}
+},
+"JP": {
+"KG": {
+"moves": 12,
+"S": "D' L2 R'",
+"inv": true,
+"alg": "D' L2 R' D R U2 R' D' R U2 L2 D"
+},
+"IV": {
+"moves": 12,
+"S": "R2 D' U'",
+"inv": false,
+"alg": "R2 D' R2 U' L U R2 U' L' U D R2"
+},
+"BU": {
+"moves": 11,
+"S": "D R D'",
+"inv": false,
+"alg": "D R' D' L2 D R2 D' L2 D R' D'"
+},
+"TC": {
+"moves": 12,
+"S": "U2 R' F'",
+"inv": false,
+"alg": "U2 R' D' F' U2 F D F' U2 F R U2"
+},
+"KS": {
+"moves": 12,
+"S": "R B R'",
+"inv": false,
+"alg": "R B U2 R' D2 R U2 R' D2 R B' R'"
+}
+},
+"JQ": {
+"KG": {
+"moves": 12,
+"S": "L2 B R'",
+"inv": true,
+"alg": "L2 B R' D R U2 R' D' R U2 B' L2"
+},
+"IV": {
+"moves": 14,
+"S": "F' R D'",
+"inv": false,
+"alg": "F' R D' U R2 U' L U R2 U' L' D R' F"
+},
+"BU": {
+"moves": 11,
+"S": "R D2",
+"inv": false,
+"alg": "R D' R2 D' L2 D R2 D' L2 D2 R'"
+},
+"TC": {
+"moves": 14,
+"S": "F2 R' D2",
+"inv": false,
+"alg": "F2 R' D2 F D' F' U2 F D F' U2 D2 R F2"
+},
+"KS": {
+"moves": 13,
+"S": "F D2 R2",
+"inv": true,
+"alg": "F D2 R2 D2 R U2 R' D2 R U2 R D2 F'"
+}
+},
+"JS": {
+"KG": {
+"moves": 12,
+"S": "D' F D'",
+"inv": true,
+"alg": "D' F R U2 R' D' R U2 R' D F' D"
+},
+"IV": {
+"moves": 10,
+"S": "R' L'",
+"inv": false,
+"alg": "R' L' U R2 U' L U R2 U' R"
+},
+"BU": {
+"moves": 12,
+"S": "F2 B'",
+"inv": false,
+"alg": "F2 B' D R2 D' L2 D R2 D' L2 B F2"
+},
+"TC": {
+"moves": 13,
+"S": "F' B2 U'",
+"inv": false,
+"alg": "F' B2 U' F D' F' U2 F D F' U' B2 F"
+},
+"KS": {
+"moves": 10,
+"S": "F",
+"inv": false,
+"alg": "F R U2 R' D2 R U2 R' D2 F'"
+}
+},
+"JT": {
+"KG": {
+"moves": 12,
+"S": "D2 L2 R'",
+"inv": true,
+"alg": "D2 L2 R' D R U2 R' D' R U2 L2 D2"
+},
+"IV": {
+"moves": 12,
+"S": "F' R",
+"inv": false,
+"alg": "F' R U R2 U' L U R2 U' L' R' F"
+},
+"BU": {
+"moves": 9,
+"S": "R D'",
+"inv": false,
+"alg": "R' D' L2 D R2 D' L2 D R'"
+},
+"TC": {
+"moves": 14,
+"S": "L B' D'",
+"inv": true,
+"alg": "L B' D' U2 F D' F' U2 F D F' D B L'"
+},
+"KS": {
+"moves": 12,
+"S": "B2 D R'",
+"inv": true,
+"alg": "B2 D R' D2 R U2 R' D2 R U2 D' B2"
+}
+},
+"JU": {
+"KG": {
+"moves": 12,
+"S": "D F",
+"inv": false,
+"alg": "D F R U2 R' D R U2 R' D' F' D'"
+},
+"IV": {
+"moves": 13,
+"S": "L' D2 U",
+"inv": false,
+"alg": "L' D2 U2 R2 U' L U R2 U' L' U' D2 L"
+},
+"BU": {
+"moves": 10,
+"S": "R",
+"inv": false,
+"alg": "R D R2 D' L2 D R2 D' L2 R'"
+},
+"TC": {
+"moves": 11,
+"S": "R2 F2",
+"inv": false,
+"alg": "R2 F' D' F' U2 F D F' U2 F2 R2"
+},
+"KS": {
+"moves": 13,
+"S": "U2 R2 D",
+"inv": false,
+"alg": "U2 R2 D R U2 R' D2 R U2 R' D R2 U2"
+}
+},
+"JV": {
+"KG": {
+"moves": 10,
+"S": "F",
+"inv": false,
+"alg": "F R U2 R' D R U2 R' D' F'"
+},
+"IV": {
+"moves": 12,
+"S": "U L U'",
+"inv": false,
+"alg": "U L R2 U' L U R2 U' L' U L' U'"
+},
+"BU": {
+"moves": 12,
+"S": "D' R",
+"inv": false,
+"alg": "D' R D R2 D' L2 D R2 D' L2 R' D"
+},
+"TC": {
+"moves": 12,
+"S": "D R2",
+"inv": false,
+"alg": "D R2 F D' F' U2 F D F' U2 R2 D'"
+},
+"KS": {
+"moves": 14,
+"S": "U' L2 U'",
+"inv": false,
+"alg": "U' L2 U' R U2 R' D2 R U2 R' D2 U L2 U"
+}
+},
+"JW": {
+"KG": {
+"moves": 12,
+"S": "D' F",
+"inv": false,
+"alg": "D' F R U2 R' D R U2 R' D' F' D"
+},
+"IV": {
+"moves": 11,
+"S": "U2 R U'",
+"inv": false,
+"alg": "U2 R' U' L U R2 U' L' U R' U2"
+},
+"BU": {
+"moves": 12,
+"S": "D2 R",
+"inv": false,
+"alg": "D2 R D R2 D' L2 D R2 D' L2 R' D2"
+},
+"TC": {
+"moves": 10,
+"S": "R2",
+"inv": false,
+"alg": "R2 F D' F' U2 F D F' U2 R2"
+},
+"KS": {
+"moves": 13,
+"S": "L2 U2 D'",
+"inv": false,
+"alg": "L2 U2 D' R U2 R' D2 R U2 R' D' U2 L2"
+}
+},
+"JX": {
+"KG": {
+"moves": 11,
+"S": "B' R2 D'",
+"inv": true,
+"alg": "B' R' U2 R' D' R U2 R' D R2 B"
+},
+"IV": {
+"moves": 12,
+"S": "U2 F L'",
+"inv": true,
+"alg": "U2 F U R2 U' L' U R2 U' L F' U2"
+},
+"BU": {
+"moves": 11,
+"S": "U' L",
+"inv": false,
+"alg": "U' L D R2 D' L2 D R2 D' L U"
+},
+"TC": {
+"moves": 12,
+"S": "D' R2",
+"inv": false,
+"alg": "D' R2 F D' F' U2 F D F' U2 R2 D"
+},
+"KS": {
+"moves": 13,
+"S": "R B R",
+"inv": false,
+"alg": "R B R2 U2 R' D2 R U2 R' D2 R' B' R'"
+}
+},
+"KB": {
+"KG": {
+"moves": 13,
+"S": "R2 F R2",
+"inv": false,
+"alg": "R2 F R' U2 R' D R U2 R' D' R2 F' R2"
+},
+"IV": {
+"moves": 10,
+"S": "B L'",
+"inv": true,
+"alg": "B U R2 U' L' U R2 U' L B'"
+},
+"BU": {
+"moves": 12,
+"S": "D' F' D'",
+"inv": true,
+"alg": "D' F' D' L2 D R2 D' L2 D R2 F D"
+},
+"TC": {
+"moves": 10,
+"S": "R U2",
+"inv": false,
+"alg": "R U2 F D' F' U2 F D F' R'"
+},
+"KS": {
+"moves": 12,
+"S": "L U' D2",
+"inv": false,
+"alg": "L U' D2 R U2 R' D2 R U2 R' U L'"
+}
+},
+"KC": {
+"KG": {
+"moves": 10,
+"S": "D' U2 R'",
+"inv": false,
+"alg": "D' R' D R U2 R' D' R U2 D"
+},
+"IV": {
+"moves": 12,
+"S": "F2 D",
+"inv": false,
+"alg": "F2 D U R2 U' L U R2 U' L' D' F2"
+},
+"BU": {
+"moves": 13,
+"S": "R2 B D",
+"inv": false,
+"alg": "R2 B D2 R2 D' L2 D R2 D' L2 D' B' R2"
+},
+"TC": {
+"moves": 8,
+"S": "F D F'",
+"inv": true,
+"alg": "F D F' U2 F D' F' U2"
+},
+"KS": {
+"moves": 10,
+"S": "D2 U2 R'",
+"inv": false,
+"alg": "D2 R' D2 R U2 R' D2 R U2 D2"
+}
+},
+"KD": {
+"KG": {
+"moves": 13,
+"S": "R' F' R",
+"inv": false,
+"alg": "R' F' R2 U2 R' D R U2 R' D' R' F R"
+},
+"IV": {
+"moves": 10,
+"S": "F2",
+"inv": false,
+"alg": "F2 U R2 U' L U R2 U' L' F2"
+},
+"BU": {
+"moves": 13,
+"S": "R' U D2",
+"inv": false,
+"alg": "R' U D' R2 D' L2 D R2 D' L2 D2 U' R"
+},
+"TC": {
+"moves": 12,
+"S": "U R",
+"inv": false,
+"alg": "U R F D' F' U2 F D F' U2 R' U'"
+},
+"KS": {
+"moves": 13,
+"S": "D F' D'",
+"inv": false,
+"alg": "D F' D' R U2 R' D2 R U2 R' D' F D'"
+}
+},
+"KF": {
+"KG": {
+"moves": 14,
+"S": "F' D F",
+"inv": false,
+"alg": "F' D F R U2 R' D R U2 R' D' F' D' F"
+},
+"IV": {
+"moves": 14,
+"S": "D' L D2",
+"inv": true,
+"alg": "D' L D2 L U R2 U' L' U R2 U' D2 L' D"
+},
+"BU": {
+"moves": 12,
+"S": "F' R",
+"inv": false,
+"alg": "F' R D R2 D' L2 D R2 D' L2 R' F"
+},
+"TC": {
+"moves": 12,
+"S": "F D2",
+"inv": false,
+"alg": "F D2 F D' F' U2 F D F' U2 D2 F'"
+},
+"KS": {
+"moves": 12,
+"S": "D2 F R'",
+"inv": true,
+"alg": "D2 F R' D2 R U2 R' D2 R U2 F' D2"
+}
+},
+"KG": {
+"KG": {
+"moves": 8,
+"S": "",
+"inv": false,
+"alg": "R U2 R' D R U2 R' D'"
+},
+"IV": {
+"moves": 11,
+"S": "L' U L'",
+"inv": false,
+"alg": "L' U L' U R2 U' L U R2 U2 L"
+},
+"BU": {
+"moves": 14,
+"S": "F' D' R",
+"inv": false,
+"alg": "F' D' R D R2 D' L2 D R2 D' L2 R' D F"
+},
+"TC": {
+"moves": 14,
+"S": "D R D",
+"inv": false,
+"alg": "D R D F D' F' U2 F D F' U2 D' R' D'"
+},
+"KS": {
+"moves": 12,
+"S": "R D' R'",
+"inv": false,
+"alg": "R D' U2 R' D2 R U2 R' D2 R D R'"
+}
+},
+"KH": {
+"KG": {
+"moves": 12,
+"S": "D F' D'",
+"inv": false,
+"alg": "D F' D' R U2 R' D R U2 R' F D'"
+},
+"IV": {
+"moves": 14,
+"S": "F2 D' R",
+"inv": false,
+"alg": "F2 D' R U R2 U' L U R2 U' L' R' D F2"
+},
+"BU": {
+"moves": 12,
+"S": "L' U D'",
+"inv": true,
+"alg": "L' U D' L2 D R2 D' L2 D R2 U' L"
+},
+"TC": {
+"moves": 11,
+"S": "F D2 F'",
+"inv": false,
+"alg": "F D F' U2 F D F' U2 F D2 F'"
+},
+"KS": {
+"moves": 12,
+"S": "D2 F' R'",
+"inv": true,
+"alg": "D2 F' R' D2 R U2 R' D2 R U2 F D2"
+}
+},
+"KI": {
+"KG": {
+"moves": 12,
+"S": "D F2 D'",
+"inv": false,
+"alg": "D F2 D' R U2 R' D R U2 R' F2 D'"
+},
+"IV": {
+"moves": 11,
+"S": "B U L'",
+"inv": true,
+"alg": "B U2 R2 U' L' U R2 U' L U' B'"
+},
+"BU": {
+"moves": 14,
+"S": "U R2 F",
+"inv": true,
+"alg": "U R2 F L2 D R2 D' L2 D R2 D' F' R2 U'"
+},
+"TC": {
+"moves": 13,
+"S": "B2 R' U'",
+"inv": false,
+"alg": "B2 R' U' F D' F' U2 F D F' U' R B2"
+},
+"KS": {
+"moves": 10,
+"S": "L D2",
+"inv": false,
+"alg": "L D2 R U2 R' D2 R U2 R' L'"
+}
+},
+"KJ": {
+"KG": {
+"moves": 12,
+"S": "D F D'",
+"inv": false,
+"alg": "D F D' R U2 R' D R U2 R' F' D'"
+},
+"IV": {
+"moves": 11,
+"S": "L' U",
+"inv": true,
+"alg": "L' U L U R2 U' L' U R2 U2 L"
+},
+"BU": {
+"moves": 12,
+"S": "R F2 L2",
+"inv": false,
+"alg": "R F2 L2 D R2 D' L2 D R2 D' F2 R'"
+},
+"TC": {
+"moves": 14,
+"S": "R2 U2 L",
+"inv": false,
+"alg": "R2 U2 L F D' F' U2 F D F' U2 L' U2 R2"
+},
+"KS": {
+"moves": 12,
+"S": "D2 F D2",
+"inv": false,
+"alg": "D2 F D2 R U2 R' D2 R U2 R' F' D2"
+}
+},
+"KL": {
+"KG": {
+"moves": 14,
+"S": "U2 F U",
+"inv": false,
+"alg": "U2 F U R U2 R' D R U2 R' D' U' F' U2"
+},
+"IV": {
+"moves": 12,
+"S": "D2 R L'",
+"inv": true,
+"alg": "D2 R U R2 U' L' U R2 U' L R' D2"
+},
+"BU": {
+"moves": 14,
+"S": "R' D2 R'",
+"inv": true,
+"alg": "R' D2 R' L2 D R2 D' L2 D R2 D' R D2 R"
+},
+"TC": {
+"moves": 12,
+"S": "R D2 U2",
+"inv": false,
+"alg": "R D2 U2 F D' F' U2 F D F' D2 R'"
+},
+"KS": {
+"moves": 12,
+"S": "L U D2",
+"inv": false,
+"alg": "L U D2 R U2 R' D2 R U2 R' U' L'"
+}
+},
+"KM": {
+"KG": {
+"moves": 12,
+"S": "U2 F",
+"inv": false,
+"alg": "U2 F R U2 R' D R U2 R' D' F' U2"
+},
+"IV": {
+"moves": 11,
+"S": "D R U'",
+"inv": false,
+"alg": "D R' U' L U R2 U' L' U R' D'"
+},
+"BU": {
+"moves": 12,
+"S": "L' U2 D'",
+"inv": false,
+"alg": "L' U2 R2 D' L2 D R2 D' L2 D U2 L"
+},
+"TC": {
+"moves": 12,
+"S": "D B2 U2",
+"inv": false,
+"alg": "D B2 U2 F D' F' U2 F D F' B2 D'"
+},
+"KS": {
+"moves": 13,
+"S": "D' R2 D",
+"inv": false,
+"alg": "D' R2 D R U2 R' D2 R U2 R' D R2 D"
+}
+},
+"KN": {
+"KG": {
+"moves": 12,
+"S": "R D2 R'",
+"inv": false,
+"alg": "R D2 U2 R' D R U2 R' D' R D2 R'"
+},
+"IV": {
+"moves": 12,
+"S": "F D U'",
+"inv": false,
+"alg": "F D R2 U' L U R2 U' L' U D' F'"
+},
+"BU": {
+"moves": 14,
+"S": "U' F R",
+"inv": false,
+"alg": "U' F R D R2 D' L2 D R2 D' L2 R' F' U"
+},
+"TC": {
+"moves": 12,
+"S": "F' R2 F'",
+"inv": false,
+"alg": "F' R2 D' F' U2 F D F' U2 F R2 F"
+},
+"KS": {
+"moves": 12,
+"S": "R D R'",
+"inv": false,
+"alg": "R D U2 R' D2 R U2 R' D2 R D' R'"
+}
+},
+"KO": {
+"KG": {
+"moves": 8,
+"S": "D'",
+"inv": true,
+"alg": "R U2 R' D' R U2 R' D"
+},
+"IV": {
+"moves": 12,
+"S": "D2 F' L'",
+"inv": true,
+"alg": "D2 F' U R2 U' L' U R2 U' L F D2"
+},
+"BU": {
+"moves": 12,
+"S": "L B2 D'",
+"inv": false,
+"alg": "L B2 R2 D' L2 D R2 D' L2 D B2 L'"
+},
+"TC": {
+"moves": 12,
+"S": "R D U2",
+"inv": false,
+"alg": "R D U2 F D' F' U2 F D F' D' R'"
+},
+"KS": {
+"moves": 14,
+"S": "F2 D' L",
+"inv": false,
+"alg": "F2 D' L R U2 R' D2 R U2 R' D2 L' D F2"
+}
+},
+"KQ": {
+"KG": {
+"moves": 11,
+"S": "D' R2",
+"inv": true,
+"alg": "D' R2 D R U2 R' D' R U2 R D"
+},
+"IV": {
+"moves": 14,
+"S": "F2 R D'",
+"inv": false,
+"alg": "F2 R D' U R2 U' L U R2 U' L' D R' F2"
+},
+"BU": {
+"moves": 13,
+"S": "F' R D2",
+"inv": false,
+"alg": "F' R D' R2 D' L2 D R2 D' L2 D2 R' F"
+},
+"TC": {
+"moves": 13,
+"S": "U2 R2 U",
+"inv": false,
+"alg": "U2 R2 U F D' F' U2 F D F' U R2 U2"
+},
+"KS": {
+"moves": 11,
+"S": "D2 R2 D2",
+"inv": false,
+"alg": "D2 R2 D2 R U2 R' D2 R U2 R D2"
+}
+},
+"KS": {
+"KG": {
+"moves": 12,
+"S": "R D R'",
+"inv": false,
+"alg": "R D U2 R' D R U2 R' D' R D' R'"
+},
+"IV": {
+"moves": 12,
+"S": "F' R' L'",
+"inv": false,
+"alg": "F' R' L' U R2 U' L U R2 U' R F"
+},
+"BU": {
+"moves": 12,
+"S": "F B'",
+"inv": false,
+"alg": "F B' D R2 D' L2 D R2 D' L2 B F'"
+},
+"TC": {
+"moves": 12,
+"S": "U B' F'",
+"inv": false,
+"alg": "U B' D' F' U2 F D F' U2 F B U'"
+},
+"KS": {
+"moves": 8,
+"S": "",
+"inv": false,
+"alg": "R U2 R' D2 R U2 R' D2"
+}
+},
+"KT": {
+"KG": {
+"moves": 13,
+"S": "F L2 R",
+"inv": false,
+"alg": "F L2 R2 U2 R' D R U2 R' D' R' L2 F'"
+},
+"IV": {
+"moves": 10,
+"S": "B U' L'",
+"inv": true,
+"alg": "B R2 U' L' U R2 U' L U B'"
+},
+"BU": {
+"moves": 11,
+"S": "R' D2 L2",
+"inv": false,
+"alg": "R' D2 L2 D R2 D' L2 D R2 D R"
+},
+"TC": {
+"moves": 14,
+"S": "L2 F2 L",
+"inv": false,
+"alg": "L2 F2 L F D' F' U2 F D F' U2 L' F2 L2"
+},
+"KS": {
+"moves": 12,
+"S": "D2 F' D2",
+"inv": false,
+"alg": "D2 F' D2 R U2 R' D2 R U2 R' F D2"
+}
+},
+"KU": {
+"KG": {
+"moves": 14,
+"S": "U R2 B",
+"inv": true,
+"alg": "U R2 B D R U2 R' D' R U2 R' B' R2 U'"
+},
+"IV": {
+"moves": 13,
+"S": "U F' U2",
+"inv": true,
+"alg": "U F' U2 L U R2 U' L' U R2 U F U'"
+},
+"BU": {
+"moves": 13,
+"S": "D2 B' D",
+"inv": true,
+"alg": "D2 B' D L2 D R2 D' L2 D R2 D2 B D2"
+},
+"TC": {
+"moves": 12,
+"S": "D B2 F'",
+"inv": true,
+"alg": "D B2 F' U2 F D' F' U2 F D B2 D'"
+},
+"KS": {
+"moves": 11,
+"S": "D2 R D2",
+"inv": false,
+"alg": "D2 R D2 R U2 R' D2 R U2 R2 D2"
+}
+},
+"KW": {
+"KG": {
+"moves": 12,
+"S": "R D' R'",
+"inv": false,
+"alg": "R D' U2 R' D R U2 R' D' R D R'"
+},
+"IV": {
+"moves": 12,
+"S": "F2 D'",
+"inv": false,
+"alg": "F2 D' U R2 U' L U R2 U' L' D F2"
+},
+"BU": {
+"moves": 13,
+"S": "R' B D",
+"inv": true,
+"alg": "R' B D L2 D R2 D' L2 D R2 D2 B' R"
+},
+"TC": {
+"moves": 12,
+"S": "F' R2",
+"inv": false,
+"alg": "F' R2 F D' F' U2 F D F' U2 R2 F"
+},
+"KS": {
+"moves": 12,
+"S": "R D2 R'",
+"inv": false,
+"alg": "R D2 U2 R' D2 R U2 R' D2 R D2 R'"
+}
+},
+"KX": {
+"KG": {
+"moves": 11,
+"S": "D' R",
+"inv": true,
+"alg": "D' R D R U2 R' D' R U2 R2 D"
+},
+"IV": {
+"moves": 10,
+"S": "D2 L'",
+"inv": true,
+"alg": "D2 U R2 U' L' U R2 U' L D2"
+},
+"BU": {
+"moves": 13,
+"S": "F' U' L",
+"inv": false,
+"alg": "F' U' L D R2 D' L2 D R2 D' L U F"
+},
+"TC": {
+"moves": 12,
+"S": "B' R' U2",
+"inv": false,
+"alg": "B' R' U2 F D' F' U2 F D F' R B"
+},
+"KS": {
+"moves": 13,
+"S": "R' B' R2",
+"inv": false,
+"alg": "R' B' R' U2 R' D2 R U2 R' D2 R2 B R"
+}
+},
+"LB": {
+"KG": {
+"moves": 11,
+"S": "L2 R2",
+"inv": false,
+"alg": "L2 R' U2 R' D R U2 R' D' R2 L2"
+},
+"IV": {
+"moves": 12,
+"S": "F R2",
+"inv": false,
+"alg": "F R2 U R2 U' L U R2 U' L' R2 F'"
+},
+"BU": {
+"moves": 12,
+"S": "D F L2",
+"inv": false,
+"alg": "D F L2 D R2 D' L2 D R2 D' F' D'"
+},
+"TC": {
+"moves": 12,
+"S": "F' R U2",
+"inv": false,
+"alg": "F' R U2 F D' F' U2 F D F' R' F"
+},
+"KS": {
+"moves": 11,
+"S": "L U R'",
+"inv": false,
+"alg": "L U' R' D2 R U2 R' D2 R U' L'"
+}
+},
+"LC": {
+"KG": {
+"moves": 10,
+"S": "D R' D'",
+"inv": false,
+"alg": "D R' D' R U2 R' D R U2 D'"
+},
+"IV": {
+"moves": 13,
+"S": "L F2 L2",
+"inv": false,
+"alg": "L F2 L2 U R2 U' L U R2 U' L F2 L'"
+},
+"BU": {
+"moves": 12,
+"S": "F2 R",
+"inv": false,
+"alg": "F2 R D R2 D' L2 D R2 D' L2 R' F2"
+},
+"TC": {
+"moves": 10,
+"S": "D2",
+"inv": false,
+"alg": "D2 F D' F' U2 F D F' U2 D2"
+},
+"KS": {
+"moves": 13,
+"S": "U' L2 R2",
+"inv": false,
+"alg": "U' L2 R' U2 R' D2 R U2 R' D2 R2 L2 U"
+}
+},
+"LD": {
+"KG": {
+"moves": 10,
+"S": "F'",
+"inv": false,
+"alg": "F' R U2 R' D R U2 R' D' F"
+},
+"IV": {
+"moves": 12,
+"S": "L2 F' L'",
+"inv": true,
+"alg": "L2 F' U R2 U' L' U R2 U' L F L2"
+},
+"BU": {
+"moves": 14,
+"S": "U D F",
+"inv": false,
+"alg": "U D F D R2 D' L2 D R2 D' L2 F' D' U'"
+},
+"TC": {
+"moves": 14,
+"S": "U F' R",
+"inv": false,
+"alg": "U F' R F D' F' U2 F D F' U2 R' F U'"
+},
+"KS": {
+"moves": 14,
+"S": "U D B",
+"inv": false,
+"alg": "U D B R U2 R' D2 R U2 R' D2 B' D' U'"
+}
+},
+"LF": {
+"KG": {
+"moves": 14,
+"S": "B2 D L",
+"inv": true,
+"alg": "B2 D L D R U2 R' D' R U2 R' L' D' B2"
+},
+"IV": {
+"moves": 14,
+"S": "F R2 D'",
+"inv": false,
+"alg": "F R2 D' U R2 U' L U R2 U' L' D R2 F'"
+},
+"BU": {
+"moves": 13,
+"S": "D2 B L'",
+"inv": false,
+"alg": "D2 B L' D R2 D' L2 D R2 D' L' B' D2"
+},
+"TC": {
+"moves": 11,
+"S": "D2 F",
+"inv": false,
+"alg": "D2 F2 D' F' U2 F D F' U2 F' D2"
+},
+"KS": {
+"moves": 12,
+"S": "U' L2 R'",
+"inv": false,
+"alg": "U' L2 U2 R' D2 R U2 R' D2 R L2 U"
+}
+},
+"LH": {
+"KG": {
+"moves": 13,
+"S": "L U D",
+"inv": false,
+"alg": "L U D R U2 R' D R U2 R' D2 U' L'"
+},
+"IV": {
+"moves": 12,
+"S": "B' D U'",
+"inv": true,
+"alg": "B' D U' L U R2 U' L' U R2 D' B"
+},
+"BU": {
+"moves": 14,
+"S": "D2 F R'",
+"inv": false,
+"alg": "D2 F R' D R2 D' L2 D R2 D' L2 R F' D2"
+},
+"TC": {
+"moves": 9,
+"S": "D2 F'",
+"inv": false,
+"alg": "D F' U2 F D F' U2 F D2"
+},
+"KS": {
+"moves": 14,
+"S": "U2 F U",
+"inv": true,
+"alg": "U2 F U D2 R U2 R' D2 R U2 R' U' F' U2"
+}
+},
+"LI": {
+"KG": {
+"moves": 13,
+"S": "D' L D",
+"inv": true,
+"alg": "D' L D2 R U2 R' D' R U2 R' D' L' D"
+},
+"IV": {
+"moves": 12,
+"S": "D2 R",
+"inv": true,
+"alg": "D2 R L U R2 U' L' U R2 U' R' D2"
+},
+"BU": {
+"moves": 14,
+"S": "D F R",
+"inv": true,
+"alg": "D F R L2 D R2 D' L2 D R2 D' R' F' D'"
+},
+"TC": {
+"moves": 14,
+"S": "F' R D2",
+"inv": true,
+"alg": "F' R D2 U2 F D' F' U2 F D F' D2 R' F"
+},
+"KS": {
+"moves": 13,
+"S": "U R D'",
+"inv": false,
+"alg": "U R D' R U2 R' D2 R U2 R' D' R' U'"
+}
+},
+"LJ": {
+"KG": {
+"moves": 10,
+"S": "L2 R'",
+"inv": false,
+"alg": "L2 U2 R' D R U2 R' D' R L2"
+},
+"IV": {
+"moves": 13,
+"S": "U' R2 L",
+"inv": false,
+"alg": "U' R2 L U R2 U' L U R2 U' L2 R2 U"
+},
+"BU": {
+"moves": 11,
+"S": "D2 R' D'",
+"inv": false,
+"alg": "D2 R D' L2 D R2 D' L2 D R D2"
+},
+"TC": {
+"moves": 14,
+"S": "R F' R",
+"inv": true,
+"alg": "R F' R U2 F D' F' U2 F D F' R' F R'"
+},
+"KS": {
+"moves": 12,
+"S": "L2 D' R'",
+"inv": false,
+"alg": "L2 D' U2 R' D2 R U2 R' D2 R D L2"
+}
+},
+"LK": {
+"KG": {
+"moves": 14,
+"S": "U2 F U",
+"inv": true,
+"alg": "U2 F U D R U2 R' D' R U2 R' U' F' U2"
+},
+"IV": {
+"moves": 12,
+"S": "D2 R L'",
+"inv": false,
+"alg": "D2 R L' U R2 U' L U R2 U' R' D2"
+},
+"BU": {
+"moves": 14,
+"S": "R' D2 R'",
+"inv": false,
+"alg": "R' D2 R' D R2 D' L2 D R2 D' L2 R D2 R"
+},
+"TC": {
+"moves": 12,
+"S": "R D2",
+"inv": false,
+"alg": "R D2 F D' F' U2 F D F' U2 D2 R'"
+},
+"KS": {
+"moves": 12,
+"S": "L U",
+"inv": false,
+"alg": "L U R U2 R' D2 R U2 R' D2 U' L'"
+}
+},
+"LM": {
+"KG": {
+"moves": 12,
+"S": "R2 F' D'",
+"inv": true,
+"alg": "R2 F' R U2 R' D' R U2 R' D F R2"
+},
+"IV": {
+"moves": 10,
+"S": "F",
+"inv": false,
+"alg": "F U R2 U' L U R2 U' L' F'"
+},
+"BU": {
+"moves": 14,
+"S": "D2 R' F",
+"inv": false,
+"alg": "D2 R' F D R2 D' L2 D R2 D' L2 F' R D2"
+},
+"TC": {
+"moves": 10,
+"S": "R' D F'",
+"inv": true,
+"alg": "R' D F' U2 F D' F' U2 F R"
+},
+"KS": {
+"moves": 14,
+"S": "U2 D' F",
+"inv": false,
+"alg": "U2 D' F R U2 R' D2 R U2 R' D2 F' D U2"
+}
+},
+"LN": {
+"KG": {
+"moves": 12,
+"S": "R F' D'",
+"inv": true,
+"alg": "R F' R U2 R' D' R U2 R' D F R'"
+},
+"IV": {
+"moves": 10,
+"S": "D U'",
+"inv": false,
+"alg": "D R2 U' L U R2 U' L' U D'"
+},
+"BU": {
+"moves": 12,
+"S": "L2 F' D'",
+"inv": false,
+"alg": "L2 F' R2 D' L2 D R2 D' L2 D F L2"
+},
+"TC": {
+"moves": 10,
+"S": "R2 D F'",
+"inv": true,
+"alg": "R2 D F' U2 F D' F' U2 F R2"
+},
+"KS": {
+"moves": 14,
+"S": "L U F",
+"inv": false,
+"alg": "L U F R U2 R' D2 R U2 R' D2 F' U' L'"
+}
+},
+"LO": {
+"KG": {
+"moves": 10,
+"S": "F' D'",
+"inv": true,
+"alg": "F' R U2 R' D' R U2 R' D F"
+},
+"IV": {
+"moves": 12,
+"S": "R' D U'",
+"inv": false,
+"alg": "R' D R2 U' L U R2 U' L' U D' R"
+},
+"BU": {
+"moves": 12,
+"S": "D B' D'",
+"inv": false,
+"alg": "D B' R2 D' L2 D R2 D' L2 D B D'"
+},
+"TC": {
+"moves": 10,
+"S": "R D F'",
+"inv": true,
+"alg": "R D F' U2 F D' F' U2 F R'"
+},
+"KS": {
+"moves": 12,
+"S": "D F' R'",
+"inv": false,
+"alg": "D F' U2 R' D2 R U2 R' D2 R F D'"
+}
+},
+"LP": {
+"KG": {
+"moves": 12,
+"S": "R' F' D'",
+"inv": true,
+"alg": "R' F' R U2 R' D' R U2 R' D F R"
+},
+"IV": {
+"moves": 11,
+"S": "U' L",
+"inv": false,
+"alg": "U' L U R2 U' L U R2 U' L2 U"
+},
+"BU": {
+"moves": 12,
+"S": "B' L2 D'",
+"inv": true,
+"alg": "B' L2 D' L2 D R2 D' L2 D R2 L2 B"
+},
+"TC": {
+"moves": 8,
+"S": "D F' U2",
+"inv": false,
+"alg": "D F' U2 F D' F' U2 F"
+},
+"KS": {
+"moves": 12,
+"S": "F' D2 R'",
+"inv": true,
+"alg": "F' D2 R' D2 R U2 R' D2 R U2 D2 F"
+}
+},
+"LQ": {
+"KG": {
+"moves": 12,
+"S": "U B R'",
+"inv": true,
+"alg": "U B R' D R U2 R' D' R U2 B' U'"
+},
+"IV": {
+"moves": 14,
+"S": "U' L D2",
+"inv": false,
+"alg": "U' L D2 U R2 U' L U R2 U' L' D2 L' U"
+},
+"BU": {
+"moves": 13,
+"S": "L U2 L'",
+"inv": false,
+"alg": "L U2 L' D R2 D' L2 D R2 D' L' U2 L'"
+},
+"TC": {
+"moves": 12,
+"S": "R' D2",
+"inv": false,
+"alg": "R' D2 F D' F' U2 F D F' U2 D2 R"
+},
+"KS": {
+"moves": 13,
+"S": "L2 R D'",
+"inv": false,
+"alg": "L2 R D' R U2 R' D2 R U2 R' D' R' L2"
+}
+},
+"LS": {
+"KG": {
+"moves": 14,
+"S": "U2 F' L'",
+"inv": true,
+"alg": "U2 F' L' D R U2 R' D' R U2 R' L F U2"
+},
+"IV": {
+"moves": 12,
+"S": "L' D2",
+"inv": false,
+"alg": "L' D2 U R2 U' L U R2 U' L' D2 L"
+},
+"BU": {
+"moves": 10,
+"S": "B'",
+"inv": false,
+"alg": "B' D R2 D' L2 D R2 D' L2 B"
+},
+"TC": {
+"moves": 13,
+"S": "U B' F2",
+"inv": false,
+"alg": "U B' F' D' F' U2 F D F' U2 F2 B U'"
+},
+"KS": {
+"moves": 10,
+"S": "F'",
+"inv": false,
+"alg": "F' R U2 R' D2 R U2 R' D2 F"
+}
+},
+"LT": {
+"KG": {
+"moves": 11,
+"S": "L2 R",
+"inv": false,
+"alg": "L2 R2 U2 R' D R U2 R' D' R' L2"
+},
+"IV": {
+"moves": 12,
+"S": "L2 D' L'",
+"inv": false,
+"alg": "L2 D' L' U R2 U' L U R2 U' D L2"
+},
+"BU": {
+"moves": 11,
+"S": "F2 R D'",
+"inv": false,
+"alg": "F2 R' D' L2 D R2 D' L2 D R' F2"
+},
+"TC": {
+"moves": 13,
+"S": "U L U",
+"inv": false,
+"alg": "U L U F D' F' U2 F D F' U L' U'"
+},
+"KS": {
+"moves": 13,
+"S": "U' L2 R",
+"inv": false,
+"alg": "U' L2 R2 U2 R' D2 R U2 R' D2 R' L2 U"
+}
+},
+"LV": {
+"KG": {
+"moves": 10,
+"S": "L2",
+"inv": false,
+"alg": "L2 R U2 R' D R U2 R' D' L2"
+},
+"IV": {
+"moves": 11,
+"S": "L U L'",
+"inv": false,
+"alg": "L U L' U R2 U' L U R2 U2 L'"
+},
+"BU": {
+"moves": 13,
+"S": "D2 R' D",
+"inv": false,
+"alg": "D2 R' D2 R2 D' L2 D R2 D' L2 D' R D2"
+},
+"TC": {
+"moves": 14,
+"S": "R2 F' R",
+"inv": true,
+"alg": "R2 F' R U2 F D' F' U2 F D F' R' F R2"
+},
+"KS": {
+"moves": 12,
+"S": "U' L2",
+"inv": false,
+"alg": "U' L2 R U2 R' D2 R U2 R' D2 L2 U"
+}
+},
+"LW": {
+"KG": {
+"moves": 13,
+"S": "U' L2 D2",
+"inv": true,
+"alg": "U' L2 D' R U2 R' D' R U2 R' D2 L2 U"
+},
+"IV": {
+"moves": 12,
+"S": "F D'",
+"inv": false,
+"alg": "F D' U R2 U' L U R2 U' L' D F'"
+},
+"BU": {
+"moves": 12,
+"S": "D2 R'",
+"inv": false,
+"alg": "D2 R' D R2 D' L2 D R2 D' L2 R D2"
+},
+"TC": {
+"moves": 11,
+"S": "D2 F2",
+"inv": false,
+"alg": "D2 F' D' F' U2 F D F' U2 F2 D2"
+},
+"KS": {
+"moves": 11,
+"S": "L2 D'",
+"inv": false,
+"alg": "L2 D' R U2 R' D2 R U2 R' D' L2"
+}
+},
+"LX": {
+"KG": {
+"moves": 11,
+"S": "B' R2",
+"inv": false,
+"alg": "B' R' U2 R' D R U2 R' D' R2 B"
+},
+"IV": {
+"moves": 12,
+"S": "F D2",
+"inv": false,
+"alg": "F D2 U R2 U' L U R2 U' L' D2 F'"
+},
+"BU": {
+"moves": 13,
+"S": "F2 U' L",
+"inv": false,
+"alg": "F2 U' L D R2 D' L2 D R2 D' L U F2"
+},
+"TC": {
+"moves": 14,
+"S": "D' R2 D'",
+"inv": false,
+"alg": "D' R2 D' F D' F' U2 F D F' U2 D R2 D"
+},
+"KS": {
+"moves": 12,
+"S": "L' F R'",
+"inv": false,
+"alg": "L' F U2 R' D2 R U2 R' D2 R F' L"
+}
+},
+"MB": {
+"KG": {
+"moves": 12,
+"S": "B D R'",
+"inv": true,
+"alg": "B D R' D R U2 R' D' R U2 D' B'"
+},
+"IV": {
+"moves": 12,
+"S": "R D' U'",
+"inv": true,
+"alg": "R D' U' L U R2 U' L' U R2 D R'"
+},
+"BU": {
+"moves": 10,
+"S": "F D' L2",
+"inv": false,
+"alg": "F D' L2 D R2 D' L2 D R2 F'"
+},
+"TC": {
+"moves": 12,
+"S": "R2 B2 F'",
+"inv": true,
+"alg": "R2 B2 F' U2 F D' F' U2 F D B2 R2"
+},
+"KS": {
+"moves": 10,
+"S": "B U2 R'",
+"inv": false,
+"alg": "B R' D2 R U2 R' D2 R U2 B'"
+}
+},
+"MD": {
+"KG": {
+"moves": 12,
+"S": "R' F' R'",
+"inv": false,
+"alg": "R' F' U2 R' D R U2 R' D' R F R"
+},
+"IV": {
+"moves": 12,
+"S": "U R2",
+"inv": true,
+"alg": "U R2 L U R2 U' L' U R2 U' R2 U'"
+},
+"BU": {
+"moves": 13,
+"S": "R2 B' L",
+"inv": false,
+"alg": "R2 B' L D R2 D' L2 D R2 D' L B R2"
+},
+"TC": {
+"moves": 12,
+"S": "U2 R2 F'",
+"inv": true,
+"alg": "U2 R2 F' U2 F D' F' U2 F D R2 U2"
+},
+"KS": {
+"moves": 13,
+"S": "R2 F' D'",
+"inv": false,
+"alg": "R2 F' D' R U2 R' D2 R U2 R' D' F R2"
+}
+},
+"MF": {
+"KG": {
+"moves": 14,
+"S": "L2 F' L'",
+"inv": false,
+"alg": "L2 F' L' R U2 R' D R U2 R' D' L F L2"
+},
+"IV": {
+"moves": 12,
+"S": "R F2 U'",
+"inv": true,
+"alg": "R F2 U' L U R2 U' L' U R2 F2 R'"
+},
+"BU": {
+"moves": 12,
+"S": "L' U2 L2",
+"inv": false,
+"alg": "L' U2 L2 D R2 D' L2 D R2 D' U2 L"
+},
+"TC": {
+"moves": 12,
+"S": "B2 L",
+"inv": false,
+"alg": "B2 L F D' F' U2 F D F' U2 L' B2"
+},
+"KS": {
+"moves": 13,
+"S": "F2 R' D",
+"inv": false,
+"alg": "F2 R' D R U2 R' D2 R U2 R' D R F2"
+}
+},
+"MG": {
+"KG": {
+"moves": 13,
+"S": "D' R2 D2",
+"inv": true,
+"alg": "D' R2 D' R U2 R' D' R U2 R' D2 R2 D"
+},
+"IV": {
+"moves": 11,
+"S": "D2 R' U'",
+"inv": false,
+"alg": "D2 R U' L U R2 U' L' U R D2"
+},
+"BU": {
+"moves": 12,
+"S": "U2 R L2",
+"inv": false,
+"alg": "U2 R L2 D R2 D' L2 D R2 D' R' U2"
+},
+"TC": {
+"moves": 12,
+"S": "L2 D2",
+"inv": false,
+"alg": "L2 D2 F D' F' U2 F D F' U2 D2 L2"
+},
+"KS": {
+"moves": 11,
+"S": "R2 D'",
+"inv": false,
+"alg": "R2 D' R U2 R' D2 R U2 R' D' R2"
+}
+},
+"MH": {
+"KG": {
+"moves": 14,
+"S": "R' U' L'",
+"inv": true,
+"alg": "R' U' L' D R U2 R' D' R U2 R' L U R"
+},
+"IV": {
+"moves": 12,
+"S": "U2 R' L'",
+"inv": true,
+"alg": "U2 R' U R2 U' L' U R2 U' L R U2"
+},
+"BU": {
+"moves": 14,
+"S": "D' R' F",
+"inv": true,
+"alg": "D' R' F L2 D R2 D' L2 D R2 D' F' R D"
+},
+"TC": {
+"moves": 12,
+"S": "B L' U2",
+"inv": false,
+"alg": "B L' U2 F D' F' U2 F D F' L B'"
+},
+"KS": {
+"moves": 12,
+"S": "U2 F D2",
+"inv": false,
+"alg": "U2 F D2 R U2 R' D2 R U2 R' F' U2"
+}
+},
+"MI": {
+"KG": {
+"moves": 10,
+"S": "F2",
+"inv": true,
+"alg": "F2 D R U2 R' D' R U2 R' F2"
+},
+"IV": {
+"moves": 12,
+"S": "L F L'",
+"inv": true,
+"alg": "L F U R2 U' L' U R2 U' L F' L'"
+},
+"BU": {
+"moves": 13,
+"S": "L U L",
+"inv": false,
+"alg": "L U L D R2 D' L2 D R2 D' L U' L'"
+},
+"TC": {
+"moves": 14,
+"S": "U2 F R",
+"inv": false,
+"alg": "U2 F R F D' F' U2 F D F' U2 R' F' U2"
+},
+"KS": {
+"moves": 14,
+"S": "R2 D' L",
+"inv": true,
+"alg": "R2 D' L D2 R U2 R' D2 R U2 R' L' D R2"
+}
+},
+"MK": {
+"KG": {
+"moves": 12,
+"S": "U2 F",
+"inv": true,
+"alg": "U2 F D R U2 R' D' R U2 R' F' U2"
+},
+"IV": {
+"moves": 11,
+"S": "D R' U'",
+"inv": false,
+"alg": "D R U' L U R2 U' L' U R D'"
+},
+"BU": {
+"moves": 12,
+"S": "L' U2 D'",
+"inv": true,
+"alg": "L' U2 D' L2 D R2 D' L2 D R2 U2 L"
+},
+"TC": {
+"moves": 12,
+"S": "D B2",
+"inv": false,
+"alg": "D B2 F D' F' U2 F D F' U2 B2 D'"
+},
+"KS": {
+"moves": 13,
+"S": "D' R2 D'",
+"inv": false,
+"alg": "D' R2 D' R U2 R' D2 R U2 R' D' R2 D"
+}
+},
+"ML": {
+"KG": {
+"moves": 12,
+"S": "R2 F' D'",
+"inv": false,
+"alg": "R2 F' D' R U2 R' D R U2 R' F R2"
+},
+"IV": {
+"moves": 10,
+"S": "F",
+"inv": true,
+"alg": "F L U R2 U' L' U R2 U' F'"
+},
+"BU": {
+"moves": 14,
+"S": "D F R2",
+"inv": false,
+"alg": "D F R2 D R2 D' L2 D R2 D' L2 R2 F' D'"
+},
+"TC": {
+"moves": 10,
+"S": "R' D F'",
+"inv": false,
+"alg": "R' F' U2 F D F' U2 F D' R"
+},
+"KS": {
+"moves": 14,
+"S": "U2 D' F",
+"inv": true,
+"alg": "U2 D' F D2 R U2 R' D2 R U2 R' F' D U2"
+}
+},
+"MN": {
+"KG": {
+"moves": 14,
+"S": "U' R' F2",
+"inv": false,
+"alg": "U' R' F2 R U2 R' D R U2 R' D' F2 R U"
+},
+"IV": {
+"moves": 12,
+"S": "U2 R'",
+"inv": false,
+"alg": "U2 R' U R2 U' L U R2 U' L' R U2"
+},
+"BU": {
+"moves": 14,
+"S": "R' F R2",
+"inv": true,
+"alg": "R' F R2 L2 D R2 D' L2 D R2 D' R2 F' R"
+},
+"TC": {
+"moves": 12,
+"S": "B2 L'",
+"inv": false,
+"alg": "B2 L' F D' F' U2 F D F' U2 L B2"
+},
+"KS": {
+"moves": 13,
+"S": "F2 R D",
+"inv": false,
+"alg": "F2 R D R U2 R' D2 R U2 R' D R' F2"
+}
+},
+"MO": {
+"KG": {
+"moves": 13,
+"S": "D R2 D2",
+"inv": true,
+"alg": "D R2 D' R U2 R' D' R U2 R' D2 R2 D'"
+},
+"IV": {
+"moves": 9,
+"S": "R' U'",
+"inv": false,
+"alg": "R U' L U R2 U' L' U R"
+},
+"BU": {
+"moves": 13,
+"S": "U D L'",
+"inv": false,
+"alg": "U D L' D R2 D' L2 D R2 D' L' D' U'"
+},
+"TC": {
+"moves": 10,
+"S": "B2",
+"inv": false,
+"alg": "B2 F D' F' U2 F D F' U2 B2"
+},
+"KS": {
+"moves": 11,
+"S": "F2 D",
+"inv": false,
+"alg": "F2 D R U2 R' D2 R U2 R' D F2"
+}
+},
+"MP": {
+"KG": {
+"moves": 14,
+"S": "U' L' U'",
+"inv": false,
+"alg": "U' L' U' R U2 R' D R U2 R' D' U L U"
+},
+"IV": {
+"moves": 12,
+"S": "D' F",
+"inv": true,
+"alg": "D' F L U R2 U' L' U R2 U' F' D"
+},
+"BU": {
+"moves": 12,
+"S": "F R2",
+"inv": false,
+"alg": "F R2 D R2 D' L2 D R2 D' L2 R2 F'"
+},
+"TC": {
+"moves": 13,
+"S": "F R' F2",
+"inv": false,
+"alg": "F R' F' D' F' U2 F D F' U2 F2 R F'"
+},
+"KS": {
+"moves": 12,
+"S": "B U2",
+"inv": false,
+"alg": "B U2 R U2 R' D2 R U2 R' D2 U2 B'"
+}
+},
+"MQ": {
+"KG": {
+"moves": 9,
+"S": "R2 D'",
+"inv": false,
+"alg": "R2 D' R U2 R' D R U2 R"
+},
+"IV": {
+"moves": 14,
+"S": "F' R2 F2",
+"inv": true,
+"alg": "F' R2 F2 L U R2 U' L' U R2 U' F2 R2 F"
+},
+"BU": {
+"moves": 12,
+"S": "U' F' L2",
+"inv": false,
+"alg": "U' F' L2 D R2 D' L2 D R2 D' F U"
+},
+"TC": {
+"moves": 12,
+"S": "R' D",
+"inv": false,
+"alg": "R' D F D' F' U2 F D F' U2 D' R"
+},
+"KS": {
+"moves": 13,
+"S": "F2 D' R2",
+"inv": true,
+"alg": "F2 D' R2 D2 R U2 R' D2 R U2 R D F2"
+}
+},
+"MS": {
+"KG": {
+"moves": 11,
+"S": "R2 D2",
+"inv": true,
+"alg": "R2 D' R U2 R' D' R U2 R' D2 R2"
+},
+"IV": {
+"moves": 10,
+"S": "F L'",
+"inv": false,
+"alg": "F L' U R2 U' L U R2 U' F'"
+},
+"BU": {
+"moves": 11,
+"S": "U L'",
+"inv": false,
+"alg": "U L' D R2 D' L2 D R2 D' L' U'"
+},
+"TC": {
+"moves": 12,
+"S": "D' B2",
+"inv": false,
+"alg": "D' B2 F D' F' U2 F D F' U2 B2 D"
+},
+"KS": {
+"moves": 12,
+"S": "R' F' R'",
+"inv": false,
+"alg": "R' F' U2 R' D2 R U2 R' D2 R F R"
+}
+},
+"MT": {
+"KG": {
+"moves": 12,
+"S": "U2 F D'",
+"inv": false,
+"alg": "U2 F D' R U2 R' D R U2 R' F' U2"
+},
+"IV": {
+"moves": 12,
+"S": "D2 F",
+"inv": true,
+"alg": "D2 F L U R2 U' L' U R2 U' F' D2"
+},
+"BU": {
+"moves": 12,
+"S": "R' F L2",
+"inv": false,
+"alg": "R' F L2 D R2 D' L2 D R2 D' F' R"
+},
+"TC": {
+"moves": 14,
+"S": "D B L'",
+"inv": true,
+"alg": "D B L' U2 F D' F' U2 F D F' L B' D'"
+},
+"KS": {
+"moves": 12,
+"S": "R' B D2",
+"inv": false,
+"alg": "R' B D2 R U2 R' D2 R U2 R' B' R"
+}
+},
+"MU": {
+"KG": {
+"moves": 10,
+"S": "F2 U2 R'",
+"inv": false,
+"alg": "F2 R' D R U2 R' D' R U2 F2"
+},
+"IV": {
+"moves": 12,
+"S": "R2 D L'",
+"inv": true,
+"alg": "R2 D U R2 U' L' U R2 U' L D' R2"
+},
+"BU": {
+"moves": 13,
+"S": "L U2 D",
+"inv": false,
+"alg": "L U2 D2 R2 D' L2 D R2 D' L2 D' U2 L'"
+},
+"TC": {
+"moves": 12,
+"S": "D R' F'",
+"inv": true,
+"alg": "D R' F' U2 F D' F' U2 F D R D'"
+},
+"KS": {
+"moves": 12,
+"S": "F2 D' R'",
+"inv": true,
+"alg": "F2 D' R' D2 R U2 R' D2 R U2 D F2"
+}
+},
+"MV": {
+"KG": {
+"moves": 12,
+"S": "D' F2 R'",
+"inv": true,
+"alg": "D' F2 R' D R U2 R' D' R U2 F2 D"
+},
+"IV": {
+"moves": 13,
+"S": "L2 U L",
+"inv": true,
+"alg": "L2 U L2 U R2 U' L' U R2 U' L' U' L2"
+},
+"BU": {
+"moves": 12,
+"S": "U L D'",
+"inv": true,
+"alg": "U L D' L2 D R2 D' L2 D R2 L' U'"
+},
+"TC": {
+"moves": 10,
+"S": "R' F' U2",
+"inv": false,
+"alg": "R' F' U2 F D' F' U2 F D R"
+},
+"KS": {
+"moves": 14,
+"S": "R' B U'",
+"inv": true,
+"alg": "R' B U' D2 R U2 R' D2 R U2 R' U B' R"
+}
+},
+"MW": {
+"KG": {
+"moves": 11,
+"S": "F2 R",
+"inv": true,
+"alg": "F2 R D R U2 R' D' R U2 R2 F2"
+},
+"IV": {
+"moves": 12,
+"S": "F2 D' L'",
+"inv": true,
+"alg": "F2 D' U R2 U' L' U R2 U' L D F2"
+},
+"BU": {
+"moves": 11,
+"S": "U2 R' D'",
+"inv": false,
+"alg": "U2 R D' L2 D R2 D' L2 D R U2"
+},
+"TC": {
+"moves": 12,
+"S": "D' R' F'",
+"inv": true,
+"alg": "D' R' F' U2 F D' F' U2 F D R D"
+},
+"KS": {
+"moves": 12,
+"S": "R2 D R'",
+"inv": true,
+"alg": "R2 D R' D2 R U2 R' D2 R U2 D' R2"
+}
+},
+"MX": {
+"KG": {
+"moves": 12,
+"S": "D F2 R'",
+"inv": true,
+"alg": "D F2 R' D R U2 R' D' R U2 F2 D'"
+},
+"IV": {
+"moves": 13,
+"S": "L2 D U",
+"inv": true,
+"alg": "L2 D U L U R2 U' L' U R2 U2 D' L2"
+},
+"BU": {
+"moves": 13,
+"S": "F' U D",
+"inv": true,
+"alg": "F' U D L2 D R2 D' L2 D R2 D2 U' F"
+},
+"TC": {
+"moves": 12,
+"S": "D2 R' F'",
+"inv": true,
+"alg": "D2 R' F' U2 F D' F' U2 F D R D2"
+},
+"KS": {
+"moves": 13,
+"S": "F2 D' R",
+"inv": true,
+"alg": "F2 D' R D2 R U2 R' D2 R U2 R2 D F2"
+}
+},
+"NC": {
+"KG": {
+"moves": 13,
+"S": "R D2 R2",
+"inv": true,
+"alg": "R D2 R2 D R U2 R' D' R U2 R D2 R'"
+},
+"IV": {
+"moves": 10,
+"S": "F R2 U'",
+"inv": false,
+"alg": "F U' L U R2 U' L' U R2 F'"
+},
+"TC": {
+"moves": 12,
+"S": "B D' U2",
+"inv": false,
+"alg": "B D' U2 F D' F' U2 F D F' D B'"
+},
+"KS": {
+"moves": 13,
+"S": "R D R2",
+"inv": true,
+"alg": "R D R2 D2 R U2 R' D2 R U2 R D' R'"
+}
+},
+"ND": {
+"KG": {
+"moves": 12,
+"S": "U' F2",
+"inv": true,
+"alg": "U' F2 D R U2 R' D' R U2 R' F2 U"
+},
+"IV": {
+"moves": 14,
+"S": "R' U R2",
+"inv": true,
+"alg": "R' U R2 L U R2 U' L' U R2 U' R2 U' R"
+},
+"BU": {
+"moves": 13,
+"S": "R B' L",
+"inv": false,
+"alg": "R B' L D R2 D' L2 D R2 D' L B R'"
+},
+"TC": {
+"moves": 13,
+"S": "R B2 F",
+"inv": true,
+"alg": "R B2 F U2 F D' F' U2 F D F2 B2 R'"
+},
+"KS": {
+"moves": 13,
+"S": "R F' D'",
+"inv": false,
+"alg": "R F' D' R U2 R' D2 R U2 R' D' F R'"
+}
+},
+"NF": {
+"IV": {
+"moves": 10,
+"S": "F2 R2 U'",
+"inv": false,
+"alg": "F2 U' L U R2 U' L' U R2 F2"
+},
+"BU": {
+"moves": 13,
+"S": "B2 R' L",
+"inv": false,
+"alg": "B2 R' L D R2 D' L2 D R2 D' L R B2"
+},
+"TC": {
+"moves": 13,
+"S": "R2 D F",
+"inv": false,
+"alg": "R2 D F2 D' F' U2 F D F' U2 F' D' R2"
+},
+"KS": {
+"moves": 12,
+"S": "U' L R'",
+"inv": true,
+"alg": "U' L R' D2 R U2 R' D2 R U2 L' U"
+}
+},
+"NG": {
+"KG": {
+"moves": 13,
+"S": "D' R D2",
+"inv": true,
+"alg": "D' R D' R U2 R' D' R U2 R' D2 R' D"
+},
+"IV": {
+"moves": 13,
+"S": "U2 R' L",
+"inv": false,
+"alg": "U2 R' L U R2 U' L U R2 U' L2 R U2"
+},
+"BU": {
+"moves": 13,
+"S": "L' U2 L'",
+"inv": false,
+"alg": "L' U2 L' D R2 D' L2 D R2 D' L' U2 L"
+},
+"TC": {
+"moves": 13,
+"S": "L D' U",
+"inv": false,
+"alg": "L D' U F D' F' U2 F D F' U D L'"
+},
+"KS": {
+"moves": 11,
+"S": "R D'",
+"inv": false,
+"alg": "R D' R U2 R' D2 R U2 R' D' R'"
+}
+},
+"NH": {
+"KG": {
+"moves": 11,
+"S": "L2 U' R'",
+"inv": false,
+"alg": "L2 U R' D R U2 R' D' R U L2"
+},
+"IV": {
+"moves": 10,
+"S": "D2 R2 U'",
+"inv": false,
+"alg": "D2 U' L U R2 U' L' U R2 D2"
+},
+"BU": {
+"moves": 13,
+"S": "U2 R L'",
+"inv": false,
+"alg": "U2 R L' D R2 D' L2 D R2 D' L' R' U2"
+},
+"TC": {
+"moves": 14,
+"S": "R2 F' D'",
+"inv": true,
+"alg": "R2 F' D' U2 F D' F' U2 F D F' D F R2"
+},
+"KS": {
+"moves": 14,
+"S": "R' U2 F",
+"inv": true,
+"alg": "R' U2 F D2 R U2 R' D2 R U2 R' F' U2 R"
+}
+},
+"NI": {
+"KG": {
+"moves": 12,
+"S": "R F2 D'",
+"inv": false,
+"alg": "R F2 D' R U2 R' D R U2 R' F2 R'"
+},
+"IV": {
+"moves": 12,
+"S": "U' R'",
+"inv": true,
+"alg": "U' R' L U R2 U' L' U R2 U' R U"
+},
+"BU": {
+"moves": 14,
+"S": "R2 F R",
+"inv": true,
+"alg": "R2 F R L2 D R2 D' L2 D R2 D' R' F' R2"
+},
+"TC": {
+"moves": 12,
+"S": "F R2 F'",
+"inv": true,
+"alg": "F R2 F' U2 F D' F' U2 F D R2 F'"
+},
+"KS": {
+"moves": 13,
+"S": "L2 B' D",
+"inv": false,
+"alg": "L2 B' D R U2 R' D2 R U2 R' D B L2"
+}
+},
+"NJ": {
+"KG": {
+"moves": 14,
+"S": "L' U F2",
+"inv": true,
+"alg": "L' U F2 D R U2 R' D' R U2 R' F2 U' L"
+},
+"IV": {
+"moves": 12,
+"S": "U' R2",
+"inv": true,
+"alg": "U' R2 L U R2 U' L' U R2 U' R2 U"
+},
+"BU": {
+"moves": 14,
+"S": "R2 F R'",
+"inv": true,
+"alg": "R2 F R' L2 D R2 D' L2 D R2 D' R F' R2"
+},
+"TC": {
+"moves": 10,
+"S": "R2 F' U2",
+"inv": false,
+"alg": "R2 F' U2 F D' F' U2 F D R2"
+},
+"KS": {
+"moves": 14,
+"S": "R2 B U'",
+"inv": true,
+"alg": "R2 B U' D2 R U2 R' D2 R U2 R' U B' R2"
+}
+},
+"NK": {
+"KG": {
+"moves": 12,
+"S": "R D2 R'",
+"inv": true,
+"alg": "R D2 R' D R U2 R' D' R U2 D2 R'"
+},
+"IV": {
+"moves": 12,
+"S": "F D U'",
+"inv": true,
+"alg": "F D U' L U R2 U' L' U R2 D' F'"
+},
+"BU": {
+"moves": 14,
+"S": "U' F R",
+"inv": true,
+"alg": "U' F R L2 D R2 D' L2 D R2 D' R' F' U"
+},
+"TC": {
+"moves": 12,
+"S": "F' R2 F'",
+"inv": true,
+"alg": "F' R2 F' U2 F D' F' U2 F D R2 F"
+},
+"KS": {
+"moves": 12,
+"S": "R D R'",
+"inv": true,
+"alg": "R D R' D2 R U2 R' D2 R U2 D' R'"
+}
+},
+"NL": {
+"KG": {
+"moves": 12,
+"S": "R F' D'",
+"inv": false,
+"alg": "R F' D' R U2 R' D R U2 R' F R'"
+},
+"IV": {
+"moves": 10,
+"S": "D R2 U'",
+"inv": false,
+"alg": "D U' L U R2 U' L' U R2 D'"
+},
+"BU": {
+"moves": 12,
+"S": "L2 F' D'",
+"inv": true,
+"alg": "L2 F' D' L2 D R2 D' L2 D R2 F L2"
+},
+"TC": {
+"moves": 10,
+"S": "R2 D F'",
+"inv": false,
+"alg": "R2 F' U2 F D F' U2 F D' R2"
+},
+"KS": {
+"moves": 14,
+"S": "L U F",
+"inv": true,
+"alg": "L U F D2 R U2 R' D2 R U2 R' F' U' L'"
+}
+},
+"NM": {
+"KG": {
+"moves": 14,
+"S": "U' R' F2",
+"inv": true,
+"alg": "U' R' F2 D R U2 R' D' R U2 R' F2 R U"
+},
+"IV": {
+"moves": 12,
+"S": "U2 R'",
+"inv": true,
+"alg": "U2 R' L U R2 U' L' U R2 U' R U2"
+},
+"BU": {
+"moves": 14,
+"S": "R' F R2",
+"inv": false,
+"alg": "R' F R2 D R2 D' L2 D R2 D' L2 R2 F' R"
+},
+"TC": {
+"moves": 12,
+"S": "B2 L' U2",
+"inv": false,
+"alg": "B2 L' U2 F D' F' U2 F D F' L B2"
+},
+"KS": {
+"moves": 13,
+"S": "F2 R D'",
+"inv": false,
+"alg": "F2 R D' R U2 R' D2 R U2 R' D' R' F2"
+}
+},
+"NO": {
+"KG": {
+"moves": 13,
+"S": "D R D2",
+"inv": true,
+"alg": "D R D' R U2 R' D' R U2 R' D2 R' D'"
+},
+"IV": {
+"moves": 12,
+"S": "U' R",
+"inv": true,
+"alg": "U' R L U R2 U' L' U R2 U' R' U"
+},
+"BU": {
+"moves": 12,
+"S": "L2 B",
+"inv": false,
+"alg": "L2 B D R2 D' L2 D R2 D' L2 B' L2"
+},
+"TC": {
+"moves": 13,
+"S": "L2 F U'",
+"inv": false,
+"alg": "L2 F U' F D' F' U2 F D F' U' F' L2"
+},
+"KS": {
+"moves": 13,
+"S": "D2 R D'",
+"inv": false,
+"alg": "D2 R D' R U2 R' D2 R U2 R' D' R' D2"
+}
+},
+"NP": {
+"KG": {
+"moves": 14,
+"S": "L' U' F",
+"inv": true,
+"alg": "L' U' F D R U2 R' D' R U2 R' F' U L"
+},
+"IV": {
+"moves": 8,
+"S": "R2 U'",
+"inv": false,
+"alg": "U' L U R2 U' L' U R2"
+},
+"TC": {
+"moves": 12,
+"S": "R' B2",
+"inv": false,
+"alg": "R' B2 F D' F' U2 F D F' U2 B2 R"
+},
+"KS": {
+"moves": 13,
+"S": "R F2 D'",
+"inv": false,
+"alg": "R F2 D' R U2 R' D2 R U2 R' D' F2 R'"
+}
+},
+"NS": {
+"KG": {
+"moves": 11,
+"S": "R D2",
+"inv": true,
+"alg": "R D' R U2 R' D' R U2 R' D2 R'"
+},
+"IV": {
+"moves": 12,
+"S": "R' F L'",
+"inv": false,
+"alg": "R' F L' U R2 U' L U R2 U' F' R"
+},
+"BU": {
+"moves": 12,
+"S": "R2 B' D'",
+"inv": false,
+"alg": "R2 B' R2 D' L2 D R2 D' L2 D B R2"
+},
+"TC": {
+"moves": 11,
+"S": "B D' F'",
+"inv": true,
+"alg": "B D' F' U2 F D' F' U2 F D2 B'"
+},
+"KS": {
+"moves": 12,
+"S": "R2 F' R'",
+"inv": false,
+"alg": "R2 F' U2 R' D2 R U2 R' D2 R F R2"
+}
+},
+"NT": {
+"KG": {
+"moves": 13,
+"S": "L2 U' R",
+"inv": false,
+"alg": "L2 U' R2 U2 R' D R U2 R' D' R' U L2"
+},
+"IV": {
+"moves": 10,
+"S": "D' R2 U'",
+"inv": false,
+"alg": "D' U' L U R2 U' L' U R2 D"
+},
+"BU": {
+"moves": 12,
+"S": "R' F D'",
+"inv": true,
+"alg": "R' F D' L2 D R2 D' L2 D R2 F' R"
+},
+"TC": {
+"moves": 12,
+"S": "R B2 F'",
+"inv": true,
+"alg": "R B2 F' U2 F D' F' U2 F D B2 R'"
+},
+"KS": {
+"moves": 12,
+"S": "R' B R'",
+"inv": true,
+"alg": "R' B R' D2 R U2 R' D2 R U2 B' R"
+}
+},
+"NU": {
+"KG": {
+"moves": 11,
+"S": "D2 R D'",
+"inv": false,
+"alg": "D2 R D' R U2 R' D R U2 R2 D2"
+},
+"IV": {
+"moves": 10,
+"S": "F' R2 U'",
+"inv": false,
+"alg": "F' U' L U R2 U' L' U R2 F"
+},
+"BU": {
+"moves": 14,
+"S": "D R2 F",
+"inv": true,
+"alg": "D R2 F L2 D R2 D' L2 D R2 D' F' R2 D'"
+},
+"TC": {
+"moves": 14,
+"S": "D2 R2 D",
+"inv": false,
+"alg": "D2 R2 D F D' F' U2 F D F' U2 D' R2 D2"
+},
+"KS": {
+"moves": 13,
+"S": "B' U' D'",
+"inv": false,
+"alg": "B' U' D' R U2 R' D2 R U2 R' D' U B"
+}
+},
+"NV": {
+"KG": {
+"moves": 11,
+"S": "D R D'",
+"inv": false,
+"alg": "D R D' R U2 R' D R U2 R2 D'"
+},
+"IV": {
+"moves": 12,
+"S": "D' F' U'",
+"inv": true,
+"alg": "D' F' U' L U R2 U' L' U R2 F D"
+},
+"BU": {
+"moves": 12,
+"S": "R2 F L2",
+"inv": false,
+"alg": "R2 F L2 D R2 D' L2 D R2 D' F' R2"
+},
+"TC": {
+"moves": 12,
+"S": "B2 L' F'",
+"inv": true,
+"alg": "B2 L' F' U2 F D' F' U2 F D L B2"
+},
+"KS": {
+"moves": 12,
+"S": "U' L D2",
+"inv": false,
+"alg": "U' L D2 R U2 R' D2 R U2 R' L' U"
+}
+},
+"NW": {
+"KG": {
+"moves": 9,
+"S": "R D'",
+"inv": false,
+"alg": "R D' R U2 R' D R U2 R2"
+},
+"IV": {
+"moves": 12,
+"S": "D2 F' U'",
+"inv": true,
+"alg": "D2 F' U' L U R2 U' L' U R2 F D2"
+},
+"BU": {
+"moves": 14,
+"S": "R' U' F'",
+"inv": true,
+"alg": "R' U' F' L2 D R2 D' L2 D R2 D' F U R"
+},
+"TC": {
+"moves": 12,
+"S": "R2 D",
+"inv": false,
+"alg": "R2 D F D' F' U2 F D F' U2 D' R2"
+},
+"KS": {
+"moves": 13,
+"S": "L2 U' D'",
+"inv": false,
+"alg": "L2 U' D' R U2 R' D2 R U2 R' D' U L2"
+}
+},
+"NX": {
+"KG": {
+"moves": 11,
+"S": "D' R D'",
+"inv": false,
+"alg": "D' R D' R U2 R' D R U2 R2 D"
+},
+"IV": {
+"moves": 12,
+"S": "D F' U'",
+"inv": true,
+"alg": "D F' U' L U R2 U' L' U R2 F D'"
+},
+"BU": {
+"moves": 12,
+"S": "L' F' L2",
+"inv": false,
+"alg": "L' F' L2 D R2 D' L2 D R2 D' F L"
+},
+"TC": {
+"moves": 13,
+"S": "R2 D F2",
+"inv": false,
+"alg": "R2 D F' D' F' U2 F D F' U2 F2 D' R2"
+},
+"KS": {
+"moves": 12,
+"S": "U' F2 D2",
+"inv": false,
+"alg": "U' F2 D2 R U2 R' D2 R U2 R' F2 U"
+}
+},
+"OB": {
+"KG": {
+"moves": 13,
+"S": "L U' D2",
+"inv": false,
+"alg": "L U' D2 R U2 R' D R U2 R' D U L'"
+},
+"IV": {
+"moves": 12,
+"S": "D R2 L'",
+"inv": true,
+"alg": "D R2 U R2 U' L' U R2 U' L R2 D'"
+},
+"BU": {
+"moves": 12,
+"S": "D2 F' D'",
+"inv": true,
+"alg": "D2 F' D' L2 D R2 D' L2 D R2 F D2"
+},
+"TC": {
+"moves": 10,
+"S": "R F' U2",
+"inv": false,
+"alg": "R F' U2 F D' F' U2 F D R'"
+},
+"KS": {
+"moves": 13,
+"S": "U' F' D",
+"inv": false,
+"alg": "U' F' D R U2 R' D2 R U2 R' D F U"
+}
+},
+"OC": {
+"KG": {
+"moves": 10,
+"S": "D2 U2 R'",
+"inv": false,
+"alg": "D2 R' D R U2 R' D' R U2 D2"
+},
+"IV": {
+"moves": 12,
+"S": "F2 D L'",
+"inv": true,
+"alg": "F2 D U R2 U' L' U R2 U' L D' F2"
+},
+"BU": {
+"moves": 11,
+"S": "B2 R D'",
+"inv": false,
+"alg": "B2 R' D' L2 D R2 D' L2 D R' B2"
+},
+"TC": {
+"moves": 14,
+"S": "F' U' L",
+"inv": false,
+"alg": "F' U' L F D' F' U2 F D F' U2 L' U F"
+},
+"KS": {
+"moves": 10,
+"S": "D U2 R'",
+"inv": false,
+"alg": "D R' D2 R U2 R' D2 R U2 D'"
+}
+},
+"OD": {
+"KG": {
+"moves": 12,
+"S": "R F' R'",
+"inv": false,
+"alg": "R F' U2 R' D R U2 R' D' R F R'"
+},
+"IV": {
+"moves": 11,
+"S": "F R U'",
+"inv": false,
+"alg": "F R' U' L U R2 U' L' U R' F'"
+},
+"BU": {
+"moves": 11,
+"S": "B' L",
+"inv": false,
+"alg": "B' L D R2 D' L2 D R2 D' L B"
+},
+"TC": {
+"moves": 11,
+"S": "L D' F'",
+"inv": false,
+"alg": "L D2 F' U2 F D F' U2 F D L'"
+},
+"KS": {
+"moves": 11,
+"S": "F' D'",
+"inv": false,
+"alg": "F' D' R U2 R' D2 R U2 R' D' F"
+}
+},
+"OF": {
+"KG": {
+"moves": 12,
+"S": "F D2 R'",
+"inv": true,
+"alg": "F D2 R' D R U2 R' D' R U2 D2 F'"
+},
+"IV": {
+"moves": 12,
+"S": "R' F2 U'",
+"inv": true,
+"alg": "R' F2 U' L U R2 U' L' U R2 F2 R"
+},
+"BU": {
+"moves": 13,
+"S": "L B2 D2",
+"inv": true,
+"alg": "L B2 D2 L2 D R2 D' L2 D R2 D B2 L'"
+},
+"TC": {
+"moves": 12,
+"S": "U' L",
+"inv": false,
+"alg": "U' L F D' F' U2 F D F' U2 L' U"
+},
+"KS": {
+"moves": 11,
+"S": "B' U R'",
+"inv": false,
+"alg": "B' U' R' D2 R U2 R' D2 R U' B"
+}
+},
+"OG": {
+"KG": {
+"moves": 14,
+"S": "U2 R' B",
+"inv": true,
+"alg": "U2 R' B D R U2 R' D' R U2 R' B' R U2"
+},
+"IV": {
+"moves": 11,
+"S": "F2 R U'",
+"inv": false,
+"alg": "F2 R' U' L U R2 U' L' U R' F2"
+},
+"BU": {
+"moves": 12,
+"S": "B2 R' L2",
+"inv": false,
+"alg": "B2 R' L2 D R2 D' L2 D R2 D' R B2"
+},
+"TC": {
+"moves": 11,
+"S": "B2 F2 U2",
+"inv": false,
+"alg": "B2 F2 U2 F D' F' U2 F D F B2"
+},
+"KS": {
+"moves": 9,
+"S": "D'",
+"inv": false,
+"alg": "D' R U2 R' D2 R U2 R' D'"
+}
+},
+"OH": {
+"KG": {
+"moves": 13,
+"S": "U' L' R",
+"inv": true,
+"alg": "U' L' R D R U2 R' D' R U2 R2 L U"
+},
+"IV": {
+"moves": 12,
+"S": "R' D2 U'",
+"inv": true,
+"alg": "R' D2 U' L U R2 U' L' U R2 D2 R"
+},
+"BU": {
+"moves": 12,
+"S": "D B' L2",
+"inv": false,
+"alg": "D B' L2 D R2 D' L2 D R2 D' B D'"
+},
+"TC": {
+"moves": 14,
+"S": "U2 L' R2",
+"inv": false,
+"alg": "U2 L' R2 F D' F' U2 F D F' U2 R2 L U2"
+},
+"KS": {
+"moves": 12,
+"S": "D F' D2",
+"inv": false,
+"alg": "D F' D2 R U2 R' D2 R U2 R' F D'"
+}
+},
+"OI": {
+"KG": {
+"moves": 10,
+"S": "F2 D'",
+"inv": false,
+"alg": "F2 D' R U2 R' D R U2 R' F2"
+},
+"IV": {
+"moves": 14,
+"S": "R' U' R'",
+"inv": true,
+"alg": "R' U' R' L U R2 U' L' U R2 U' R U R"
+},
+"BU": {
+"moves": 14,
+"S": "R F R",
+"inv": true,
+"alg": "R F R L2 D R2 D' L2 D R2 D' R' F' R'"
+},
+"TC": {
+"moves": 13,
+"S": "D B2 U",
+"inv": false,
+"alg": "D B2 U F D' F' U2 F D F' U B2 D'"
+},
+"KS": {
+"moves": 12,
+"S": "D' L D2",
+"inv": false,
+"alg": "D' L D2 R U2 R' D2 R U2 R' L' D"
+}
+},
+"OJ": {
+"KG": {
+"moves": 10,
+"S": "F D'",
+"inv": false,
+"alg": "F D' R U2 R' D R U2 R' F'"
+},
+"IV": {
+"moves": 12,
+"S": "D R' L'",
+"inv": true,
+"alg": "D R' U R2 U' L' U R2 U' L R D'"
+},
+"BU": {
+"moves": 12,
+"S": "R F L2",
+"inv": false,
+"alg": "R F L2 D R2 D' L2 D R2 D' F' R'"
+},
+"TC": {
+"moves": 14,
+"S": "F R D",
+"inv": false,
+"alg": "F R D F D' F' U2 F D F' U2 D' R' F'"
+},
+"KS": {
+"moves": 12,
+"S": "D F D2",
+"inv": false,
+"alg": "D F D2 R U2 R' D2 R U2 R' F' D'"
+}
+},
+"OK": {
+"KG": {
+"moves": 8,
+"S": "D'",
+"inv": false,
+"alg": "D' R U2 R' D R U2 R'"
+},
+"IV": {
+"moves": 12,
+"S": "D2 F' L'",
+"inv": false,
+"alg": "D2 F' L' U R2 U' L U R2 U' F D2"
+},
+"BU": {
+"moves": 12,
+"S": "L B2 D'",
+"inv": true,
+"alg": "L B2 D' L2 D R2 D' L2 D R2 B2 L'"
+},
+"TC": {
+"moves": 12,
+"S": "R D",
+"inv": false,
+"alg": "R D F D' F' U2 F D F' U2 D' R'"
+},
+"KS": {
+"moves": 14,
+"S": "F2 D' L",
+"inv": true,
+"alg": "F2 D' L D2 R U2 R' D2 R U2 R' L' D F2"
+}
+},
+"OL": {
+"KG": {
+"moves": 10,
+"S": "F' D'",
+"inv": false,
+"alg": "F' D' R U2 R' D R U2 R' F"
+},
+"IV": {
+"moves": 12,
+"S": "R' D U'",
+"inv": true,
+"alg": "R' D U' L U R2 U' L' U R2 D' R"
+},
+"BU": {
+"moves": 12,
+"S": "D B' D'",
+"inv": true,
+"alg": "D B' D' L2 D R2 D' L2 D R2 B D'"
+},
+"TC": {
+"moves": 10,
+"S": "R D F'",
+"inv": false,
+"alg": "R F' U2 F D F' U2 F D' R'"
+},
+"KS": {
+"moves": 12,
+"S": "D F' R'",
+"inv": true,
+"alg": "D F' R' D2 R U2 R' D2 R U2 F D'"
+}
+},
+"OM": {
+"KG": {
+"moves": 13,
+"S": "D R2 D2",
+"inv": false,
+"alg": "D R2 D2 R U2 R' D R U2 R' D R2 D'"
+},
+"IV": {
+"moves": 9,
+"S": "R U'",
+"inv": false,
+"alg": "R' U' L U R2 U' L' U R'"
+},
+"BU": {
+"moves": 13,
+"S": "U D L",
+"inv": false,
+"alg": "U D L D R2 D' L2 D R2 D' L D' U'"
+},
+"TC": {
+"moves": 10,
+"S": "B2 U2",
+"inv": false,
+"alg": "B2 U2 F D' F' U2 F D F' B2"
+},
+"KS": {
+"moves": 11,
+"S": "F2 D'",
+"inv": false,
+"alg": "F2 D' R U2 R' D2 R U2 R' D' F2"
+}
+},
+"ON": {
+"KG": {
+"moves": 13,
+"S": "D R D2",
+"inv": false,
+"alg": "D R D2 R U2 R' D R U2 R' D R' D'"
+},
+"IV": {
+"moves": 12,
+"S": "U' R",
+"inv": false,
+"alg": "U' R U R2 U' L U R2 U' L' R' U"
+},
+"BU": {
+"moves": 12,
+"S": "L2 B L2",
+"inv": false,
+"alg": "L2 B L2 D R2 D' L2 D R2 D' B' L2"
+},
+"TC": {
+"moves": 13,
+"S": "L2 F U",
+"inv": false,
+"alg": "L2 F U F D' F' U2 F D F' U F' L2"
+},
+"KS": {
+"moves": 13,
+"S": "D2 R D",
+"inv": false,
+"alg": "D2 R D R U2 R' D2 R U2 R' D R' D2"
+}
+},
+"OP": {
+"KG": {
+"moves": 12,
+"S": "F' D2 R'",
+"inv": true,
+"alg": "F' D2 R' D R U2 R' D' R U2 D2 F"
+},
+"IV": {
+"moves": 10,
+"S": "B' U' L'",
+"inv": true,
+"alg": "B' R2 U' L' U R2 U' L U B"
+},
+"BU": {
+"moves": 12,
+"S": "B' L' D'",
+"inv": true,
+"alg": "B' L' D' L2 D R2 D' L2 D R2 L B"
+},
+"TC": {
+"moves": 14,
+"S": "D' R D2",
+"inv": true,
+"alg": "D' R D2 U2 F D' F' U2 F D F' D2 R' D"
+},
+"KS": {
+"moves": 12,
+"S": "F' D R'",
+"inv": true,
+"alg": "F' D R' D2 R U2 R' D2 R U2 D' F"
+}
+},
+"OQ": {
+"KG": {
+"moves": 11,
+"S": "D2 R2",
+"inv": true,
+"alg": "D2 R2 D R U2 R' D' R U2 R D2"
+},
+"IV": {
+"moves": 12,
+"S": "R' F U'",
+"inv": true,
+"alg": "R' F U' L U R2 U' L' U R2 F' R"
+},
+"BU": {
+"moves": 13,
+"S": "B2 R' D",
+"inv": true,
+"alg": "B2 R' D L2 D R2 D' L2 D R2 D2 R B2"
+},
+"TC": {
+"moves": 14,
+"S": "D2 F' R'",
+"inv": false,
+"alg": "D2 F' R' F D' F' U2 F D F' U2 R F D2"
+},
+"KS": {
+"moves": 11,
+"S": "D R2 D2",
+"inv": false,
+"alg": "D R2 D2 R U2 R' D2 R U2 R D'"
+}
+},
+"OS": {
+"KG": {
+"moves": 9,
+"S": "D2",
+"inv": true,
+"alg": "D' R U2 R' D' R U2 R' D2"
+},
+"IV": {
+"moves": 12,
+"S": "R2 F L'",
+"inv": false,
+"alg": "R2 F L' U R2 U' L U R2 U' F' R2"
+},
+"BU": {
+"moves": 12,
+"S": "R B' D'",
+"inv": false,
+"alg": "R B' R2 D' L2 D R2 D' L2 D B R'"
+},
+"TC": {
+"moves": 13,
+"S": "U' B U'",
+"inv": false,
+"alg": "U' B U' F D' F' U2 F D F' U' B' U"
+},
+"KS": {
+"moves": 12,
+"S": "R F' R'",
+"inv": false,
+"alg": "R F' U2 R' D2 R U2 R' D2 R F R'"
+}
+},
+"OU": {
+"KG": {
+"moves": 11,
+"S": "D2 R",
+"inv": true,
+"alg": "D2 R D R U2 R' D' R U2 R2 D2"
+},
+"IV": {
+"moves": 10,
+"S": "D L'",
+"inv": true,
+"alg": "D U R2 U' L' U R2 U' L D'"
+},
+"BU": {
+"moves": 14,
+"S": "U2 B U'",
+"inv": true,
+"alg": "U2 B U' L2 D R2 D' L2 D R2 D' U B' U2"
+},
+"TC": {
+"moves": 13,
+"S": "U' L F",
+"inv": false,
+"alg": "U' L F2 D' F' U2 F D F' U2 F' L' U"
+},
+"KS": {
+"moves": 12,
+"S": "F2 D R'",
+"inv": true,
+"alg": "F2 D R' D2 R U2 R' D2 R U2 D' F2"
+}
+},
+"OV": {
+"KG": {
+"moves": 14,
+"S": "L' B' L'",
+"inv": false,
+"alg": "L' B' L' R U2 R' D R U2 R' D' L B L"
+},
+"IV": {
+"moves": 11,
+"S": "F' R U'",
+"inv": false,
+"alg": "F' R' U' L U R2 U' L' U R' F"
+},
+"BU": {
+"moves": 12,
+"S": "R2 F D'",
+"inv": true,
+"alg": "R2 F D' L2 D R2 D' L2 D R2 F' R2"
+},
+"TC": {
+"moves": 10,
+"S": "B2 F' U2",
+"inv": false,
+"alg": "B2 F' U2 F D' F' U2 F D B2"
+},
+"KS": {
+"moves": 11,
+"S": "D R D2",
+"inv": false,
+"alg": "D R D2 R U2 R' D2 R U2 R2 D'"
+}
+},
+"OX": {
+"KG": {
+"moves": 14,
+"S": "L2 D L",
+"inv": false,
+"alg": "L2 D L R U2 R' D R U2 R' D' L' D' L2"
+},
+"IV": {
+"moves": 12,
+"S": "B2 D' U'",
+"inv": true,
+"alg": "B2 D' U' L U R2 U' L' U R2 D B2"
+},
+"BU": {
+"moves": 13,
+"S": "U' R' L",
+"inv": false,
+"alg": "U' R' L D R2 D' L2 D R2 D' L R U"
+},
+"TC": {
+"moves": 11,
+"S": "L' F U2",
+"inv": false,
+"alg": "L' F U2 F D' F' U2 F D F2 L"
+},
+"KS": {
+"moves": 12,
+"S": "D F2 R'",
+"inv": true,
+"alg": "D F2 R' D2 R U2 R' D2 R U2 F2 D'"
+}
+},
+"PB": {
+"KG": {
+"moves": 12,
+"S": "R' F D'",
+"inv": false,
+"alg": "R' F D' R U2 R' D R U2 R' F' R"
+},
+"IV": {
+"moves": 14,
+"S": "D' F R2",
+"inv": false,
+"alg": "D' F R2 U R2 U' L U R2 U' L' R2 F' D"
+},
+"BU": {
+"moves": 10,
+"S": "F L2",
+"inv": false,
+"alg": "F L2 D R2 D' L2 D R2 D' F'"
+},
+"TC": {
+"moves": 13,
+"S": "F R F2",
+"inv": true,
+"alg": "F R F2 U2 F D' F' U2 F D F R' F'"
+},
+"KS": {
+"moves": 10,
+"S": "B D2",
+"inv": false,
+"alg": "B D2 R U2 R' D2 R U2 R' B'"
+}
+},
+"PC": {
+"KG": {
+"moves": 8,
+"S": "R' D'",
+"inv": false,
+"alg": "R' D' R U2 R' D R U2"
+},
+"IV": {
+"moves": 13,
+"S": "L2 F' U",
+"inv": true,
+"alg": "L2 F' U L U R2 U' L' U R2 U2 F L2"
+},
+"BU": {
+"moves": 14,
+"S": "R U' F'",
+"inv": true,
+"alg": "R U' F' L2 D R2 D' L2 D R2 D' F U R'"
+},
+"TC": {
+"moves": 10,
+"S": "D",
+"inv": false,
+"alg": "D F D' F' U2 F D F' U2 D'"
+}
+},
+"PD": {
+"KG": {
+"moves": 10,
+"S": "F' R'",
+"inv": false,
+"alg": "F' U2 R' D R U2 R' D' R F"
+},
+"IV": {
+"moves": 14,
+"S": "R U R2",
+"inv": true,
+"alg": "R U R2 L U R2 U' L' U R2 U' R2 U' R'"
+},
+"BU": {
+"moves": 12,
+"S": "U F",
+"inv": false,
+"alg": "U F D R2 D' L2 D R2 D' L2 F' U'"
+},
+"TC": {
+"moves": 13,
+"S": "L D' F2",
+"inv": false,
+"alg": "L D' F' D' F' U2 F D F' U2 F2 D L'"
+},
+"KS": {
+"moves": 12,
+"S": "F' D' R'",
+"inv": false,
+"alg": "F' D' U2 R' D2 R U2 R' D2 R D F"
+}
+},
+"PF": {
+"KG": {
+"moves": 13,
+"S": "L D' R",
+"inv": false,
+"alg": "L D' R2 U2 R' D R U2 R' D' R' D L'"
+},
+"IV": {
+"moves": 12,
+"S": "L D2 L'",
+"inv": false,
+"alg": "L D2 L' U R2 U' L U R2 U' D2 L'"
+},
+"BU": {
+"moves": 13,
+"S": "D B L'",
+"inv": false,
+"alg": "D B L' D R2 D' L2 D R2 D' L' B' D'"
+},
+"TC": {
+"moves": 11,
+"S": "D F",
+"inv": false,
+"alg": "D F2 D' F' U2 F D F' U2 F' D'"
+}
+},
+"PG": {
+"KG": {
+"moves": 14,
+"S": "B' U' L2",
+"inv": true,
+"alg": "B' U' L2 D R U2 R' D' R U2 R' L2 U B"
+},
+"IV": {
+"moves": 13,
+"S": "U2 L U",
+"inv": false,
+"alg": "U2 L U2 R2 U' L U R2 U' L' U' L' U2"
+},
+"BU": {
+"moves": 12,
+"S": "F U",
+"inv": false,
+"alg": "F U D R2 D' L2 D R2 D' L2 U' F'"
+},
+"TC": {
+"moves": 13,
+"S": "R' B2 F2",
+"inv": true,
+"alg": "R' B2 F2 U2 F D' F' U2 F D F B2 R"
+},
+"KS": {
+"moves": 11,
+"S": "R' D'",
+"inv": false,
+"alg": "R' D' R U2 R' D2 R U2 R' D' R"
+}
+},
+"PH": {
+"KG": {
+"moves": 12,
+"S": "U' L'",
+"inv": true,
+"alg": "U' L' D R U2 R' D' R U2 R' L U"
+},
+"IV": {
+"moves": 10,
+"S": "B' R2 U'",
+"inv": false,
+"alg": "B' U' L U R2 U' L' U R2 B"
+},
+"BU": {
+"moves": 14,
+"S": "F2 L' U",
+"inv": true,
+"alg": "F2 L' U L2 D R2 D' L2 D R2 D' U' L F2"
+},
+"TC": {
+"moves": 12,
+"S": "F' D' U2",
+"inv": false,
+"alg": "F' D' U2 F D' F' U2 F D F' D F"
+},
+"KS": {
+"moves": 14,
+"S": "R U2 F",
+"inv": true,
+"alg": "R U2 F D2 R U2 R' D2 R U2 R' F' U2 R'"
+}
+},
+"PI": {
+"KG": {
+"moves": 12,
+"S": "R' F2 D'",
+"inv": false,
+"alg": "R' F2 D' R U2 R' D R U2 R' F2 R"
+},
+"IV": {
+"moves": 12,
+"S": "D R",
+"inv": true,
+"alg": "D R L U R2 U' L' U R2 U' R' D'"
+},
+"BU": {
+"moves": 12,
+"S": "F R L2",
+"inv": false,
+"alg": "F R L2 D R2 D' L2 D R2 D' R' F'"
+},
+"TC": {
+"moves": 12,
+"S": "F' D2 U2",
+"inv": false,
+"alg": "F' D2 U2 F D' F' U2 F D F' D2 F"
+},
+"KS": {
+"moves": 12,
+"S": "B U D2",
+"inv": false,
+"alg": "B U D2 R U2 R' D2 R U2 R' U' B'"
+}
+},
+"PJ": {
+"KG": {
+"moves": 12,
+"S": "D' L2 R'",
+"inv": false,
+"alg": "D' L2 U2 R' D R U2 R' D' R L2 D"
+},
+"IV": {
+"moves": 12,
+"S": "R2 D' U'",
+"inv": true,
+"alg": "R2 D' U' L U R2 U' L' U R2 D R2"
+},
+"BU": {
+"moves": 11,
+"S": "D R' D'",
+"inv": false,
+"alg": "D R D' L2 D R2 D' L2 D R D'"
+},
+"TC": {
+"moves": 12,
+"S": "U2 R' F'",
+"inv": true,
+"alg": "U2 R' F' U2 F D' F' U2 F D R U2"
+},
+"KS": {
+"moves": 12,
+"S": "R B R'",
+"inv": true,
+"alg": "R B R' D2 R U2 R' D2 R U2 B' R'"
+}
+},
+"PL": {
+"KG": {
+"moves": 12,
+"S": "R' F' D'",
+"inv": false,
+"alg": "R' F' D' R U2 R' D R U2 R' F R"
+},
+"IV": {
+"moves": 11,
+"S": "U' L",
+"inv": true,
+"alg": "U' L2 U R2 U' L' U R2 U' L' U"
+},
+"BU": {
+"moves": 12,
+"S": "B' L2 D'",
+"inv": false,
+"alg": "B' L2 R2 D' L2 D R2 D' L2 D L2 B"
+},
+"TC": {
+"moves": 8,
+"S": "D F'",
+"inv": false,
+"alg": "F' U2 F D F' U2 F D'"
+},
+"KS": {
+"moves": 12,
+"S": "F' D2 R'",
+"inv": false,
+"alg": "F' D2 U2 R' D2 R U2 R' D2 R D2 F"
+}
+},
+"PM": {
+"KG": {
+"moves": 14,
+"S": "U' L' U'",
+"inv": true,
+"alg": "U' L' U' D R U2 R' D' R U2 R' U L U"
+},
+"IV": {
+"moves": 12,
+"S": "D' F",
+"inv": false,
+"alg": "D' F U R2 U' L U R2 U' L' F' D"
+},
+"BU": {
+"moves": 12,
+"S": "F R2 L2",
+"inv": false,
+"alg": "F R2 L2 D R2 D' L2 D R2 D' R2 F'"
+},
+"TC": {
+"moves": 13,
+"S": "F R' F2",
+"inv": true,
+"alg": "F R' F2 U2 F D' F' U2 F D F R F'"
+},
+"KS": {
+"moves": 12,
+"S": "B U2 D2",
+"inv": false,
+"alg": "B U2 D2 R U2 R' D2 R U2 R' U2 B'"
+}
+},
+"PN": {
+"KG": {
+"moves": 14,
+"S": "L' U' F",
+"inv": false,
+"alg": "L' U' F R U2 R' D R U2 R' D' F' U L"
+},
+"IV": {
+"moves": 8,
+"S": "U'",
+"inv": false,
+"alg": "R2 U' L U R2 U' L' U"
+},
+"TC": {
+"moves": 12,
+"S": "R B2",
+"inv": false,
+"alg": "R B2 F D' F' U2 F D F' U2 B2 R'"
+},
+"KS": {
+"moves": 13,
+"S": "R F2 D",
+"inv": false,
+"alg": "R F2 D R U2 R' D2 R U2 R' D F2 R'"
+}
+},
+"PO": {
+"KG": {
+"moves": 12,
+"S": "F' D2 R'",
+"inv": false,
+"alg": "F' D2 U2 R' D R U2 R' D' R D2 F"
+},
+"IV": {
+"moves": 10,
+"S": "B' U' L'",
+"inv": false,
+"alg": "B' U' L' U R2 U' L U R2 B"
+},
+"BU": {
+"moves": 12,
+"S": "B' L' D'",
+"inv": false,
+"alg": "B' L' R2 D' L2 D R2 D' L2 D L B"
+},
+"TC": {
+"moves": 14,
+"S": "D' R D2",
+"inv": false,
+"alg": "D' R D2 F D' F' U2 F D F' U2 D2 R' D"
+},
+"KS": {
+"moves": 12,
+"S": "F' D R'",
+"inv": false,
+"alg": "F' D U2 R' D2 R U2 R' D2 R D' F"
+}
+},
+"PQ": {
+"KG": {
+"moves": 12,
+"S": "R' D2 R'",
+"inv": true,
+"alg": "R' D2 R' D R U2 R' D' R U2 D2 R"
+},
+"BU": {
+"moves": 13,
+"S": "F2 L D",
+"inv": false,
+"alg": "F2 L D2 R2 D' L2 D R2 D' L2 D' L' F2"
+},
+"TC": {
+"moves": 14,
+"S": "D' R' D2",
+"inv": false,
+"alg": "D' R' D2 F D' F' U2 F D F' U2 D2 R D"
+},
+"KS": {
+"moves": 12,
+"S": "R' D R'",
+"inv": true,
+"alg": "R' D R' D2 R U2 R' D2 R U2 D' R"
+}
+},
+"PS": {
+"KG": {
+"moves": 11,
+"S": "R' D2",
+"inv": true,
+"alg": "R' D' R U2 R' D' R U2 R' D2 R"
+},
+"IV": {
+"moves": 12,
+"S": "R F L'",
+"inv": false,
+"alg": "R F L' U R2 U' L U R2 U' F' R'"
+},
+"BU": {
+"moves": 10,
+"S": "B' D'",
+"inv": false,
+"alg": "B' R2 D' L2 D R2 D' L2 D B"
+},
+"TC": {
+"moves": 14,
+"S": "D2 R D'",
+"inv": false,
+"alg": "D2 R D' F D' F' U2 F D F' U2 D R' D2"
+},
+"KS": {
+"moves": 10,
+"S": "F' R'",
+"inv": false,
+"alg": "F' U2 R' D2 R U2 R' D2 R F"
+}
+},
+"PT": {
+"KG": {
+"moves": 12,
+"S": "L' U D'",
+"inv": true,
+"alg": "L' U R U2 R' D' R U2 R' D U' L"
+},
+"IV": {
+"moves": 12,
+"S": "U' B2",
+"inv": false,
+"alg": "U' B2 U R2 U' L U R2 U' L' B2 U"
+},
+"BU": {
+"moves": 12,
+"S": "F R' L2",
+"inv": false,
+"alg": "F R' L2 D R2 D' L2 D R2 D' R F'"
+},
+"TC": {
+"moves": 8,
+"S": "F' U2",
+"inv": false,
+"alg": "F' U2 F D' F' U2 F D"
+},
+"KS": {
+"moves": 12,
+"S": "B U' D2",
+"inv": false,
+"alg": "B U' D2 R U2 R' D2 R U2 R' U B'"
+}
+},
+"PU": {
+"KG": {
+"moves": 10,
+"S": "F' R' D'",
+"inv": true,
+"alg": "F' U2 R' D' R U2 R' D R F"
+},
+"IV": {
+"moves": 12,
+"S": "R' D L'",
+"inv": true,
+"alg": "R' D U R2 U' L' U R2 U' L D' R"
+},
+"BU": {
+"moves": 14,
+"S": "U L2 F",
+"inv": false,
+"alg": "U L2 F D R2 D' L2 D R2 D' L2 F' L2 U'"
+},
+"TC": {
+"moves": 12,
+"S": "F' D U2",
+"inv": false,
+"alg": "F' D U2 F D' F' U2 F D F' D' F"
+},
+"KS": {
+"moves": 14,
+"S": "U D B2",
+"inv": false,
+"alg": "U D B2 R U2 R' D2 R U2 R' D2 B2 D' U'"
+}
+},
+"PW": {
+"KG": {
+"moves": 12,
+"S": "D' L2",
+"inv": false,
+"alg": "D' L2 R U2 R' D R U2 R' D' L2 D"
+},
+"IV": {
+"moves": 12,
+"S": "R2 F U'",
+"inv": true,
+"alg": "R2 F U' L U R2 U' L' U R2 F' R2"
+},
+"BU": {
+"moves": 13,
+"S": "D R' D",
+"inv": false,
+"alg": "D R' D2 R2 D' L2 D R2 D' L2 D' R D'"
+},
+"TC": {
+"moves": 14,
+"S": "D2 F2 D'",
+"inv": false,
+"alg": "D2 F2 D' F D' F' U2 F D F' U2 D F2 D2"
+},
+"KS": {
+"moves": 13,
+"S": "R' D R2",
+"inv": true,
+"alg": "R' D R2 D2 R U2 R' D2 R U2 R D' R"
+}
+},
+"PX": {
+"KG": {
+"moves": 12,
+"S": "L' F R'",
+"inv": false,
+"alg": "L' F U2 R' D R U2 R' D' R F' L"
+},
+"IV": {
+"moves": 14,
+"S": "D' F D'",
+"inv": false,
+"alg": "D' F D' U R2 U' L U R2 U' L' D F' D"
+},
+"BU": {
+"moves": 12,
+"S": "D R'",
+"inv": false,
+"alg": "D R' D R2 D' L2 D R2 D' L2 R D'"
+},
+"TC": {
+"moves": 11,
+"S": "D F2",
+"inv": false,
+"alg": "D F' D' F' U2 F D F' U2 F2 D'"
+},
+"KS": {
+"moves": 13,
+"S": "D' L2 D'",
+"inv": false,
+"alg": "D' L2 D' R U2 R' D2 R U2 R' D' L2 D"
+}
+},
+"QC": {
+"KG": {
+"moves": 12,
+"S": "R' D' R'",
+"inv": false,
+"alg": "R' D' U2 R' D R U2 R' D' R D R"
+},
+"IV": {
+"moves": 12,
+"S": "U' F2 U'",
+"inv": true,
+"alg": "U' F2 U' L U R2 U' L' U R2 F2 U"
+},
+"BU": {
+"moves": 13,
+"S": "R B D",
+"inv": true,
+"alg": "R B D L2 D R2 D' L2 D R2 D2 B' R'"
+},
+"TC": {
+"moves": 13,
+"S": "L' R U",
+"inv": false,
+"alg": "L' R U F D' F' U2 F D F' U R' L"
+},
+"KS": {
+"moves": 12,
+"S": "R' D2 R'",
+"inv": false,
+"alg": "R' D2 U2 R' D2 R U2 R' D2 R D2 R"
+}
+},
+"QD": {
+"KG": {
+"moves": 11,
+"S": "L' U R'",
+"inv": false,
+"alg": "L' U' R' D R U2 R' D' R U' L"
+},
+"IV": {
+"moves": 12,
+"S": "L D2 U'",
+"inv": false,
+"alg": "L D2 R2 U' L U R2 U' L' U D2 L'"
+},
+"BU": {
+"moves": 12,
+"S": "U F D'",
+"inv": false,
+"alg": "U F R2 D' L2 D R2 D' L2 D F' U'"
+},
+"TC": {
+"moves": 12,
+"S": "F2 R' U2",
+"inv": false,
+"alg": "F2 R' U2 F D' F' U2 F D F' R F2"
+},
+"KS": {
+"moves": 12,
+"S": "U B R'",
+"inv": false,
+"alg": "U B U2 R' D2 R U2 R' D2 R B' U'"
+}
+},
+"QF": {
+"KG": {
+"moves": 13,
+"S": "B2 L' R",
+"inv": true,
+"alg": "B2 L' R D R U2 R' D' R U2 R2 L B2"
+},
+"BU": {
+"moves": 11,
+"S": "L D L2",
+"inv": false,
+"alg": "L D L2 D R2 D' L2 D R2 D2 L'"
+},
+"TC": {
+"moves": 13,
+"S": "L2 B' F2",
+"inv": true,
+"alg": "L2 B' F2 U2 F D' F' U2 F D F B L2"
+},
+"KS": {
+"moves": 13,
+"S": "L B R",
+"inv": true,
+"alg": "L B R D2 R U2 R' D2 R U2 R2 B' L'"
+}
+},
+"QG": {
+"KG": {
+"moves": 9,
+"S": "R2",
+"inv": false,
+"alg": "R' U2 R' D R U2 R' D' R2"
+},
+"IV": {
+"moves": 12,
+"S": "R D' L'",
+"inv": false,
+"alg": "R D' L' U R2 U' L U R2 U' D R'"
+},
+"BU": {
+"moves": 13,
+"S": "D' B' D2",
+"inv": false,
+"alg": "D' B' D' R2 D' L2 D R2 D' L2 D2 B D"
+},
+"TC": {
+"moves": 12,
+"S": "F' R' U2",
+"inv": false,
+"alg": "F' R' U2 F D' F' U2 F D F' R F"
+},
+"KS": {
+"moves": 11,
+"S": "D' R2",
+"inv": false,
+"alg": "D' R' U2 R' D2 R U2 R' D2 R2 D"
+}
+},
+"QH": {
+"KG": {
+"moves": 12,
+"S": "U2 L R'",
+"inv": true,
+"alg": "U2 L R' D R U2 R' D' R U2 L' U2"
+},
+"IV": {
+"moves": 12,
+"S": "B' D' U'",
+"inv": true,
+"alg": "B' D' U' L U R2 U' L' U R2 D B"
+},
+"BU": {
+"moves": 12,
+"S": "L' F2 D'",
+"inv": true,
+"alg": "L' F2 D' L2 D R2 D' L2 D R2 F2 L"
+},
+"TC": {
+"moves": 12,
+"S": "R' D' U2",
+"inv": false,
+"alg": "R' D' U2 F D' F' U2 F D F' D R"
+},
+"KS": {
+"moves": 12,
+"S": "U' F R'",
+"inv": true,
+"alg": "U' F R' D2 R U2 R' D2 R U2 F' U"
+}
+},
+"QI": {
+"KG": {
+"moves": 13,
+"S": "L D R2",
+"inv": true,
+"alg": "L D R2 D R U2 R' D' R U2 R D' L'"
+},
+"IV": {
+"moves": 12,
+"S": "R D'",
+"inv": true,
+"alg": "R D' L U R2 U' L' U R2 U' D R'"
+},
+"BU": {
+"moves": 13,
+"S": "F R D2",
+"inv": true,
+"alg": "F R D2 L2 D R2 D' L2 D R2 D R' F'"
+},
+"TC": {
+"moves": 13,
+"S": "U2 R U",
+"inv": false,
+"alg": "U2 R U F D' F' U2 F D F' U R' U2"
+},
+"KS": {
+"moves": 11,
+"S": "L R2 D2",
+"inv": false,
+"alg": "L R2 D2 R U2 R' D2 R U2 R L'"
+}
+},
+"QJ": {
+"KG": {
+"moves": 12,
+"S": "L2 B R'",
+"inv": false,
+"alg": "L2 B U2 R' D R U2 R' D' R B' L2"
+},
+"IV": {
+"moves": 14,
+"S": "F' R D'",
+"inv": true,
+"alg": "F' R D' L U R2 U' L' U R2 U' D R' F"
+},
+"BU": {
+"moves": 11,
+"S": "R D2 L2",
+"inv": false,
+"alg": "R D2 L2 D R2 D' L2 D R2 D R'"
+},
+"TC": {
+"moves": 14,
+"S": "F2 R' D2",
+"inv": true,
+"alg": "F2 R' D2 U2 F D' F' U2 F D F' D2 R F2"
+},
+"KS": {
+"moves": 13,
+"S": "F D2 R2",
+"inv": false,
+"alg": "F D2 R' U2 R' D2 R U2 R' D2 R2 D2 F'"
+}
+},
+"QK": {
+"KG": {
+"moves": 11,
+"S": "D' R2",
+"inv": false,
+"alg": "D' R' U2 R' D R U2 R' D' R2 D"
+},
+"IV": {
+"moves": 14,
+"S": "F2 R D'",
+"inv": true,
+"alg": "F2 R D' L U R2 U' L' U R2 U' D R' F2"
+},
+"BU": {
+"moves": 13,
+"S": "F' R D2",
+"inv": true,
+"alg": "F' R D2 L2 D R2 D' L2 D R2 D R' F"
+},
+"TC": {
+"moves": 13,
+"S": "U2 R2 U'",
+"inv": false,
+"alg": "U2 R2 U' F D' F' U2 F D F' U' R2 U2"
+},
+"KS": {
+"moves": 11,
+"S": "D2 R2",
+"inv": false,
+"alg": "D2 R' U2 R' D2 R U2 R' D2 R2 D2"
+}
+},
+"QL": {
+"KG": {
+"moves": 12,
+"S": "U B R'",
+"inv": false,
+"alg": "U B U2 R' D R U2 R' D' R B' U'"
+},
+"IV": {
+"moves": 14,
+"S": "U' L D2",
+"inv": true,
+"alg": "U' L D2 L U R2 U' L' U R2 U' D2 L' U"
+},
+"BU": {
+"moves": 13,
+"S": "L U2 L",
+"inv": false,
+"alg": "L U2 L D R2 D' L2 D R2 D' L U2 L'"
+},
+"TC": {
+"moves": 12,
+"S": "R' D2 U2",
+"inv": false,
+"alg": "R' D2 U2 F D' F' U2 F D F' D2 R"
+},
+"KS": {
+"moves": 13,
+"S": "L2 R D",
+"inv": false,
+"alg": "L2 R D R U2 R' D2 R U2 R' D R' L2"
+}
+},
+"QM": {
+"KG": {
+"moves": 9,
+"S": "R2 D'",
+"inv": true,
+"alg": "R' U2 R' D' R U2 R' D R2"
+},
+"IV": {
+"moves": 14,
+"S": "F' R2 F2",
+"inv": false,
+"alg": "F' R2 F2 U R2 U' L U R2 U' L' F2 R2 F"
+},
+"BU": {
+"moves": 12,
+"S": "U' F'",
+"inv": false,
+"alg": "U' F' D R2 D' L2 D R2 D' L2 F U"
+},
+"TC": {
+"moves": 12,
+"S": "R' D U2",
+"inv": false,
+"alg": "R' D U2 F D' F' U2 F D F' D' R"
+},
+"KS": {
+"moves": 13,
+"S": "F2 D' R2",
+"inv": false,
+"alg": "F2 D' R' U2 R' D2 R U2 R' D2 R2 D F2"
+}
+},
+"QO": {
+"KG": {
+"moves": 11,
+"S": "D2 R2",
+"inv": false,
+"alg": "D2 R' U2 R' D R U2 R' D' R2 D2"
+},
+"IV": {
+"moves": 12,
+"S": "R' F U'",
+"inv": false,
+"alg": "R' F R2 U' L U R2 U' L' U F' R"
+},
+"BU": {
+"moves": 13,
+"S": "B2 R' D",
+"inv": false,
+"alg": "B2 R' D2 R2 D' L2 D R2 D' L2 D' R B2"
+},
+"TC": {
+"moves": 14,
+"S": "D2 F' R'",
+"inv": true,
+"alg": "D2 F' R' U2 F D' F' U2 F D F' R F D2"
+},
+"KS": {
+"moves": 11,
+"S": "D R2",
+"inv": false,
+"alg": "D R' U2 R' D2 R U2 R' D2 R2 D'"
+}
+},
+"QP": {
+"KG": {
+"moves": 12,
+"S": "R' D2 R'",
+"inv": false,
+"alg": "R' D2 U2 R' D R U2 R' D' R D2 R"
+},
+"BU": {
+"moves": 13,
+"S": "B R2 D",
+"inv": false,
+"alg": "B R2 D2 R2 D' L2 D R2 D' L2 D' R2 B'"
+},
+"TC": {
+"moves": 14,
+"S": "D' R' D2",
+"inv": true,
+"alg": "D' R' D2 U2 F D' F' U2 F D F' D2 R D"
+},
+"KS": {
+"moves": 12,
+"S": "R' D R'",
+"inv": false,
+"alg": "R' D U2 R' D2 R U2 R' D2 R D' R"
+}
+},
+"QS": {
+"KG": {
+"moves": 11,
+"S": "D R2",
+"inv": false,
+"alg": "D R' U2 R' D R U2 R' D' R2 D'"
+},
+"IV": {
+"moves": 14,
+"S": "L' R D'",
+"inv": false,
+"alg": "L' R D' U R2 U' L U R2 U' L' D R' L"
+},
+"BU": {
+"moves": 11,
+"S": "B' D2",
+"inv": false,
+"alg": "B' D' R2 D' L2 D R2 D' L2 D2 B"
+},
+"TC": {
+"moves": 13,
+"S": "L2 D2 U",
+"inv": false,
+"alg": "L2 D2 U F D' F' U2 F D F' U D2 L2"
+},
+"KS": {
+"moves": 9,
+"S": "R2",
+"inv": false,
+"alg": "R' U2 R' D2 R U2 R' D2 R2"
+}
+},
+"QT": {
+"KG": {
+"moves": 13,
+"S": "R F R",
+"inv": false,
+"alg": "R F R2 U2 R' D R U2 R' D' R' F' R'"
+},
+"IV": {
+"moves": 13,
+"S": "U R' U2",
+"inv": true,
+"alg": "U R' U2 L U R2 U' L' U R2 U R U'"
+},
+"BU": {
+"moves": 12,
+"S": "R' F2 L2",
+"inv": false,
+"alg": "R' F2 L2 D R2 D' L2 D R2 D' F2 R"
+},
+"TC": {
+"moves": 12,
+"S": "U2 L",
+"inv": false,
+"alg": "U2 L F D' F' U2 F D F' U2 L' U2"
+},
+"KS": {
+"moves": 14,
+"S": "R2 D2 F",
+"inv": true,
+"alg": "R2 D2 F D2 R U2 R' D2 R U2 R' F' D2 R2"
+}
+},
+"QU": {
+"KG": {
+"moves": 13,
+"S": "D F R2",
+"inv": false,
+"alg": "D F R' U2 R' D R U2 R' D' R2 F' D'"
+},
+"IV": {
+"moves": 14,
+"S": "B2 L2 D'",
+"inv": true,
+"alg": "B2 L2 D' L U R2 U' L' U R2 U' D L2 B2"
+},
+"BU": {
+"moves": 13,
+"S": "F L D",
+"inv": true,
+"alg": "F L D L2 D R2 D' L2 D R2 D2 L' F'"
+},
+"TC": {
+"moves": 12,
+"S": "D R' U2",
+"inv": false,
+"alg": "D R' U2 F D' F' U2 F D F' R D'"
+},
+"KS": {
+"moves": 12,
+"S": "U2 L2 R'",
+"inv": false,
+"alg": "U2 L2 U2 R' D2 R U2 R' D2 R L2 U2"
+}
+},
+"QV": {
+"KG": {
+"moves": 11,
+"S": "F R2",
+"inv": false,
+"alg": "F R' U2 R' D R U2 R' D' R2 F'"
+},
+"IV": {
+"moves": 12,
+"S": "R2 B L'",
+"inv": true,
+"alg": "R2 B U R2 U' L' U R2 U' L B' R2"
+},
+"BU": {
+"moves": 13,
+"S": "D B D",
+"inv": false,
+"alg": "D B D2 R2 D' L2 D R2 D' L2 D' B' D'"
+},
+"TC": {
+"moves": 10,
+"S": "R' U2",
+"inv": false,
+"alg": "R' U2 F D' F' U2 F D F' R"
+},
+"KS": {
+"moves": 13,
+"S": "F D' R2",
+"inv": false,
+"alg": "F D' R' U2 R' D2 R U2 R' D2 R2 D F'"
+}
+},
+"QW": {
+"KG": {
+"moves": 12,
+"S": "R2 D' R'",
+"inv": true,
+"alg": "R2 D' R' D R U2 R' D' R U2 D R2"
+},
+"IV": {
+"moves": 14,
+"S": "R F2 D'",
+"inv": true,
+"alg": "R F2 D' L U R2 U' L' U R2 U' D F2 R'"
+},
+"BU": {
+"moves": 11,
+"S": "B D",
+"inv": false,
+"alg": "B D2 R2 D' L2 D R2 D' L2 D' B'"
+},
+"TC": {
+"moves": 11,
+"S": "L' U'",
+"inv": false,
+"alg": "L' U' F D' F' U2 F D F' U' L"
+},
+"KS": {
+"moves": 11,
+"S": "B2 R",
+"inv": false,
+"alg": "B2 R2 U2 R' D2 R U2 R' D2 R' B2"
+}
+},
+"QX": {
+"KG": {
+"moves": 13,
+"S": "R2 D' R",
+"inv": true,
+"alg": "R2 D' R D R U2 R' D' R U2 R2 D R2"
+},
+"IV": {
+"moves": 12,
+"S": "R2 D2 L'",
+"inv": true,
+"alg": "R2 D2 U R2 U' L' U R2 U' L D2 R2"
+},
+"BU": {
+"moves": 13,
+"S": "B R' D",
+"inv": false,
+"alg": "B R' D2 R2 D' L2 D R2 D' L2 D' R B'"
+},
+"TC": {
+"moves": 12,
+"S": "D2 R' U2",
+"inv": false,
+"alg": "D2 R' U2 F D' F' U2 F D F' R D2"
+},
+"KS": {
+"moves": 13,
+"S": "R B' R2",
+"inv": false,
+"alg": "R B' R' U2 R' D2 R U2 R' D2 R2 B R'"
+}
+},
+"SB": {
+"KG": {
+"moves": 11,
+"S": "B D2",
+"inv": false,
+"alg": "B D2 R U2 R' D R U2 R' D B'"
+},
+"IV": {
+"moves": 10,
+"S": "R2 L'",
+"inv": true,
+"alg": "R2 U R2 U' L' U R2 U' L R2"
+},
+"BU": {
+"moves": 12,
+"S": "D F' D'",
+"inv": true,
+"alg": "D F' D' L2 D R2 D' L2 D R2 F D'"
+},
+"TC": {
+"moves": 12,
+"S": "D' R F'",
+"inv": true,
+"alg": "D' R F' U2 F D' F' U2 F D R' D"
+},
+"KS": {
+"moves": 12,
+"S": "R' F D2",
+"inv": false,
+"alg": "R' F D2 R U2 R' D2 R U2 R' F' R"
+}
+},
+"SC": {
+"KG": {
+"moves": 10,
+"S": "D U2 R'",
+"inv": false,
+"alg": "D R' D R U2 R' D' R U2 D'"
+},
+"IV": {
+"moves": 13,
+"S": "B2 D' U2",
+"inv": true,
+"alg": "B2 D' U2 L U R2 U' L' U R2 U D B2"
+},
+"BU": {
+"moves": 12,
+"S": "F B' D'",
+"inv": true,
+"alg": "F B' D' L2 D R2 D' L2 D R2 B F'"
+},
+"TC": {
+"moves": 14,
+"S": "L B L2",
+"inv": true,
+"alg": "L B L2 U2 F D' F' U2 F D F' L2 B' L'"
+},
+"KS": {
+"moves": 8,
+"S": "U2 R'",
+"inv": false,
+"alg": "R' D2 R U2 R' D2 R U2"
+}
+},
+"SD": {
+"KG": {
+"moves": 11,
+"S": "F' D",
+"inv": true,
+"alg": "F' D2 R U2 R' D' R U2 R' D' F"
+},
+"IV": {
+"moves": 10,
+"S": "F2 L'",
+"inv": true,
+"alg": "F2 U R2 U' L' U R2 U' L F2"
+},
+"BU": {
+"moves": 13,
+"S": "F U L",
+"inv": false,
+"alg": "F U L D R2 D' L2 D R2 D' L U' F'"
+},
+"TC": {
+"moves": 13,
+"S": "D' B2 F",
+"inv": true,
+"alg": "D' B2 F U2 F D' F' U2 F D F2 B2 D"
+},
+"KS": {
+"moves": 13,
+"S": "D' F' D'",
+"inv": false,
+"alg": "D' F' D' R U2 R' D2 R U2 R' D' F D"
+}
+},
+"SF": {
+"KG": {
+"moves": 12,
+"S": "U' L R'",
+"inv": true,
+"alg": "U' L R' D R U2 R' D' R U2 L' U"
+},
+"IV": {
+"moves": 14,
+"S": "D L D2",
+"inv": true,
+"alg": "D L D2 L U R2 U' L' U R2 U' D2 L' D'"
+},
+"BU": {
+"moves": 12,
+"S": "F2 B' D'",
+"inv": true,
+"alg": "F2 B' D' L2 D R2 D' L2 D R2 B F2"
+},
+"TC": {
+"moves": 12,
+"S": "U2 B U2",
+"inv": false,
+"alg": "U2 B U2 F D' F' U2 F D F' B' U2"
+},
+"KS": {
+"moves": 10,
+"S": "F U2 R'",
+"inv": false,
+"alg": "F R' D2 R U2 R' D2 R U2 F'"
+}
+},
+"SG": {
+"KG": {
+"moves": 9,
+"S": "D",
+"inv": true,
+"alg": "D2 R U2 R' D' R U2 R' D'"
+},
+"IV": {
+"moves": 10,
+"S": "F' L'",
+"inv": true,
+"alg": "F' U R2 U' L' U R2 U' L F"
+},
+"BU": {
+"moves": 13,
+"S": "F2 U L",
+"inv": false,
+"alg": "F2 U L D R2 D' L2 D R2 D' L U' F2"
+},
+"TC": {
+"moves": 13,
+"S": "B2 U' F2",
+"inv": true,
+"alg": "B2 U' F2 U2 F D' F' U2 F D F U B2"
+},
+"KS": {
+"moves": 14,
+"S": "F' R F",
+"inv": true,
+"alg": "F' R F D2 R U2 R' D2 R U2 R' F' R' F"
+}
+},
+"SI": {
+"KG": {
+"moves": 12,
+"S": "D' F2 D'",
+"inv": false,
+"alg": "D' F2 D' R U2 R' D R U2 R' F2 D"
+},
+"IV": {
+"moves": 12,
+"S": "L' D",
+"inv": true,
+"alg": "L' D L U R2 U' L' U R2 U' D' L"
+},
+"BU": {
+"moves": 12,
+"S": "F' B' L2",
+"inv": false,
+"alg": "F' B' L2 D R2 D' L2 D R2 D' B F"
+},
+"TC": {
+"moves": 11,
+"S": "B2 U",
+"inv": false,
+"alg": "B2 U F D' F' U2 F D F' U B2"
+},
+"KS": {
+"moves": 10,
+"S": "F2 D2",
+"inv": false,
+"alg": "F2 D2 R U2 R' D2 R U2 R' F2"
+}
+},
+"SJ": {
+"KG": {
+"moves": 12,
+"S": "D' F D'",
+"inv": false,
+"alg": "D' F D' R U2 R' D R U2 R' F' D"
+},
+"IV": {
+"moves": 10,
+"S": "R' L'",
+"inv": true,
+"alg": "R' U R2 U' L' U R2 U' L R"
+},
+"BU": {
+"moves": 12,
+"S": "F2 B' L2",
+"inv": false,
+"alg": "F2 B' L2 D R2 D' L2 D R2 D' B F2"
+},
+"TC": {
+"moves": 13,
+"S": "F' B2 U",
+"inv": false,
+"alg": "F' B2 U F D' F' U2 F D F' U B2 F"
+},
+"KS": {
+"moves": 10,
+"S": "F D2",
+"inv": false,
+"alg": "F D2 R U2 R' D2 R U2 R' F'"
+}
+},
+"SK": {
+"KG": {
+"moves": 12,
+"S": "R D R'",
+"inv": true,
+"alg": "R D R' D R U2 R' D' R U2 D' R'"
+},
+"IV": {
+"moves": 12,
+"S": "F' R' L'",
+"inv": true,
+"alg": "F' R' U R2 U' L' U R2 U' L R F"
+},
+"BU": {
+"moves": 12,
+"S": "F B' L2",
+"inv": false,
+"alg": "F B' L2 D R2 D' L2 D R2 D' B F'"
+},
+"TC": {
+"moves": 12,
+"S": "U B' F'",
+"inv": true,
+"alg": "U B' F' U2 F D' F' U2 F D B U'"
+},
+"KS": {
+"moves": 8,
+"S": "D2",
+"inv": false,
+"alg": "D2 R U2 R' D2 R U2 R'"
+}
+},
+"SL": {
+"KG": {
+"moves": 14,
+"S": "U2 F' L'",
+"inv": false,
+"alg": "U2 F' L' R U2 R' D R U2 R' D' L F U2"
+},
+"IV": {
+"moves": 12,
+"S": "L' D2",
+"inv": true,
+"alg": "L' D2 L U R2 U' L' U R2 U' D2 L"
+},
+"BU": {
+"moves": 10,
+"S": "B' L2",
+"inv": false,
+"alg": "B' L2 D R2 D' L2 D R2 D' B"
+},
+"TC": {
+"moves": 13,
+"S": "U B' F2",
+"inv": true,
+"alg": "U B' F2 U2 F D' F' U2 F D F B U'"
+},
+"KS": {
+"moves": 10,
+"S": "F' D2",
+"inv": false,
+"alg": "F' D2 R U2 R' D2 R U2 R' F"
+}
+},
+"SM": {
+"KG": {
+"moves": 11,
+"S": "R2 D2",
+"inv": false,
+"alg": "R2 D2 R U2 R' D R U2 R' D R2"
+},
+"IV": {
+"moves": 10,
+"S": "F L'",
+"inv": true,
+"alg": "F U R2 U' L' U R2 U' L F'"
+},
+"BU": {
+"moves": 11,
+"S": "U L",
+"inv": false,
+"alg": "U L D R2 D' L2 D R2 D' L U'"
+},
+"TC": {
+"moves": 12,
+"S": "D' B2 U2",
+"inv": false,
+"alg": "D' B2 U2 F D' F' U2 F D F' B2 D"
+},
+"KS": {
+"moves": 12,
+"S": "R' F' R'",
+"inv": true,
+"alg": "R' F' R' D2 R U2 R' D2 R U2 F R"
+}
+},
+"SN": {
+"KG": {
+"moves": 11,
+"S": "R D2",
+"inv": false,
+"alg": "R D2 R U2 R' D R U2 R' D R'"
+},
+"IV": {
+"moves": 12,
+"S": "R' F L'",
+"inv": true,
+"alg": "R' F U R2 U' L' U R2 U' L F' R"
+},
+"BU": {
+"moves": 12,
+"S": "R2 B' D'",
+"inv": true,
+"alg": "R2 B' D' L2 D R2 D' L2 D R2 B R2"
+},
+"TC": {
+"moves": 11,
+"S": "B D' F'",
+"inv": false,
+"alg": "B D2 F' U2 F D F' U2 F D B'"
+},
+"KS": {
+"moves": 12,
+"S": "R2 F' R'",
+"inv": true,
+"alg": "R2 F' R' D2 R U2 R' D2 R U2 F R2"
+}
+},
+"SO": {
+"KG": {
+"moves": 9,
+"S": "D2",
+"inv": false,
+"alg": "D2 R U2 R' D R U2 R' D"
+},
+"IV": {
+"moves": 12,
+"S": "R2 F L'",
+"inv": true,
+"alg": "R2 F U R2 U' L' U R2 U' L F' R2"
+},
+"BU": {
+"moves": 12,
+"S": "R B' D'",
+"inv": true,
+"alg": "R B' D' L2 D R2 D' L2 D R2 B R'"
+},
+"TC": {
+"moves": 13,
+"S": "U' B U",
+"inv": false,
+"alg": "U' B U F D' F' U2 F D F' U B' U"
+},
+"KS": {
+"moves": 12,
+"S": "R F' R'",
+"inv": true,
+"alg": "R F' R' D2 R U2 R' D2 R U2 F R'"
+}
+},
+"SP": {
+"KG": {
+"moves": 11,
+"S": "R' D2",
+"inv": false,
+"alg": "R' D2 R U2 R' D R U2 R' D R"
+},
+"IV": {
+"moves": 12,
+"S": "R F L'",
+"inv": true,
+"alg": "R F U R2 U' L' U R2 U' L F' R'"
+},
+"BU": {
+"moves": 10,
+"S": "B' D' L2",
+"inv": false,
+"alg": "B' D' L2 D R2 D' L2 D R2 B"
+},
+"TC": {
+"moves": 14,
+"S": "D2 R D'",
+"inv": true,
+"alg": "D2 R D' U2 F D' F' U2 F D F' D R' D2"
+},
+"KS": {
+"moves": 10,
+"S": "F' U2 R'",
+"inv": false,
+"alg": "F' R' D2 R U2 R' D2 R U2 F"
+}
+},
+"SQ": {
+"KG": {
+"moves": 11,
+"S": "D R2",
+"inv": true,
+"alg": "D R2 D R U2 R' D' R U2 R D'"
+},
+"IV": {
+"moves": 14,
+"S": "L' R D'",
+"inv": true,
+"alg": "L' R D' L U R2 U' L' U R2 U' D R' L"
+},
+"BU": {
+"moves": 11,
+"S": "B' D2 L2",
+"inv": false,
+"alg": "B' D2 L2 D R2 D' L2 D R2 D B"
+},
+"TC": {
+"moves": 13,
+"S": "L2 D2 U'",
+"inv": false,
+"alg": "L2 D2 U' F D' F' U2 F D F' U' D2 L2"
+},
+"KS": {
+"moves": 9,
+"S": "R2 D2",
+"inv": false,
+"alg": "R2 D2 R U2 R' D2 R U2 R"
+}
+},
+"ST": {
+"KG": {
+"moves": 13,
+"S": "R D R",
+"inv": true,
+"alg": "R D R D R U2 R' D' R U2 R2 D' R'"
+},
+"IV": {
+"moves": 10,
+"S": "R L'",
+"inv": true,
+"alg": "R U R2 U' L' U R2 U' L R'"
+},
+"BU": {
+"moves": 14,
+"S": "R2 F2 B'",
+"inv": true,
+"alg": "R2 F2 B' L2 D R2 D' L2 D R2 D' B F2 R2"
+},
+"TC": {
+"moves": 12,
+"S": "U2 L'",
+"inv": false,
+"alg": "U2 L' F D' F' U2 F D F' U2 L U2"
+},
+"KS": {
+"moves": 12,
+"S": "R2 F D2",
+"inv": false,
+"alg": "R2 F D2 R U2 R' D2 R U2 R' F' R2"
+}
+},
+"SU": {
+"KG": {
+"moves": 12,
+"S": "F2 D R'",
+"inv": true,
+"alg": "F2 D R' D R U2 R' D' R U2 D' F2"
+},
+"IV": {
+"moves": 12,
+"S": "L2 D",
+"inv": true,
+"alg": "L2 D L U R2 U' L' U R2 U' D' L2"
+},
+"BU": {
+"moves": 12,
+"S": "F' B' D'",
+"inv": true,
+"alg": "F' B' D' L2 D R2 D' L2 D R2 B F"
+},
+"TC": {
+"moves": 13,
+"S": "D' L' F",
+"inv": true,
+"alg": "D' L' F U2 F D' F' U2 F D F2 L D"
+},
+"KS": {
+"moves": 10,
+"S": "F2 U2 R'",
+"inv": false,
+"alg": "F2 R' D2 R U2 R' D2 R U2 F2"
+}
+},
+"SV": {
+"KG": {
+"moves": 11,
+"S": "D R",
+"inv": true,
+"alg": "D R D R U2 R' D' R U2 R2 D'"
+},
+"IV": {
+"moves": 8,
+"S": "L'",
+"inv": true,
+"alg": "U R2 U' L' U R2 U' L"
+},
+"BU": {
+"moves": 12,
+"S": "U L' D'",
+"inv": true,
+"alg": "U L' D' L2 D R2 D' L2 D R2 L U'"
+},
+"TC": {
+"moves": 12,
+"S": "B' R U2",
+"inv": false,
+"alg": "B' R U2 F D' F' U2 F D F' R' B"
+},
+"KS": {
+"moves": 12,
+"S": "R F D2",
+"inv": false,
+"alg": "R F D2 R U2 R' D2 R U2 R' F' R'"
+}
+},
+"SW": {
+"KG": {
+"moves": 12,
+"S": "R2 D R'",
+"inv": true,
+"alg": "R2 D R' D R U2 R' D' R U2 D' R2"
+},
+"IV": {
+"moves": 12,
+"S": "L' D'",
+"inv": true,
+"alg": "L' D' L U R2 U' L' U R2 U' D L"
+},
+"BU": {
+"moves": 11,
+"S": "B' D L2",
+"inv": false,
+"alg": "B' D L2 D R2 D' L2 D R2 D2 B"
+},
+"TC": {
+"moves": 12,
+"S": "D' B2 F'",
+"inv": true,
+"alg": "D' B2 F' U2 F D' F' U2 F D B2 D"
+},
+"KS": {
+"moves": 9,
+"S": "R D2",
+"inv": false,
+"alg": "R D2 R U2 R' D2 R U2 R2"
+}
+},
+"TB": {
+"KG": {
+"moves": 11,
+"S": "B2 D2",
+"inv": false,
+"alg": "B2 D2 R U2 R' D R U2 R' D B2"
+},
+"IV": {
+"moves": 12,
+"S": "B R2 L'",
+"inv": true,
+"alg": "B R2 U R2 U' L' U R2 U' L R2 B'"
+},
+"BU": {
+"moves": 12,
+"S": "D' F L2",
+"inv": false,
+"alg": "D' F L2 D R2 D' L2 D R2 D' F' D"
+},
+"TC": {
+"moves": 13,
+"S": "L2 U' F2",
+"inv": true,
+"alg": "L2 U' F2 U2 F D' F' U2 F D F U L2"
+},
+"KS": {
+"moves": 12,
+"S": "D' B D2",
+"inv": false,
+"alg": "D' B D2 R U2 R' D2 R U2 R' B' D"
+}
+},
+"TC": {
+"KG": {
+"moves": 10,
+"S": "D' R' D'",
+"inv": false,
+"alg": "D' R' D' R U2 R' D R U2 D"
+},
+"IV": {
+"moves": 11,
+"S": "B2 R' U'",
+"inv": false,
+"alg": "B2 R U' L U R2 U' L' U R B2"
+},
+"BU": {
+"moves": 12,
+"S": "F2 R'",
+"inv": false,
+"alg": "F2 R' D R2 D' L2 D R2 D' L2 R F2"
+},
+"TC": {
+"moves": 8,
+"S": "",
+"inv": false,
+"alg": "F D' F' U2 F D F' U2"
+},
+"KS": {
+"moves": 13,
+"S": "F2 B2 D",
+"inv": false,
+"alg": "F2 B2 D R U2 R' D2 R U2 R' D B2 F2"
+}
+},
+"TD": {
+"KG": {
+"moves": 12,
+"S": "D' F' R'",
+"inv": false,
+"alg": "D' F' U2 R' D R U2 R' D' R F D"
+},
+"IV": {
+"moves": 14,
+"S": "F' R2 F'",
+"inv": false,
+"alg": "F' R2 F' U R2 U' L U R2 U' L' F R2 F"
+},
+"BU": {
+"moves": 12,
+"S": "R U D'",
+"inv": false,
+"alg": "R U R2 D' L2 D R2 D' L2 D U' R'"
+},
+"TC": {
+"moves": 14,
+"S": "L R2 D'",
+"inv": false,
+"alg": "L R2 D' F D' F' U2 F D F' U2 D R2 L'"
+},
+"KS": {
+"moves": 13,
+"S": "L' U D'",
+"inv": false,
+"alg": "L' U D' R U2 R' D2 R U2 R' D' U' L"
+}
+},
+"TF": {
+"KG": {
+"moves": 12,
+"S": "R F R'",
+"inv": true,
+"alg": "R F R' D R U2 R' D' R U2 F' R'"
+},
+"IV": {
+"moves": 14,
+"S": "R2 F' D",
+"inv": false,
+"alg": "R2 F' D U R2 U' L U R2 U' L' D' F R2"
+},
+"BU": {
+"moves": 11,
+"S": "B L'",
+"inv": false,
+"alg": "B L' D R2 D' L2 D R2 D' L' B'"
+},
+"TC": {
+"moves": 9,
+"S": "F",
+"inv": false,
+"alg": "F2 D' F' U2 F D F' U2 F'"
+},
+"KS": {
+"moves": 13,
+"S": "U B2 R",
+"inv": false,
+"alg": "U B2 R2 U2 R' D2 R U2 R' D2 R' B2 U'"
+}
+},
+"TG": {
+"KG": {
+"moves": 12,
+"S": "D2 F' D'",
+"inv": true,
+"alg": "D2 F' R U2 R' D' R U2 R' D F D2"
+},
+"IV": {
+"moves": 12,
+"S": "R2 F'",
+"inv": false,
+"alg": "R2 F' U R2 U' L U R2 U' L' F R2"
+},
+"BU": {
+"moves": 12,
+"S": "R' F' D'",
+"inv": false,
+"alg": "R' F' R2 D' L2 D R2 D' L2 D F R"
+},
+"TC": {
+"moves": 13,
+"S": "U F U'",
+"inv": false,
+"alg": "U F U' F D' F' U2 F D F' U' F' U'"
+},
+"KS": {
+"moves": 12,
+"S": "D' F' R'",
+"inv": false,
+"alg": "D' F' U2 R' D2 R U2 R' D2 R F D"
+}
+},
+"TH": {
+"KG": {
+"moves": 13,
+"S": "L2 U R",
+"inv": true,
+"alg": "L2 U R D R U2 R' D' R U2 R2 U' L2"
+},
+"IV": {
+"moves": 13,
+"S": "U' D2 L",
+"inv": false,
+"alg": "U' D2 L U R2 U' L U R2 U' L2 D2 U"
+},
+"BU": {
+"moves": 13,
+"S": "L' B' L'",
+"inv": false,
+"alg": "L' B' L' D R2 D' L2 D R2 D' L' B L"
+},
+"TC": {
+"moves": 9,
+"S": "D' F' U2",
+"inv": false,
+"alg": "D' F' U2 F D' F' U2 F D2"
+},
+"KS": {
+"moves": 12,
+"S": "U2 B' R'",
+"inv": false,
+"alg": "U2 B' U2 R' D2 R U2 R' D2 R B U2"
+}
+},
+"TI": {
+"KG": {
+"moves": 13,
+"S": "D L D",
+"inv": true,
+"alg": "D L D2 R U2 R' D' R U2 R' D' L' D'"
+},
+"IV": {
+"moves": 10,
+"S": "R",
+"inv": true,
+"alg": "R L U R2 U' L' U R2 U' R'"
+},
+"BU": {
+"moves": 11,
+"S": "F R' D'",
+"inv": false,
+"alg": "F R D' L2 D R2 D' L2 D R F'"
+},
+"TC": {
+"moves": 14,
+"S": "U' L R2",
+"inv": true,
+"alg": "U' L R2 U2 F D' F' U2 F D F' R2 L' U"
+},
+"KS": {
+"moves": 11,
+"S": "B U' R'",
+"inv": false,
+"alg": "B U R' D2 R U2 R' D2 R U B'"
+}
+},
+"TJ": {
+"KG": {
+"moves": 12,
+"S": "D2 L2 R'",
+"inv": false,
+"alg": "D2 L2 U2 R' D R U2 R' D' R L2 D2"
+},
+"IV": {
+"moves": 12,
+"S": "F' R",
+"inv": true,
+"alg": "F' R L U R2 U' L' U R2 U' R' F"
+},
+"BU": {
+"moves": 9,
+"S": "R' D'",
+"inv": false,
+"alg": "R D' L2 D R2 D' L2 D R"
+},
+"TC": {
+"moves": 14,
+"S": "L B' D'",
+"inv": false,
+"alg": "L B' D' F D' F' U2 F D F' U2 D B L'"
+},
+"KS": {
+"moves": 12,
+"S": "B2 D R'",
+"inv": false,
+"alg": "B2 D U2 R' D2 R U2 R' D2 R D' B2"
+}
+},
+"TK": {
+"KG": {
+"moves": 13,
+"S": "F L2 R",
+"inv": true,
+"alg": "F L2 R D R U2 R' D' R U2 R2 L2 F'"
+},
+"IV": {
+"moves": 10,
+"S": "B U' L'",
+"inv": false,
+"alg": "B U' L' U R2 U' L U R2 B'"
+},
+"BU": {
+"moves": 11,
+"S": "R' D2",
+"inv": false,
+"alg": "R' D' R2 D' L2 D R2 D' L2 D2 R"
+},
+"TC": {
+"moves": 14,
+"S": "L2 F2 L",
+"inv": true,
+"alg": "L2 F2 L U2 F D' F' U2 F D F' L' F2 L2"
+},
+"KS": {
+"moves": 12,
+"S": "D2 F'",
+"inv": false,
+"alg": "D2 F' R U2 R' D2 R U2 R' D2 F D2"
+}
+},
+"TL": {
+"KG": {
+"moves": 11,
+"S": "L2 R",
+"inv": true,
+"alg": "L2 R D R U2 R' D' R U2 R2 L2"
+},
+"IV": {
+"moves": 12,
+"S": "L2 D' L'",
+"inv": true,
+"alg": "L2 D' U R2 U' L' U R2 U' L D L2"
+},
+"BU": {
+"moves": 11,
+"S": "F2 R' D'",
+"inv": false,
+"alg": "F2 R D' L2 D R2 D' L2 D R F2"
+},
+"TC": {
+"moves": 13,
+"S": "U L U'",
+"inv": false,
+"alg": "U L U' F D' F' U2 F D F' U' L' U'"
+},
+"KS": {
+"moves": 13,
+"S": "U' L2 R",
+"inv": true,
+"alg": "U' L2 R D2 R U2 R' D2 R U2 R2 L2 U"
+}
+},
+"TM": {
+"KG": {
+"moves": 12,
+"S": "U2 F D'",
+"inv": true,
+"alg": "U2 F R U2 R' D' R U2 R' D F' U2"
+},
+"IV": {
+"moves": 12,
+"S": "D2 F",
+"inv": false,
+"alg": "D2 F U R2 U' L U R2 U' L' F' D2"
+},
+"BU": {
+"moves": 12,
+"S": "R' F",
+"inv": false,
+"alg": "R' F D R2 D' L2 D R2 D' L2 F' R"
+},
+"TC": {
+"moves": 14,
+"S": "D B L'",
+"inv": false,
+"alg": "D B L' F D' F' U2 F D F' U2 L B' D'"
+},
+"KS": {
+"moves": 12,
+"S": "R' B",
+"inv": false,
+"alg": "R' B R U2 R' D2 R U2 R' D2 B' R"
+}
+},
+"TN": {
+"KG": {
+"moves": 13,
+"S": "L2 U' R",
+"inv": true,
+"alg": "L2 U' R D R U2 R' D' R U2 R2 U L2"
+},
+"IV": {
+"moves": 10,
+"S": "D' U'",
+"inv": false,
+"alg": "D' R2 U' L U R2 U' L' U D"
+},
+"BU": {
+"moves": 12,
+"S": "R' F D'",
+"inv": false,
+"alg": "R' F R2 D' L2 D R2 D' L2 D F' R"
+},
+"TC": {
+"moves": 12,
+"S": "R B2 F'",
+"inv": false,
+"alg": "R B2 D' F' U2 F D F' U2 F B2 R'"
+},
+"KS": {
+"moves": 12,
+"S": "R' B R'",
+"inv": false,
+"alg": "R' B U2 R' D2 R U2 R' D2 R B' R"
+}
+},
+"TP": {
+"KG": {
+"moves": 12,
+"S": "L' U D'",
+"inv": false,
+"alg": "L' U D' R U2 R' D R U2 R' U' L"
+},
+"IV": {
+"moves": 12,
+"S": "U B2 L'",
+"inv": false,
+"alg": "U B2 L' U R2 U' L U R2 U' B2 U'"
+},
+"BU": {
+"moves": 12,
+"S": "F R'",
+"inv": false,
+"alg": "F R' D R2 D' L2 D R2 D' L2 R F'"
+},
+"TC": {
+"moves": 8,
+"S": "F'",
+"inv": false,
+"alg": "D' F' U2 F D F' U2 F"
+},
+"KS": {
+"moves": 12,
+"S": "B U'",
+"inv": false,
+"alg": "B U' R U2 R' D2 R U2 R' D2 U B'"
+}
+},
+"TQ": {
+"KG": {
+"moves": 13,
+"S": "R F R",
+"inv": true,
+"alg": "R F R D R U2 R' D' R U2 R2 F' R'"
+},
+"IV": {
+"moves": 13,
+"S": "U R' U2",
+"inv": false,
+"alg": "U R' U' R2 U' L U R2 U' L' U2 R U'"
+},
+"BU": {
+"moves": 12,
+"S": "R' F2",
+"inv": false,
+"alg": "R' F2 D R2 D' L2 D R2 D' L2 F2 R"
+},
+"TC": {
+"moves": 12,
+"S": "U2 L U2",
+"inv": false,
+"alg": "U2 L U2 F D' F' U2 F D F' L' U2"
+},
+"KS": {
+"moves": 14,
+"S": "R2 D2 F",
+"inv": false,
+"alg": "R2 D2 F R U2 R' D2 R U2 R' D2 F' D2 R2"
+}
+},
+"TS": {
+"KG": {
+"moves": 13,
+"S": "R D R",
+"inv": false,
+"alg": "R D R2 U2 R' D R U2 R' D' R' D' R'"
+},
+"IV": {
+"moves": 10,
+"S": "R L'",
+"inv": false,
+"alg": "R L' U R2 U' L U R2 U' R'"
+},
+"BU": {
+"moves": 14,
+"S": "R2 F2 B'",
+"inv": false,
+"alg": "R2 F2 B' D R2 D' L2 D R2 D' L2 B F2 R2"
+},
+"TC": {
+"moves": 12,
+"S": "U2 L' U2",
+"inv": false,
+"alg": "U2 L' U2 F D' F' U2 F D F' L U2"
+},
+"KS": {
+"moves": 12,
+"S": "R2 F",
+"inv": false,
+"alg": "R2 F R U2 R' D2 R U2 R' D2 F' R2"
+}
+},
+"TU": {
+"KG": {
+"moves": 13,
+"S": "U B2 D",
+"inv": false,
+"alg": "U B2 D R U2 R' D R U2 R' D2 B2 U'"
+},
+"IV": {
+"moves": 14,
+"S": "D2 F D'",
+"inv": false,
+"alg": "D2 F D' U R2 U' L U R2 U' L' D F' D2"
+},
+"BU": {
+"moves": 10,
+"S": "R'",
+"inv": false,
+"alg": "R' D R2 D' L2 D R2 D' L2 R"
+},
+"TC": {
+"moves": 9,
+"S": "F2",
+"inv": false,
+"alg": "F' D' F' U2 F D F' U2 F2"
+},
+"KS": {
+"moves": 11,
+"S": "B2 D",
+"inv": false,
+"alg": "B2 D R U2 R' D2 R U2 R' D B2"
+}
+},
+"TV": {
+"KG": {
+"moves": 10,
+"S": "B2 D'",
+"inv": true,
+"alg": "B2 R U2 R' D' R U2 R' D B2"
+},
+"IV": {
+"moves": 13,
+"S": "U2 B U2",
+"inv": false,
+"alg": "U2 B U' R2 U' L U R2 U' L' U2 B' U2"
+},
+"BU": {
+"moves": 14,
+"S": "R D' R",
+"inv": true,
+"alg": "R D' R L2 D R2 D' L2 D R2 D' R' D R'"
+},
+"TC": {
+"moves": 13,
+"S": "U' R' U'",
+"inv": false,
+"alg": "U' R' U' F D' F' U2 F D F' U' R U"
+},
+"KS": {
+"moves": 12,
+"S": "U B2",
+"inv": false,
+"alg": "U B2 R U2 R' D2 R U2 R' D2 B2 U'"
+}
+},
+"TX": {
+"KG": {
+"moves": 12,
+"S": "D2 L2",
+"inv": false,
+"alg": "D2 L2 R U2 R' D R U2 R' D' L2 D2"
+},
+"IV": {
+"moves": 14,
+"S": "R2 F' D2",
+"inv": false,
+"alg": "R2 F' D2 U R2 U' L U R2 U' L' D2 F R2"
+},
+"BU": {
+"moves": 11,
+"S": "R' D",
+"inv": false,
+"alg": "R' D2 R2 D' L2 D R2 D' L2 D' R"
+},
+"TC": {
+"moves": 13,
+"S": "U L2 U'",
+"inv": false,
+"alg": "U L2 U' F D' F' U2 F D F' U' L2 U'"
+},
+"KS": {
+"moves": 13,
+"S": "R' B R",
+"inv": false,
+"alg": "R' B R2 U2 R' D2 R U2 R' D2 R' B' R"
+}
+},
+"UB": {
+"KG": {
+"moves": 14,
+"S": "R' D F",
+"inv": true,
+"alg": "R' D F D R U2 R' D' R U2 R' F' D' R"
+},
+"IV": {
+"moves": 14,
+"S": "B L' D2",
+"inv": true,
+"alg": "B L' D2 L U R2 U' L' U R2 U' D2 L B'"
+},
+"BU": {
+"moves": 8,
+"S": "L2",
+"inv": false,
+"alg": "L2 D R2 D' L2 D R2 D'"
+},
+"TC": {
+"moves": 11,
+"S": "R F2 U2",
+"inv": false,
+"alg": "R F2 U2 F D' F' U2 F D F R'"
+},
+"KS": {
+"moves": 12,
+"S": "F' B D2",
+"inv": false,
+"alg": "F' B D2 R U2 R' D2 R U2 R' B' F"
+}
+},
+"UC": {
+"KG": {
+"moves": 13,
+"S": "B' U' R2",
+"inv": true,
+"alg": "B' U' R2 D R U2 R' D' R U2 R U B"
+},
+"BU": {
+"moves": 13,
+"S": "D R2 D2",
+"inv": false,
+"alg": "D R2 D' R2 D' L2 D R2 D' L2 D2 R2 D'"
+},
+"TC": {
+"moves": 13,
+"S": "F' D F",
+"inv": false,
+"alg": "F' D F2 D' F' U2 F D F' U2 F' D' F"
+},
+"KS": {
+"moves": 13,
+"S": "R' D2 R",
+"inv": false,
+"alg": "R' D2 R2 U2 R' D2 R U2 R' D2 R' D2 R"
+}
+},
+"UD": {
+"KG": {
+"moves": 13,
+"S": "D2 F' R",
+"inv": false,
+"alg": "D2 F' R2 U2 R' D R U2 R' D' R' F D2"
+},
+"IV": {
+"moves": 14,
+"S": "D2 R F2",
+"inv": false,
+"alg": "D2 R F2 U R2 U' L U R2 U' L' F2 R' D2"
+},
+"BU": {
+"moves": 10,
+"S": "U",
+"inv": false,
+"alg": "U D R2 D' L2 D R2 D' L2 U'"
+},
+"TC": {
+"moves": 13,
+"S": "U R F2",
+"inv": false,
+"alg": "U R F' D' F' U2 F D F' U2 F2 R' U'"
+},
+"KS": {
+"moves": 13,
+"S": "F' R' D'",
+"inv": false,
+"alg": "F' R' D' R U2 R' D2 R U2 R' D' R F"
+}
+},
+"UF": {
+"KG": {
+"moves": 10,
+"S": "F2 R' D'",
+"inv": true,
+"alg": "F2 U2 R' D' R U2 R' D R F2"
+},
+"BU": {
+"moves": 13,
+"S": "L U D",
+"inv": false,
+"alg": "L U D2 R2 D' L2 D R2 D' L2 D' U' L'"
+},
+"TC": {
+"moves": 12,
+"S": "F2 D U2",
+"inv": false,
+"alg": "F2 D U2 F D' F' U2 F D F' D' F2"
+},
+"KS": {
+"moves": 13,
+"S": "U D' R2",
+"inv": false,
+"alg": "U D' R' U2 R' D2 R U2 R' D2 R2 D U'"
+}
+},
+"UH": {
+"KG": {
+"moves": 12,
+"S": "D L2",
+"inv": true,
+"alg": "D L2 D R U2 R' D' R U2 R' L2 D'"
+},
+"IV": {
+"moves": 12,
+"S": "F' B' U'",
+"inv": true,
+"alg": "F' B' U' L U R2 U' L' U R2 B F"
+},
+"BU": {
+"moves": 13,
+"S": "D' R' D",
+"inv": true,
+"alg": "D' R' D L2 D R2 D' L2 D R2 D2 R D"
+},
+"TC": {
+"moves": 12,
+"S": "F2 D' U2",
+"inv": false,
+"alg": "F2 D' U2 F D' F' U2 F D F' D F2"
+},
+"KS": {
+"moves": 13,
+"S": "B2 U' D'",
+"inv": false,
+"alg": "B2 U' D' R U2 R' D2 R U2 R' D' U B2"
+}
+},
+"UI": {
+"KG": {
+"moves": 12,
+"S": "F2 D' R'",
+"inv": false,
+"alg": "F2 D' U2 R' D R U2 R' D' R D F2"
+},
+"IV": {
+"moves": 10,
+"S": "D",
+"inv": true,
+"alg": "D L U R2 U' L' U R2 U' D'"
+},
+"BU": {
+"moves": 14,
+"S": "F R F'",
+"inv": true,
+"alg": "F R F' L2 D R2 D' L2 D R2 D' F R' F'"
+},
+"TC": {
+"moves": 9,
+"S": "F' D F'",
+"inv": false,
+"alg": "F2 U2 F D F' U2 F D' F"
+},
+"KS": {
+"moves": 12,
+"S": "F2 D2 R'",
+"inv": false,
+"alg": "F2 D2 U2 R' D2 R U2 R' D2 R D2 F2"
+}
+},
+"UJ": {
+"KG": {
+"moves": 12,
+"S": "D F",
+"inv": true,
+"alg": "D F D R U2 R' D' R U2 R' F' D'"
+},
+"IV": {
+"moves": 13,
+"S": "L D2 U",
+"inv": false,
+"alg": "L D2 U2 R2 U' L U R2 U' L' U' D2 L'"
+},
+"BU": {
+"moves": 10,
+"S": "R L2",
+"inv": false,
+"alg": "R L2 D R2 D' L2 D R2 D' R'"
+},
+"TC": {
+"moves": 11,
+"S": "R2 F2 U2",
+"inv": false,
+"alg": "R2 F2 U2 F D' F' U2 F D F R2"
+},
+"KS": {
+"moves": 13,
+"S": "U2 R2 D'",
+"inv": false,
+"alg": "U2 R2 D' R U2 R' D2 R U2 R' D' R2 U2"
+}
+},
+"UK": {
+"KG": {
+"moves": 14,
+"S": "U R2 B",
+"inv": false,
+"alg": "U R2 B R U2 R' D R U2 R' D' B' R2 U'"
+},
+"IV": {
+"moves": 13,
+"S": "U F' U2",
+"inv": false,
+"alg": "U F' U' R2 U' L U R2 U' L' U2 F U'"
+},
+"BU": {
+"moves": 13,
+"S": "D2 B' D",
+"inv": false,
+"alg": "D2 B' D2 R2 D' L2 D R2 D' L2 D' B D2"
+},
+"TC": {
+"moves": 12,
+"S": "D B2 F'",
+"inv": false,
+"alg": "D B2 D' F' U2 F D F' U2 F B2 D'"
+},
+"KS": {
+"moves": 11,
+"S": "D2 R",
+"inv": false,
+"alg": "D2 R2 U2 R' D2 R U2 R' D2 R' D2"
+}
+},
+"UM": {
+"KG": {
+"moves": 10,
+"S": "F2 R'",
+"inv": false,
+"alg": "F2 U2 R' D R U2 R' D' R F2"
+},
+"IV": {
+"moves": 12,
+"S": "R2 D L'",
+"inv": false,
+"alg": "R2 D L' U R2 U' L U R2 U' D' R2"
+},
+"BU": {
+"moves": 13,
+"S": "L' U2 D",
+"inv": false,
+"alg": "L' U2 D2 R2 D' L2 D R2 D' L2 D' U2 L"
+},
+"TC": {
+"moves": 12,
+"S": "D R' F'",
+"inv": false,
+"alg": "D R' D' F' U2 F D F' U2 F R D'"
+},
+"KS": {
+"moves": 12,
+"S": "F2 D' R'",
+"inv": false,
+"alg": "F2 D' U2 R' D2 R U2 R' D2 R D F2"
+}
+},
+"UN": {
+"KG": {
+"moves": 11,
+"S": "D2 R D'",
+"inv": true,
+"alg": "D2 R2 U2 R' D' R U2 R' D R' D2"
+},
+"IV": {
+"moves": 10,
+"S": "F' U'",
+"inv": false,
+"alg": "F' R2 U' L U R2 U' L' U F"
+},
+"BU": {
+"moves": 14,
+"S": "D R2 F",
+"inv": false,
+"alg": "D R2 F D R2 D' L2 D R2 D' L2 F' R2 D'"
+},
+"TC": {
+"moves": 14,
+"S": "D2 R2 D",
+"inv": true,
+"alg": "D2 R2 D U2 F D' F' U2 F D F' D' R2 D2"
+},
+"KS": {
+"moves": 13,
+"S": "B' U' D",
+"inv": false,
+"alg": "B' U' D R U2 R' D2 R U2 R' D U B"
+}
+},
+"UO": {
+"KG": {
+"moves": 11,
+"S": "D2 R",
+"inv": false,
+"alg": "D2 R2 U2 R' D R U2 R' D' R' D2"
+},
+"IV": {
+"moves": 10,
+"S": "D L'",
+"inv": false,
+"alg": "D L' U R2 U' L U R2 U' D'"
+},
+"BU": {
+"moves": 14,
+"S": "U2 B U'",
+"inv": false,
+"alg": "U2 B U' D R2 D' L2 D R2 D' L2 U B' U2"
+},
+"TC": {
+"moves": 13,
+"S": "U' L F",
+"inv": true,
+"alg": "U' L F U2 F D' F' U2 F D F2 L' U"
+},
+"KS": {
+"moves": 12,
+"S": "F2 D R'",
+"inv": false,
+"alg": "F2 D U2 R' D2 R U2 R' D2 R D' F2"
+}
+},
+"UP": {
+"KG": {
+"moves": 10,
+"S": "F' R' D'",
+"inv": false,
+"alg": "F' R' D' R U2 R' D R U2 F"
+},
+"IV": {
+"moves": 12,
+"S": "R' D L'",
+"inv": false,
+"alg": "R' D L' U R2 U' L U R2 U' D' R"
+},
+"BU": {
+"moves": 14,
+"S": "U L2 F",
+"inv": true,
+"alg": "U L2 F L2 D R2 D' L2 D R2 D' F' L2 U'"
+},
+"TC": {
+"moves": 12,
+"S": "F' D",
+"inv": false,
+"alg": "F' D F D' F' U2 F D F' U2 D' F"
+},
+"KS": {
+"moves": 14,
+"S": "U D B2",
+"inv": true,
+"alg": "U D B2 D2 R U2 R' D2 R U2 R' B2 D' U'"
+}
+},
+"UQ": {
+"KG": {
+"moves": 13,
+"S": "D F R2",
+"inv": true,
+"alg": "D F R2 D R U2 R' D' R U2 R F' D'"
+},
+"IV": {
+"moves": 14,
+"S": "B2 L2 D'",
+"inv": false,
+"alg": "B2 L2 D' U R2 U' L U R2 U' L' D L2 B2"
+},
+"BU": {
+"moves": 13,
+"S": "F L D",
+"inv": false,
+"alg": "F L D2 R2 D' L2 D R2 D' L2 D' L' F'"
+},
+"TC": {
+"moves": 12,
+"S": "D R'",
+"inv": false,
+"alg": "D R' F D' F' U2 F D F' U2 R D'"
+},
+"KS": {
+"moves": 12,
+"S": "U2 L2 R'",
+"inv": true,
+"alg": "U2 L2 R' D2 R U2 R' D2 R U2 L2 U2"
+}
+},
+"US": {
+"KG": {
+"moves": 12,
+"S": "F2 D R'",
+"inv": false,
+"alg": "F2 D U2 R' D R U2 R' D' R D' F2"
+},
+"IV": {
+"moves": 12,
+"S": "L2 D",
+"inv": false,
+"alg": "L2 D U R2 U' L U R2 U' L' D' L2"
+},
+"BU": {
+"moves": 12,
+"S": "F' B' D'",
+"inv": false,
+"alg": "F' B' R2 D' L2 D R2 D' L2 D B F"
+},
+"TC": {
+"moves": 13,
+"S": "D' L' F",
+"inv": false,
+"alg": "D' L' F2 D' F' U2 F D F' U2 F' L D"
+},
+"KS": {
+"moves": 10,
+"S": "F2 R'",
+"inv": false,
+"alg": "F2 U2 R' D2 R U2 R' D2 R F2"
+}
+},
+"UT": {
+"KG": {
+"moves": 13,
+"S": "U B2 D",
+"inv": true,
+"alg": "U B2 D2 R U2 R' D' R U2 R' D' B2 U'"
+},
+"IV": {
+"moves": 14,
+"S": "D2 F D'",
+"inv": true,
+"alg": "D2 F D' L U R2 U' L' U R2 U' D F' D2"
+},
+"BU": {
+"moves": 10,
+"S": "R' L2",
+"inv": false,
+"alg": "R' L2 D R2 D' L2 D R2 D' R"
+},
+"TC": {
+"moves": 9,
+"S": "F2 U2",
+"inv": false,
+"alg": "F2 U2 F D' F' U2 F D F"
+},
+"KS": {
+"moves": 11,
+"S": "B2 D'",
+"inv": false,
+"alg": "B2 D' R U2 R' D2 R U2 R' D' B2"
+}
+},
+"UV": {
+"KG": {
+"moves": 12,
+"S": "B' U'",
+"inv": true,
+"alg": "B' U' D R U2 R' D' R U2 R' U B"
+},
+"IV": {
+"moves": 14,
+"S": "F L D2",
+"inv": false,
+"alg": "F L D2 U R2 U' L U R2 U' L' D2 L' F'"
+},
+"BU": {
+"moves": 10,
+"S": "R2 L2",
+"inv": false,
+"alg": "R2 L2 D R2 D' L2 D R2 D' R2"
+},
+"TC": {
+"moves": 11,
+"S": "R' F2 U2",
+"inv": false,
+"alg": "R' F2 U2 F D' F' U2 F D F R"
+},
+"KS": {
+"moves": 13,
+"S": "R' B2 D'",
+"inv": false,
+"alg": "R' B2 D' R U2 R' D2 R U2 R' D' B2 R"
+}
+},
+"UW": {
+"KG": {
+"moves": 14,
+"S": "F' D' L2",
+"inv": false,
+"alg": "F' D' L2 R U2 R' D R U2 R' D' L2 D F"
+},
+"BU": {
+"moves": 13,
+"S": "D R2 D",
+"inv": false,
+"alg": "D R2 D2 R2 D' L2 D R2 D' L2 D' R2 D'"
+},
+"TC": {
+"moves": 14,
+"S": "R' D R'",
+"inv": false,
+"alg": "R' D R' F D' F' U2 F D F' U2 R D' R"
+},
+"KS": {
+"moves": 13,
+"S": "R D2 R",
+"inv": false,
+"alg": "R D2 R2 U2 R' D2 R U2 R' D2 R' D2 R'"
+}
+},
+"UX": {
+"KG": {
+"moves": 13,
+"S": "D2 F R",
+"inv": false,
+"alg": "D2 F R2 U2 R' D R U2 R' D' R' F' D2"
+},
+"IV": {
+"moves": 14,
+"S": "D2 L' B2",
+"inv": true,
+"alg": "D2 L' B2 L U R2 U' L' U R2 U' B2 L D2"
+},
+"BU": {
+"moves": 12,
+"S": "D R2",
+"inv": false,
+"alg": "D R2 D R2 D' L2 D R2 D' L2 R2 D'"
+},
+"TC": {
+"moves": 13,
+"S": "D R' F2",
+"inv": false,
+"alg": "D R' F' D' F' U2 F D F' U2 F2 R D'"
+},
+"KS": {
+"moves": 13,
+"S": "F U R2",
+"inv": true,
+"alg": "F U R2 D2 R U2 R' D2 R U2 R U' F'"
+}
+},
+"VB": {
+"KG": {
+"moves": 12,
+"S": "B2 L' D'",
+"inv": false,
+"alg": "B2 L' D' R U2 R' D R U2 R' L B2"
+},
+"IV": {
+"moves": 10,
+"S": "L U' L'",
+"inv": true,
+"alg": "L R2 U' L' U R2 U' L U L'"
+},
+"BU": {
+"moves": 8,
+"S": "D' L2",
+"inv": false,
+"alg": "D' L2 D R2 D' L2 D R2"
+},
+"TC": {
+"moves": 13,
+"S": "D' R F2",
+"inv": true,
+"alg": "D' R F2 U2 F D' F' U2 F D F R' D"
+},
+"KS": {
+"moves": 12,
+"S": "F' B R'",
+"inv": true,
+"alg": "F' B R' D2 R U2 R' D2 R U2 B' F"
+}
+},
+"VC": {
+"KG": {
+"moves": 14,
+"S": "L U L",
+"inv": true,
+"alg": "L U L D R U2 R' D' R U2 R' L' U' L'"
+},
+"IV": {
+"moves": 11,
+"S": "L U2 L'",
+"inv": true,
+"alg": "L U' R2 U' L' U R2 U' L U2 L'"
+},
+"BU": {
+"moves": 11,
+"S": "R2 D2",
+"inv": false,
+"alg": "R2 D' R2 D' L2 D R2 D' L2 D2 R2"
+},
+"TC": {
+"moves": 14,
+"S": "L' U2 R'",
+"inv": true,
+"alg": "L' U2 R' U2 F D' F' U2 F D F' R U2 L"
+},
+"KS": {
+"moves": 13,
+"S": "F R' D",
+"inv": false,
+"alg": "F R' D R U2 R' D2 R U2 R' D R F'"
+}
+},
+"VD": {
+"KG": {
+"moves": 12,
+"S": "B2 L D'",
+"inv": false,
+"alg": "B2 L D' R U2 R' D R U2 R' L' B2"
+},
+"IV": {
+"moves": 14,
+"S": "D R F2",
+"inv": false,
+"alg": "D R F2 U R2 U' L U R2 U' L' F2 R' D'"
+},
+"BU": {
+"moves": 10,
+"S": "U D'",
+"inv": false,
+"alg": "U R2 D' L2 D R2 D' L2 D U'"
+},
+"TC": {
+"moves": 14,
+"S": "L R D'",
+"inv": false,
+"alg": "L R D' F D' F' U2 F D F' U2 D R' L'"
+},
+"KS": {
+"moves": 13,
+"S": "F R2 D",
+"inv": false,
+"alg": "F R2 D R U2 R' D2 R U2 R' D R2 F'"
+}
+},
+"VF": {
+"KG": {
+"moves": 10,
+"S": "F U2 R'",
+"inv": false,
+"alg": "F R' D R U2 R' D' R U2 F'"
+},
+"IV": {
+"moves": 14,
+"S": "R F' D",
+"inv": false,
+"alg": "R F' D U R2 U' L U R2 U' L' D' F R'"
+},
+"BU": {
+"moves": 12,
+"S": "R2 F'",
+"inv": false,
+"alg": "R2 F' D R2 D' L2 D R2 D' L2 F R2"
+},
+"TC": {
+"moves": 11,
+"S": "R' F",
+"inv": false,
+"alg": "R' F2 D' F' U2 F D F' U2 F' R"
+},
+"KS": {
+"moves": 12,
+"S": "F D' R'",
+"inv": true,
+"alg": "F D' R' D2 R U2 R' D2 R U2 D F'"
+}
+},
+"VG": {
+"KG": {
+"moves": 14,
+"S": "L2 U B",
+"inv": true,
+"alg": "L2 U B D R U2 R' D' R U2 R' B' U' L2"
+},
+"IV": {
+"moves": 12,
+"S": "U L2 U'",
+"inv": true,
+"alg": "U L2 U' L U R2 U' L' U R2 L2 U'"
+},
+"BU": {
+"moves": 12,
+"S": "R2 F' D'",
+"inv": false,
+"alg": "R2 F' R2 D' L2 D R2 D' L2 D F R2"
+},
+"TC": {
+"moves": 10,
+"S": "L2 D F'",
+"inv": true,
+"alg": "L2 D F' U2 F D' F' U2 F L2"
+},
+"KS": {
+"moves": 12,
+"S": "D' F2 R'",
+"inv": false,
+"alg": "D' F2 U2 R' D2 R U2 R' D2 R F2 D"
+}
+},
+"VH": {
+"KG": {
+"moves": 12,
+"S": "L2 U",
+"inv": true,
+"alg": "L2 U D R U2 R' D' R U2 R' U' L2"
+},
+"IV": {
+"moves": 12,
+"S": "U L' U'",
+"inv": true,
+"alg": "U L' U' L U R2 U' L' U R2 L U'"
+},
+"BU": {
+"moves": 12,
+"S": "D' R' L2",
+"inv": false,
+"alg": "D' R' L2 D R2 D' L2 D R2 D' R D"
+},
+"TC": {
+"moves": 11,
+"S": "R' D' F'",
+"inv": true,
+"alg": "R' D' F' U2 F D' F' U2 F D2 R"
+},
+"KS": {
+"moves": 13,
+"S": "D L2 D",
+"inv": false,
+"alg": "D L2 D R U2 R' D2 R U2 R' D L2 D'"
+}
+},
+"VI": {
+"KG": {
+"moves": 12,
+"S": "L2 B'",
+"inv": true,
+"alg": "L2 B' D R U2 R' D' R U2 R' B L2"
+},
+"IV": {
+"moves": 8,
+"S": "U R2 U'",
+"inv": false,
+"alg": "L U R2 U' L' U R2 U'"
+},
+"BU": {
+"moves": 14,
+"S": "D2 L B'",
+"inv": true,
+"alg": "D2 L B' L2 D R2 D' L2 D R2 D' B L' D2"
+},
+"TC": {
+"moves": 12,
+"S": "B2 U F'",
+"inv": false,
+"alg": "B2 U D' F' U2 F D F' U2 F U' B2"
+},
+"KS": {
+"moves": 13,
+"S": "D L R",
+"inv": true,
+"alg": "D L R D2 R U2 R' D2 R U2 R2 L' D'"
+}
+},
+"VJ": {
+"KG": {
+"moves": 10,
+"S": "F",
+"inv": true,
+"alg": "F D R U2 R' D' R U2 R' F'"
+},
+"IV": {
+"moves": 12,
+"S": "U L U'",
+"inv": true,
+"alg": "U L U' L U R2 U' L' U R2 L' U'"
+},
+"BU": {
+"moves": 12,
+"S": "D' R L2",
+"inv": false,
+"alg": "D' R L2 D R2 D' L2 D R2 D' R' D"
+},
+"TC": {
+"moves": 12,
+"S": "D R2 U2",
+"inv": false,
+"alg": "D R2 U2 F D' F' U2 F D F' R2 D'"
+},
+"KS": {
+"moves": 14,
+"S": "U' L2 U'",
+"inv": true,
+"alg": "U' L2 U' D2 R U2 R' D2 R U2 R' U L2 U"
+}
+},
+"VL": {
+"KG": {
+"moves": 10,
+"S": "L2",
+"inv": true,
+"alg": "L2 D R U2 R' D' R U2 R' L2"
+},
+"IV": {
+"moves": 11,
+"S": "L U L'",
+"inv": true,
+"alg": "L U2 R2 U' L' U R2 U' L U' L'"
+},
+"BU": {
+"moves": 13,
+"S": "D2 R' D",
+"inv": true,
+"alg": "D2 R' D L2 D R2 D' L2 D R2 D2 R D2"
+},
+"TC": {
+"moves": 14,
+"S": "R2 F' R",
+"inv": false,
+"alg": "R2 F' R F D' F' U2 F D F' U2 R' F R2"
+},
+"KS": {
+"moves": 12,
+"S": "U' L2 D2",
+"inv": false,
+"alg": "U' L2 D2 R U2 R' D2 R U2 R' L2 U"
+}
+},
+"VM": {
+"KG": {
+"moves": 12,
+"S": "D' F2 R'",
+"inv": false,
+"alg": "D' F2 U2 R' D R U2 R' D' R F2 D"
+},
+"IV": {
+"moves": 13,
+"S": "L2 U L",
+"inv": false,
+"alg": "L2 U L U R2 U' L U R2 U' L2 U' L2"
+},
+"BU": {
+"moves": 12,
+"S": "U L D'",
+"inv": false,
+"alg": "U L R2 D' L2 D R2 D' L2 D L' U'"
+},
+"TC": {
+"moves": 10,
+"S": "R' F'",
+"inv": false,
+"alg": "R' D' F' U2 F D F' U2 F R"
+},
+"KS": {
+"moves": 14,
+"S": "R' B U'",
+"inv": false,
+"alg": "R' B U' R U2 R' D2 R U2 R' D2 U B' R"
+}
+},
+"VN": {
+"KG": {
+"moves": 11,
+"S": "D R D'",
+"inv": true,
+"alg": "D R2 U2 R' D' R U2 R' D R' D'"
+},
+"IV": {
+"moves": 12,
+"S": "D' F' U'",
+"inv": false,
+"alg": "D' F' R2 U' L U R2 U' L' U F D"
+},
+"BU": {
+"moves": 12,
+"S": "R2 F",
+"inv": false,
+"alg": "R2 F D R2 D' L2 D R2 D' L2 F' R2"
+},
+"TC": {
+"moves": 12,
+"S": "B2 L' F'",
+"inv": false,
+"alg": "B2 L' D' F' U2 F D F' U2 F L B2"
+},
+"KS": {
+"moves": 12,
+"S": "U' L",
+"inv": false,
+"alg": "U' L R U2 R' D2 R U2 R' D2 L' U"
+}
+},
+"VO": {
+"KG": {
+"moves": 14,
+"S": "L' B' L'",
+"inv": true,
+"alg": "L' B' L' D R U2 R' D' R U2 R' L B L"
+},
+"IV": {
+"moves": 11,
+"S": "F' R' U'",
+"inv": false,
+"alg": "F' R U' L U R2 U' L' U R F"
+},
+"BU": {
+"moves": 12,
+"S": "R2 F D'",
+"inv": false,
+"alg": "R2 F R2 D' L2 D R2 D' L2 D F' R2"
+},
+"TC": {
+"moves": 10,
+"S": "B2 F'",
+"inv": false,
+"alg": "B2 D' F' U2 F D F' U2 F B2"
+},
+"KS": {
+"moves": 11,
+"S": "D R",
+"inv": false,
+"alg": "D R2 U2 R' D2 R U2 R' D2 R' D'"
+}
+},
+"VQ": {
+"KG": {
+"moves": 11,
+"S": "F' R2 D'",
+"inv": false,
+"alg": "F' R2 D' R U2 R' D R U2 R F"
+},
+"IV": {
+"moves": 12,
+"S": "R2 B L'",
+"inv": false,
+"alg": "R2 B L' U R2 U' L U R2 U' B' R2"
+},
+"BU": {
+"moves": 13,
+"S": "D B D",
+"inv": true,
+"alg": "D B D L2 D R2 D' L2 D R2 D2 B' D'"
+},
+"TC": {
+"moves": 10,
+"S": "R'",
+"inv": false,
+"alg": "R' F D' F' U2 F D F' U2 R"
+},
+"KS": {
+"moves": 13,
+"S": "F D' R2",
+"inv": true,
+"alg": "F D' R2 D2 R U2 R' D2 R U2 R D F'"
+}
+},
+"VS": {
+"KG": {
+"moves": 11,
+"S": "D R",
+"inv": false,
+"alg": "D R2 U2 R' D R U2 R' D' R' D'"
+},
+"IV": {
+"moves": 8,
+"S": "L'",
+"inv": false,
+"alg": "L' U R2 U' L U R2 U'"
+},
+"BU": {
+"moves": 12,
+"S": "U L' D'",
+"inv": false,
+"alg": "U L' R2 D' L2 D R2 D' L2 D L U'"
+},
+"TC": {
+"moves": 12,
+"S": "B' R",
+"inv": false,
+"alg": "B' R F D' F' U2 F D F' U2 R' B"
+},
+"KS": {
+"moves": 12,
+"S": "R F",
+"inv": false,
+"alg": "R F R U2 R' D2 R U2 R' D2 F' R'"
+}
+},
+"VT": {
+"KG": {
+"moves": 10,
+"S": "B2 D'",
+"inv": false,
+"alg": "B2 D' R U2 R' D R U2 R' B2"
+},
+"IV": {
+"moves": 13,
+"S": "U2 B U2",
+"inv": true,
+"alg": "U2 B U2 L U R2 U' L' U R2 U B' U2"
+},
+"BU": {
+"moves": 14,
+"S": "R D' R",
+"inv": false,
+"alg": "R D' R D R2 D' L2 D R2 D' L2 R' D R'"
+},
+"TC": {
+"moves": 13,
+"S": "U' R' U",
+"inv": false,
+"alg": "U' R' U F D' F' U2 F D F' U R U"
+},
+"KS": {
+"moves": 12,
+"S": "U B2 D2",
+"inv": false,
+"alg": "U B2 D2 R U2 R' D2 R U2 R' B2 U'"
+}
+},
+"VU": {
+"KG": {
+"moves": 12,
+"S": "B' U'",
+"inv": false,
+"alg": "B' U' R U2 R' D R U2 R' D' U B"
+},
+"IV": {
+"moves": 14,
+"S": "F L D2",
+"inv": true,
+"alg": "F L D2 L U R2 U' L' U R2 U' D2 L' F'"
+},
+"BU": {
+"moves": 10,
+"S": "R2",
+"inv": false,
+"alg": "R2 D R2 D' L2 D R2 D' L2 R2"
+},
+"TC": {
+"moves": 11,
+"S": "R' F2",
+"inv": false,
+"alg": "R' F' D' F' U2 F D F' U2 F2 R"
+},
+"KS": {
+"moves": 13,
+"S": "R' B2 D",
+"inv": false,
+"alg": "R' B2 D R U2 R' D2 R U2 R' D B2 R"
+}
+},
+"VW": {
+"KG": {
+"moves": 11,
+"S": "F R",
+"inv": true,
+"alg": "F R D R U2 R' D' R U2 R2 F'"
+},
+"IV": {
+"moves": 12,
+"S": "F D' L'",
+"inv": true,
+"alg": "F D' U R2 U' L' U R2 U' L D F'"
+},
+"BU": {
+"moves": 12,
+"S": "D' R2 L2",
+"inv": false,
+"alg": "D' R2 L2 D R2 D' L2 D R2 D' R2 D"
+},
+"TC": {
+"moves": 12,
+"S": "L' U F'",
+"inv": true,
+"alg": "L' U F' U2 F D' F' U2 F D U' L"
+},
+"KS": {
+"moves": 13,
+"S": "D B' R2",
+"inv": false,
+"alg": "D B' R' U2 R' D2 R U2 R' D2 R2 B D'"
+}
+},
+"VX": {
+"KG": {
+"moves": 14,
+"S": "R' D2 L2",
+"inv": false,
+"alg": "R' D2 L2 R U2 R' D R U2 R' D' L2 D2 R"
+},
+"IV": {
+"moves": 14,
+"S": "R F' D2",
+"inv": false,
+"alg": "R F' D2 U R2 U' L U R2 U' L' D2 F R'"
+},
+"BU": {
+"moves": 11,
+"S": "R2 D",
+"inv": false,
+"alg": "R2 D2 R2 D' L2 D R2 D' L2 D' R2"
+},
+"TC": {
+"moves": 14,
+"S": "R D' R2",
+"inv": false,
+"alg": "R D' R2 F D' F' U2 F D F' U2 R2 D R'"
+},
+"KS": {
+"moves": 13,
+"S": "F D' R",
+"inv": true,
+"alg": "F D' R D2 R U2 R' D2 R U2 R2 D F'"
+}
+},
+"WB": {
+"KG": {
+"moves": 13,
+"S": "U' F' R",
+"inv": true,
+"alg": "U' F' R D R U2 R' D' R U2 R2 F U"
+},
+"IV": {
+"moves": 14,
+"S": "R F2 R",
+"inv": false,
+"alg": "R F2 R U R2 U' L U R2 U' L' R' F2 R'"
+},
+"BU": {
+"moves": 9,
+"S": "D2 L2",
+"inv": false,
+"alg": "D2 L2 D R2 D' L2 D R2 D"
+},
+"TC": {
+"moves": 13,
+"S": "D2 R F2",
+"inv": true,
+"alg": "D2 R F2 U2 F D' F' U2 F D F R' D2"
+},
+"KS": {
+"moves": 11,
+"S": "B R2 D2",
+"inv": false,
+"alg": "B R2 D2 R U2 R' D2 R U2 R B'"
+}
+},
+"WC": {
+"KG": {
+"moves": 13,
+"S": "R' D' R2",
+"inv": false,
+"alg": "R' D' R' U2 R' D R U2 R' D' R2 D R"
+},
+"BU": {
+"moves": 13,
+"S": "D' R2 D2",
+"inv": false,
+"alg": "D' R2 D' R2 D' L2 D R2 D' L2 D2 R2 D"
+},
+"TC": {
+"moves": 13,
+"S": "L' U F",
+"inv": false,
+"alg": "L' U F2 D' F' U2 F D F' U2 F' U' L"
+},
+"KS": {
+"moves": 13,
+"S": "R' D2 R2",
+"inv": false,
+"alg": "R' D2 R' U2 R' D2 R U2 R' D2 R2 D2 R"
+}
+},
+"WD": {
+"KG": {
+"moves": 11,
+"S": "F' R",
+"inv": false,
+"alg": "F' R2 U2 R' D R U2 R' D' R' F"
+},
+"IV": {
+"moves": 12,
+"S": "R F2",
+"inv": false,
+"alg": "R F2 U R2 U' L U R2 U' L' F2 R'"
+},
+"BU": {
+"moves": 11,
+"S": "U D2",
+"inv": false,
+"alg": "U D' R2 D' L2 D R2 D' L2 D2 U'"
+},
+"TC": {
+"moves": 14,
+"S": "R U R",
+"inv": false,
+"alg": "R U R F D' F' U2 F D F' U2 R' U' R'"
+},
+"KS": {
+"moves": 13,
+"S": "U B R2",
+"inv": false,
+"alg": "U B R' U2 R' D2 R U2 R' D2 R2 B' U'"
+}
+},
+"WF": {
+"KG": {
+"moves": 12,
+"S": "D' F R'",
+"inv": true,
+"alg": "D' F R' D R U2 R' D' R U2 F' D"
+},
+"BU": {
+"moves": 13,
+"S": "L R' D",
+"inv": true,
+"alg": "L R' D L2 D R2 D' L2 D R2 D2 R L'"
+},
+"TC": {
+"moves": 13,
+"S": "D' R' F",
+"inv": false,
+"alg": "D' R' F2 D' F' U2 F D F' U2 F' R D"
+},
+"KS": {
+"moves": 13,
+"S": "U D R2",
+"inv": false,
+"alg": "U D R' U2 R' D2 R U2 R' D2 R2 D' U'"
+}
+},
+"WG": {
+"KG": {
+"moves": 9,
+"S": "R",
+"inv": false,
+"alg": "R2 U2 R' D R U2 R' D' R'"
+},
+"IV": {
+"moves": 10,
+"S": "D' L'",
+"inv": false,
+"alg": "D' L' U R2 U' L U R2 U' D"
+},
+"BU": {
+"moves": 13,
+"S": "F U D2",
+"inv": false,
+"alg": "F U D' R2 D' L2 D R2 D' L2 D2 U' F'"
+},
+"TC": {
+"moves": 14,
+"S": "L' U' L'",
+"inv": true,
+"alg": "L' U' L' U2 F D' F' U2 F D F' L U L"
+},
+"KS": {
+"moves": 12,
+"S": "R2 D' R'",
+"inv": false,
+"alg": "R2 D' U2 R' D2 R U2 R' D2 R D R2"
+}
+},
+"WH": {
+"KG": {
+"moves": 11,
+"S": "B2 R D'",
+"inv": false,
+"alg": "B2 R D' R U2 R' D R U2 R2 B2"
+},
+"IV": {
+"moves": 12,
+"S": "B' D2 U'",
+"inv": true,
+"alg": "B' D2 U' L U R2 U' L' U R2 D2 B"
+},
+"TC": {
+"moves": 12,
+"S": "R2 D' U2",
+"inv": false,
+"alg": "R2 D' U2 F D' F' U2 F D F' D R2"
+},
+"KS": {
+"moves": 13,
+"S": "L2 U D",
+"inv": false,
+"alg": "L2 U D R U2 R' D2 R U2 R' D U' L2"
+}
+},
+"WI": {
+"KG": {
+"moves": 14,
+"S": "L' D L'",
+"inv": false,
+"alg": "L' D L' R U2 R' D R U2 R' D' L D' L"
+},
+"IV": {
+"moves": 10,
+"S": "D'",
+"inv": true,
+"alg": "D' L U R2 U' L' U R2 U' D"
+},
+"BU": {
+"moves": 13,
+"S": "B U2 L",
+"inv": false,
+"alg": "B U2 L D R2 D' L2 D R2 D' L U2 B'"
+},
+"TC": {
+"moves": 12,
+"S": "F R2 U2",
+"inv": false,
+"alg": "F R2 U2 F D' F' U2 F D F' R2 F'"
+},
+"KS": {
+"moves": 11,
+"S": "L R D2",
+"inv": false,
+"alg": "L R D2 R U2 R' D2 R U2 R2 L'"
+}
+},
+"WJ": {
+"KG": {
+"moves": 12,
+"S": "D' F",
+"inv": true,
+"alg": "D' F D R U2 R' D' R U2 R' F' D"
+},
+"IV": {
+"moves": 11,
+"S": "U2 R' U'",
+"inv": false,
+"alg": "U2 R U' L U R2 U' L' U R U2"
+},
+"BU": {
+"moves": 12,
+"S": "D2 R L2",
+"inv": false,
+"alg": "D2 R L2 D R2 D' L2 D R2 D' R' D2"
+},
+"TC": {
+"moves": 10,
+"S": "R2 U2",
+"inv": false,
+"alg": "R2 U2 F D' F' U2 F D F' R2"
+},
+"KS": {
+"moves": 13,
+"S": "L2 U2 D",
+"inv": false,
+"alg": "L2 U2 D R U2 R' D2 R U2 R' D U2 L2"
+}
+},
+"WK": {
+"KG": {
+"moves": 12,
+"S": "R D' R'",
+"inv": true,
+"alg": "R D' R' D R U2 R' D' R U2 D R'"
+},
+"IV": {
+"moves": 12,
+"S": "F2 D'",
+"inv": true,
+"alg": "F2 D' L U R2 U' L' U R2 U' D F2"
+},
+"BU": {
+"moves": 13,
+"S": "R' B D",
+"inv": false,
+"alg": "R' B D2 R2 D' L2 D R2 D' L2 D' B' R"
+},
+"TC": {
+"moves": 12,
+"S": "F' R2 U2",
+"inv": false,
+"alg": "F' R2 U2 F D' F' U2 F D F' R2 F"
+},
+"KS": {
+"moves": 12,
+"S": "R D2 R'",
+"inv": true,
+"alg": "R D2 R' D2 R U2 R' D2 R U2 D2 R'"
+}
+},
+"WL": {
+"KG": {
+"moves": 13,
+"S": "U' L2 D2",
+"inv": false,
+"alg": "U' L2 D2 R U2 R' D R U2 R' D L2 U"
+},
+"IV": {
+"moves": 12,
+"S": "F D'",
+"inv": true,
+"alg": "F D' L U R2 U' L' U R2 U' D F'"
+},
+"BU": {
+"moves": 12,
+"S": "D2 R' L2",
+"inv": false,
+"alg": "D2 R' L2 D R2 D' L2 D R2 D' R D2"
+},
+"TC": {
+"moves": 11,
+"S": "D2 F2 U2",
+"inv": false,
+"alg": "D2 F2 U2 F D' F' U2 F D F D2"
+},
+"KS": {
+"moves": 11,
+"S": "L2 D",
+"inv": false,
+"alg": "L2 D R U2 R' D2 R U2 R' D L2"
+}
+},
+"WM": {
+"KG": {
+"moves": 11,
+"S": "F2 R",
+"inv": false,
+"alg": "F2 R2 U2 R' D R U2 R' D' R' F2"
+},
+"IV": {
+"moves": 12,
+"S": "F2 D' L'",
+"inv": false,
+"alg": "F2 D' L' U R2 U' L U R2 U' D F2"
+},
+"BU": {
+"moves": 11,
+"S": "U2 R D'",
+"inv": false,
+"alg": "U2 R' D' L2 D R2 D' L2 D R' U2"
+},
+"TC": {
+"moves": 12,
+"S": "D' R' F'",
+"inv": false,
+"alg": "D' R' D' F' U2 F D F' U2 F R D"
+},
+"KS": {
+"moves": 12,
+"S": "R2 D R'",
+"inv": false,
+"alg": "R2 D U2 R' D2 R U2 R' D2 R D' R2"
+}
+},
+"WN": {
+"KG": {
+"moves": 9,
+"S": "R D'",
+"inv": true,
+"alg": "R2 U2 R' D' R U2 R' D R'"
+},
+"IV": {
+"moves": 12,
+"S": "D2 F' U'",
+"inv": false,
+"alg": "D2 F' R2 U' L U R2 U' L' U F D2"
+},
+"BU": {
+"moves": 14,
+"S": "R' U' F'",
+"inv": false,
+"alg": "R' U' F' D R2 D' L2 D R2 D' L2 F U R"
+},
+"TC": {
+"moves": 12,
+"S": "R2 D U2",
+"inv": false,
+"alg": "R2 D U2 F D' F' U2 F D F' D' R2"
+},
+"KS": {
+"moves": 13,
+"S": "L2 U' D",
+"inv": false,
+"alg": "L2 U' D R U2 R' D2 R U2 R' D U L2"
+}
+},
+"WP": {
+"KG": {
+"moves": 12,
+"S": "D' L2",
+"inv": true,
+"alg": "D' L2 D R U2 R' D' R U2 R' L2 D"
+},
+"IV": {
+"moves": 12,
+"S": "R2 F U'",
+"inv": false,
+"alg": "R2 F R2 U' L U R2 U' L' U F' R2"
+},
+"BU": {
+"moves": 13,
+"S": "D R' D",
+"inv": true,
+"alg": "D R' D L2 D R2 D' L2 D R2 D2 R D'"
+},
+"TC": {
+"moves": 14,
+"S": "D2 F2 D'",
+"inv": true,
+"alg": "D2 F2 D' U2 F D' F' U2 F D F' D F2 D2"
+},
+"KS": {
+"moves": 13,
+"S": "R' D R2",
+"inv": false,
+"alg": "R' D R' U2 R' D2 R U2 R' D2 R2 D' R"
+}
+},
+"WQ": {
+"KG": {
+"moves": 12,
+"S": "R2 D' R'",
+"inv": false,
+"alg": "R2 D' U2 R' D R U2 R' D' R D R2"
+},
+"IV": {
+"moves": 14,
+"S": "R F2 D'",
+"inv": false,
+"alg": "R F2 D' U R2 U' L U R2 U' L' D F2 R'"
+},
+"BU": {
+"moves": 11,
+"S": "B D L2",
+"inv": false,
+"alg": "B D L2 D R2 D' L2 D R2 D2 B'"
+},
+"TC": {
+"moves": 11,
+"S": "L' U",
+"inv": false,
+"alg": "L' U F D' F' U2 F D F' U L"
+},
+"KS": {
+"moves": 11,
+"S": "B2 R D2",
+"inv": false,
+"alg": "B2 R D2 R U2 R' D2 R U2 R2 B2"
+}
+},
+"WS": {
+"KG": {
+"moves": 12,
+"S": "R2 D R'",
+"inv": false,
+"alg": "R2 D U2 R' D R U2 R' D' R D' R2"
+},
+"IV": {
+"moves": 12,
+"S": "L' D'",
+"inv": false,
+"alg": "L' D' U R2 U' L U R2 U' L' D L"
+},
+"BU": {
+"moves": 11,
+"S": "B' D",
+"inv": false,
+"alg": "B' D2 R2 D' L2 D R2 D' L2 D' B"
+},
+"TC": {
+"moves": 12,
+"S": "D' B2 F'",
+"inv": false,
+"alg": "D' B2 D' F' U2 F D F' U2 F B2 D"
+},
+"KS": {
+"moves": 9,
+"S": "R",
+"inv": false,
+"alg": "R2 U2 R' D2 R U2 R' D2 R'"
+}
+},
+"WU": {
+"KG": {
+"moves": 14,
+"S": "F' D' L2",
+"inv": true,
+"alg": "F' D' L2 D R U2 R' D' R U2 R' L2 D F"
+},
+"BU": {
+"moves": 13,
+"S": "D' R2 D",
+"inv": false,
+"alg": "D' R2 D2 R2 D' L2 D R2 D' L2 D' R2 D"
+},
+"TC": {
+"moves": 14,
+"S": "R' D R'",
+"inv": true,
+"alg": "R' D R' U2 F D' F' U2 F D F' R D' R"
+},
+"KS": {
+"moves": 13,
+"S": "R D2 R",
+"inv": true,
+"alg": "R D2 R D2 R U2 R' D2 R U2 R2 D2 R'"
+}
+},
+"WV": {
+"KG": {
+"moves": 11,
+"S": "F R",
+"inv": false,
+"alg": "F R2 U2 R' D R U2 R' D' R' F'"
+},
+"IV": {
+"moves": 12,
+"S": "F D' L'",
+"inv": false,
+"alg": "F D' L' U R2 U' L U R2 U' D F'"
+},
+"BU": {
+"moves": 12,
+"S": "D' R2",
+"inv": false,
+"alg": "D' R2 D R2 D' L2 D R2 D' L2 R2 D"
+},
+"TC": {
+"moves": 12,
+"S": "L' U F'",
+"inv": false,
+"alg": "L' U D' F' U2 F D F' U2 F U' L"
+},
+"KS": {
+"moves": 13,
+"S": "D B' R2",
+"inv": true,
+"alg": "D B' R2 D2 R U2 R' D2 R U2 R B D'"
+}
+},
+"WX": {
+"KG": {
+"moves": 13,
+"S": "R D' R",
+"inv": true,
+"alg": "R D' R D R U2 R' D' R U2 R2 D R'"
+},
+"IV": {
+"moves": 12,
+"S": "R D2 L'",
+"inv": true,
+"alg": "R D2 U R2 U' L' U R2 U' L D2 R'"
+},
+"BU": {
+"moves": 11,
+"S": "B2 D2",
+"inv": false,
+"alg": "B2 D' R2 D' L2 D R2 D' L2 D2 B2"
+},
+"TC": {
+"moves": 13,
+"S": "D2 R' F2",
+"inv": true,
+"alg": "D2 R' F2 U2 F D' F' U2 F D F R D2"
+},
+"KS": {
+"moves": 11,
+"S": "B' R2",
+"inv": false,
+"alg": "B' R' U2 R' D2 R U2 R' D2 R2 B"
+}
+},
+"XB": {
+"KG": {
+"moves": 14,
+"S": "R D2 L2",
+"inv": true,
+"alg": "R D2 L2 D R U2 R' D' R U2 R' L2 D2 R'"
+},
+"IV": {
+"moves": 14,
+"S": "R' F' D2",
+"inv": true,
+"alg": "R' F' D2 L U R2 U' L' U R2 U' D2 F R"
+},
+"BU": {
+"moves": 9,
+"S": "D L2",
+"inv": false,
+"alg": "D L2 D R2 D' L2 D R2 D2"
+},
+"TC": {
+"moves": 13,
+"S": "D R F2",
+"inv": true,
+"alg": "D R F2 U2 F D' F' U2 F D F R' D'"
+},
+"KS": {
+"moves": 11,
+"S": "B R D2",
+"inv": false,
+"alg": "B R D2 R U2 R' D2 R U2 R2 B'"
+}
+},
+"XC": {
+"KG": {
+"moves": 13,
+"S": "R' D' R",
+"inv": false,
+"alg": "R' D' R2 U2 R' D R U2 R' D' R' D R"
+},
+"IV": {
+"moves": 12,
+"S": "R' D2 L'",
+"inv": false,
+"alg": "R' D2 L' U R2 U' L U R2 U' D2 R"
+},
+"BU": {
+"moves": 12,
+"S": "L2 U2 L2",
+"inv": false,
+"alg": "L2 U2 L2 D R2 D' L2 D R2 D' U2 L2"
+},
+"TC": {
+"moves": 13,
+"S": "F D F2",
+"inv": true,
+"alg": "F D F2 U2 F D' F' U2 F D F D' F'"
+},
+"KS": {
+"moves": 13,
+"S": "F' U R2",
+"inv": false,
+"alg": "F' U R' U2 R' D2 R U2 R' D2 R2 U' F"
+}
+},
+"XD": {
+"KG": {
+"moves": 13,
+"S": "L' U R2",
+"inv": false,
+"alg": "L' U R' U2 R' D R U2 R' D' R2 U' L"
+},
+"IV": {
+"moves": 14,
+"S": "D' R F2",
+"inv": false,
+"alg": "D' R F2 U R2 U' L U R2 U' L' F2 R' D"
+},
+"BU": {
+"moves": 11,
+"S": "U D",
+"inv": false,
+"alg": "U D2 R2 D' L2 D R2 D' L2 D' U'"
+},
+"TC": {
+"moves": 14,
+"S": "U2 B R2",
+"inv": false,
+"alg": "U2 B R2 F D' F' U2 F D F' U2 R2 B' U2"
+},
+"KS": {
+"moves": 13,
+"S": "F' D' R",
+"inv": false,
+"alg": "F' D' R2 U2 R' D2 R U2 R' D2 R' D F"
+}
+},
+"XF": {
+"KG": {
+"moves": 12,
+"S": "D2 F R'",
+"inv": true,
+"alg": "D2 F R' D R U2 R' D' R U2 F' D2"
+},
+"IV": {
+"moves": 14,
+"S": "B' R D'",
+"inv": false,
+"alg": "B' R D' U R2 U' L U R2 U' L' D R' B"
+},
+"BU": {
+"moves": 13,
+"S": "U B' D2",
+"inv": false,
+"alg": "U B' D' R2 D' L2 D R2 D' L2 D2 B U'"
+},
+"TC": {
+"moves": 13,
+"S": "D2 R' F",
+"inv": false,
+"alg": "D2 R' F2 D' F' U2 F D F' U2 F' R D2"
+},
+"KS": {
+"moves": 11,
+"S": "U R2",
+"inv": false,
+"alg": "U R' U2 R' D2 R U2 R' D2 R2 U'"
+}
+},
+"XG": {
+"KG": {
+"moves": 13,
+"S": "B2 U' R",
+"inv": true,
+"alg": "B2 U' R D R U2 R' D' R U2 R2 U B2"
+},
+"IV": {
+"moves": 14,
+"S": "D' L' D'",
+"inv": false,
+"alg": "D' L' D' U R2 U' L U R2 U' L' D L D"
+},
+"BU": {
+"moves": 13,
+"S": "F U D",
+"inv": false,
+"alg": "F U D2 R2 D' L2 D R2 D' L2 D' U' F'"
+},
+"TC": {
+"moves": 12,
+"S": "D2 B2 F'",
+"inv": false,
+"alg": "D2 B2 D' F' U2 F D F' U2 F B2 D2"
+},
+"KS": {
+"moves": 11,
+"S": "D' R",
+"inv": false,
+"alg": "D' R2 U2 R' D2 R U2 R' D2 R' D"
+}
+},
+"XI": {
+"KG": {
+"moves": 13,
+"S": "F2 D' R",
+"inv": false,
+"alg": "F2 D' R2 U2 R' D R U2 R' D' R' D F2"
+},
+"IV": {
+"moves": 10,
+"S": "D2",
+"inv": true,
+"alg": "D2 L U R2 U' L' U R2 U' D2"
+},
+"BU": {
+"moves": 12,
+"S": "L B' L2",
+"inv": false,
+"alg": "L B' L2 D R2 D' L2 D R2 D' B L'"
+},
+"TC": {
+"moves": 14,
+"S": "D' F R2",
+"inv": true,
+"alg": "D' F R2 U2 F D' F' U2 F D F' R2 F' D"
+},
+"KS": {
+"moves": 12,
+"S": "L F' D2",
+"inv": false,
+"alg": "L F' D2 R U2 R' D2 R U2 R' F L'"
+}
+},
+"XJ": {
+"KG": {
+"moves": 11,
+"S": "B' R2 D'",
+"inv": false,
+"alg": "B' R2 D' R U2 R' D R U2 R B"
+},
+"IV": {
+"moves": 12,
+"S": "U2 F L'",
+"inv": false,
+"alg": "U2 F L' U R2 U' L U R2 U' F' U2"
+},
+"BU": {
+"moves": 11,
+"S": "U' L'",
+"inv": false,
+"alg": "U' L' D R2 D' L2 D R2 D' L' U"
+},
+"TC": {
+"moves": 12,
+"S": "D' R2 U2",
+"inv": false,
+"alg": "D' R2 U2 F D' F' U2 F D F' R2 D"
+},
+"KS": {
+"moves": 13,
+"S": "R B R",
+"inv": true,
+"alg": "R B R D2 R U2 R' D2 R U2 R2 B' R'"
+}
+},
+"XK": {
+"KG": {
+"moves": 11,
+"S": "D' R",
+"inv": false,
+"alg": "D' R2 U2 R' D R U2 R' D' R' D"
+},
+"IV": {
+"moves": 10,
+"S": "D2 L'",
+"inv": false,
+"alg": "D2 L' U R2 U' L U R2 U' D2"
+},
+"BU": {
+"moves": 13,
+"S": "F' U' L'",
+"inv": false,
+"alg": "F' U' L' D R2 D' L2 D R2 D' L' U F"
+},
+"TC": {
+"moves": 12,
+"S": "B' R'",
+"inv": false,
+"alg": "B' R' F D' F' U2 F D F' U2 R B"
+},
+"KS": {
+"moves": 13,
+"S": "R' B' R2",
+"inv": true,
+"alg": "R' B' R2 D2 R U2 R' D2 R U2 R B R"
+}
+},
+"XL": {
+"KG": {
+"moves": 11,
+"S": "B' R2",
+"inv": true,
+"alg": "B' R2 D R U2 R' D' R U2 R B"
+},
+"IV": {
+"moves": 12,
+"S": "F' D2 L'",
+"inv": false,
+"alg": "F' D2 L' U R2 U' L U R2 U' D2 F"
+},
+"BU": {
+"moves": 13,
+"S": "F2 U' L'",
+"inv": false,
+"alg": "F2 U' L' D R2 D' L2 D R2 D' L' U F2"
+},
+"TC": {
+"moves": 14,
+"S": "D' R2 D'",
+"inv": true,
+"alg": "D' R2 D' U2 F D' F' U2 F D F' D R2 D"
+},
+"KS": {
+"moves": 12,
+"S": "L' F R'",
+"inv": true,
+"alg": "L' F R' D2 R U2 R' D2 R U2 F' L"
+}
+},
+"XM": {
+"KG": {
+"moves": 12,
+"S": "D F2 R'",
+"inv": false,
+"alg": "D F2 U2 R' D R U2 R' D' R F2 D'"
+},
+"IV": {
+"moves": 13,
+"S": "L2 D U",
+"inv": false,
+"alg": "L2 D U2 R2 U' L U R2 U' L' U' D' L2"
+},
+"BU": {
+"moves": 13,
+"S": "F' U D",
+"inv": false,
+"alg": "F' U D2 R2 D' L2 D R2 D' L2 D' U' F"
+},
+"TC": {
+"moves": 12,
+"S": "D2 R' F'",
+"inv": false,
+"alg": "D2 R' D' F' U2 F D F' U2 F R D2"
+},
+"KS": {
+"moves": 13,
+"S": "F2 D' R",
+"inv": false,
+"alg": "F2 D' R2 U2 R' D2 R U2 R' D2 R' D F2"
+}
+},
+"XN": {
+"KG": {
+"moves": 11,
+"S": "D' R D'",
+"inv": true,
+"alg": "D' R2 U2 R' D' R U2 R' D R' D"
+},
+"IV": {
+"moves": 12,
+"S": "D F' U'",
+"inv": false,
+"alg": "D F' R2 U' L U R2 U' L' U F D'"
+},
+"BU": {
+"moves": 12,
+"S": "L' F'",
+"inv": false,
+"alg": "L' F' D R2 D' L2 D R2 D' L2 F L"
+},
+"TC": {
+"moves": 13,
+"S": "R2 D F2",
+"inv": true,
+"alg": "R2 D F2 U2 F D' F' U2 F D F D' R2"
+},
+"KS": {
+"moves": 12,
+"S": "U' F2",
+"inv": false,
+"alg": "U' F2 R U2 R' D2 R U2 R' D2 F2 U"
+}
+},
+"XO": {
+"KG": {
+"moves": 14,
+"S": "L2 D L",
+"inv": true,
+"alg": "L2 D L D R U2 R' D' R U2 R' L' D' L2"
+},
+"IV": {
+"moves": 12,
+"S": "B2 D' U'",
+"inv": false,
+"alg": "B2 D' R2 U' L U R2 U' L' U D B2"
+},
+"BU": {
+"moves": 13,
+"S": "U' R' L'",
+"inv": false,
+"alg": "U' R' L' D R2 D' L2 D R2 D' L' R U"
+},
+"TC": {
+"moves": 11,
+"S": "L' F",
+"inv": false,
+"alg": "L' F2 D' F' U2 F D F' U2 F' L"
+},
+"KS": {
+"moves": 12,
+"S": "D F2 R'",
+"inv": false,
+"alg": "D F2 U2 R' D2 R U2 R' D2 R F2 D'"
+}
+},
+"XP": {
+"KG": {
+"moves": 12,
+"S": "L' F R'",
+"inv": true,
+"alg": "L' F R' D R U2 R' D' R U2 F' L"
+},
+"IV": {
+"moves": 14,
+"S": "D' F D'",
+"inv": true,
+"alg": "D' F D' L U R2 U' L' U R2 U' D F' D"
+},
+"BU": {
+"moves": 12,
+"S": "D R' L2",
+"inv": false,
+"alg": "D R' L2 D R2 D' L2 D R2 D' R D'"
+},
+"TC": {
+"moves": 11,
+"S": "D F2 U2",
+"inv": false,
+"alg": "D F2 U2 F D' F' U2 F D F D'"
+},
+"KS": {
+"moves": 13,
+"S": "D' L2 D",
+"inv": false,
+"alg": "D' L2 D R U2 R' D2 R U2 R' D L2 D"
+}
+},
+"XQ": {
+"KG": {
+"moves": 13,
+"S": "R2 D' R",
+"inv": false,
+"alg": "R2 D' R2 U2 R' D R U2 R' D' R' D R2"
+},
+"IV": {
+"moves": 12,
+"S": "R2 D2 L'",
+"inv": false,
+"alg": "R2 D2 L' U R2 U' L U R2 U' D2 R2"
+},
+"BU": {
+"moves": 13,
+"S": "B R' D",
+"inv": true,
+"alg": "B R' D L2 D R2 D' L2 D R2 D2 R B'"
+},
+"TC": {
+"moves": 12,
+"S": "D2 R'",
+"inv": false,
+"alg": "D2 R' F D' F' U2 F D F' U2 R D2"
+},
+"KS": {
+"moves": 13,
+"S": "R B' R2",
+"inv": true,
+"alg": "R B' R2 D2 R U2 R' D2 R U2 R B R'"
+}
+},
+"XT": {
+"KG": {
+"moves": 12,
+"S": "D2 L2",
+"inv": true,
+"alg": "D2 L2 D R U2 R' D' R U2 R' L2 D2"
+},
+"IV": {
+"moves": 14,
+"S": "R2 F' D2",
+"inv": true,
+"alg": "R2 F' D2 L U R2 U' L' U R2 U' D2 F R2"
+},
+"BU": {
+"moves": 11,
+"S": "R' D L2",
+"inv": false,
+"alg": "R' D L2 D R2 D' L2 D R2 D2 R"
+},
+"TC": {
+"moves": 13,
+"S": "U L2 U",
+"inv": false,
+"alg": "U L2 U F D' F' U2 F D F' U L2 U'"
+},
+"KS": {
+"moves": 13,
+"S": "R' B R",
+"inv": true,
+"alg": "R' B R D2 R U2 R' D2 R U2 R2 B' R"
+}
+},
+"XU": {
+"KG": {
+"moves": 13,
+"S": "D2 F R",
+"inv": true,
+"alg": "D2 F R D R U2 R' D' R U2 R2 F' D2"
+},
+"IV": {
+"moves": 14,
+"S": "D2 L' B2",
+"inv": false,
+"alg": "D2 L' B2 U R2 U' L U R2 U' L' B2 L D2"
+},
+"BU": {
+"moves": 12,
+"S": "D R2 L2",
+"inv": false,
+"alg": "D R2 L2 D R2 D' L2 D R2 D' R2 D'"
+},
+"TC": {
+"moves": 13,
+"S": "D R' F2",
+"inv": true,
+"alg": "D R' F2 U2 F D' F' U2 F D F R D'"
+},
+"KS": {
+"moves": 13,
+"S": "F U R2",
+"inv": false,
+"alg": "F U R' U2 R' D2 R U2 R' D2 R2 U' F'"
+}
+},
+"XV": {
+"KG": {
+"moves": 14,
+"S": "R' D2 L2",
+"inv": true,
+"alg": "R' D2 L2 D R U2 R' D' R U2 R' L2 D2 R"
+},
+"IV": {
+"moves": 14,
+"S": "R F' D2",
+"inv": true,
+"alg": "R F' D2 L U R2 U' L' U R2 U' D2 F R'"
+},
+"BU": {
+"moves": 11,
+"S": "R2 D L2",
+"inv": false,
+"alg": "R2 D L2 D R2 D' L2 D R2 D2 R2"
+},
+"TC": {
+"moves": 14,
+"S": "R D' R2",
+"inv": true,
+"alg": "R D' R2 U2 F D' F' U2 F D F' R2 D R'"
+},
+"KS": {
+"moves": 13,
+"S": "F D' R",
+"inv": false,
+"alg": "F D' R2 U2 R' D2 R U2 R' D2 R' D F'"
+}
+},
+"XW": {
+"KG": {
+"moves": 13,
+"S": "R D' R",
+"inv": false,
+"alg": "R D' R2 U2 R' D R U2 R' D' R' D R'"
+},
+"IV": {
+"moves": 12,
+"S": "R D2 L'",
+"inv": false,
+"alg": "R D2 L' U R2 U' L U R2 U' D2 R'"
+},
+"BU": {
+"moves": 11,
+"S": "B2 D2 L2",
+"inv": false,
+"alg": "B2 D2 L2 D R2 D' L2 D R2 D B2"
+},
+"TC": {
+"moves": 13,
+"S": "D2 R' F2",
+"inv": false,
+"alg": "D2 R' F' D' F' U2 F D F' U2 F2 R D2"
+},
+"KS": {
+"moves": 11,
+"S": "B' R2 D2",
+"inv": false,
+"alg": "B' R2 D2 R U2 R' D2 R U2 R B"
+}
+}
+}
+}

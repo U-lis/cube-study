@@ -19,7 +19,7 @@
   },
   "notation": "case XY = buffer piece -> X position, X piece -> Y position, Y piece -> buffer",
   "verification": "all algorithms verified: memo direction, corners solved, edges untouched",
-  "schemaVersion": 8,
+  "schemaVersion": 7,
   "anchorCount": 10,
   "anchorLearnOrder": [
    "GC",
@@ -39,7 +39,6 @@
      "GC"
     ],
     "avgMoves": 12.19,
-    "avgSetupMoves": 2.51,
     "unreachable": 0
    },
    {
@@ -47,8 +46,7 @@
      "GC",
      "BU"
     ],
-    "avgMoves": 11.47,
-    "avgSetupMoves": 2.16,
+    "avgMoves": 11.44,
     "unreachable": 0
    },
    {
@@ -57,8 +55,7 @@
      "BU",
      "DO"
     ],
-    "avgMoves": 11.03,
-    "avgSetupMoves": 1.93,
+    "avgMoves": 10.98,
     "unreachable": 0
    },
    {
@@ -68,8 +65,7 @@
      "DO",
      "CH"
     ],
-    "avgMoves": 10.88,
-    "avgSetupMoves": 1.78,
+    "avgMoves": 10.76,
     "unreachable": 0
    },
    {
@@ -80,8 +76,7 @@
      "CH",
      "IT"
     ],
-    "avgMoves": 10.63,
-    "avgSetupMoves": 1.68,
+    "avgMoves": 10.5,
     "unreachable": 0
    },
    {
@@ -93,8 +88,7 @@
      "IT",
      "OI"
     ],
-    "avgMoves": 10.5,
-    "avgSetupMoves": 1.61,
+    "avgMoves": 10.4,
     "unreachable": 0
    },
    {
@@ -107,8 +101,7 @@
      "OI",
      "SC"
     ],
-    "avgMoves": 10.39,
-    "avgSetupMoves": 1.56,
+    "avgMoves": 10.28,
     "unreachable": 0
    },
    {
@@ -122,8 +115,7 @@
      "SC",
      "VJ"
     ],
-    "avgMoves": 10.21,
-    "avgSetupMoves": 1.51,
+    "avgMoves": 10.11,
     "unreachable": 0
    },
    {
@@ -138,8 +130,7 @@
      "VJ",
      "SV"
     ],
-    "avgMoves": 10.13,
-    "avgSetupMoves": 1.46,
+    "avgMoves": 10.01,
     "unreachable": 0
    },
    {
@@ -155,8 +146,7 @@
      "SV",
      "TH"
     ],
-    "avgMoves": 10.05,
-    "avgSetupMoves": 1.42,
+    "avgMoves": 9.94,
     "unreachable": 0
    }
   ],
@@ -175,9 +165,7 @@
    "2": 166,
    "3": 6
   },
-  "setupFBCount": 104,
-  "learningCurveNote": "배정과 동일한 목적함수(셋업길이 → 무브수 → 손가락점수 → 기준순서)로 계산됨. 따라서 k=10 의 avgMoves 는 meta.avgMoves.setup 및 실제 배정 평균과 정확히 일치함. v7 까지는 무브 수만으로 계산해 실제 배정보다 낙관적인 값이었음(k=10 에서 9.94 vs 실제 10.05).",
-  "anchorLearnOrderNote": "한계 이득 순서. 각 단계에서 v7 목적함수를 가장 많이 개선하는 기준을 greedy 선택한 결과이며 learningCurve 와 짝을 이룸. 담당 케이스 수(anchors[].count) 순서가 아니므로 재정렬하지 말 것."
+  "setupFBCount": 104
  },
  "stickers": {
   "A": {

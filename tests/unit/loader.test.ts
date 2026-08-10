@@ -6,7 +6,7 @@ describe('데이터 로더', () => {
 		const ds = await loadDataset(DEFAULT_DATASET);
 		expect(Object.keys(ds.cases)).toHaveLength(378);
 		expect(ds.meta.buffer).toBe('UBL');
-		// 기준 개수는 데이터가 정한다 (v2 10개 → v3 6개). 비어 있지 않기만 요구한다.
+		// 기준 개수는 데이터가 정한다 (v2 10개 → v3 6개 → v5 5개). 비어 있지 않기만 요구한다.
 		expect(Object.keys(ds.anchors).length).toBeGreaterThan(0);
 		expect(ds.meta.schemaVersion).toBeGreaterThanOrEqual(2);
 	});

@@ -2,7 +2,7 @@
  * 기준공식(anchor) 취급의 유일한 책임 지점.
  *
  * 기준의 개수·이름·순서를 코드에 적지 않는다. 전부 데이터에서 읽으므로
- * corner-UBL.json 이 교체되어도(v2 10개 → v3 6개) UI 는 손대지 않는다.
+ * corner-UBL.json 이 교체되어도(v2 10개 → v3 6개 → v5 5개) UI 는 손대지 않는다.
  *
  * 방향이 핵심이다. v3 는 역트릭을 접어 기준 수를 줄였고, 378 중 188 케이스가
  * 기준공식을 거꾸로 돌린다 (setup.usesInverse). 어느 기준도 self-inverse 가
@@ -66,9 +66,10 @@ export function anchorRefs(ds: Dataset): AnchorRef[] {
  * 문자 하나까지 같을 때만 인정한다. 상쇄나 최적화가 끼어들 여지가 없다.
  *
  * 데이터의 `Anchor` 에는 A/B 가 없다. 기준을 셋업 없이 정방향으로 쓰는 케이스가
- * 있으면 그 케이스의 direct.A/B 가 곧 답이지만, 6개 중 3개(BU KS KG)에는 그런
- * 케이스가 없어서 데이터만으로는 절반밖에 못 채운다. 그래서 무브열에서 직접 읽는다.
- * 나머지 3개(GC TC IV)로는 데이터의 A/B 와 일치하는지 검증할 수 있다.
+ * 있으면 그 케이스의 direct.A/B 가 곧 답이다. v3 에서는 6개 중 3개에 그런 케이스가
+ * 없어 절반밖에 못 채웠다. v5 는 모든 기준이 자기 케이스를 직접 담당하지만(isAnchorCase),
+ * 그 보장에 기대지 않고 무브열에서 직접 읽는다 — 데이터가 또 바뀔 수 있다.
+ * 데이터가 A/B 를 들고 있는 기준으로는 결과가 일치하는지 검증한다.
  */
 export function decomposeCommutator(alg: string): { A: string; B: string } | null {
 	const m = splitMoves(alg);

@@ -315,13 +315,16 @@ test.describe('기준공식 브라우저 (FR-11, FR-12)', () => {
 	test('기준 목록이 데이터의 학습 순서대로 나온다', async ({ page }) => {
 		await page.goto('/anchors');
 		await expect(page.locator('[data-anchor]')).toHaveCount(anchorNames.length);
-		const counts = await page.locator('[data-count]').allTextContents();
+		// FR-MC-11: 표시가 `{체크}/{전체}` 로 바뀌었다. 텍스트 대신 data-count 속성으로 검증한다.
+		const counts = await page
+			.locator('[data-count]')
+			.evaluateAll((els) => els.map((el) => el.getAttribute('data-count')));
 		expect(counts.slice(0, anchorNames.length)).toEqual(
 			anchorNames.map((n) => String(parsed.anchors[n].count))
 		);
-		// 학습 순서는 담당 케이스 많은 순이어야 한다
-		const nums = anchorNames.map((n) => parsed.anchors[n].count);
-		expect([...nums].sort((a, b) => b - a)).toEqual(nums);
+		// 순서를 무엇으로 정하는지는 데이터가 판단한다. v3 까지는 담당 케이스가
+		// 많은 순이었고 v5 는 평균 길이를 많이 줄이는 순이다. 앱이 할 일은
+		// meta.anchorLearnOrder 를 그대로 따르는 것뿐이라, 그 순서를 지켰는지만 본다.
 	});
 
 	test('백분율 표기가 없다 (NFR-9)', async ({ page }) => {

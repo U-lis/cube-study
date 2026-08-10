@@ -120,6 +120,8 @@
 						<circle cx="12" cy="10.5" r="2.5" fill="currentColor" />
 					{/if}
 				</svg>
+				<!-- 아이콘만으로는 무슨 버튼인지 알 수 없다. 상태는 색이, 정체는 글자가 맡는다. -->
+				<span class="btn-label">화면 켜기</span>
 			</button>
 		{/if}
 
@@ -220,12 +222,21 @@
 	.bar button svg {
 		flex: none;
 	}
-	/* 아이콘 옆 글자는 넓은 화면에서만. 좁으면 아이콘만 남는다. */
-	.theme-label {
+	/*
+	 * 아이콘 옆 글자. 아이콘만으로는 무슨 버튼인지 알 수 없으므로 되도록 남긴다.
+	 *
+	 * 실측: 412px 에서 버튼 합이 216px 이라 여유가 많다. 설치 버튼까지 다 떠도
+	 * 320px 폭에 들어간다. 그보다 좁을 때만 아이콘으로 접는다 — 이전 400px
+	 * 기준은 과해서 흔한 폰 폭(360~412)에서 글자가 전부 사라지고 있었다.
+	 */
+	.theme-label,
+	.btn-label {
 		margin-left: 0.35rem;
+		white-space: nowrap;
 	}
-	@media (max-width: 400px) {
-		.theme-label {
+	@media (max-width: 330px) {
+		.theme-label,
+		.btn-label {
 			display: none;
 		}
 	}

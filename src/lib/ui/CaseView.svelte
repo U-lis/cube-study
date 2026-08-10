@@ -1,8 +1,9 @@
-<!-- 조회 결과 표시 (FR-6 ~ FR-10) -->
+<!-- 조회 결과 표시 (FR-6 ~ FR-10). 암기 체크박스는 FR-MC-3(a). -->
 <script lang="ts">
 	import Alg from './Alg.svelte';
 	import SegToggle from './SegToggle.svelte';
 	import { settings } from './settings.svelte.js';
+	import { memorize } from './memorize.svelte.js';
 	import { formatAlg, displayMoves } from '$lib/domain/format.js';
 	import { targetText } from '$lib/domain/validate.js';
 	import { anchorOrder, anchorRef, refAlg, refLabel } from '$lib/domain/anchor.js';
@@ -30,6 +31,16 @@
 	/** 역방향이면 뒤집은 무브열을 보여준다. 원문을 보여주면 반대로 돌리게 된다. */
 	let anchorAlg = $derived(ref ? refAlg(ds, ref) : '');
 	let anchorCount = $derived(anchorOrder(ds).length);
+
+	/**
+	 * 지금 보고 있는 표기(setup / direct=optimized) 의 암기 상태.
+	 * mode 가 바뀌면 값도 갈아탄다 — 라벨을 함께 갈아 사용자가 이유를 안다.
+	 * SSR/CSR 모두 memorize 스토어의 초기값이 빈 Set 이라 SSR 은 항상 false 로
+	 * 렌더된다 (AD-4). 하이드레이션 후 localStorage 값이 들어와도 요소 개수·크기가
+	 * 그대로라 레이아웃이 밀리지 않는다.
+	 */
+	let isMemorized = $derived(memorize.isChecked(mode, entry.case));
+	let memorizeLabel = $derived(mode === 'setup' ? 'setup 암기' : 'optimized 암기');
 </script>
 
 <section class="case" class:stale data-case={entry.case}>
@@ -40,6 +51,22 @@
 			<span>{targetText(entry.target2)}</span>
 		</div>
 	</header>
+
+	<!--
+		FR-MC-3(a): 지금 보는 표기 기준의 암기 체크. 라벨에 어느 기준인지 명시해
+		mode 토글을 바꿨을 때 체크가 함께 바뀌는 이유를 사용자가 안다.
+		AD-6: SegToggle 재사용하지 않는다 (boolean on/off 에 세그먼티드는 맞지 않는다).
+		FR-MC-4: 라벨 전체를 클릭 영역으로 두고 min-height 44px.
+	-->
+	<label class="memorize" data-memorize={mode}>
+		<input
+			type="checkbox"
+			checked={isMemorized}
+			onchange={() => memorize.toggle(mode, entry.case)}
+			data-memorize-input
+		/>
+		<span data-memorize-label>{memorizeLabel}</span>
+	</label>
 
 	<div class="toggles">
 		<SegToggle
@@ -173,6 +200,31 @@
 		grid-template-columns: 1fr 1fr;
 		gap: 0.6rem;
 		margin: 0.9rem 0;
+	}
+	/*
+	 * NFR-MC-2: 이 블록의 높이·폭이 상태에 따라 흔들리면 안 된다.
+	 * min-height 로 44px 를 확보하고, 체크박스 크기는 CSS 로 고정한다.
+	 * mode 가 바뀌면서 라벨 문자열이 바뀌지만 justify-content:center 로 좌우가
+	 * 흔들려도 아래 블록의 top 은 min-height 로 잠긴다.
+	 */
+	.memorize {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		min-height: 44px;
+		margin-top: 0.6rem;
+		font-size: 0.9rem;
+		color: var(--fg);
+		cursor: pointer;
+		user-select: none;
+	}
+	.memorize input[type='checkbox'] {
+		width: 20px;
+		height: 20px;
+		margin: 0;
+		flex: 0 0 auto;
+		cursor: pointer;
 	}
 	.block {
 		padding: 0.75rem;

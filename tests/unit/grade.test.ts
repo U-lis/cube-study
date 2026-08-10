@@ -40,10 +40,18 @@ describe('변형 알고리즘도 정답 (FR-18 핵심)', () => {
 		expect(g('LB', `U U' ${e('LB').direct.alg}`).kind).toBe('correct');
 	});
 
+	/*
+	 * 케이스를 지목하지 않고 데이터에서 고른다. 예전엔 'FS' 를 박아뒀는데 v7 에서
+	 * FS 의 셋업 경로가 direct 와 같은 무브 열로 떨어지면서 깨졌다 — 확인하려는
+	 * 것은 "다른 무브 열도 정답" 이지 FS 가 그런 케이스라는 사실이 아니다.
+	 */
 	it('데이터의 alg 와 다른 무브 열이어도 같은 케이스면 정답', () => {
-		const alt = e('FS').setup.strict.alg;
-		expect(alt).not.toBe(e('FS').direct.alg);
-		expect(g('FS', alt).kind).toBe('correct');
+		const found = Object.entries(ds.cases).find(
+			([, c]) => c.setup.strict.alg !== c.direct.alg
+		);
+		expect(found).toBeDefined();
+		const [key, c] = found!;
+		expect(g(key, c.setup.strict.alg).kind).toBe('correct');
 	});
 
 	it('U 로 conjugate 하면 다른 케이스가 되어 오답', () => {

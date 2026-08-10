@@ -1,4 +1,13 @@
 import { test, expect } from '@playwright/test';
+import data from '../../src/lib/data/corner-UBL.json' with { type: 'json' };
+
+/*
+ * 기준 이름을 박지 않는다. 데이터가 v2(10개) → v3(6개) → v5(5개) → v7(10개)
+ * 로 바뀌어 왔고 이름도 매번 갈렸다. 담당 케이스가 가장 많은 기준을 고른다 —
+ * 필요한 것은 "스크롤이 생길 만큼 긴 목록" 이지 특정 기준이 아니다.
+ */
+const anchors = (data as { anchors: Record<string, { count: number }> }).anchors;
+const CODE = Object.entries(anchors).sort((a, b) => b[1].count - a[1].count)[0][0];
 
 /**
  * 기준 상세의 머리(기준공식·진도·토글·열 머리글)를 상단에 고정한다.
@@ -9,7 +18,7 @@ import { test, expect } from '@playwright/test';
  */
 test.describe('기준 상세 고정 머리', () => {
 	test('한참 스크롤해도 기준공식이 화면 위에 남는다', async ({ page }) => {
-		await page.goto('/anchors/IV');
+		await page.goto(`/anchors/${CODE}`);
 		await page.waitForSelector('[data-case-row]');
 
 		await page.mouse.wheel(0, 1200);
@@ -26,7 +35,7 @@ test.describe('기준 상세 고정 머리', () => {
 	});
 
 	test('고정 머리가 아래쪽 줄의 체크박스와 링크를 가리지 않는다', async ({ page }) => {
-		await page.goto('/anchors/IV');
+		await page.goto(`/anchors/${CODE}`);
 		const rows = page.locator('[data-case-row]');
 		const n = await rows.count();
 		expect(n).toBeGreaterThan(10);
@@ -45,7 +54,7 @@ test.describe('기준 상세 고정 머리', () => {
 	test('낮은 화면에서는 고정하지 않는다', async ({ page }) => {
 		// 가로 방향 폰. 머리가 280px 남짓이라 고정하면 목록이 서너 줄만 남는다
 		await page.setViewportSize({ width: 740, height: 420 });
-		await page.goto('/anchors/IV');
+		await page.goto(`/anchors/${CODE}`);
 		await page.waitForSelector('[data-case-row]');
 
 		await page.mouse.wheel(0, 1200);

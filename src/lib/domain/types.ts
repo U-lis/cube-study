@@ -99,6 +99,14 @@ export interface SetupAlg {
 	 * 표시에 쓰지 않아도 무방하다 — S 가 비었는지로도 같은 판단이 된다.
 	 */
 	isAnchorCase?: boolean;
+	/**
+	 * v7+. 이 케이스의 셋업이 F/B 무브를 쓰는가. 378 중 104건.
+	 *
+	 * v7 은 기준공식 후보를 F/B 미사용으로 제한해 셋업의 F/B 까지 줄였다
+	 * (v6 162건 → 104건). 핑거링으로 케이스를 걸러 보고 싶을 때 쓸 수 있다 —
+	 * 앱은 아직 화면에 쓰지 않는다.
+	 */
+	setupUsesFB?: boolean;
 	strict: StrictInfo;
 }
 
@@ -122,12 +130,14 @@ export interface Anchor {
 	count: number;
 	entry1: Target;
 	entry2: Target;
-	/** v5+. 이 기준이 셋업 없이 직접 담당하는 케이스 쌍 (예: ['KG', 'GK']) */
+	/** v5+. 이 기준이 셋업 없이 직접 담당하는 케이스 쌍 (예: ['GC', 'CG']) */
 	ownCases?: CaseCode[];
 	/** v5+. 이 기준 하나만으로 도달 가능한 케이스 수 (셋업 0~3수 허용) */
 	soloReach?: number;
 	/** v5+. 이 기준 하나만 쓸 때의 평균 무브 수 */
 	soloAvgMoves?: number;
+	/** v7+. 이 기준공식이 F/B 무브를 쓰는가. v7 은 전부 false 다. */
+	usesFB?: boolean;
 }
 
 export interface DatasetMeta {
@@ -159,6 +169,12 @@ export interface DatasetMeta {
 	assignmentRule?: string;
 	/** v5+. 배정이 만족하는 성질 (상호배타·완결·역쌍 동일·자기 케이스 소유) */
 	partitionNote?: string;
+	/** v7+. 기준공식 선정에 건 제약 (F/B 미사용) */
+	anchorConstraint?: string;
+	/** v7+. 셋업 길이 분포. 키가 길이, 값이 케이스 수 */
+	setupLengthDist?: Record<string, number>;
+	/** v7+. 셋업에 F/B 가 들어간 케이스 수 */
+	setupFBCount?: number;
 }
 
 export interface Dataset {

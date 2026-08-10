@@ -4,6 +4,13 @@ import data from '../../src/lib/data/corner-UBL.json' with { type: 'json' };
 const codes = Object.keys((data as { cases: Record<string, unknown> }).cases);
 
 test.describe('전수 스모크', () => {
+	/*
+	 * 378 케이스를 한 번씩 입력하고 결과를 확인한다. 왕복이 378번이라 Pixel 7
+	 * 에뮬레이션에서 30초 기본값에 아슬아슬하게 걸린다 (실측 29~33초) — 통과와
+	 * 실패를 오가며 CI 를 흔든다. 느린 테스트라고 알려 여유를 준다.
+	 */
+	test.slow();
+
 	test('378 케이스가 모두 렌더되고 콘솔 오류가 없다', async ({ page }) => {
 		const errors: string[] = [];
 		page.on('pageerror', (e) => errors.push(e.message));

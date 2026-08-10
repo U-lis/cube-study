@@ -3,34 +3,39 @@
 기록용 보관소다. **앱이 읽는 파일은 `src/lib/data/corner-UBL.json` 하나뿐**이며,
 여기 있는 파일은 어디에서도 import 되지 않는다 (번들에 들어가지 않는다).
 
-`corner-UBL.v6.json` 은 현재 배포본과 같은 내용이다.
+`corner-UBL.v7.json` 은 현재 배포본과 같은 내용이다.
 `corner-UBL.v1.json` / `.v2.json` 은 `.dc_workspace/handoff/3style_ubl_data.orig.json`
 / `.v2.json` 을 그대로 복사한 것이다.
 
 ## 버전별 차이
 
-| | v1 | v2 | v3 | v6 (현재) |
-|---|---|---|---|---|
-| `meta.schemaVersion` | 없음 | 2 | 3 | 6 |
-| 케이스 | 378 | 378 | 378 | 378 |
-| 기준공식 | 10 (LB TU SC NG UN WM NU KD UB KS) | 10 (동일) | 6 (GC TC BU IV KS KG) | **5 (KG IV BU TC KS)** |
-| 기준 없는 케이스 | 6 (CU CW UC UW WC WU) | 6 (동일) | **0** | 0 |
-| setup 평균 | 11.25수 | 11.25수 | 11.19수 | **10.43수** |
-| `strict` (상쇄 전 구조형) | 없음 | 추가 | 유지 | 유지 |
-| `sameAlg`, `inverseTrick` | 없음 | 추가 | 유지 | 유지 |
-| `setup.usesInverse` | 없음 | 없음 | **추가 (188/378)** | 유지 (101/378) |
-| `meta.anchorLearnOrder` 등 | 없음 | 없음 | **추가** | 유지 |
-| `setup.isAnchorCase` | 없음 | 없음 | 없음 | **추가 (10건 = 기준 5 × 2)** |
-| `anchors[].ownCases` / `soloReach` / `soloAvgMoves` | 없음 | 없음 | 없음 | **추가** |
-| `meta.learningCurve` / `coverageNote` / `assignmentRule` / `partitionNote` | 없음 | 없음 | 없음 | **추가** |
-| `setup.setupMoves` / `breakdown` | 없음 | 없음 | 없음 | **추가 (v6)** |
-| `strict.cancels` 정의 | — | 줄어든 무브 수 | 소멸 쌍의 수 (오산) | **줄어든 무브 수로 복원** |
+| | v1 | v2 | v3 | v6 | v7 (현재) |
+|---|---|---|---|---|---|
+| `meta.schemaVersion` | 없음 | 2 | 3 | 6 | **7** |
+| 케이스 | 378 | 378 | 378 | 378 | 378 |
+| 기준공식 | 10 (LB TU SC NG UN WM NU KD UB KS) | 10 (동일) | 6 (GC TC BU IV KS KG) | 5 (KG IV BU TC KS) | **10 (GC BU DO CH IT OI SC VJ SV TH)** |
+| 기준 없는 케이스 | 6 (CU CW UC UW WC WU) | 6 (동일) | **0** | 0 | 0 |
+| setup 평균 | 11.25수 | 11.25수 | 11.19수 | 10.43수 | **10.05수** |
+| `strict` (상쇄 전 구조형) | 없음 | 추가 | 유지 | 유지 | 유지 |
+| `sameAlg`, `inverseTrick` | 없음 | 추가 | 유지 | 유지 | 유지 |
+| `setup.usesInverse` | 없음 | 없음 | **추가 (188/378)** | 유지 (101/378) | 유지 (185/378) |
+| `meta.anchorLearnOrder` 등 | 없음 | 없음 | **추가** | 유지 | 유지 |
+| `setup.isAnchorCase` | 없음 | 없음 | 없음 | **추가 (10건 = 기준 5 × 2)** | 20건 (기준 10 × 2) |
+| `anchors[].ownCases` / `soloReach` / `soloAvgMoves` | 없음 | 없음 | 없음 | **추가** | 유지 |
+| `meta.learningCurve` / `coverageNote` / `assignmentRule` / `partitionNote` | 없음 | 없음 | 없음 | **추가** | 유지 |
+| `setup.setupMoves` / `breakdown` | 없음 | 없음 | 없음 | **추가 (v6)** | 유지 |
+| `strict.cancels` 정의 | — | 줄어든 무브 수 | 소멸 쌍의 수 (오산) | **줄어든 무브 수로 복원** | 유지 |
+| `setup.setupUsesFB` / `anchors[].usesFB` | 없음 | 없음 | 없음 | 없음 | **추가** |
+| `meta.anchorConstraint` / `setupLengthDist` / `setupFBCount` | 없음 | 없음 | 없음 | 없음 | **추가** |
 
-`direct` 계열 알고리즘은 v1 → v6 내내 **한 건도 바뀌지 않았다**. 바뀐 것은
+`direct` 계열 알고리즘은 v1 → v7 내내 **한 건도 바뀌지 않았다**. 바뀐 것은
 파생 필드와 `setup` 계열뿐이다.
 
-v4·v5 는 배포본으로 오래 쓴 적이 없다. 교체 안내(`MIGRATION-v3-to-v6.md`)가
-v3→v4→v5→v6 의 경위를 한 문서에 담고 있어 번호가 건너뛴다.
+v4·v5 는 배포본으로 오래 쓴 적이 없다. 교체 안내(`MIGRATION-v3-to-v7.md`)가
+v3→v4→v5→v6→v7 의 경위를 한 문서에 담고 있어 번호가 건너뛴다. 그 문서의 제목은
+`schemaVersion 2 → 4` 에서 갱신되지 않았고, v7 절의 "v6 기준(GC TC BU IV KS KG)"
+표기도 v3 의 목록이다 — v6 은 5개(KG IV BU TC KS)였고 v7 이 유지한 것은 `BU`
+하나다. 본문 표를 따른다.
 
 ## v2 → v3 에서 실제로 문제가 됐던 것
 
@@ -121,3 +126,27 @@ v6 이 나눗셈을 걷어내고 v2 의 정의(줄어든 무브 수)로 되돌�
 
 교체 후 `pnpm check && pnpm test && pnpm build && pnpm test:e2e` 로 확인한다. 테스트도 기대값을 데이터에서 읽으므로, 내부적으로 모순이 없는 파일이면
 숫자를 고칠 일이 없다.
+
+## v7 — 기준 10개 재설계 (핑거링)
+
+목적함수를 바꿔 전면 재설계했다. 총 무브 수 하나로 고르던 것을
+**셋업 길이 → 무브 수 → 손가락 점수** 우선순위로 바꾸고, **기준공식 후보를
+F/B 미사용으로 제한**했다 (`meta.anchorConstraint`).
+
+기준이 5개에서 10개로 늘었다. 늘리는 것이 비용인데도 모든 지표가 좋아졌다:
+
+| | v6 | v7 |
+|---|---|---|
+| 기준공식이 F/B 를 씀 | 1/5 (`TC`) | **0/10** |
+| 셋업 3수 | 151 (40%) | **6 (1.6%)** |
+| 셋업 1수 이하 | 68 | **206 (54%)** |
+| 셋업에 F/B 포함 | 162 (43%) | **104 (28%)** |
+| setup 평균 | 10.43수 | **10.05수** |
+
+v6 의 기준 중 살아남은 것은 `BU` 하나다. `direct` 는 v1 이래 그대로다.
+
+우리 시뮬레이터로 378 케이스를 전수 재검증했고, 위 수치도 데이터에서 직접
+세어 확인했다 — 공급자 검증(1512/1512)과 동봉 문서를 그대로 믿지 않는다.
+
+`corner-UBL-alternatives.v7.json` 은 케이스마다 10개 기준 각각의 경로를 담은
+참고 자료다. 앱은 쓰지 않는다.

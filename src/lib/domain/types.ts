@@ -162,7 +162,13 @@ export interface DatasetMeta {
 	 * 기준을 늘리는 목적이 커버리지가 아니라 단축이라는 것이 여기서 드러난다 —
 	 * 하나만 알아도 거의 다 도달하고, 추가는 평균을 줄인다.
 	 */
-	learningCurve?: { anchors: AnchorName[]; avgMoves: number; unreachable: number }[];
+	learningCurve?: {
+		anchors: AnchorName[];
+		avgMoves: number;
+		/** v8+. 해당 단계의 평균 셋업 길이. 기준을 늘리는 주된 이득이 여기 있다. */
+		avgSetupMoves?: number;
+		unreachable: number;
+	}[];
 	/** v5+. 커버리지가 제약이 아니라는 설명 */
 	coverageNote?: string;
 	/** v5+. 케이스를 어느 기준에 배정하는지의 규칙 */
@@ -175,6 +181,10 @@ export interface DatasetMeta {
 	setupLengthDist?: Record<string, number>;
 	/** v7+. 셋업에 F/B 가 들어간 케이스 수 */
 	setupFBCount?: number;
+	/** v8+. learningCurve 를 어떤 목적함수로 계산했는지 */
+	learningCurveNote?: string;
+	/** v8+. 학습 순서가 한계 이득 순이며 담당 수 순이 아니라는 설명 */
+	anchorLearnOrderNote?: string;
 }
 
 export interface Dataset {

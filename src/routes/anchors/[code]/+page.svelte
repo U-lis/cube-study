@@ -5,6 +5,7 @@
 	import { formatCommutator } from '$lib/domain/format.js';
 	import UpLink from '$lib/ui/UpLink.svelte';
 	import { memorize } from '$lib/ui/memorize.svelte.js';
+	import { settings } from '$lib/ui/settings.svelte.js';
 	let { data } = $props();
 
 	let comm = $derived(data.anchor ? formatCommutator(data.anchor.alg) : null);
@@ -27,12 +28,26 @@
 	let totalDigits = $derived(String(data.cases.length).length);
 
 	/**
+	 * 역방향 케이스가 하나도 없는 기준(현재 데이터에는 없다)과 "기준 없음" 그룹에서는
+	 * 토글을 내린다. 아무것도 가리지 못하는 스위치가 켜져 있으면 고장으로 읽힌다.
+	 */
+	let hasInverse = $derived(data.cases.some((c) => c.setup.usesInverse));
+
+	/** 역공식 숨김을 적용하고 남는 케이스. 암기 숨김은 여기 넣지 않는다 (아래 주석). */
+	let listedCases = $derived(
+		settings.hideInverse ? data.cases.filter((c) => !c.setup.usesInverse) : data.cases
+	);
+
+	/**
 	 * FR-MC-15 안내 조건. FR-MC-16: 진도 분모는 숨김과 무관하게 항상
 	 * data.cases.length 를 쓴다 — allMemorized 는 안내 렌더 여부만 결정한다.
 	 * 케이스가 0개인 기준을 "모두 암기" 로 오해하지 않게 length > 0 을 함께 본다.
+	 *
+	 * 판정 대상은 "지금 목록에 나올 수 있는 것" 이다. 역공식을 가린 상태에서 정방향을
+	 * 다 외웠으면 목록은 비는데, 분모를 전체로 잡으면 안내가 안 나와 빈 목록만 남는다.
 	 */
 	let allMemorized = $derived(
-		data.cases.length > 0 && checkedCount === data.cases.length
+		listedCases.length > 0 && listedCases.every((c) => memorize.isChecked('setup', c.case))
 	);
 </script>
 
@@ -90,6 +105,7 @@
 		두 아이콘의 viewBox 와 크기가 같아 상태가 바뀌어도 폭이 흔들리지 않는다.
 		글자가 없으므로 aria-label/title 로 이름을 남긴다.
 	-->
+	<div class="toggles">
 	<label
 		class="hide-toggle"
 		data-hide-toggle
@@ -125,6 +141,51 @@
 			data-hide-input
 		/>
 	</label>
+
+	<!--
+		"역공식 숨김". 역쌍 XY/YX 는 같은 기준에 속하고 한쪽은 기준을 거꾸로 돌리는
+		것이라, 정방향만 훑으며 외울 때 목록이 두 배로 길어 보인다. 줄에 붙는 "역"
+		배지가 가려지는 대상이다.
+
+		아이콘은 암기 숨김과 같은 눈이다. 상태(가리는 중인가)는 아이콘이, 무엇을
+		가리는지는 글자가 맡는다 — 0.3.0 에서 세운 규칙 그대로다.
+	-->
+	{#if hasInverse}
+		<label
+			class="hide-toggle"
+			data-inverse-toggle
+			title={settings.hideInverse ? '역공식을 가리는 중' : '역공식도 보이는 중'}
+		>
+			<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+				<path
+					d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6z"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.8"
+					stroke-linejoin="round"
+				/>
+				<circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+				{#if settings.hideInverse}
+					<path
+						d="M4 20L20 4"
+						stroke="currentColor"
+						stroke-width="1.8"
+						stroke-linecap="round"
+					/>
+				{/if}
+			</svg>
+			<span class="hide-label">역공식 숨김</span>
+			<input
+				type="checkbox"
+				role="switch"
+				aria-label="역공식 숨김"
+				checked={settings.hideInverse}
+				onchange={(e) => (settings.hideInverse = e.currentTarget.checked)}
+				data-inverse-input
+			/>
+		</label>
+	{/if}
+	</div>
 </div>
 
 <!--
@@ -154,7 +215,8 @@
 		-->
 		<li
 			data-case-row={c.case}
-			class:hidden={memorize.hideMemorized && memorize.isChecked('setup', c.case)}
+			class:hidden={(memorize.hideMemorized && memorize.isChecked('setup', c.case)) ||
+				(settings.hideInverse && c.setup.usesInverse)}
 		>
 			<a href="/?c={c.case}&from={data.code}">
 				<span class="code">{c.case}</span>
@@ -251,13 +313,25 @@
 		display: inline-block;
 		text-align: right;
 	}
-	/* 진도는 왼쪽, 토글은 오른쪽. 목록 바로 위 한 줄. */
+	/*
+	 * 진도는 왼쪽, 토글은 오른쪽. 목록 바로 위 한 줄.
+	 * 토글이 둘이라 좁은 화면에서는 줄바꿈을 허용한다 — 320px 에서 한 줄에 넣으면
+	 * 라벨이 잘리는데, 이 화면에서 잘려서는 안 되는 것이 정확히 그 라벨이다.
+	 * 눈 아이콘 둘은 생김새가 같아서 글자가 없으면 어느 쪽인지 알 수 없다.
+	 */
 	.list-head {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 0.6rem;
+		flex-wrap: wrap;
+		gap: 0 0.6rem;
 		margin: 0.2rem 0 0.4rem;
+	}
+	.toggles {
+		display: flex;
+		align-items: center;
+		gap: 0.9rem;
+		margin-left: auto;
 	}
 	.list-head .count {
 		margin: 0;

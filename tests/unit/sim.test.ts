@@ -1,8 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { CubeSim, type Perms } from '../../src/lib/cube/sim.js';
-import permsJson from '../../src/lib/cube/perms.json';
+import { CubeSim } from '../../src/lib/cube/sim.js';
 
-const sim = new CubeSim(permsJson as unknown as Perms);
+const sim = new CubeSim();
 
 describe('시뮬레이터 경계', () => {
 	it('미지 무브는 throw', () => {

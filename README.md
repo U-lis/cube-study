@@ -75,16 +75,28 @@ PR 과 main push 마다 타입 검사·단위·E2E·배포 스크립트 검사�
 - `moves`·`strict`·`sameAlg`·`inverseTrick` 필드가 실제와 일치하는가
 - 역트릭(`XY` 뒤집기 = `YX`)이 성립하는가
 
+### 무브의 물리는 우리가 안 들고 있다
+
+시뮬레이터의 무브 정의는 [`cubejs`](https://github.com/ldez/cubejs) 가 한다
+(0.3.1). 저장소에 남은 큐브 지식은 `src/lib/cube/speffz.ts` 의 좌표 — 어느
+Speffz 문자가 어느 facelet 인가 — 하나뿐이고, 그 좌표는 데이터의 타깃 삼중항
+756개와 대조해 확인한다 (`tests/unit/speffz.test.ts`).
+
+0.3.0 까지는 무브 테이블 27개를 `perms.json` 에 직접 들고 있었다. 그 안의 `L` 이
+표준의 역이라 데이터 756 중 320개가 틀렸는데도 자체 검증을 전부 통과했다.
+그 파일로 만든 데이터를 그 파일로 확인하는 순환 논증이었기 때문이다. 지금은
+`perms.json` 이 없다 — 우리가 안 들고 있는 것은 틀릴 수 없다.
+
 ## 구조
 
 ```
 src/lib/
 ├── data/         corner-UBL.json + {pieceType, buffer} 로더
-├── cube/         큐브 시뮬레이터 (스티커 치환 방식), 표기 유틸
+├── cube/         큐브 시뮬레이터 (cubejs 백엔드), Speffz 좌표, 표기 유틸
 ├── domain/       타입, 입력 검증, 표기 생성, 퀴즈 채점, 기준공식 취급, 암기 상태 (memorize.ts)
 └── ui/           컴포넌트, 표시 설정, 암기 Svelte 스토어 (memorize.svelte.ts)
 
-data/schema-history/   데이터 스키마 v1~v7 기록 (앱은 읽지 않는다)
+data/schema-history/   데이터 스키마 v1~v9 기록 (앱은 읽지 않는다)
 ```
 
 데이터셋 로더는 `loadDataset({ pieceType, buffer })` 시그니처를 쓴다. UFR 버퍼·엣지 3-style을 추가할 때 `loader.ts` 내부만 바뀌고 호출부는 그대로다.
@@ -92,6 +104,7 @@ data/schema-history/   데이터 스키마 v1~v7 기록 (앱은 읽지 않는다
 ## 주의
 
 - **데이터의 알고리즘을 재계산하거나 "더 짧은 것"으로 교체하지 말 것.** 큐브 시뮬레이터로 3중 검증(메모 방향 / 코너 해결 / 엣지 무영향)을 통과한 값이다. 길이만 보고 최적화하면 엣지 무영향 조건이 깨진다.
+- **무브 정의를 저장소로 다시 들여오지 말 것.** 0.3.0 까지는 `perms.json` 에 무브 테이블을 들고 있었고, `L` 이 뒤집힌 채 실려 나갔는데 자체 검증 1512/1512 가 그걸 못 잡았다. 지금은 `cubejs` 가 정한다.
 - **프라임 기호는 반드시 ASCII `'`(U+0027).** 알고리즘 렌더는 `Alg.svelte` 한 곳만 거치며 `{@html}`을 쓰지 않는다. 무브 사이에는 실제 공백 텍스트 노드가 들어간다 — 복사했을 때 무브 구분이 유지되어야 한다.
 
 배경과 설계 근거는 `.dc_workspace/handoff/`와 `.dc_workspace/2026_08_03-corner-3style/`에 있다.

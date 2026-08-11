@@ -1,11 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { CubeSim, type Perms } from '../../src/lib/cube/sim.js';
+import { CubeSim } from '../../src/lib/cube/sim.js';
 import { grade, verdictText } from '../../src/lib/domain/grade.js';
-import permsJson from '../../src/lib/cube/perms.json';
 import dataJson from '../../src/lib/data/corner-UBL.json';
 import type { Dataset } from '../../src/lib/domain/types.js';
 
-const sim = new CubeSim(permsJson as unknown as Perms);
+const sim = new CubeSim();
 const ds = dataJson as unknown as Dataset;
 const e = (k: string) => ds.cases[k];
 const g = (target: string, alg: string) => grade(sim, ds, e(target), alg);

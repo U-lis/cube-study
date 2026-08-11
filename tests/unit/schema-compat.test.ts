@@ -6,24 +6,45 @@
  * 유무도 코드가 데이터에서 읽어야만 통과한다.
  */
 import { describe, it, expect } from 'vitest';
-import { CubeSim, type Perms } from '../../src/lib/cube/sim.js';
+import { CubeSim } from '../../src/lib/cube/sim.js';
 import { grade } from '../../src/lib/domain/grade.js';
 import { formatAlg } from '../../src/lib/domain/format.js';
 import { anchorOrder, anchorRef, anchorRefs, expandSetup, refLabel } from '../../src/lib/domain/anchor.js';
-import permsJson from '../../src/lib/cube/perms.json';
 import v1Json from '../../data/schema-history/corner-UBL.v1.json';
 import v2Json from '../../data/schema-history/corner-UBL.v2.json';
 import shippedJson from '../../src/lib/data/corner-UBL.json';
 import { ANCHOR_DIRECT, type Dataset } from '../../src/lib/domain/types.js';
 
-const sim = new CubeSim(permsJson as unknown as Perms);
+const sim = new CubeSim();
+
+/**
+ * v9 이전 데이터는 `L` 과 `L'` 이 뒤바뀐 표기다. 생성 시뮬레이터의 L 정의가
+ * 표준의 역이었고 v9 에서 교정됐다 (MIGRATION-v3-to-v9.md). 보관본은 당시
+ * 파일 그대로 두는 것이 기록으로서 맞으므로, 읽을 때 표기만 맞춰준다.
+ * `L2` 는 자기 역이라 영향이 없다.
+ */
+const swapL = (alg: string) => alg.replace(/L2|L'|L/g, (m) => (m === 'L' ? "L'" : m === "L'" ? 'L' : m));
+
+function toStandardNotation(ds: Dataset): Dataset {
+	if ((ds.meta.schemaVersion ?? 0) >= 9) return ds;
+	const out = structuredClone(ds);
+	for (const a of Object.values(out.anchors)) a.alg = swapL(a.alg);
+	for (const c of Object.values(out.cases))
+		for (const mode of ['direct', 'setup'] as const) {
+			const m = c[mode];
+			m.alg = swapL(m.alg);
+			if (m.S !== undefined) m.S = swapL(m.S);
+			if (m.strict) m.strict.alg = swapL(m.strict.alg);
+		}
+	return out;
+}
 
 /**
  * v1 은 제외한다. strict 필드 자체가 없어서 앱이 읽을 수 있는 형태가 아니다
  * (표기·무브수 계산이 전부 strict 에 걸려 있다). 앱의 하한은 schemaVersion 2 다.
  */
 const versions: [string, Dataset][] = [
-	['v2', v2Json as unknown as Dataset],
+	['v2', toStandardNotation(v2Json as unknown as Dataset)],
 	['배포본', shippedJson as unknown as Dataset]
 ];
 
@@ -65,8 +86,9 @@ describe('버전 간 관계', () => {
 	it('direct 알고리즘은 v1 이후 바뀐 적이 없다', () => {
 		const v1 = v1Json as unknown as Dataset;
 		const shipped = shippedJson as unknown as Dataset;
+		// v9 의 L 표기 교정만 걷어내고 비교한다. 무브 열 자체는 v1 이래 그대로다.
 		const bad = Object.keys(v1.cases).filter(
-			(k) => v1.cases[k].direct.alg !== shipped.cases[k].direct.alg
+			(k) => swapL(v1.cases[k].direct.alg) !== shipped.cases[k].direct.alg
 		);
 		expect(bad).toEqual([]);
 	});

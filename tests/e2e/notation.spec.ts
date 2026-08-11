@@ -3,10 +3,17 @@ import data from '../../src/lib/data/corner-UBL.json' with { type: 'json' };
 
 const cases = (
 	data as unknown as {
-		cases: Record<string, { setup: { alg: string; anchor: string; S: string; usesInverse?: boolean } }>;
+		cases: Record<
+			string,
+			{
+				direct: { A: string; B: string; S: string };
+				setup: { alg: string; anchor: string; S: string; usesInverse?: boolean };
+			}
+		>;
 	}
 ).cases;
 const setupOf = (code: string) => cases[code].setup;
+const directOf = (code: string) => cases[code].direct;
 
 /**
  * NFR-4 / NFR-5 — 표기 렌더 무결성.
@@ -42,7 +49,11 @@ test.describe('알고리즘 표기', () => {
 		await page.goto('/?c=CI');
 		await page.locator('[data-toggle="mode"] [data-option="direct"]').click();
 		await expect(page.locator('[data-toggle="mode"]')).toHaveAttribute('data-value', 'direct');
-		expect(await page.locator('.main .alg').innerText()).toBe("[ L : [ R' D2 R , U2 ] ]");
+		// 기대값을 박아두지 않는다 — 0.3.1 의 L 표기 교정 때 이 줄만 홀로 틀렸다.
+		const d = directOf('CI');
+		expect(await page.locator('.main .alg').innerText()).toBe(
+			`[ ${d.S} : [ ${d.A} , ${d.B} ] ]`
+		);
 	});
 
 	test('무브가 중간에서 줄바꿈되지 않는다', async ({ page }) => {

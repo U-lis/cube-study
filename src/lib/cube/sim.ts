@@ -4,6 +4,11 @@
  * 원본: .dc_workspace/handoff/sim/cube-sim.js (378케이스 전수 검증 통과).
  * 타입만 입혔고 로직과 규약은 그대로다. 재작성이 아니다.
  *
+ * 무브 테이블(perms.json)의 진위는 이 파일로 확인할 수 없다. 0.3.0 까지 `L` 이
+ * 표준의 역(물리적 `L'`)이었는데도 자체 검증을 전부 통과했다 — 코너·엣지 양쪽이
+ * 일관되게 뒤집혀 있어 내부적으로는 유효한 큐브였기 때문이다.
+ * 판정은 `tests/unit/cubejs-xcheck.test.ts` (외부 라이브러리 cubejs) 가 한다.
+ *
  * ─── 핵심 규약 ───────────────────────────────────────────────
  * state 는 { 위치: 그_위치에_있는_원래_스티커 } 객체.
  * 풀린 상태 = { A:'A', B:'B', ... }
@@ -22,6 +27,7 @@ type MoveTable = Record<Sticker, Sticker>;
 
 export interface Perms {
 	_convention?: string;
+	_notationNote?: string;
 	cornerLetters: string;
 	edgeLetters: string;
 	cornerLetterToCubie: Record<Sticker, Cubie>;

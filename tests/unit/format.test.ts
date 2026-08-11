@@ -13,7 +13,7 @@ describe('direct strict', () => {
 		expect(text(formatAlg(c('LB'), 'direct', 'strict'))).toBe("[ R D2 R' , U ]");
 	});
 	it('conj 는 [S : [A , B]]', () => {
-		expect(text(formatAlg(c('CI'), 'direct', 'strict'))).toBe("[ L : [ R' D2 R , U2 ] ]");
+		expect(text(formatAlg(c('CI'), 'direct', 'strict'))).toBe("[ L' : [ R' D2 R , U2 ] ]");
 	});
 });
 

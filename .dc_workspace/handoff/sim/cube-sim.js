@@ -1,6 +1,11 @@
 /**
  * cube-sim.js — 3x3 큐브 스티커 시뮬레이터 (참조 구현)
  *
+ * ⚠ 여기 있는 cube_perms.json 은 틀렸다. `L` 이 표준의 역(물리적 `L'`)이고
+ *   `E` 는 `D` 가 아니라 `U` 방향이다. 이 파일들은 인수인계 시점 기록으로만 둔다.
+ *   고친 판본은 src/lib/cube/perms.json 이고, 판정은 외부 라이브러리 cubejs 가 한다
+ *   (tests/unit/cubejs-xcheck.test.ts). 0.3.1 CHANGELOG 참고.
+ *
  * Python 원본(bld_sim.py)을 JS로 이식한 것. 앱의 필수 요소는 아니지만,
  * 데이터 무결성 테스트나 향후 기능(퀴즈 정답 검증, 스크램블 적용, 3D 애니메이션)에 유용.
  *

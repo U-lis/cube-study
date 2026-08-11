@@ -75,6 +75,16 @@ PR 과 main push 마다 타입 검사·단위·E2E·배포 스크립트 검사�
 - `moves`·`strict`·`sameAlg`·`inverseTrick` 필드가 실제와 일치하는가
 - 역트릭(`XY` 뒤집기 = `YX`)이 성립하는가
 
+### 외부 교차 검증 (cubejs)
+
+`tests/unit/cubejs-xcheck.test.ts` 가 무브 테이블 18개와 756개 알고리즘을 외부
+라이브러리 [`cubejs`](https://github.com/ldez/cubejs) 와 대조한다. **이 파일만은
+`src/lib/cube` 를 쓰지 않는다** — facelet 좌표부터 따로 세운다.
+
+0.3.0 까지의 데이터는 시뮬레이터의 `L` 이 표준의 역이라 756 중 320개가 틀렸는데도
+자체 검증을 전부 통과했다. 검증이 전부 순환 논증이었기 때문이다. 같은 도구로
+만들고 같은 도구로 확인하면 전역으로 뒤집힌 정의는 영원히 안 걸린다.
+
 ## 구조
 
 ```
@@ -84,7 +94,7 @@ src/lib/
 ├── domain/       타입, 입력 검증, 표기 생성, 퀴즈 채점, 기준공식 취급, 암기 상태 (memorize.ts)
 └── ui/           컴포넌트, 표시 설정, 암기 Svelte 스토어 (memorize.svelte.ts)
 
-data/schema-history/   데이터 스키마 v1~v7 기록 (앱은 읽지 않는다)
+data/schema-history/   데이터 스키마 v1~v9 기록 (앱은 읽지 않는다)
 ```
 
 데이터셋 로더는 `loadDataset({ pieceType, buffer })` 시그니처를 쓴다. UFR 버퍼·엣지 3-style을 추가할 때 `loader.ts` 내부만 바뀌고 호출부는 그대로다.
@@ -92,6 +102,7 @@ data/schema-history/   데이터 스키마 v1~v7 기록 (앱은 읽지 않는다
 ## 주의
 
 - **데이터의 알고리즘을 재계산하거나 "더 짧은 것"으로 교체하지 말 것.** 큐브 시뮬레이터로 3중 검증(메모 방향 / 코너 해결 / 엣지 무영향)을 통과한 값이다. 길이만 보고 최적화하면 엣지 무영향 조건이 깨진다.
+- **알고리즘·무브 테이블을 건드렸으면 자체 시뮬레이터로만 확인하지 말 것.** 최종 판정은 `cubejs` 다 (`tests/unit/cubejs-xcheck.test.ts`). 0.3.0 까지 실려 나간 `L` 오류가 그래서 안 잡혔다.
 - **프라임 기호는 반드시 ASCII `'`(U+0027).** 알고리즘 렌더는 `Alg.svelte` 한 곳만 거치며 `{@html}`을 쓰지 않는다. 무브 사이에는 실제 공백 텍스트 노드가 들어간다 — 복사했을 때 무브 구분이 유지되어야 한다.
 
 배경과 설계 근거는 `.dc_workspace/handoff/`와 `.dc_workspace/2026_08_03-corner-3style/`에 있다.

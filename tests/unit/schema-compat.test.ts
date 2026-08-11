@@ -6,17 +6,16 @@
  * 유무도 코드가 데이터에서 읽어야만 통과한다.
  */
 import { describe, it, expect } from 'vitest';
-import { CubeSim, type Perms } from '../../src/lib/cube/sim.js';
+import { CubeSim } from '../../src/lib/cube/sim.js';
 import { grade } from '../../src/lib/domain/grade.js';
 import { formatAlg } from '../../src/lib/domain/format.js';
 import { anchorOrder, anchorRef, anchorRefs, expandSetup, refLabel } from '../../src/lib/domain/anchor.js';
-import permsJson from '../../src/lib/cube/perms.json';
 import v1Json from '../../data/schema-history/corner-UBL.v1.json';
 import v2Json from '../../data/schema-history/corner-UBL.v2.json';
 import shippedJson from '../../src/lib/data/corner-UBL.json';
 import { ANCHOR_DIRECT, type Dataset } from '../../src/lib/domain/types.js';
 
-const sim = new CubeSim(permsJson as unknown as Perms);
+const sim = new CubeSim();
 
 /**
  * v9 이전 데이터는 `L` 과 `L'` 이 뒤바뀐 표기다. 생성 시뮬레이터의 L 정의가

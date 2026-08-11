@@ -1,40 +1,38 @@
 /**
- * 3x3 큐브 스티커 시뮬레이터.
+ * 3x3 큐브 시뮬레이터 — 무브 정의는 전부 외부 라이브러리(cubejs)가 한다.
  *
- * 원본: .dc_workspace/handoff/sim/cube-sim.js (378케이스 전수 검증 통과).
- * 타입만 입혔고 로직과 규약은 그대로다. 재작성이 아니다.
+ * ─── 왜 자체 구현을 버렸나 ──────────────────────────────────
+ * 0.3.0 까지는 `perms.json` 에 무브 테이블 27개를 직접 들고 있었다. 그 안의
+ * `L` 이 표준의 역(물리적 `L'`)이었고 `E` 는 `D` 가 아니라 `U` 를 따랐는데,
+ * 우리 검증은 그 파일로 만든 데이터를 그 파일로 확인하는 순환 논증이라
+ * 378 케이스 전수 검증을 매번 통과했다. 실제 큐브로 돌려본 사용자가 잡았다.
  *
- * 무브 테이블(perms.json)의 진위는 이 파일로 확인할 수 없다. 0.3.0 까지 `L` 이
- * 표준의 역(물리적 `L'`)이었는데도 자체 검증을 전부 통과했다 — 코너·엣지 양쪽이
- * 일관되게 뒤집혀 있어 내부적으로는 유효한 큐브였기 때문이다.
- * 판정은 `tests/unit/cubejs-xcheck.test.ts` (외부 라이브러리 cubejs) 가 한다.
+ * 그래서 무브의 물리를 우리 저장소에서 없앴다. 여기 남은 것은 큐브 상태를
+ * Speffz 문자로 읽는 방법(`speffz.ts` 의 좌표)뿐이고, 그 좌표도 데이터의
+ * `target1/target2` 삼중항과 대조해 확인한다 (`tests/unit/speffz.test.ts`).
+ * ────────────────────────────────────────────────────────────
  *
- * ─── 핵심 규약 ───────────────────────────────────────────────
+ * ─── 핵심 규약 (0.3.0 과 동일) ───────────────────────────────
  * state 는 { 위치: 그_위치에_있는_원래_스티커 } 객체.
  * 풀린 상태 = { A:'A', B:'B', ... }
- *
- * 무브 적용: next[pos] = st[table[pos]]
- * perms.json 의 테이블에는 역치환이 이미 적용되어 있어 단순 조회로 동작한다.
- * Python 원본(bld_sim.py)은 반대 규약이므로 그쪽을 참고해 옮기면 결과가 어긋난다.
  * ────────────────────────────────────────────────────────────
  */
 
+import Cube from 'cubejs/lib/cube.js';
 import type { Cubie, Sticker } from '../domain/types.js';
+import {
+	CORNER_AT,
+	CORNER_CUBIE,
+	CORNER_FACELETS,
+	CORNER_LETTERS,
+	EDGE_AT,
+	EDGE_CUBIE,
+	EDGE_FACELETS,
+	EDGE_LETTERS
+} from './speffz.js';
 
 export type PieceKind = 'corner' | 'edge';
 export type CubeState = Record<Sticker, Sticker>;
-type MoveTable = Record<Sticker, Sticker>;
-
-export interface Perms {
-	_convention?: string;
-	_notationNote?: string;
-	cornerLetters: string;
-	edgeLetters: string;
-	cornerLetterToCubie: Record<Sticker, Cubie>;
-	edgeLetterToCubie: Record<Sticker, Cubie>;
-	cornerMoves: Record<string, MoveTable>;
-	edgeMoves: Record<string, MoveTable>;
-}
 
 export interface IdentifyOptions {
 	bufferStickers?: Sticker[];
@@ -42,41 +40,83 @@ export interface IdentifyOptions {
 	bufferCubie?: Cubie;
 }
 
-export class CubeSim {
-	private readonly perms: Perms;
-	private readonly cornerLetters: Sticker[];
-	private readonly edgeLetters: Sticker[];
+const SOLVED_STRING = new Cube().asString();
 
-	constructor(perms: Perms) {
-		this.perms = perms;
-		this.cornerLetters = perms.cornerLetters.split('');
-		this.edgeLetters = perms.edgeLetters.split('');
+/** 조각의 색 조합. 코너 3색·엣지 2색 조합은 큐브에서 유일하므로 조각을 특정한다. */
+const colorKey = (facelets: number[], s: string) =>
+	facelets
+		.map((i) => s[i])
+		.sort()
+		.join('');
+
+const BY_COLOR = {
+	corner: new Map(
+		Object.entries(CORNER_FACELETS).map(([cubie, ix]) => [colorKey(ix, SOLVED_STRING), cubie])
+	),
+	edge: new Map(
+		Object.entries(EDGE_FACELETS).map(([cubie, ix]) => [colorKey(ix, SOLVED_STRING), cubie])
+	)
+};
+
+/**
+ * 알고리즘 하나의 스티커 치환 { 위치: 그 자리에 온 스티커의 원래 자리 }.
+ *
+ * 조각의 정체는 색 조합으로, 방향은 "그 색이 원래 어느 면이었나"로 되찾는다.
+ * cubejs 내부 표현(cp/co/ep/eo)을 읽지 않는 이유는 그쪽 인덱스 관례를 우리가
+ * 또 하나 떠안게 되기 때문이다. `asString()` 은 공개 API 이고 색은 거짓말을 안 한다.
+ */
+function permOf(alg: string, kind: PieceKind): CubeState {
+	const cube = new Cube();
+	try {
+		cube.move(alg);
+	} catch (e) {
+		// grade.ts 가 읽는 문구로 맞춰준다 (cubejs 는 "Invalid move: X" 라고 한다).
+		const m = /(?:Invalid|Unknown) move: (\S+)/.exec((e as Error).message);
+		throw new Error(`Unknown move: ${m ? m[1] : alg}`);
+	}
+	const s = cube.asString();
+	const facelets = kind === 'corner' ? CORNER_FACELETS : EDGE_FACELETS;
+	const at = kind === 'corner' ? CORNER_AT : EDGE_AT;
+	const byColor = BY_COLOR[kind];
+
+	const perm: CubeState = {};
+	for (const indices of Object.values(facelets)) {
+		const origin = byColor.get(colorKey(indices, s))!;
+		for (const i of indices) {
+			const source = facelets[origin].find((x) => SOLVED_STRING[x] === s[i])!;
+			perm[at[i]] = at[source];
+		}
+	}
+	return perm;
+}
+
+export class CubeSim {
+	private readonly cache = new Map<string, CubeState>();
+
+	private perm(alg: string, kind: PieceKind): CubeState {
+		const key = `${kind}:${alg}`;
+		let p = this.cache.get(key);
+		if (!p) {
+			p = permOf(alg, kind);
+			this.cache.set(key, p);
+		}
+		return p;
 	}
 
 	solvedCorners(): CubeState {
-		return Object.fromEntries(this.cornerLetters.map((p) => [p, p]));
+		return Object.fromEntries(CORNER_LETTERS.map((p) => [p, p]));
 	}
 
 	solvedEdges(): CubeState {
-		return Object.fromEntries(this.edgeLetters.map((p) => [p, p]));
+		return Object.fromEntries(EDGE_LETTERS.map((p) => [p, p]));
 	}
 
 	/** 알고리즘을 상태에 적용한다. 미지 무브는 throw. */
 	apply(state: CubeState, alg: string, kind: PieceKind = 'corner'): CubeState {
-		const moves = kind === 'corner' ? this.perms.cornerMoves : this.perms.edgeMoves;
-		let st: CubeState = { ...state };
 		const trimmed = alg.trim();
-		if (!trimmed) return st;
-
-		for (const tok of trimmed.split(/\s+/)) {
-			if (!tok) continue;
-			const table = moves[tok];
-			if (!table) throw new Error(`Unknown move: ${tok}`);
-			const next: CubeState = {};
-			for (const pos in st) next[pos] = st[table[pos]];
-			st = next;
-		}
-		return st;
+		if (!trimmed) return { ...state };
+		const table = this.perm(trimmed, kind);
+		return Object.fromEntries(Object.keys(state).map((pos) => [pos, state[table[pos]]]));
 	}
 
 	applyToCorners(state: CubeState, alg: string): CubeState {
@@ -97,8 +137,7 @@ export class CubeSim {
 
 	/** 영향받은 큐비 집합 (정렬됨) */
 	affectedCubies(state: CubeState, kind: PieceKind = 'corner'): Cubie[] {
-		const map =
-			kind === 'corner' ? this.perms.cornerLetterToCubie : this.perms.edgeLetterToCubie;
+		const map = kind === 'corner' ? CORNER_CUBIE : EDGE_CUBIE;
 		const set = new Set<Cubie>();
 		for (const [pos, s] of Object.entries(state)) {
 			if (pos !== s) set.add(map[pos]);
@@ -146,10 +185,8 @@ export class CubeSim {
 
 let cached: CubeSim | null = null;
 
-/** 기본 perms 로 시뮬레이터를 만든다. 모듈 스코프에 캐시된다. */
+/** 시뮬레이터를 만든다. 모듈 스코프에 캐시된다. */
 export async function getSim(): Promise<CubeSim> {
-	if (cached) return cached;
-	const mod = await import('./perms.json');
-	cached = new CubeSim(mod.default as unknown as Perms);
+	if (!cached) cached = new CubeSim();
 	return cached;
 }

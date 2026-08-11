@@ -2,13 +2,12 @@
  * v2 파생 필드 검증 — handoff/sim/test_v2.mjs 재현 (5292건).
  */
 import { describe, it, expect } from 'vitest';
-import { CubeSim, type Perms } from '../../src/lib/cube/sim.js';
+import { CubeSim } from '../../src/lib/cube/sim.js';
 import { invertAlg, cancelMoves, moveCount } from '../../src/lib/cube/notation.js';
-import permsJson from '../../src/lib/cube/perms.json';
 import dataJson from '../../src/lib/data/corner-UBL.json';
 import type { CaseEntry, Dataset } from '../../src/lib/domain/types.js';
 
-const sim = new CubeSim(permsJson as unknown as Perms);
+const sim = new CubeSim();
 const data = dataJson as unknown as Dataset;
 const entries = Object.entries(data.cases);
 const modes = ['direct', 'setup'] as const;

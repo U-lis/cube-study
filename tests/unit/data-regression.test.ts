@@ -5,13 +5,12 @@
  * 이식 검증이 되지 않는다.
  */
 import { describe, it, expect } from 'vitest';
-import { CubeSim, type Perms } from '../../src/lib/cube/sim.js';
+import { CubeSim } from '../../src/lib/cube/sim.js';
 import { invertAlg, cancelMoves, moveCount } from '../../src/lib/cube/notation.js';
-import permsJson from '../../src/lib/cube/perms.json';
 import dataJson from '../../src/lib/data/corner-UBL.json';
 import { ANCHOR_DIRECT, type Dataset } from '../../src/lib/domain/types.js';
 
-const sim = new CubeSim(permsJson as unknown as Perms);
+const sim = new CubeSim();
 const data = dataJson as unknown as Dataset;
 const entries = Object.entries(data.cases);
 

@@ -9,6 +9,7 @@ const KEY_MODE = 'ui.mode';
 const KEY_NOTATION = 'ui.notation';
 const KEY_THEME = 'ui.theme';
 const KEY_QUIZ_INPUT = 'ui.quizInput';
+const KEY_HIDE_INVERSE = 'ui.hideInverse';
 
 export type Theme = 'system' | 'light' | 'dark';
 
@@ -16,6 +17,12 @@ function read<T extends string>(key: string, allowed: readonly T[], fallback: T)
 	if (!browser) return fallback;
 	const v = localStorage.getItem(key);
 	return v && (allowed as readonly string[]).includes(v) ? (v as T) : fallback;
+}
+
+function readBool(key: string, fallback: boolean): boolean {
+	if (!browser) return fallback;
+	const v = localStorage.getItem(key);
+	return v === null ? fallback : v === 'true';
 }
 
 class Settings {
@@ -28,6 +35,12 @@ class Settings {
 	 * 성립하므로 표시 설정과 묶으면 한쪽을 바꿀 때 다른 쪽이 끌려간다.
 	 */
 	quizInput = $state<Mode>(read(KEY_QUIZ_INPUT, ['direct', 'setup'] as const, 'direct'));
+	/**
+	 * 기준 상세에서 역방향 케이스를 가린다. 역쌍 `XY`/`YX` 는 같은 기준에 속하고
+	 * 한쪽은 기준을 거꾸로 돌리는 것이라, 정방향만 훑으며 외울 때는 목록이 두 배로
+	 * 길어 보인다. 암기 상태와 무관한 표시 필터이므로 여기(표시 설정)에 둔다.
+	 */
+	hideInverse = $state<boolean>(readBool(KEY_HIDE_INVERSE, false));
 
 	constructor() {
 		if (browser) {
@@ -35,6 +48,7 @@ class Settings {
 				$effect(() => localStorage.setItem(KEY_MODE, this.mode));
 				$effect(() => localStorage.setItem(KEY_NOTATION, this.notation));
 				$effect(() => localStorage.setItem(KEY_QUIZ_INPUT, this.quizInput));
+				$effect(() => localStorage.setItem(KEY_HIDE_INVERSE, String(this.hideInverse)));
 				$effect(() => {
 					localStorage.setItem(KEY_THEME, this.theme);
 					const root = document.documentElement;

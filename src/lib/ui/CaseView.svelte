@@ -7,6 +7,13 @@
 	import { formatAlg, displayMoves } from '$lib/domain/format.js';
 	import { targetText } from '$lib/domain/validate.js';
 	import { anchorOrder, anchorRef, refAlg, refLabel } from '$lib/domain/anchor.js';
+	import {
+		altRoutes,
+		learnedAnchors,
+		shouldOfferAlternatives,
+		type Alternatives
+	} from '$lib/domain/alternatives.js';
+	import { loadAlternatives } from '$lib/data/loader.js';
 	import { type CaseEntry, type Dataset } from '$lib/domain/types.js';
 
 	/**
@@ -41,6 +48,21 @@
 	 */
 	let isMemorized = $derived(memorize.isChecked(mode, entry.case));
 	let memorizeLabel = $derived(mode === 'setup' ? 'setup 암기' : 'optimized 암기');
+
+	/**
+	 * "아는 기준으로 풀기". 배정된 기준을 아직 안 배웠을 때만 뜬다.
+	 *
+	 * 배운 기준은 자기 케이스 2개의 암기 체크에서 유추한다 (alternatives.ts).
+	 * 데이터는 필요할 때만 부른다 — 아무 기준도 안 배운 사용자(기본 상태)는
+	 * 이 조건에 걸리지 않으므로 파일을 받지 않는다.
+	 */
+	let learned = $derived(learnedAnchors(ds, memorize.setupChecked));
+	let offer = $derived(mode === 'setup' && !!ref && shouldOfferAlternatives(entry, learned));
+	let alt = $state<Alternatives | null>(null);
+	$effect(() => {
+		if (offer && !alt) loadAlternatives().then((a) => (alt = a));
+	});
+	let routes = $derived(offer && alt ? altRoutes(ds, alt, entry, learned) : []);
 </script>
 
 <section class="case" class:stale data-case={entry.case}>
@@ -136,6 +158,39 @@
 				</dl>
 			{/if}
 		</div>
+
+		<!--
+			배정된 기준을 아직 안 배웠을 때만 붙는 블록. 배우면 사라진다.
+			주된 답(위 블록)은 건드리지 않는다 — 여기가 답을 갈아치우면 "setup 암기"
+			체크가 무엇을 외웠다는 표시인지 흔들린다.
+
+			무브 수와 증가분을 함께 적는다. 아는 공식으로 푸는 대가가 몇 수인지
+			모르면 이 목록이 그냥 "더 나은 답" 처럼 보인다.
+		-->
+		{#if routes.length > 0}
+			<div class="block alt" data-alt-block>
+				<p class="alt-head">
+					아직 <b>{ref!.name}</b> 를 안 배웠다면 — 아는 기준으로
+				</p>
+				<ul>
+					{#each routes as r (r.name + String(r.inverse))}
+						<li data-alt-route={r.name}>
+							<span class="alt-anchor">{refLabel(r)}</span>
+							{#if r.setup}
+								<Alg parts={[{ text: r.setup, role: 'setup' }]} size="sm" />
+							{:else}
+								<span class="nosetup">셋업 없음</span>
+							{/if}
+							<span class="alt-moves">
+								{r.moves}수<span class="alt-extra">
+									{r.extraMoves > 0 ? `+${r.extraMoves}` : r.extraMoves === 0 ? '±0' : r.extraMoves}
+								</span>
+							</span>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
 	{:else}
 		<div class="block">
 			<dl>
@@ -230,6 +285,61 @@
 		padding: 0.75rem;
 		background: var(--bg);
 		border-radius: 8px;
+	}
+	/*
+	 * "아는 기준으로" 블록. 주된 답과 같은 상자를 쓰되 한 단계 낮춰 보이게 한다 —
+	 * 테두리만 두고 배경을 비운다. 같은 무게로 놓으면 답이 둘로 보인다.
+	 */
+	.alt {
+		margin-top: 0.5rem;
+		background: none;
+		border: 1px solid var(--border);
+	}
+	.alt-head {
+		margin: 0 0 0.45rem;
+		font-size: 0.8rem;
+		color: var(--muted);
+	}
+	.alt-head b {
+		font-family: var(--mono);
+		font-weight: 600;
+		color: var(--fg);
+	}
+	.alt ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+	.alt li {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+	}
+	.alt-anchor {
+		font-family: var(--mono);
+		font-weight: 600;
+		color: var(--accent);
+		min-width: 2.6em;
+	}
+	/* 무브 수는 오른쪽 끝에 붙이고 자릿수 폭을 고정한다 (NFR-MC-2). */
+	.alt-moves {
+		margin-left: auto;
+		font-size: 0.8rem;
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+	.alt-extra {
+		display: inline-block;
+		min-width: 2.4em;
+		text-align: right;
+	}
+	.alt .nosetup {
+		font-size: 0.8rem;
+		color: var(--muted);
 	}
 	.anchor-name {
 		font-family: var(--mono);

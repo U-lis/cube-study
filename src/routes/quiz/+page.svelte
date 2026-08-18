@@ -27,7 +27,8 @@
 		refLabel,
 		type AnchorRef
 	} from '$lib/domain/anchor.js';
-	import { type CaseEntry, type Dataset } from '$lib/domain/types.js';
+	import { pickNext, pushRecent } from '$lib/domain/quiz.js';
+	import { type CaseCode, type CaseEntry, type Dataset } from '$lib/domain/types.js';
 
 	let ds = $state<Dataset | null>(null);
 	let sim = $state<CubeSim | null>(null);
@@ -35,6 +36,11 @@
 	let moves = $state<string[]>([]);
 	let picked = $state<AnchorRef | null>(null);
 	let verdict = $state<Verdict | null>(null);
+	/**
+	 * 최근 출제 이력. 학습 상태가 아니라 이번 세션의 출제 분포를 고르게 하는 값이므로
+	 * localStorage 에 남기지 않는다 — 새로고침하면 비워지는 것이 맞다.
+	 */
+	let recent = $state<CaseCode[]>([]);
 
 	const INPUT_OPTIONS: [
 		{ value: Mode; label: string; hint: string; title: string },
@@ -87,16 +93,18 @@
 
 	function next() {
 		if (!ds) return;
-		if (pool.length === 0) {
+		// 직전 문제도 이력에 넣어 넘긴다. current 가 recent 에 들어가는 것은 여기뿐이라,
+		// 문제를 넘기지 않고 화면을 떠난 케이스는 이력에 남지 않는다.
+		const seen = current ? pushRecent(recent, current.case) : recent;
+		// 이름을 code 로 둔다 — 바깥의 picked 는 기준공식 선택이라 가리면 헷갈린다.
+		const code = pickNext(pool, seen, Math.random);
+		if (code === null) {
 			current = null;
 			clearEntry();
 			return;
 		}
-		let pick: string;
-		do {
-			pick = pool[Math.floor(Math.random() * pool.length)];
-		} while (pool.length > 1 && pick === current?.case);
-		current = ds.cases[pick];
+		recent = seen;
+		current = ds.cases[code];
 		clearEntry();
 	}
 
@@ -200,7 +208,16 @@
 				</div>
 			</header>
 
-			<div class="entry" data-alg={alg} data-picked={picked ? refLabel(picked) : ''}>
+			<!--
+				판정이 나면 입력창 자체를 칠한다 (정답 녹색 / 그 외 빨강). 아래 설명 줄은
+				자리도 문구도 그대로다 — 배경색은 그 문장을 읽기 전에 결과를 알리는 역할만 한다.
+			-->
+			<div
+				class="entry"
+				data-alg={alg}
+				data-picked={picked ? refLabel(picked) : ''}
+				data-result={verdict ? (verdict.kind === 'correct' ? 'ok' : 'bad') : ''}
+			>
 				{#if entryParts.length > 0}
 					<Alg parts={entryParts} size="md" />
 				{:else if settings.quizInput === 'setup'}
@@ -327,6 +344,23 @@
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: 8px;
+		/* 색만 바뀐다. 크기·여백은 그대로라 판정 순간에 레이아웃이 밀리지 않는다 */
+		transition:
+			background-color 120ms ease,
+			border-color 120ms ease;
+	}
+	.entry[data-result='ok'] {
+		background: var(--ok-bg);
+		border-color: var(--ok);
+	}
+	.entry[data-result='bad'] {
+		background: var(--danger-bg);
+		border-color: var(--danger);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.entry {
+			transition: none;
+		}
 	}
 	.placeholder {
 		color: var(--muted);
@@ -339,14 +373,21 @@
 		background: var(--surface);
 		border: 1px solid var(--border);
 	}
+	/*
+	 * 입력창과 같은 토큰을 쓴다. 정답을 accent 로 칠하던 것을 ok 로 바꾼 이유는,
+	 * accent 가 기준공식 이름에도 쓰이는 색이라 "정답" 의 뜻을 겸할 수 없어서다.
+	 */
 	.verdict[data-verdict='correct'] {
-		color: var(--accent);
-		border-color: var(--accent);
+		color: var(--ok);
+		border-color: var(--ok);
 	}
 	.verdict[data-verdict='edge-dirty'],
-	.verdict[data-verdict='twist'] {
-		color: var(--insert);
-		border-color: var(--insert);
+	.verdict[data-verdict='twist'],
+	.verdict[data-verdict='wrong'],
+	.verdict[data-verdict='identity'],
+	.verdict[data-verdict='invalid-move'] {
+		color: var(--danger);
+		border-color: var(--danger);
 	}
 	.answer {
 		padding: 0.7rem;

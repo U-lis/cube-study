@@ -8,7 +8,9 @@
 import { test, expect, type Page } from '@playwright/test';
 import data from '../../src/lib/data/corner-UBL.json' with { type: 'json' };
 
-const parsed = data as unknown as { cases: Record<string, { direct: { alg: string } }> };
+const parsed = data as unknown as {
+	cases: Record<string, { direct: { alg: string }; inverse: string }>;
+};
 const cases = parsed.cases;
 
 async function type(page: Page, alg: string) {
@@ -103,5 +105,20 @@ test.describe('출제 분포 (최근 20개 제외)', () => {
 		// 있게 된다. 여기서 세는 것은 40개가 실제로 뽑혔다는 것뿐이다.
 		expect(drawn).toHaveLength(40);
 		expect(new Set(drawn).size).toBeGreaterThanOrEqual(21);
+	});
+
+	test('역케이스도 최근 20개 안에서는 다시 안 나온다', async ({ page }) => {
+		test.slow();
+		await page.goto('/quiz');
+		const drawn: string[] = [];
+		for (let i = 0; i < 40; i++) {
+			const code = await currentCase(page);
+			// 코드가 달라도 역케이스는 답이 서로의 뒤집기라 사실상 같은 문제다
+			expect(drawn.slice(-20).map((c) => cases[c].inverse)).not.toContain(code);
+			drawn.push(code);
+			await type(page, 'R');
+			await page.locator('[data-action="submit"]').click();
+			await page.locator('[data-action="next"]').click();
+		}
 	});
 });

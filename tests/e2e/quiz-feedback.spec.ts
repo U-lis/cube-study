@@ -24,26 +24,43 @@ async function currentCase(page: Page): Promise<string> {
 const bg = (page: Page) =>
 	page.locator('.entry').evaluate((el) => getComputedStyle(el).backgroundColor);
 
+/**
+ * 퀴즈를 열고 색 전환을 끈다.
+ *
+ * `.entry` 의 배경색에 120ms 전환이 걸려 있어서, data-result 가 바뀐 직후에 읽으면
+ * 전환 중간값이 잡힌다 — CI 에서 오답 색이 정답 색과 같게 읽혀 실제로 깨졌다.
+ * 여기서 확인할 것은 전환 과정이 아니라 도착한 색이다.
+ *
+ * `test.use({ reducedMotion: 'reduce' })` 로도 되어야 할 것 같지만 이 환경에서는
+ * `matchMedia('(prefers-reduced-motion: reduce)')` 가 false 로 나온다. 에뮬레이션에
+ * 기대지 않고 스타일로 직접 끈다. 앱의 prefers-reduced-motion 처리는 그대로 둔다.
+ */
+async function openQuiz(page: Page) {
+	await page.goto('/quiz');
+	await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
+}
+
 test.describe('판정 시인성', () => {
+
 	test('판정 전 입력창에는 결과 표시가 없다', async ({ page }) => {
-		await page.goto('/quiz');
+		await openQuiz(page);
 		await currentCase(page);
 		await expect(page.locator('.entry')).toHaveAttribute('data-result', '');
 	});
 
 	test('정답이면 입력창이 ok 로 칠해진다', async ({ page }) => {
-		await page.goto('/quiz');
+		await openQuiz(page);
 		const code = await currentCase(page);
 		const before = await bg(page);
 		await type(page, cases[code].direct.alg);
 		await page.locator('[data-action="submit"]').click();
 		await expect(page.locator('[data-verdict="correct"]')).toBeVisible();
 		await expect(page.locator('.entry')).toHaveAttribute('data-result', 'ok');
-		await expect.poll(() => bg(page)).not.toBe(before);
+		expect(await bg(page)).not.toBe(before);
 	});
 
 	test('오답이면 입력창이 bad 로 칠해지고 정답과 다른 색이다', async ({ page }) => {
-		await page.goto('/quiz');
+		await openQuiz(page);
 		const code = await currentCase(page);
 
 		await type(page, cases[code].direct.alg);
@@ -64,7 +81,7 @@ test.describe('판정 시인성', () => {
 	});
 
 	test('다음 문제로 넘어가면 색이 판정 전으로 돌아간다', async ({ page }) => {
-		await page.goto('/quiz');
+		await openQuiz(page);
 		const code = await currentCase(page);
 		const before = await bg(page);
 		await type(page, cases[code].direct.alg);
@@ -72,12 +89,11 @@ test.describe('판정 시인성', () => {
 		await expect(page.locator('.entry')).toHaveAttribute('data-result', 'ok');
 		await page.locator('[data-action="next"]').click();
 		await expect(page.locator('.entry')).toHaveAttribute('data-result', '');
-		// 배경색에 120ms 전환이 걸려 있다. 값이 되돌아올 때까지 기다린다.
-		await expect.poll(() => bg(page)).toBe(before);
+		expect(await bg(page)).toBe(before);
 	});
 
 	test('설명 줄의 자리와 문구는 그대로다', async ({ page }) => {
-		await page.goto('/quiz');
+		await openQuiz(page);
 		const code = await currentCase(page);
 		await type(page, cases[code].direct.alg);
 		await page.locator('[data-action="submit"]').click();

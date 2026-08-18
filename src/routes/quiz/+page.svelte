@@ -97,7 +97,8 @@
 		// 문제를 넘기지 않고 화면을 떠난 케이스는 이력에 남지 않는다.
 		const seen = current ? pushRecent(recent, current.case) : recent;
 		// 이름을 code 로 둔다 — 바깥의 picked 는 기준공식 선택이라 가리면 헷갈린다.
-		const code = pickNext(pool, seen, Math.random);
+		// 역케이스는 데이터가 알려준다 (378/378 상호 역). 코드에 규칙을 적지 않는다.
+		const code = pickNext(pool, seen, (c) => ds!.cases[c]?.inverse, Math.random);
 		if (code === null) {
 			current = null;
 			clearEntry();

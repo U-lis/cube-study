@@ -14,7 +14,9 @@
 	--interchange: #1d4ed8;
 	--danger: #dc2626;
 	--danger-bg: #fee2e2;
-	--accent: #0f766e;
+	--ok: #166534;
+	--ok-bg: #dcfce7;
+	--accent: #9333a8;
 }
 
 /* 다크 토큰. 시스템 설정을 기본으로 하되 수동 선택이 항상 이긴다. */
@@ -29,7 +31,9 @@
 		--interchange: #7dabff;
 		--danger: #f87171;
 		--danger-bg: #451a1a;
-		--accent: #5eead4;
+		--ok: #5cd696;
+		--ok-bg: #14311f;
+		--accent: #d99ae0;
 	}
 }
 
@@ -43,7 +47,9 @@
 	--interchange: #7dabff;
 	--danger: #f87171;
 	--danger-bg: #451a1a;
-	--accent: #5eead4;
+	--ok: #5cd696;
+	--ok-bg: #14311f;
+	--accent: #d99ae0;
 }
 
 :root[data-theme='light'] {
@@ -56,7 +62,9 @@
 	--interchange: #1d4ed8;
 	--danger: #dc2626;
 	--danger-bg: #fee2e2;
-	--accent: #0f766e;
+	--ok: #166534;
+	--ok-bg: #dcfce7;
+	--accent: #9333a8;
 }
 
 * {

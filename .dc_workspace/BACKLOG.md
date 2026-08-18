@@ -80,6 +80,57 @@
 무브를 모르고 상태만 그리므로, 0.3.1 에서 정한 "무브의 물리는 저장소에 두지 않는다" 와도
 충돌하지 않는다.
 
+### 참고 구현 검토 (2026-08-18)
+
+두 개를 실제로 받아서 코드를 봤다. **둘 다 가져다 쓸 물건은 아니지만 반대 사례로 유용하다.**
+
+| | PremUbhe/3d-cude | cristianyamashita (vc/page/game/cube.html) |
+|---|---|---|
+| 면별 material | ✗ 큐비당 1개 | **○ 배열 6개** |
+| 색 | 검은 damascus-steel 텍스처 | 표준 6색 |
+| 회전 | OrbitControls | OrbitControls |
+| 우리 요구 충족 | 못 함 | 구조는 맞음 |
+
+**PremUbhe/3d-cude** — Next.js + React, three 0.181. `new THREE.Mesh(cubeGeometry, cubeMaterialOne)`
+으로 큐비당 material 하나다. 머티리얼 2개로 Mesh 27개를 칠하는 검은 금속 장식 큐브이고
+루빅스 색이 아예 없다. 면별 색은커녕 큐비별 색도 없어서 구조가 우리와 반대 방향이다.
+자동 회전 데모이고(`autoRotate = true`), **LICENSE 파일이 없어 기본값은 저작권 전부 보유**다.
+
+**cristianyamashita** — 단일 HTML, three 0.132.2 + OrbitControls(CDN). 구조가 우리가
+필요한 그것이다. 다만 N×N×N 범용에 레이어 회전 애니메이션까지 있고(우리는 3×3 고정,
+회전 애니메이션 불필요 — 상태를 그려 보여주는 것이 목적이다), three 0.132 는 2021년 판이라
+`examples/js/` 경로가 지금은 없다(현재는 `examples/jsm/`). 실제로 쓸 알맹이는 아래 10줄
+남짓이다.
+
+### 우리가 만들 때 쓸 규약
+
+`BoxGeometry` 는 **면마다 material 인덱스가 따로**다. Mesh 에 배열을 넘기면 면별로 다른
+색이 된다. 인덱스 순서는 three.js 규약이고 위 참고 구현도 같은 순서를 쓴다.
+
+```
+0: +X   1: -X   2: +Y   3: -Y   4: +Z   5: -Z
+```
+
+```js
+const mesh = new THREE.Mesh(boxGeom, [m0, m1, m2, m3, m4, m5]);
+```
+
+참고 구현은 mask 로 "겉면인가" 만 판정해 표준 6색을 넣고 `materialArrayCache` 로 mask 별
+캐시를 둔다. **우리는 그 캐시를 걷어내야 한다** — 같은 mask 라도 큐비마다 색이 달라진다.
+
+우리 쪽 입력은 이미 있다.
+
+- `src/lib/cube/speffz.ts` 의 `CORNER_FACELETS` / `EDGE_FACELETS` 가 큐비 → facelet 인덱스를
+  들고 있다 (예: `UBL: [0, 36, 47]`). 이것과 (큐비, ±축) 을 맞물리면 어느 면에 어느 스티커
+  문자가 오는지 나온다
+- `sim.ts` 가 `{ 위치: 원래_스티커 }` 상태를 낸다
+
+즉 렌더러는 무브를 모르고 상태만 그리면 된다. 0.3.1 에서 정한 "무브의 물리는 저장소에
+두지 않는다" 와 충돌하지 않는다.
+
+3-style 학습 용도로는 버퍼(UBL)와 타깃 2개를 서로 다른 색으로 칠하는 것이 목적이므로,
+material 3개를 갈아끼우는 수준이면 된다.
+
 ### 탈락: `cubing` (cubing.js)
 
 큐브 전용이고 `<twisty-player>` 웹 컴포넌트에 드래그 회전이 이미 들어 있어서 가장

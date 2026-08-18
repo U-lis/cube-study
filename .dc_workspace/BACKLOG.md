@@ -58,6 +58,62 @@
 
 ---
 
+## 3D 큐브 뷰어 — 0.5.0+ 후보
+
+손으로 쓸어 돌려보는 3D 큐브. **특정 큐비의 특정 면에만 임의의 색을 칠할 수 있어야
+한다** (버퍼 UBL 과 타깃 2개를 서로 다른 색으로 구분하는 것이 목적).
+2026-08-18 에 라이브러리를 조사했다.
+
+### 결론: `three` (three.js)
+
+임의 색상 요구를 만족하는 것이 이것뿐이다. `BoxGeometry` 는 면마다 material 인덱스가
+따로라 큐비 하나에 material 6개를 물리면 면별로 색을 지정할 수 있고, `OrbitControls`
+가 터치 드래그 회전을 담당한다. 큐브 자체는 직접 조립해야 한다.
+
+- `three@0.185.1` (2026-07-01), MIT
+- 실측 크기: `three.module.min.js` 357.0 KB → **gzip 84.8 KB**
+  (`three.core` gzip 99.0 KB, `three.webgpu` gzip 180.8 KB — WebGL 로 충분하다)
+- alternatives 데이터처럼 지연 로드하면 초기 진입에는 영향이 없다
+
+**이 저장소와 잘 맞는다.** `sim.ts` 가 이미 `{ 위치: 원래_스티커 }` 상태를 내놓고
+`speffz.ts` 가 facelet 좌표를 들고 있어서 렌더러가 받을 입력이 준비돼 있다. 렌더러는
+무브를 모르고 상태만 그리므로, 0.3.1 에서 정한 "무브의 물리는 저장소에 두지 않는다" 와도
+충돌하지 않는다.
+
+### 탈락: `cubing` (cubing.js)
+
+큐브 전용이고 `<twisty-player>` 웹 컴포넌트에 드래그 회전이 이미 들어 있어서 가장
+유력해 보였지만, **면에 임의 색을 못 넣는다.**
+
+```ts
+type StickeringMask      = { orbits: Record<string, OrbitStickeringMask> }
+type OrbitStickeringMask = { pieces: (PieceStickeringMask | null)[] }
+type PieceStickeringMask = { facelets: (FaceletMeshStickeringMask | ... | null)[] }
+
+// 면에 넣을 수 있는 값이 고정 7종 열거형이다
+type FaceletMeshStickeringMask =
+  "regular" | "dim" | "oriented" | "experimentalOriented2" | "ignored" | "invisible" | "mystery"
+```
+
+`FaceletStickeringMask` 도 `{ mask, hintMask }` 뿐이고 타입 전체에 hex/color 를 받는
+필드가 없다. 즉 "강조 / 흐리게 / 숨김" 은 되고 "이 면을 이 색으로" 는 안 된다.
+`dist/lib/cubing` 이 8.2MB (chunks 6.8MB) 라 크기도 균형이 안 맞는다.
+
+`cubing@0.63.3` (2026-02-26), MPL-2.0 OR GPL-3.0-or-later.
+요구가 "강조/흐리게" 로 바뀌면 이쪽이 다시 1순위가 된다.
+
+### 이미 쓰는 `cubejs` 는 렌더링을 못 한다
+
+혼동하기 쉬워 적어둔다. `cubejs` (ldez, 1.3.2) 는 `lib/` 에 파일 4개뿐이고
+(`cube.js` `solve.js` `async.js` `worker.js`) 노출 API 가 모델과 솔버뿐이다 —
+`move` `multiply` `asString` `isSolved` `upright` 등. 그리기 메서드가 없다.
+
+npm 검색도 노이즈가 크다. **분석 플랫폼 Cube.js (`@cubejs-client/*`) 가 이름을
+선점**해서 "cube" 로 검색하면 상위를 그쪽이 차지한다. 우리와 무관하다.
+`three-rubiks-cube` (2020-09-28), `rubiks-cube` (2018-08-26) 은 방치 상태다.
+
+---
+
 ## 그 밖의 로드맵 (0.1.0 SPEC 의 Out of Scope 에서)
 
 | 항목 | 예정 |
@@ -71,7 +127,7 @@
 | UFR 버퍼 코너 데이터 | 0.5.0+ |
 | 엣지 3-style (440+ 케이스) | 0.5.0+ |
 | 멀티페이즈 타이머 | 0.5.0+ |
-| 3D 큐브 애니메이션 | 0.5.0+ |
+| 3D 큐브 애니메이션 | 0.5.0+ — 위 "3D 큐브 뷰어" 절에 라이브러리 조사 결과 |
 
 진도율 기능을 만들 때는 NFR-9(dry한 정보 앱)를 특히 주의한다. 그 영역은
 진도바와 달성 연출이 기본값처럼 붙는다.

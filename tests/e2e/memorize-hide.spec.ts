@@ -96,7 +96,7 @@ test.describe('기본 상태 (FR-MC-14)', () => {
 });
 
 test.describe('체크 + 토글 ON (FR-MC-13, 17)', () => {
-	test('T4-2. 체크된 <li> 는 display:none, DOM 개수·ul top 은 불변', async ({ page }) => {
+	test('T4-2. 체크된 <li> 는 display:none, DOM 개수·ul top 은 불변 @viewport', async ({ page }) => {
 		const codes = anchoredCases(firstAnchor);
 		test.skip(codes.length < 2, `${firstAnchor} 케이스 2개 미만`);
 		const target = codes[0];

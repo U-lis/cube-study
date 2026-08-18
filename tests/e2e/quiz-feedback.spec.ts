@@ -101,14 +101,21 @@ test.describe('판정 시인성', () => {
 	});
 });
 
+/**
+ * 20칸 창을 증명하는 데 필요한 최소치보다 조금 넉넉한 값. 40회는 과했다 —
+ * 이 파일 두 테스트가 CI E2E 시간의 상당 부분을 쓰고 있었다. 25면 창이 한 번
+ * 가득 차고 그 뒤로 5칸이 더 밀려나므로 "밀려난 것이 다시 나오는가" 까지 본다.
+ */
+const DRAWS = 25;
+
 test.describe('출제 분포 (최근 20개 제외)', () => {
-	test('연속 40문항 동안 최근 20개 안에서 같은 케이스가 다시 나오지 않는다', async ({
+	test('연속 25문항 동안 최근 20개 안에서 같은 케이스가 다시 나오지 않는다', async ({
 		page
 	}) => {
 		test.slow();
 		await page.goto('/quiz');
 		const drawn: string[] = [];
-		for (let i = 0; i < 40; i++) {
+		for (let i = 0; i < DRAWS; i++) {
 			const code = await currentCase(page);
 			expect(drawn.slice(-20)).not.toContain(code);
 			drawn.push(code);
@@ -119,15 +126,14 @@ test.describe('출제 분포 (최근 20개 제외)', () => {
 		}
 		// 21칸 이상 떨어진 재출현은 막지 않는다 — 그것까지 막으면 남은 후보를 역산할 수
 		// 있게 된다. 여기서 세는 것은 40개가 실제로 뽑혔다는 것뿐이다.
-		expect(drawn).toHaveLength(40);
-		expect(new Set(drawn).size).toBeGreaterThanOrEqual(21);
+		expect(drawn).toHaveLength(DRAWS);
 	});
 
 	test('역케이스도 최근 20개 안에서는 다시 안 나온다', async ({ page }) => {
 		test.slow();
 		await page.goto('/quiz');
 		const drawn: string[] = [];
-		for (let i = 0; i < 40; i++) {
+		for (let i = 0; i < DRAWS; i++) {
 			const code = await currentCase(page);
 			// 코드가 달라도 역케이스는 답이 서로의 뒤집기라 사실상 같은 문제다
 			expect(drawn.slice(-20).map((c) => cases[c].inverse)).not.toContain(code);

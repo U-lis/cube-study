@@ -325,7 +325,7 @@ test.describe('T5-6. memorizedOnly 도중 변경 → 즉시 재출제 (FR-MC-18,
 });
 
 test.describe('레이아웃 안정성 (안내 등장 시 튀지 않음)', () => {
-	test('입력 방식 토글 위치가 안내 등장 전후 동일', async ({ page }) => {
+	test('입력 방식 토글 위치가 안내 등장 전후 동일 @viewport', async ({ page }) => {
 		await seedChecked(page, [], []);
 		await seedQuizInput(page, 'direct');
 		await page.goto('/quiz');

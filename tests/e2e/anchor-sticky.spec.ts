@@ -17,7 +17,7 @@ const CODE = Object.entries(anchors).sort((a, b) => b[1].count - a[1].count)[0][
  * 매번 위로 올라가 확인하게 된다.
  */
 test.describe('기준 상세 고정 머리', () => {
-	test('한참 스크롤해도 기준공식이 화면 위에 남는다', async ({ page }) => {
+	test('한참 스크롤해도 기준공식이 화면 위에 남는다 @viewport', async ({ page }) => {
 		await page.goto(`/anchors/${CODE}`);
 		await page.waitForSelector('[data-case-row]');
 
@@ -51,7 +51,7 @@ test.describe('기준 상세 고정 머리', () => {
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', code);
 	});
 
-	test('낮은 화면에서는 고정하지 않는다', async ({ page }) => {
+	test('낮은 화면에서는 고정하지 않는다 @viewport', async ({ page }) => {
 		// 가로 방향 폰. 머리가 280px 남짓이라 고정하면 목록이 서너 줄만 남는다
 		await page.setViewportSize({ width: 740, height: 420 });
 		await page.goto(`/anchors/${CODE}`);

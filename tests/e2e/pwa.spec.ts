@@ -213,7 +213,7 @@ test.describe('테마 (FR-21)', () => {
 });
 
 test.describe('반응형 (FR-22)', () => {
-	test('모바일에서 가로 스크롤이 없다', async ({ page }) => {
+	test('모바일에서 가로 스크롤이 없다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 375, height: 667 });
 		for (const path of ['/', '/?c=CU', '/anchors', anAnchorPath, '/quiz']) {
 			await page.goto(path);
@@ -224,7 +224,7 @@ test.describe('반응형 (FR-22)', () => {
 		}
 	});
 
-	test('스크롤해도 입력 필드가 화면 상단에 남는다', async ({ page }) => {
+	test('스크롤해도 입력 필드가 화면 상단에 남는다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 375, height: 667 });
 		await page.goto('/?c=CU'); // 내용이 긴 케이스
 		const input = page.getByLabel('케이스 코드');
@@ -239,7 +239,7 @@ test.describe('반응형 (FR-22)', () => {
 		await expect(input).toBeInViewport();
 	});
 
-	test('모바일에서 무브 버튼 18개가 모두 보인다', async ({ page }) => {
+	test('모바일에서 무브 버튼 18개가 모두 보인다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 375, height: 667 });
 		await page.goto('/quiz');
 		const btns = page.locator('[data-move]');
@@ -247,7 +247,7 @@ test.describe('반응형 (FR-22)', () => {
 		for (let i = 0; i < 18; i++) await expect(btns.nth(i)).toBeVisible();
 	});
 
-	test('데스크탑에서 최대 폭이 유지된다', async ({ page }) => {
+	test('데스크탑에서 최대 폭이 유지된다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 1280, height: 800 });
 		await page.goto('/');
 		const w = await page.evaluate(

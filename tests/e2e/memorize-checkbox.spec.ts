@@ -209,7 +209,7 @@ test.describe('이벤트 독립 (AD-7)', () => {
 });
 
 test.describe('터치 대상 크기 (FR-MC-4)', () => {
-	test('T2-5. 체크박스 라벨 높이 44px 이상', async ({ page }) => {
+	test('T2-5. 체크박스 라벨 높이 44px 이상 @viewport', async ({ page }) => {
 		const code = Object.keys(parsed.cases)[0];
 		await page.goto(`/?c=${code}`);
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', code);
@@ -230,7 +230,7 @@ test.describe('터치 대상 크기 (FR-MC-4)', () => {
 });
 
 test.describe('레이아웃 안정성 (NFR-MC-2)', () => {
-	test('T2-6a. CaseView 체크박스 토글 전후 .main 의 top 이 동일하다', async ({ page }) => {
+	test('T2-6a. CaseView 체크박스 토글 전후 .main 의 top 이 동일하다 @viewport', async ({ page }) => {
 		const code = Object.keys(parsed.cases)[0];
 		await page.goto(`/?c=${code}`);
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', code);
@@ -243,7 +243,7 @@ test.describe('레이아웃 안정성 (NFR-MC-2)', () => {
 		expect(after!.y).toBe(before!.y);
 	});
 
-	test('T2-6b. 기준 상세 <ul> 높이가 토글 전후 동일하다', async ({ page }) => {
+	test('T2-6b. 기준 상세 <ul> 높이가 토글 전후 동일하다 @viewport', async ({ page }) => {
 		await page.goto(`/anchors/${firstAnchor}`);
 		const ul = page.locator('ul').first();
 		const before = await ul.boundingBox();

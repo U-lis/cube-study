@@ -72,7 +72,7 @@ test.describe('조회', () => {
 });
 
 test.describe('sticky 결과 (FR-4)', () => {
-	test('한 글자 지워도 결과가 사라지지 않고 흐려진다', async ({ page }) => {
+	test('한 글자 지워도 결과가 사라지지 않고 흐려진다 @viewport', async ({ page }) => {
 		await page.goto('/');
 		await input(page).fill('LB');
 		await expect(result(page)).toBeVisible();

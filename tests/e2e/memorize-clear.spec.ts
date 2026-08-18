@@ -53,7 +53,7 @@ async function openAbout(page: Page): Promise<void> {
 }
 
 test.describe('T6-1. 버튼 존재 및 위치 (FR-MC-21)', () => {
-	test('About 모달에 전체 해제 버튼, 업데이트 확인 아래, 높이 44px 이상', async ({ page }) => {
+	test('About 모달에 전체 해제 버튼, 업데이트 확인 아래, 높이 44px 이상 @viewport', async ({ page }) => {
 		await page.goto('/');
 		await openAbout(page);
 
@@ -72,7 +72,7 @@ test.describe('T6-1. 버튼 존재 및 위치 (FR-MC-21)', () => {
 });
 
 test.describe('T6-2. 2단계 확인 흐름 (FR-MC-22)', () => {
-	test('첫 클릭 → confirming, 두 번째 클릭 → 실행 + idle 복귀', async ({ page }) => {
+	test('첫 클릭 → confirming, 두 번째 클릭 → 실행 + idle 복귀 @viewport', async ({ page }) => {
 		const seededSetup = allCodes.slice(0, 2);
 		const seededDirect = allCodes.slice(0, 1);
 		await seedChecked(page, seededSetup, seededDirect);

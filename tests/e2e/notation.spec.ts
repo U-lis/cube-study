@@ -56,7 +56,7 @@ test.describe('알고리즘 표기', () => {
 		);
 	});
 
-	test('무브가 중간에서 줄바꿈되지 않는다', async ({ page }) => {
+	test('무브가 중간에서 줄바꿈되지 않는다 @viewport', async ({ page }) => {
 		// 가장 긴 실행형을 좁은 화면에 놓는다. strict/setup 은 무브 파트가 셋업뿐이라
 		// 길이가 안 나오므로 compact 로 본다.
 		const longest = Object.keys(cases).reduce((a, b) =>

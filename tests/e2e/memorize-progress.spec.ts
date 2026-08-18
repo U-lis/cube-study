@@ -169,7 +169,7 @@ test.describe('기준공식 목록 진도 표시 (FR-MC-11)', () => {
 });
 
 test.describe('레이아웃 안정성 (T3-6, AD-4, NFR-MC-2)', () => {
-	test('T3-6a. 상세: 체크 전후 진도 컨테이너 폭·리스트 top 유지', async ({ page }) => {
+	test('T3-6a. 상세: 체크 전후 진도 컨테이너 폭·리스트 top 유지 @viewport', async ({ page }) => {
 		const codes = anchoredCases(firstAnchor);
 		test.skip(codes.length < 1, `${firstAnchor} 에 케이스가 없다`);
 
@@ -191,7 +191,7 @@ test.describe('레이아웃 안정성 (T3-6, AD-4, NFR-MC-2)', () => {
 		expect(topAfter).toBe(topBefore);
 	});
 
-	test('T3-6b. 목록: 카드 진도 폭이 값 변화 후에도 동일', async ({ page }) => {
+	test('T3-6b. 목록: 카드 진도 폭이 값 변화 후에도 동일 @viewport', async ({ page }) => {
 		const codes = anchoredCases(firstAnchor);
 		test.skip(codes.length < 1, `${firstAnchor} 에 케이스가 없다`);
 

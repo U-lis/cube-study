@@ -9,6 +9,7 @@
  */
 import { test, expect, type Locator, type Page } from '@playwright/test';
 import sharp from 'sharp';
+import { ENTRY_SEPARATOR as SEPARATOR } from '../../src/lib/domain/tracing.js';
 
 /** 워커 준비 대기. 초기화 + 큐 적재까지다. */
 async function ready(page: Page): Promise<void> {
@@ -51,7 +52,7 @@ async function playRound(page: Page, targets = 'ABC'): Promise<void> {
 	if (await page.locator('[data-memorized]').isEnabled()) {
 		await page.locator('[data-memorized]').click();
 	}
-	await page.locator('[data-targets]').fill(targets);
+	await page.locator('[data-entry]').fill(targets);
 	await page.locator('[data-grade]').click();
 	await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'result');
 }
@@ -149,7 +150,7 @@ test.describe('T3-3 두 모드 (FR-TR-21, 23)', () => {
 		await open(page, { 'trace.mode': 'follow' });
 		await ready(page);
 		await page.locator('[data-start]').click();
-		await expect(page.locator('[data-targets]')).toBeEnabled();
+		await expect(page.locator('[data-entry]')).toBeEnabled();
 		await expect(page.locator('[data-memorized]')).toBeDisabled();
 		await expect(canvas(page)).toBeVisible();
 	});
@@ -158,7 +159,7 @@ test.describe('T3-3 두 모드 (FR-TR-21, 23)', () => {
 		await open(page, { 'trace.mode': 'memorize' });
 		await ready(page);
 		await page.locator('[data-start]').click();
-		await expect(page.locator('[data-targets]')).toBeDisabled();
+		await expect(page.locator('[data-entry]')).toBeDisabled();
 		await expect(page.locator('[data-memorized]')).toBeEnabled();
 	});
 
@@ -169,7 +170,7 @@ test.describe('T3-3 두 모드 (FR-TR-21, 23)', () => {
 		await page.locator('[data-memorized]').click();
 		await expect(canvas(page)).toHaveCount(0);
 		await expect(page.locator('[data-cube-hidden]')).toBeVisible();
-		await expect(page.locator('[data-targets]')).toBeEnabled();
+		await expect(page.locator('[data-entry]')).toBeEnabled();
 	});
 
 	test('memorize 의 시간은 다 외웠다 시점에서 멈춘다 (FR-TR-23)', async ({ page }) => {
@@ -180,7 +181,7 @@ test.describe('T3-3 두 모드 (FR-TR-21, 23)', () => {
 		await page.locator('[data-memorized]').click();
 		const stopped = await elapsed(page);
 		// 입력 시간은 트레이싱 시간이 아니다. 한참 뒤에 채점해도 값이 그대로다.
-		await page.locator('[data-targets]').fill('ABC');
+		await page.locator('[data-entry]').fill('ABC');
 		await page.waitForTimeout(900);
 		await page.locator('[data-grade]').click();
 		expect(await elapsed(page)).toBeCloseTo(stopped, 2);
@@ -190,7 +191,7 @@ test.describe('T3-3 두 모드 (FR-TR-21, 23)', () => {
 		await open(page, { 'trace.mode': 'follow' });
 		await ready(page);
 		await page.locator('[data-start]').click();
-		await page.locator('[data-targets]').fill('ABC');
+		await page.locator('[data-entry]').fill('ABC');
 		const atInput = await elapsed(page);
 		// 채점을 누르기까지 생각한 시간은 트레이싱 시간이 아니다.
 		await page.waitForTimeout(1200);
@@ -235,42 +236,98 @@ test.describe('T3-4 세션 설정 (FR-TR-19, 24)', () => {
 		);
 	});
 
-	test('관례 B 에서만 비틀림 구획이 열린다', async ({ page }) => {
-		await open(page, { 'trace.convention': 'B', 'trace.mode': 'follow' });
-		await ready(page);
-		await page.locator('[data-start]').click();
-		await expect(page.locator('[data-twists]')).toBeEnabled();
+	/*
+	 * 관례는 **입력을 가르지 않는다**. 어느 쪽으로 쳐도 정답은 정답이고, 판정은
+	 * `readEntry` 가 입력만 보고 한다. 이 설정이 정하는 것은 결과 화면이 정답
+	 * 예시와 타깃 수를 어느 관례로 보여줄지 하나뿐이다 (요구 1).
+	 */
+	test('어느 관례에서도 입력은 한 줄 그대로다', async ({ page }) => {
+		for (const convention of ['A', 'B']) {
+			await open(page, { 'trace.convention': convention, 'trace.mode': 'follow' });
+			await ready(page);
+			await page.locator('[data-start]').click();
+			await expect(page.locator('[data-entry]')).toBeEnabled();
+			await expect(page.locator('[data-pad="entry"] button[data-letter]')).toHaveCount(24);
+		}
 	});
 
-	test('관례 A 에서는 비틀림 구획이 닫혀 있다', async ({ page }) => {
-		await open(page, { 'trace.convention': 'A', 'trace.mode': 'follow' });
-		await ready(page);
-		await page.locator('[data-start]').click();
-		await expect(page.locator('[data-targets]')).toBeEnabled();
-		await expect(page.locator('[data-twists]')).toBeDisabled();
+	test('관례 토글이 무엇을 바꾸는지 설명이 붙어 있다', async ({ page }) => {
+		await open(page);
+		// 라벨만으로는 이 토글이 채점 기준을 바꾼다고 읽힌다 (요구 1).
+		await expect(page.locator('[data-heading="trace-convention"]')).toBeVisible();
+		await expect(page.locator('[data-hint="trace-convention"]')).toContainText('정답 예시');
 	});
 
-	test('both 는 같은 스크램블로 코너 다음 엣지를 이어서 한다', async ({ page }) => {
+	test('both 는 한 줄로 이어 치고 한 번에 채점한다 (요구 2)', async ({ page }) => {
 		await open(page, { 'trace.pieceKind': 'both', 'trace.mode': 'follow' });
 		await ready(page);
 		await page.locator('[data-start]').click();
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'corner');
-		await page.locator('[data-targets]').fill('BC');
-		await page.locator('[data-grade]').click();
-		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'result');
-		/*
-		 * 그림 비교는 **결과 단계** 에서 한다. 트레이싱 중에는 버퍼 하이라이트가
-		 * 켜져 있고(FR-TR-16) 코너 버퍼와 엣지 버퍼는 서로 다른 자리라, 색이 같아도
-		 * 그림이 다르다. 결과 단계는 하이라이트가 꺼져 있어 색만 남는다.
-		 */
-		const painted = (await pixels(page)).data;
-		await page.locator('[data-next]').click();
-		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'tracing');
+		await page.locator('[data-entry]').fill('BC');
+		// 구분자가 갈래를 가른다. 패드 글자가 여기서 엣지로 바뀐다.
+		await page.locator('[data-pad="entry"] [data-action="separator"]').click();
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'edge');
+		await page.locator('[data-entry]').fill('BC' + SEPARATOR + 'ci');
 		await page.locator('[data-grade]').click();
+		// 제출은 한 번이고 그것으로 판이 끝난다 — 이어지는 반쪽이 없다.
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'result');
-		// 같은 스크램블이면 같은 그림이다 — 카메라도 색도 그대로다.
-		expect((await pixels(page)).data.equals(painted)).toBe(true);
+		await expect(page.locator('[data-part]')).toHaveCount(2);
+		await page.locator('[data-next]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'idle');
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'corner');
+		// 한 판에 기록도 한 건이다.
+		const recs = await page.evaluate(() =>
+			JSON.parse(localStorage.getItem('trace.records') ?? '{}').records
+		);
+		expect(recs).toHaveLength(1);
+		expect(recs[0].pieceKind).toBe('both');
+	});
+
+	/**
+	 * 요구 4 — 시작하면 세션 설정이 잠긴다.
+	 *
+	 * 도중에 바뀌면 이미 친 입력의 판정 기준이 흔들리고, 기록의 세 필드가 무엇을
+	 * 가리키는지 알 수 없게 된다. `idle` 로 돌아오면 다시 풀린다.
+	 */
+	const LOCKED = [
+		['trace-kind', 'edge'],
+		['trace-mode', 'memorize'],
+		['trace-convention', 'B']
+	];
+
+	test('시작 후에는 세션 옵션을 눌러도 값이 바뀌지 않는다', async ({ page }) => {
+		await open(page, { 'trace.mode': 'follow' });
+		await ready(page);
+		await page.locator('[data-start]').click();
+		for (const [name, option] of LOCKED) {
+			const toggle = page.locator(`[data-toggle="${name}"]`);
+			await expect(toggle).toHaveAttribute('data-locked', 'true');
+			const before = await toggle.getAttribute('data-value');
+			expect(before).not.toBe(option);
+			// 요소를 `{#if}` 로 없애지 않으므로 클릭은 간다. 값이 안 바뀔 뿐이다.
+			await toggle.locator(`[data-option="${option}"]`).click({ force: true });
+			await expect(toggle).toHaveAttribute('data-value', before!);
+		}
+	});
+
+	test('결과 단계에서도 잠겨 있고 다음 문제에서 풀린다', async ({ page }) => {
+		await open(page, { 'trace.mode': 'follow' });
+		await ready(page);
+		await playRound(page);
+		// 채점한 판의 조건이 결과를 보는 동안 흔들리면 안 된다.
+		for (const [name] of LOCKED)
+			await expect(page.locator(`[data-toggle="${name}"]`)).toHaveAttribute(
+				'data-locked',
+				'true'
+			);
+		await page.locator('[data-next]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'idle');
+		for (const [name, option] of LOCKED) {
+			const toggle = page.locator(`[data-toggle="${name}"]`);
+			await expect(toggle).toHaveAttribute('data-locked', 'false');
+			await toggle.locator(`[data-option="${option}"]`).click();
+			await expect(toggle).toHaveAttribute('data-value', option);
+		}
 	});
 
 	test('트레이싱 기록을 남겨도 암기 진도가 그대로다 (AD-13)', async ({ page }) => {

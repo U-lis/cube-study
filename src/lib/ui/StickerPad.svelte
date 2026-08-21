@@ -6,33 +6,35 @@
 	스티커 입력 패드 | 0.2.0 이후 재검토" 로 미뤄둔 항목이 여기서 돌아온다.
 
 	─── SSR/CSR 요소 개수 (AD-14) ──────────────────────────────
-	버튼 24개 + 동작 버튼 2개가 **항상** 존재한다. `{#if}` 로 넣다 뺐다 하지 않고
+	버튼 24개 + 동작 버튼 3개(삭제·전체 지우기·구분자)가 **항상** 존재한다.
+	구분자 버튼은 대상이 `both` 일 때만 눌리지만, 없앴다 넣었다 하지 않는다 —
+	대상 설정은 저장소에서 오므로 SSR 과 CSR 의 버튼 개수가 갈린다. `{#if}` 로 넣다 뺐다 하지 않고
 	`disabled` 로만 잠근다. 이 저장소가 두 번 밟은 함정이다.
 	────────────────────────────────────────────────────────────
 
-	─── 버퍼 문자를 색으로만 잠그지 않는다 ─────────────────────
-	버퍼 스티커는 타깃이 될 수 없다(HANDOFF §4.1). 그렇다고 버튼을 빼면 24글자
-	배치가 흐트러져 "몇 번째 칸이 무슨 문자인가" 라는 근육 기억이 깨진다. 그래서
-	자리는 두고 잠근다. 잠근 표시는 **색이 아니라 파선 테두리와 취소선** 이다 —
-	색만으로 상태를 알리면 색각 이상에서 그냥 눌리는 버튼으로 보인다.
+	─── 24글자 전부가 눌린다 ───────────────────────────────────
+	버퍼 문자도 잠그지 않는다. 입력이 한 줄로 합쳐진 뒤로는 "타깃 자리에서는 잠기고
+	비틀림 선언 자리에서는 열린다" 가 문맥에 따라 갈리는 규칙이 되어 사용자가
+	예측할 수 없다. 버퍼를 피하는 것은 사람이 할 일이고, 틀렸을 때 왜 틀렸는지는
+	채점이 말한다 (`buffer-sticker`).
 	────────────────────────────────────────────────────────────
 -->
 <script lang="ts">
 	let {
 		letters,
 		value = $bindable(),
-		blocked = [],
 		disabled = false,
 		max,
 		onedit,
-		pad
+		pad,
+		separator,
+		separatorLabel,
+		separatorEnabled = false
 	}: {
 		/** 24글자. 코너면 `CORNER_LETTERS`, 엣지면 `EDGE_LETTERS` (`speffz.ts:51-52`). */
 		letters: string[];
-		/** 입력된 문자 열. 순서가 의미를 갖는 구획에서는 그대로 타깃 열이다. */
+		/** 입력된 문자 열. 순서가 그대로 판독의 입력이다. */
 		value: string[];
-		/** 눌러도 들어가지 않는 문자. 타깃 구획의 버퍼 스티커가 이것이다. */
-		blocked?: readonly string[];
 		disabled?: boolean;
 		/** 상한 (`MoveKeypad.svelte:9` 의 `MAX_MOVES` 와 같은 취지 — 폭주 방지). */
 		max: number;
@@ -40,14 +42,30 @@
 		pad: string;
 		/** 입력이 있었음을 알린다. 계시의 종료 시점이 마지막 입력이다 (FR-TR-23). */
 		onedit?: () => void;
+		/** 갈래를 가르는 문자. 상한은 글자만 세므로 이 문자는 빼고 센다. */
+		separator: string;
+		/** 구분자 버튼의 라벨. */
+		separatorLabel: string;
+		/**
+		 * 구분자를 넣을 수 있는가. **버튼은 언제나 그린다** — `{#if}` 로 넣다 뺐다
+		 * 하면 대상 설정에 따라 SSR 과 CSR 의 버튼 개수가 갈린다 (AD-14).
+		 */
+		separatorEnabled?: boolean;
 	} = $props();
 
-	let locked = $derived(new Set(blocked));
-	let full = $derived(value.length >= max);
+	/** 상한이 세는 것은 글자다. 구분자는 갈래의 경계이지 타깃이 아니다. */
+	let count = $derived(value.filter((c) => c !== separator).length);
+	let full = $derived(count >= max);
 
 	function push(letter: string) {
-		if (locked.has(letter) || value.length >= max) return;
+		if (full) return;
 		value = [...value, letter];
+		onedit?.();
+	}
+
+	/** 구분자를 넣는다. 이 뒤로 패드 글자가 다음 갈래로 바뀐다 (호출부가 정한다). */
+	function split() {
+		value = [...value, separator];
 		onedit?.();
 	}
 
@@ -62,15 +80,14 @@
 	}
 </script>
 
-<div class="pad" data-pad={pad} data-max={max} data-count={value.length}>
+<div class="pad" data-pad={pad} data-max={max} data-count={count}>
 	<div class="keys">
 		{#each letters as letter (letter)}
 			<button
 				type="button"
 				data-letter={letter}
-				data-blocked={locked.has(letter) ? 'true' : 'false'}
-				title={locked.has(letter) ? `${letter} — 버퍼 스티커라 타깃이 될 수 없습니다` : letter}
-				disabled={disabled || locked.has(letter) || full}
+				title={letter}
+				disabled={disabled || full}
 				onclick={() => push(letter)}
 			>
 				{letter}
@@ -93,6 +110,15 @@
 			onclick={clear}
 		>
 			전체 지우기
+		</button>
+		<button
+			type="button"
+			data-action="separator"
+			title={separatorLabel}
+			disabled={disabled || !separatorEnabled}
+			onclick={split}
+		>
+			{separatorLabel}
 		</button>
 	</div>
 </div>
@@ -131,22 +157,19 @@
 		cursor: default;
 		opacity: 0.5;
 	}
-	/*
-	 * 잠긴 버퍼 문자. 색 외의 신호가 둘이다 — 파선 테두리와 취소선.
-	 * 흑백으로 인쇄해도 구분된다.
-	 */
-	.keys button[data-blocked='true'] {
-		border-style: dashed;
-		text-decoration: line-through;
-	}
 	.actions {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		/* 세 칸. 320px 에서도 칸이 밖으로 밀지 않도록 `minmax(0, …)` 로 둔다. */
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 0.25rem;
 	}
 	.actions button {
+		padding: 0 0.15rem;
 		font-family: var(--sans);
-		font-size: 0.85rem;
+		font-size: 0.8rem;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		color: var(--muted);
 	}
 </style>

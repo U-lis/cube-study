@@ -232,7 +232,7 @@ test.describe('T5-3 하이라이트 (FR-TR-16)', () => {
 		await open(page);
 		await page.locator('[data-start]').click();
 		await settled(page);
-		await page.locator('[data-targets]').fill(SHOWN[0]);
+		await page.locator('[data-entry]').fill(SHOWN[0]);
 		await expect
 			.poll(async () => (await marks(page)).current, { timeout: 8000 })
 			.toBeGreaterThan(0);
@@ -244,7 +244,7 @@ test.describe('T5-3 하이라이트 (FR-TR-16)', () => {
 		await open(page);
 		await page.locator('[data-start]').click();
 		await settled(page);
-		await page.locator('[data-targets]').fill(SHOWN);
+		await page.locator('[data-entry]').fill(SHOWN);
 		await expect
 			.poll(async () => (await marks(page)).visited, { timeout: 8000 })
 			.toBeGreaterThan(0);
@@ -259,11 +259,11 @@ test.describe('T5-3 하이라이트 (FR-TR-16)', () => {
 		await open(page);
 		await page.locator('[data-start]').click();
 		await settled(page);
-		await page.locator('[data-targets]').fill(SHOWN);
+		await page.locator('[data-entry]').fill(SHOWN);
 		await expect
 			.poll(async () => (await marks(page)).visited, { timeout: 8000 })
 			.toBeGreaterThan(0);
-		await page.locator('[data-pad="targets"] [data-action="clear"]').click();
+		await page.locator('[data-pad="entry"] [data-action="clear"]').click();
 		await expect.poll(async () => (await marks(page)).current, { timeout: 8000 }).toBe(0);
 		const m = await marks(page);
 		expect(m.visited).toBe(0);
@@ -277,8 +277,8 @@ test.describe('T5-3 하이라이트 (FR-TR-16)', () => {
 		// 24글자 전부. 지나간 조각에는 개수 상한이 없다.
 		const many = SHOWN + 'FGHIJKLMNOPQSTUVWX';
 		expect(many.length).toBeGreaterThanOrEqual(20);
-		await page.locator('[data-targets]').fill(many);
-		expect((await page.locator('[data-targets]').inputValue()).length).toBe(many.length);
+		await page.locator('[data-entry]').fill(many);
+		expect((await page.locator('[data-entry]').inputValue()).length).toBe(many.length);
 		await expect
 			.poll(async () => (await marks(page)).visited, { timeout: 8000 })
 			.toBeGreaterThan(0);
@@ -306,12 +306,12 @@ test.describe('T5-4 회귀 @viewport', () => {
 		await page.locator('[data-start]').click();
 		await settled(page);
 		const place = () =>
-			page.locator('[data-section="targets"]').evaluate((el) => {
+			page.locator('[data-section="entry"]').evaluate((el) => {
 				const r = el.getBoundingClientRect();
 				return { top: r.top + window.scrollY, height: r.height };
 			});
 		const before = await place();
-		await page.locator('[data-targets]').fill(SHOWN);
+		await page.locator('[data-entry]').fill(SHOWN);
 		await expect
 			.poll(async () => (await marks(page)).current, { timeout: 8000 })
 			.toBeGreaterThan(0);

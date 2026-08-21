@@ -28,12 +28,55 @@ import {
 } from '../cube/speffz.js';
 import type { CubeState } from '../cube/sim.js';
 import type { Mark } from '../cube/cube3d-map.js';
-import { trace, type TraceOptions, type TraceVerdict, type TwistConvention } from '../cube/trace.js';
+import {
+	trace,
+	type EntryReading,
+	type TraceOptions,
+	type TraceVerdict,
+	type TwistConvention
+} from '../cube/trace.js';
 
 export type { TwistConvention };
 
-/** 훈련 대상 (FR-TR-19). `both` 는 한 스크램블에서 코너 뒤에 엣지를 이어서 한다. */
+/**
+ * 훈련 대상 (FR-TR-19).
+ *
+ * `both` 는 한 스크램블의 코너와 엣지를 **한 줄로 이어서 치고 한 번에 채점** 한다.
+ * 코너를 먼저 제출·채점한 뒤 엣지를 따로 받는 반씩 채점은 없앴다 — 실전에서
+ * 사람은 코너를 외운 뒤 채점을 기다리지 않고, 반씩 끊으면 한 판의 시간이 무엇을
+ * 잰 값인지도 갈린다.
+ */
 export type TrainKind = 'corner' | 'edge' | 'both';
+
+/**
+ * 조각 종류 두 이름. **키에서 꺼낸다** — 문자열을 다시 적지 않으면 오타가 타입
+ * 오류로 잡힌다. `satisfies` 가 두 키의 존재와 순서를 고정한다.
+ */
+const [CORNER, EDGE] = Object.keys({
+	corner: 0,
+	edge: 0
+} satisfies Record<PieceKind, number>) as [PieceKind, PieceKind];
+
+/**
+ * 한 판이 다루는 조각 종류들. `both` 는 **순서가 뜻을 갖는다** — 구분자 앞이
+ * 코너, 뒤가 엣지다.
+ */
+export function kindsOf(kind: TrainKind): PieceKind[] {
+	return kind === 'both' ? [CORNER, EDGE] : [kind];
+}
+
+/** 결과 화면이 조각 종류를 부르는 이름. */
+export const PART_LABELS = {
+	corner: '코너',
+	edge: '엣지'
+} satisfies Record<PieceKind, string>;
+
+/** 기록 한 줄의 조각 표기. `both` 는 한 판에 둘 다 들어 있다. */
+export const RECORD_KIND_LABELS = {
+	corner: PART_LABELS.corner,
+	edge: PART_LABELS.edge,
+	both: `${PART_LABELS.corner}+${PART_LABELS.edge}`
+} satisfies Record<TrainKind, string>;
 
 /** 훈련 모드 (FR-TR-21). 차이는 입력 시점에 큐브를 보여주는지 여부뿐이다. */
 export type TrainMode = 'follow' | 'memorize';
@@ -52,15 +95,50 @@ export interface TraceRecord {
 	at: number;
 	/** 소요 시간. 단조 시계의 차이다. */
 	ms: number;
-	pieceKind: PieceKind;
-	/** `meta.buffer`. 같은 스크램블도 버퍼가 다르면 정답이 다르다. */
+	/**
+	 * 이 판의 훈련 대상. `both` 가 그대로 들어간다 — 한 판에 기록도 한 건이다.
+	 *
+	 * 반씩 채점하던 때는 `both` 한 판이 기록 두 건(코너 1, 엣지 1)이었고, 그러면
+	 * "한 판에 얼마나 걸렸는가" 를 기록에서 되살릴 수 없다. 두 건을 짝지을 열쇠가
+	 * 없기 때문이다.
+	 */
+	pieceKind: TrainKind;
+	/**
+	 * 이 판에 쓴 버퍼. `both` 는 둘이라 `BUFFER_JOIN` 으로 잇는다 (`joinBuffers`).
+	 *
+	 * 같은 스크램블도 버퍼가 다르면 정답이 다르므로 기록끼리 비교하려면 둘 다
+	 * 남아야 한다. 필드를 둘로 쪼개는 대신 한 칸에 잇는 이유는 코너·엣지 전용
+	 * 기록에서 빈 칸이 생기지 않게 하기 위해서다.
+	 */
 	buffer: Cubie;
 	mode: TrainMode;
-	/** 관례가 타깃 수를 평균 2.4개 바꾼다. 없으면 기록끼리 비교가 성립하지 않는다. */
+	/**
+	 * 관례가 타깃 수를 평균 2.4개 바꾼다. 없으면 기록끼리 비교가 성립하지 않는다.
+	 *
+	 * 설정값이 아니라 **사용자가 실제로 친 방식** 이다 (요구 1) — `conventionOf` 가
+	 * 판독 결과를 이 이름으로 옮긴다.
+	 *
+	 * `both` 는 판독이 둘인데 칸은 하나다. 한쪽이라도 따로 선언했으면 따로 처리로
+	 * 적는다 (`conventionOf(parts.some(...))`) — 섞어 친 판을 "끊어서 처리" 로
+	 * 적으면 타깃 수가 왜 그만큼인지 설명되지 않기 때문이다.
+	 */
 	twistConvention: TwistConvention;
+	/**
+	 * 이 스크램블이 정한 타깃 수. 사용자의 입력 길이가 아니라 문제의 난이도다.
+	 *
+	 * `both` 는 코너와 엣지의 **합** 이다. 한 판의 시간이 둘을 합친 시간이므로
+	 * 나눠 적으면 시간과 개수의 단위가 어긋난다.
+	 */
 	targetCount: number;
+	/** `both` 는 **양쪽 다** 맞아야 정답이다. 한쪽만 맞은 판은 오답으로 남는다. */
 	correct: boolean;
 }
+
+/** `both` 기록의 두 버퍼를 잇는 문자. 큐비 이름에 안 쓰이는 글자여야 한다. */
+export const BUFFER_JOIN = '+';
+
+/** 이 판에 쓴 버퍼들을 기록 한 칸으로 잇는다. 하나면 그대로다. */
+export const joinBuffers = (buffers: readonly Cubie[]): Cubie => buffers.join(BUFFER_JOIN);
 
 /** 저장 표현. */
 export interface TraceRecordsStored {
@@ -80,8 +158,12 @@ export const RECORD_LIMIT = 50;
  * 그쪽 파서는 버전 불일치 시 저장물을 전부 버린다. 같은 키에 얹으면 트레이싱
  * 스키마를 올리는 순간 암기 진도가 통째로 날아간다 (AD-13). 두 상수와 두 키가
  * 서로를 모르는 것이 이 분리의 전부다.
+ *
+ * v2 — `pieceKind` 에 `both` 가 들어가고, `buffer` 가 여러 버퍼를 이은 칸이 되며,
+ * `targetCount` 가 한 판의 합계가 됐다. 필드 이름과 개수는 그대로지만 **뜻이**
+ * 바뀌었으므로 v1 기록은 버린다. 마이그레이션은 두지 않는다 — 배포 전이다.
  */
-export const RECORDS_SCHEMA_VERSION = 1;
+export const RECORDS_SCHEMA_VERSION = 2;
 
 /** 기록 저장 키. 암기 체크의 키와 다르다 — 위 주석 참조. */
 export const RECORDS_KEY = 'trace.records';
@@ -98,15 +180,50 @@ export const RECORDS_KEY = 'trace.records';
  * 아니지만, 검사를 사람의 판단으로 무르지 않는 편이 낫다.
  */
 export const CONVENTIONS = {
-	A: '비틀림도 끊어 들어가 타깃 열에 넣습니다',
-	B: '비틀림을 타깃 열에서 빼고 따로 적습니다'
+	A: '끊어서 처리',
+	B: '따로 처리'
 } satisfies Record<TwistConvention, string>;
+
+/**
+ * 관례 토글이 **무엇에 영향을 주는가** (요구 2).
+ *
+ * 입력을 가르지 않는다 — 어느 쪽으로 쳐도 정답은 정답이고, 판정은 `readEntry` 가
+ * 입력만 보고 한다. 이 설정이 정하는 것은 결과 화면이 정답 예시와 타깃 수를
+ * 어느 관례로 보여줄지 하나뿐이다. 그 사실을 적지 않으면 사용자는 이 토글이
+ * 채점 기준을 바꾼다고 읽는다.
+ */
+export const CONVENTION_HINTS = {
+	A: '정답 예시에 비틀림까지 끊어 넣어 보여줍니다',
+	B: '정답 예시에서 비틀림을 빼고 따로 보여줍니다'
+} satisfies Record<TwistConvention, string>;
+
+/** 관례 토글의 머리말. 라벨만으로는 무엇을 고르는지 알 수 없다. */
+export const CONVENTION_HEADING = '제자리 비틀림 처리';
+
+/**
+ * 관례 이름 둘. **키에서 꺼낸다** — 따옴표로 적으면 버퍼 리터럴 정적 검사에
+ * 걸리기 때문이다(위 `CONVENTIONS` 주석 참조). `satisfies` 가 두 키의 존재와
+ * 순서를 타입으로 고정한다.
+ */
+const [ABSORBED, SEPARATED] = Object.keys(CONVENTIONS) as [TwistConvention, TwistConvention];
+
+/**
+ * 판독 결과를 관례 이름으로 옮긴다.
+ *
+ * 기록의 `twistConvention` 은 세션 설정이 아니라 **사용자가 실제로 친 방식** 이다.
+ * 설정을 적으면 "따로 처리로 두고 끊어서 친" 판이 남의 이름으로 저장된다.
+ */
+export const conventionOf = (separated: boolean): TwistConvention =>
+	separated ? SEPARATED : ABSORBED;
 
 export const TRAIN_KINDS = {
 	corner: '코너만',
 	edge: '엣지만',
-	both: '코너 → 엣지'
+	both: RECORD_KIND_LABELS.both
 } satisfies Record<TrainKind, string>;
+
+export const TRAIN_KIND_HEADING = '훈련 대상';
+export const TRAIN_MODE_HEADING = '훈련 모드';
 
 export const TRAIN_MODES = {
 	follow: '큐브를 보면서 하나씩 입력합니다',
@@ -203,6 +320,60 @@ export function verdictText(v: TraceVerdict): string {
 	throw new Error(`문구가 없는 판정: ${JSON.stringify(missed)}`);
 }
 
+/**
+ * 이 판정이 "풀린다" 쪽인가. 불필요한 끊기는 오답이 아니다 (FR-TR-12).
+ *
+ * 판정 종류를 세는 자리를 여기 하나로 모은다. 화면에서 `kind === 'correct' ||
+ * kind === 'correct-extra'` 를 세 군데 적으면 종류가 늘 때 한 곳이 빠진다.
+ */
+export const isPass = (v: TraceVerdict): boolean =>
+	v.kind === 'correct' || v.kind === 'correct-extra';
+
+/** 한 판의 한 갈래. `both` 는 이것이 둘이고 코너·엣지가 각각 판정된다. */
+export interface VerdictPart {
+	kind: PieceKind;
+	verdict: TraceVerdict;
+}
+
+/**
+ * 여러 갈래의 판정을 한 줄로 합친다 (요구 2).
+ *
+ * **처음 틀린 갈래를 그대로 낸다.** 새 판정 종류를 만들어 덮지 않는 이유는
+ * 하나다 — 사용자가 봐야 하는 것은 "어디서 어긋났는가" 이고, 합친 이름은 그
+ * 정보를 지운다. 둘 다 풀리면 불필요한 끊기가 있었는지만 남긴다.
+ */
+export function combineVerdicts(parts: readonly VerdictPart[]): TraceVerdict {
+	const failed = parts.find((p) => !isPass(p.verdict));
+	if (failed) return failed.verdict;
+	const extra = parts.reduce(
+		(n, p) => n + (p.verdict.kind === 'correct-extra' ? p.verdict.extra : 0),
+		0
+	);
+	return extra > 0 ? { kind: 'correct-extra', extra } : { kind: 'correct' };
+}
+
+/**
+ * 갈래별 판정 문구. 갈래가 하나면 이름을 붙이지 않는다 — 코너만 하는 판에서
+ * "코너 정답" 은 같은 말을 두 번 하는 것이다.
+ */
+export function partsVerdictText(parts: readonly VerdictPart[]): string {
+	if (parts.length === 0) return '';
+	if (parts.length === 1) return verdictText(parts[0].verdict);
+	return parts.map((p) => `${PART_LABELS[p.kind]} ${verdictText(p.verdict)}`).join(' · ');
+}
+
+/**
+ * 입력을 어떻게 갈랐는지 알린다 (요구 1).
+ *
+ * 판독이 조용하면 사용자는 자기가 친 단독 문자가 비틀림 선언으로 읽혔다는 것을
+ * 알 수 없고, 정답이 나와도 왜 정답인지 모른다. 채점 결과와 **같은 무게로**
+ * 사실만 적는다.
+ */
+export function readingText(r: EntryReading): string {
+	if (r.twists.length === 0) return '전부 타깃으로 읽었습니다';
+	return `${r.twists.join(' ')} — 비틀림 선언으로 읽었습니다`;
+}
+
 const WRONG_REASON = {
 	'wrong-orientation': '조각은 맞지만 방향이 다릅니다',
 	'wrong-piece': '다른 조각입니다',
@@ -250,7 +421,7 @@ function isRecord(v: unknown): v is TraceRecord {
 	return (
 		typeof r.at === 'number' &&
 		typeof r.ms === 'number' &&
-		isPieceKind(r.pieceKind) &&
+		isTrainKind(r.pieceKind) &&
 		typeof r.buffer === 'string' &&
 		r.buffer !== '' &&
 		isTrainMode(r.mode) &&
@@ -259,9 +430,6 @@ function isRecord(v: unknown): v is TraceRecord {
 		typeof r.correct === 'boolean'
 	);
 }
-
-/** 조각 종류. `TrainKind` 의 `both` 는 기록 단위가 아니다 — 기록은 종류별로 남는다. */
-const isPieceKind = (v: unknown): v is PieceKind => v === 'corner' || v === 'edge';
 
 /** 상한을 적용해 직렬화한다. 자르는 지점을 저장 경로 하나로 모은다. */
 export function serializeRecords(rs: TraceRecord[]): string {
@@ -312,26 +480,117 @@ export function formatMs(ms: number): string {
  * - 코너는 대문자, 엣지는 소문자로 맞춘다. 대소문자를 틀린 것은 다른 조각을
  *   지목한 것이 아니다 — 이번 판의 조각 종류가 이미 정해져 있다.
  * - 알파벳이 아닌 문자(공백·쉼표·줄바꿈)는 구분자로 보고 버린다.
- * - `blocked` 문자는 받지 않는다. 타깃 구획의 버퍼 스티커가 이 경우다.
- *   비틀림 구획에는 걸지 않는다 — 버퍼가 비틀린 채 남는 경우가 코너 80.9% 라
- *   막으면 관례 B 훈련이 성립하지 않는다 (FR-TR-24).
+ * - **버퍼 문자도 그대로 받는다.** 입력이 한 줄로 합쳐진 뒤로는 "타깃 자리에서는
+ *   잠기고 비틀림 자리에서는 열린다" 가 문맥에 따라 갈리는 규칙이 되어, 사용자가
+ *   예측할 수 없다. 잠글 바에는 다 여는 편이 낫고, 버퍼를 타깃으로 쓴 것은 채점이
+ *   `buffer-sticker` 로 짚어 준다.
  * - `max` 를 넘으면 자른다. 붙여넣기 한 번으로 화면이 굳는 것을 막는다.
+ *
+ * 조각 종류를 **배열로** 받는다. `both` 한 판은 코너 열과 엣지 열이 구분자 하나로
+ * 이어진 한 줄이고, 어느 쪽 규칙으로 맞출지는 구분자를 몇 개 지났는지가 정한다.
  */
 export function sanitizeEntry(
 	text: string,
-	kind: PieceKind,
-	options: { blocked?: readonly Sticker[]; max: number }
+	kinds: readonly PieceKind[],
+	options: { max: number }
 ): Sticker[] {
-	const blocked = new Set(options.blocked ?? []);
-	const cased = kind === 'edge' ? text.toLowerCase() : text.toUpperCase();
-	const allowed = new Set(lettersOf(kind));
+	const allowed = kinds.map((k) => new Set(lettersOf(k)));
 	const out: Sticker[] = [];
-	for (const ch of cased) {
-		if (out.length >= options.max) break;
-		if (!allowed.has(ch) || blocked.has(ch)) continue;
-		out.push(ch);
+	let seg = 0;
+	let letters = 0;
+	for (const ch of text) {
+		if (ch === ENTRY_SEPARATOR) {
+			// 구분자는 갈래 사이에만 선다. 갈래가 하나인 판에는 설 자리가 없고,
+			// 두 번째부터는 앞선 하나가 이미 같은 자리를 가리킨다.
+			if (seg >= kinds.length - 1) continue;
+			seg++;
+			out.push(ENTRY_SEPARATOR);
+			continue;
+		}
+		// 상한에 닿아도 멈추지 않는다 — 뒤에 오는 구분자는 여전히 받아야 패드가
+		// 엣지로 넘어간 상태를 잃지 않는다. 상한이 세는 것은 글자뿐이다.
+		if (letters >= options.max) continue;
+		const c = kinds[seg] === EDGE ? ch.toLowerCase() : ch.toUpperCase();
+		if (!allowed[seg].has(c)) continue;
+		out.push(c);
+		letters++;
 	}
 	return out;
+}
+
+/**
+ * 갈래 사이의 구분자 (요구 2).
+ *
+ * 24글자 어느 쪽에도 없는 문자여야 한다. 대소문자로도 코너·엣지가 갈리지만
+ * **정본은 이 문자다** — 대소문자는 사람이 흘리기 쉽고(모바일 자동 대문자),
+ * 그것을 기준으로 삼으면 한 글자가 갈래를 통째로 옮겨버린다.
+ */
+export const ENTRY_SEPARATOR = '/';
+
+/** 구분자를 넣는 버튼의 라벨. 무엇이 시작되는지를 적는다. */
+export const SEPARATOR_LABEL = `${PART_LABELS.edge} 시작`;
+
+/** 이 입력이 이미 갈렸는가. 패드가 어느 글자를 보여줄지의 근거다. */
+export const hasSeparator = (entry: readonly string[]): boolean =>
+	entry.includes(ENTRY_SEPARATOR);
+
+/** 지금 입력 중인 갈래의 번호. 구분자를 지난 횟수이고, 갈래 수를 넘지 않는다. */
+export function segmentIndex(entry: readonly string[], kinds: readonly PieceKind[]): number {
+	const passed = entry.filter((c) => c === ENTRY_SEPARATOR).length;
+	return Math.min(passed, kinds.length - 1);
+}
+
+/** 한 줄 입력을 갈래별로 가른 결과. 구분자가 없으면 뒤 갈래는 빈 열이다. */
+export interface EntrySegment {
+	kind: PieceKind;
+	letters: Sticker[];
+}
+
+/**
+ * 한 줄 입력을 갈래별로 가른다 (요구 2).
+ *
+ * 대소문자를 보지 않는다 — 구분자가 정본이고, 대소문자는 `sanitizeEntry` 가 이미
+ * 구분자에 맞춰 고쳐 둔다. 여기서 다시 대소문자로 가르면 두 규칙이 생기고, 둘이
+ * 어긋나는 날 사용자는 맞게 친 답을 오답으로 돌려받는다.
+ */
+export function entrySegments(
+	entry: readonly Sticker[],
+	kinds: readonly PieceKind[]
+): EntrySegment[] {
+	const segs: EntrySegment[] = kinds.map((kind) => ({ kind, letters: [] }));
+	let i = 0;
+	for (const ch of entry) {
+		if (ch === ENTRY_SEPARATOR) {
+			if (i < segs.length - 1) i++;
+			continue;
+		}
+		segs[i].letters.push(ch);
+	}
+	return segs;
+}
+
+/**
+ * 구분자와 어긋나게 친 글자 수 — **교차 검증** 이다 (요구 2).
+ *
+ * 대소문자는 판정에 쓰지 않지만 버리기도 아깝다. 구분자 앞에 소문자를 쳤다면
+ * 구분자를 넣는 것을 잊었을 가능성이 높고, 그 사실을 한 줄로 알려주면 사용자가
+ * 스스로 확인한다. 갈래가 하나인 판에서는 셀 것이 없다 — 대소문자를 틀린 것은
+ * 다른 조각을 지목한 것이 아니기 때문이다.
+ */
+export function caseConflicts(text: string, kinds: readonly PieceKind[]): number {
+	if (kinds.length < 2) return 0;
+	const allowed = kinds.map((k) => new Set(lettersOf(k)));
+	let seg = 0;
+	let n = 0;
+	for (const ch of text) {
+		if (ch === ENTRY_SEPARATOR) {
+			if (seg < kinds.length - 1) seg++;
+			continue;
+		}
+		const c = kinds[seg] === EDGE ? ch.toLowerCase() : ch.toUpperCase();
+		if (allowed[seg].has(c) && ch !== c) n++;
+	}
+	return n;
 }
 
 /**

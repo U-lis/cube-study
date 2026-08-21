@@ -21,8 +21,10 @@ import { invertAlg } from '../../src/lib/cube/notation.js';
 import { cubieOf, lettersOf, rotationOf, type PieceKind } from '../../src/lib/cube/speffz.js';
 import {
 	applyTargets,
+	gradeEntry,
 	gradeMemo,
 	normalizeTwistLetter,
+	readEntry,
 	trace,
 	twistLetter,
 	type TraceOptions
@@ -663,6 +665,186 @@ describe('T1A-9. 채점 — 관례 B 의 비틀림 선언', () => {
 		});
 		expect(gradeMemo(st, { targets: r.targets, twists: flipped }, edgeB)).toEqual({
 			kind: 'correct'
+		});
+	});
+});
+
+// ─────────────────────────────────────────────────────────────
+// T4-8. 한 줄 입력의 판독 — readEntry / gradeEntry (FR-TR-18, 24)
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * 입력 구획이 하나로 합쳐지면서 "어느 것이 비틀림인가" 를 사용자가 아니라
+ * **판독기가** 정한다. 그 규칙이 틀리면 맞게 친 답이 오답으로 돌아오므로,
+ * 여기가 이번 변경에서 가장 무거운 테스트다.
+ *
+ * 기대값을 문자열로 적지 않는다. 관례 A·B 의 입력을 엔진으로 만들고, 판독이
+ * 그것을 되돌리는지를 본다 — 버퍼가 바뀌어도 따라온다 (FR-TR-7).
+ */
+describe('T4-8. 한 줄 입력 판독', () => {
+	/** 표본 하나에서 두 관례의 산출과 그때의 비틀림 문자를 뽑는다. */
+	function bothWays(f: string, opts: TraceOptions) {
+		const state = stateOf(f, opts.pieceKind);
+		const a = trace(state, { ...opts, twistConvention: undefined });
+		const b = trace(state, { ...opts, twistConvention: 'B' });
+		return { state, a, b };
+	}
+
+	/** 타깃 열을 실행한 뒤 남는 비틀림 문자들. 판독기를 쓰지 않고 직접 계산한다. */
+	const residualLetters = (state: CubeState, targets: string[], opts: TraceOptions) => {
+		const residual = applyTargets(state, targets, opts);
+		return twistedCubies(residual, opts.pieceKind).map((c) => twistLetter(residual, c, opts));
+	};
+
+	describe.each(FIXTURES)('%s', (_name, opts) => {
+		const kind = opts.pieceKind;
+		const bufferCubie = cubieOf(kind)[opts.primarySticker];
+		const rot = rotationOf(kind);
+		const sample = SAMPLE.slice(0, 400);
+
+		it('끊어서 처리한 입력은 전부 타깃으로 읽는다 (관례 A)', () => {
+			let twisted = 0;
+			for (const f of sample) {
+				const { state, a } = bothWays(f, opts);
+				const r = readEntry(state, a.targets, opts);
+				expect(r.twists).toEqual([]);
+				expect(r.targets).toEqual(a.targets);
+				expect(r.separated).toBe(false);
+				if (r.absorbed > 0) twisted++;
+				expect(gradeEntry(state, a.targets, opts).verdict).toEqual({ kind: 'correct' });
+			}
+			// 흡수한 비틀림이 한 번도 없었다면 이 테스트는 아무것도 안 본 것이다.
+			expect(twisted).toBeGreaterThan(0);
+		});
+
+		it('따로 처리한 입력은 비틀림을 갈라낸다 (관례 B)', () => {
+			let seen = 0;
+			for (const f of sample) {
+				const { state, b } = bothWays(f, opts);
+				if (b.twists.length === 0) continue;
+				seen++;
+				const entry = [...b.targets, ...b.twists];
+				const r = readEntry(state, entry, opts);
+				expect(new Set(r.twists)).toEqual(new Set(b.twists));
+				expect(r.targets).toEqual(b.targets);
+				expect(r.separated).toBe(true);
+				expect(gradeEntry(state, entry, opts).verdict).toEqual({ kind: 'correct' });
+			}
+			expect(seen).toBeGreaterThan(0);
+		});
+
+		it('비틀림 선언의 순서를 바꿔도 같이 읽는다 (집합이다)', () => {
+			let seen = 0;
+			for (const f of sample) {
+				const { state, b } = bothWays(f, opts);
+				if (b.twists.length < 2) continue;
+				seen++;
+				const entry = [...b.targets, ...[...b.twists].reverse()];
+				expect(gradeEntry(state, entry, opts).verdict).toEqual({ kind: 'correct' });
+			}
+			expect(seen).toBeGreaterThan(0);
+		});
+
+		it('두 관례를 섞어 쳐도 정답이다', () => {
+			let seen = 0;
+			for (const f of sample) {
+				const { state, b } = bothWays(f, opts);
+				// 버퍼가 아닌 비틀림 하나를 골라 **끊어서** 처리하고 나머지는 선언한다.
+				const pick = b.twists.find((t) => cubieOf(kind)[t] !== bufferCubie);
+				if (!pick || b.twists.length < 2) continue;
+				const cubie = cubieOf(kind)[pick];
+				// 끊고 들어가면 다음 타깃은 곧바로 같은 큐비다 — 그것이 판독 규칙 1 이다.
+				const s = rot[cubie][0];
+				const targets = [...b.targets, s, applyTargets(state, b.targets, opts)[s]];
+				const declared = residualLetters(state, targets, opts);
+				/*
+				 * 끊어서 처리한 몫이 남은 비틀림을 **전부** 지워버리는 판은 건너뛴다.
+				 * 방향의 합이 보존되므로 한 조각을 끊어 넣으면 버퍼가 지고 있던 보정이
+				 * 함께 풀린다 (AD-8) — 그런 판은 섞어 친 것이 아니라 그냥 관례 A 다.
+				 */
+				if (declared.length === 0) continue;
+				const entry = [...targets, ...declared];
+
+				const r = readEntry(state, entry, opts);
+				expect(r.targets).toEqual(targets);
+				expect(new Set(r.twists)).toEqual(new Set(declared));
+				expect(r.absorbed).toBe(1);
+				expect(r.separated).toBe(true);
+				// 흡수한 두 칸을 "불필요한 끊기" 라고 부르지 않는다.
+				expect(gradeEntry(state, entry, opts).verdict).toEqual({ kind: 'correct' });
+				seen++;
+			}
+			expect(seen).toBeGreaterThan(0);
+		});
+
+		it('버퍼 비틀림 선언을 정상 입력으로 읽는다', () => {
+			let seen = 0;
+			for (const f of sample) {
+				const { state, b } = bothWays(f, opts);
+				const bufferTwist = b.twists.find((t) => cubieOf(kind)[t] === bufferCubie);
+				if (!bufferTwist) continue;
+				seen++;
+				const entry = [...b.targets, ...b.twists];
+				const r = readEntry(state, entry, opts);
+				expect(r.twists).toContain(bufferTwist);
+				expect(r.targets).not.toContain(bufferTwist);
+				expect(gradeEntry(state, entry, opts).verdict).toEqual({ kind: 'correct' });
+			}
+			expect(seen).toBeGreaterThan(0);
+		});
+
+		it('타깃 자리의 버퍼 스티커는 비틀림으로 읽지 않고 오답으로 짚는다', () => {
+			let seen = 0;
+			for (const f of sample) {
+				const { state, a } = bothWays(f, opts);
+				// 버퍼가 잔여에 비틀린 채 남지 않는 판만 본다 — 그때의 버퍼 문자는
+				// 선언으로 읽을 근거가 없으므로 타깃 열에 남아야 한다.
+				if (residualLetters(state, a.targets, opts).length > 0) continue;
+				seen++;
+				const entry = [opts.primarySticker, ...a.targets];
+				const r = readEntry(state, entry, opts);
+				expect(r.twists).toEqual([]);
+				const { verdict } = gradeEntry(state, entry, opts);
+				expect(verdict).toEqual({
+					kind: 'wrong-at',
+					index: 0,
+					reason: 'buffer-sticker',
+					expected: null
+				});
+			}
+			expect(seen).toBeGreaterThan(0);
+		});
+
+		it('판정 인덱스가 입력 칸 번호로 돌아온다', () => {
+			let seen = 0;
+			for (const f of sample) {
+				const { state, b } = bothWays(f, opts);
+				if (b.twists.length === 0 || b.targets.length < 2) continue;
+				seen++;
+				// 비틀림 선언을 **맨 앞** 에 적고, 타깃 열 중간에 24글자 밖의 문자를 끼운다.
+				const entry = [...b.twists, ...b.targets.slice(0, 2), '?', ...b.targets.slice(2)];
+				const { verdict } = gradeEntry(state, entry, opts);
+				// 타깃 열 기준이면 2, 입력 칸 기준이면 선언 개수만큼 밀린 자리다.
+				expect(verdict).toEqual({
+					kind: 'invalid-letter',
+					index: b.twists.length + 2,
+					letter: '?'
+				});
+				break;
+			}
+			expect(seen).toBe(1);
+		});
+
+		it('빈 입력은 아무것도 읽지 않는다', () => {
+			const state = stateOf(SAMPLE[0], kind);
+			const r = readEntry(state, [], opts);
+			expect(r).toMatchObject({ targets: [], twists: [], separated: false, absorbed: 0 });
+		});
+
+		it('24글자 밖의 문자가 섞여도 던지지 않는다', () => {
+			const state = stateOf(SAMPLE[0], kind);
+			const { verdict } = gradeEntry(state, ['?', ...trace(state, opts).targets], opts);
+			expect(verdict).toEqual({ kind: 'invalid-letter', index: 0, letter: '?' });
 		});
 	});
 });

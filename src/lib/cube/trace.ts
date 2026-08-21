@@ -60,6 +60,16 @@ export interface MemoInput {
 	targets: Sticker[];
 	/** 관례 A 에서는 무시한다. */
 	twists: Sticker[];
+	/**
+	 * 개수 판정에서 눈감아 줄 타깃 수 (기본 0).
+	 *
+	 * 한 줄 입력에서 관례를 섞어 칠 수 있기 때문에 생긴 값이다 — 비틀림 하나는
+	 * 끊어서 타깃 열에 넣고 다른 하나는 따로 선언하면, 채점은 관례 B 로 하지만
+	 * 타깃 열에는 흡수한 몫이 2개 더 들어 있다. 그 2개를 "불필요한 끊기" 라고
+	 * 부르면 사실이 아니다 — 사용자는 그 조각을 실제로 끊어서 처리했다.
+	 * `readEntry` 가 세어서 넘긴다.
+	 */
+	extraAllowance?: number;
 }
 
 export type WrongReason =
@@ -346,7 +356,8 @@ export function gradeMemo(state: CubeState, input: MemoInput, opts: TraceOptions
 
 	// 여기서만 엔진 산출과 개수를 비교한다. 끊기 지점을 어떻게 골라도 타깃 수는
 	// 스크램블이 정한 값 그대로라(400/400) "적음" 은 정답일 수 없다.
-	const extra = input.targets.length - trace(state, opts).targets.length;
+	const extra =
+		input.targets.length - trace(state, opts).targets.length - (input.extraAllowance ?? 0);
 	return extra > 0 ? { kind: 'correct-extra', extra } : { kind: 'correct' };
 }
 
@@ -362,4 +373,179 @@ function compareTwists(
 	const unexpected = [...got].filter((s) => !want.has(s));
 	if (missing.length === 0 && unexpected.length === 0) return null;
 	return { kind: 'twist-mismatch', missing, unexpected };
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * 한 줄 입력의 판독 (FR-TR-18, 24)
+ * ═══════════════════════════════════════════════════════════ */
+
+/** 항목 하나를 무엇으로 읽었는가. */
+export type EntryRole = 'target' | 'twist';
+
+export interface EntryReading {
+	/** 타깃으로 읽은 문자들. 순서가 그대로 살아 있다. */
+	targets: Sticker[];
+	/** 비틀림 선언으로 읽은 문자들. 순서는 뜻이 없다. */
+	twists: Sticker[];
+	/** 입력 순서 그대로의 판독. 화면이 "몇 번째 칸을 무엇으로 읽었는가" 를 안다. */
+	roles: EntryRole[];
+	/** 타깃 열의 i 번째가 입력의 몇 번째 칸이었나. 판정 인덱스를 되돌리는 표다. */
+	targetAt: number[];
+	/** 비틀림 열의 j 번째가 입력의 몇 번째 칸이었나. */
+	twistAt: number[];
+	/**
+	 * 사용자가 비틀림을 **따로 적었는가**. 세션 설정이 아니라 판독 결과다.
+	 *
+	 * 관례 이름(`TwistConvention`)이 아니라 불리언으로 낸다. 이 파일에 관례 이름
+	 * 문자열을 하나 더 적으면 버퍼 리터럴 정적 검사(FR-TR-7)에 걸린다 — 관례
+	 * 이름이지 스티커가 아니지만, 검사를 사람의 판단으로 무르지 않는 편이 낫다.
+	 * 이름으로 옮기는 일은 `domain/tracing.ts` 의 `conventionOf` 가 한다.
+	 *
+	 * 비틀림 선언이 하나라도 있으면 따로 처리한 것이고, 없으면 끊어서 처리한
+	 * 것이다. 비틀림이 아예 없는 스크램블은 두 관례의 입력이 **글자까지 같아서**
+	 * 구분할 근거가 없다 — 그때는 끊어서 처리 쪽으로 읽는다.
+	 */
+	separated: boolean;
+	/** 끊어서 흡수한 비틀림 쌍의 수. `MemoInput.extraAllowance` 의 출처다. */
+	absorbed: number;
+}
+
+/**
+ * 한 줄로 친 입력을 타깃 열과 비틀림 선언으로 가른다 (FR-TR-18).
+ *
+ * ─── 왜 화면이 아니라 여기인가 ──────────────────────────────
+ * 이것은 표시가 아니라 **판정** 이다. 화면에서 가르면 규칙이 E2E 로만 검증되고,
+ * 규칙이 틀리면 사용자는 맞게 친 답을 오답으로 돌려받는다. 그래서 순수 함수다.
+ * ────────────────────────────────────────────────────────────
+ *
+ * ─── 규칙 (무작위 3000상태 실측) ────────────────────────────
+ * 제자리 비틀린 큐비는 σ 가 그 큐비 안에서만 도는 경우라, 다른 조각이 그리로
+ * 흘러들지 않는다. 그래서 그 큐비에 닿는 길은 **끊고 들어가는 것 하나뿐** 이고,
+ * 끊고 들어간 다음 타깃은 곧바로 같은 큐비다. 따라서:
+ *
+ * 1. 같은 큐비의 문자가 **연속 두 번** → 끊어서 처리한 자리다. 둘 다 타깃이다.
+ *    (제자리 비틀림 3460칸 / 예외 0. 이미 풀린 조각으로 끊은 경우도 여기 걸리는데,
+ *     그쪽은 타깃이 맞고 `correct-extra` 로 판정된다.)
+ * 2. **단독** 으로 선 문자가 제자리 비틀린 큐비를 가리키면 → 비틀림 선언이다.
+ *    (관례 A 의 타깃 열에 그런 단독 항목이 나타난 경우 0.)
+ * 3. 그 외는 전부 타깃이다.
+ *
+ * 버퍼는 처음 상태로 판단할 수 없다. 관례 B 의 버퍼 비틀림은 **타깃을 다 실행한
+ * 뒤** 에 남는 것이고(`residualTwists` 와 같은 이유), 처음부터 비틀려 있던 버퍼가
+ * 타깃에 흡수돼 풀리는 경우가 248건 중 150건이다. 그래서 버퍼 문자는 일단 미뤄두고,
+ * 나머지를 실행해 본 뒤 **그 잔여 상태에서** 버퍼가 비틀려 있을 때만 선언으로 읽는다.
+ * 아니면 타깃 열에 그대로 남아 `buffer-sticker` 오답이 된다.
+ */
+export function readEntry(
+	state: CubeState,
+	entry: readonly Sticker[],
+	opts: TraceOptions
+): EntryReading {
+	const c = context(opts);
+	const cubieAt = (i: number): Cubie | null =>
+		i >= 0 && i < entry.length && entry[i] in c.cubie ? c.cubie[entry[i]] : null;
+
+	// 1. 연속한 같은 큐비를 짝으로 묶는다. 묶인 칸은 후보에서 빠진다.
+	const paired = entry.map(() => false);
+	for (let i = 0; i + 1 < entry.length; i++) {
+		const a = cubieAt(i);
+		if (a === null || a !== cubieAt(i + 1)) continue;
+		paired[i] = paired[i + 1] = true;
+		i++; // 세 개가 이어져도 앞의 둘만 한 짝이다.
+	}
+
+	// 2. 단독으로 선 비틀림 후보. 버퍼는 잔여 상태로 판단하므로 함께 미뤄둔다.
+	const pending = new Set<number>();
+	for (let i = 0; i < entry.length; i++) {
+		if (paired[i]) continue;
+		const cubie = cubieAt(i);
+		if (cubie === null) continue;
+		if (cubie === c.bufferCubie || isTwistedInPlace(state, c, cubie)) pending.add(i);
+	}
+
+	// 3. 후보를 뺀 나머지를 실행해 잔여 상태를 얻는다. 모르는 문자는 여기서도
+	//    빼둔다 — `applyTarget` 은 24글자 밖의 문자를 다룰 수 없고, 그 판정은
+	//    `gradeMemo` 의 `invalid-letter` 가 따로 한다.
+	const provisional = entry.filter((s, i) => !pending.has(i) && s in c.cubie);
+	const residual = applyTargets(state, provisional, opts);
+
+	const roles: EntryRole[] = entry.map((_, i) =>
+		pending.has(i) && isTwistedInPlace(residual, c, c.cubie[entry[i]]) ? 'twist' : 'target'
+	);
+
+	const targets: Sticker[] = [];
+	const twists: Sticker[] = [];
+	const targetAt: number[] = [];
+	const twistAt: number[] = [];
+	for (let i = 0; i < entry.length; i++) {
+		if (roles[i] === 'twist') {
+			twists.push(entry[i]);
+			twistAt.push(i);
+		} else {
+			targets.push(entry[i]);
+			targetAt.push(i);
+		}
+	}
+
+	// 흡수한 비틀림 쌍만 센다. 이미 풀린 조각으로 끊은 짝은 진짜 불필요한 끊기다.
+	let absorbed = 0;
+	for (let i = 0; i + 1 < entry.length; i++) {
+		const a = cubieAt(i);
+		if (a === null || a !== cubieAt(i + 1)) continue;
+		if (isTwistedInPlace(state, c, a)) absorbed++;
+		i++;
+	}
+
+	return {
+		targets,
+		twists,
+		roles,
+		targetAt,
+		twistAt,
+		separated: twists.length > 0,
+		absorbed
+	};
+}
+
+/**
+ * 한 줄 입력을 판독해 채점한다 (FR-TR-10~12, 18).
+ *
+ * 채점 관례는 **세션 설정이 아니라 판독 결과** 를 쓴다. 어느 쪽으로 쳐도 정답은
+ * 정답이라는 것이 이 화면의 약속이고, 설정은 정답 예시를 어느 관례로 보여줄지만
+ * 정한다.
+ *
+ * 판정의 인덱스는 **입력 칸 번호로 되돌린다.** 엔진은 타깃 열 기준으로 세는데
+ * 사용자가 보는 것은 한 줄이라, 되돌리지 않으면 "3번째 타깃" 이 화면의 3번째
+ * 글자가 아니게 된다.
+ */
+export function gradeEntry(
+	state: CubeState,
+	entry: readonly Sticker[],
+	opts: TraceOptions
+): { reading: EntryReading; verdict: TraceVerdict } {
+	const reading = readEntry(state, entry, opts);
+	const verdict = gradeMemo(
+		state,
+		{
+			targets: reading.targets,
+			twists: reading.twists,
+			extraAllowance: reading.separated ? 2 * reading.absorbed : 0
+		},
+		// 관례 이름을 적지 않는다 — 끊어서 처리는 엔진의 기본값이라 지우면 된다.
+		{ ...opts, twistConvention: reading.separated ? 'B' : undefined }
+	);
+	return { reading, verdict: remapIndex(verdict, reading) };
+}
+
+/** 타깃/비틀림 열의 인덱스를 입력 칸 번호로 되돌린다. */
+function remapIndex(v: TraceVerdict, r: EntryReading): TraceVerdict {
+	if (v.kind === 'wrong-at') return { ...v, index: r.targetAt[v.index] ?? v.index };
+	if (v.kind === 'invalid-letter') {
+		const at =
+			v.index < r.targets.length
+				? r.targetAt[v.index]
+				: r.twistAt[v.index - r.targets.length];
+		return { ...v, index: at ?? v.index };
+	}
+	return v;
 }

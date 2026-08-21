@@ -25,24 +25,49 @@
 	import Cube3D from '$lib/ui/Cube3D.svelte';
 	import SegToggle from '$lib/ui/SegToggle.svelte';
 	import StickerPad from '$lib/ui/StickerPad.svelte';
+	import Records from '$lib/ui/Records.svelte';
 	import { ScrambleSource } from '$lib/ui/scramble.svelte.js';
 	import { tracing } from '$lib/ui/tracing.svelte.js';
 	import { faceletColors, grayFacelets } from '$lib/ui/facelets.js';
 	import { loadDataset } from '$lib/data/loader.js';
-	import { stateFromFacelets, type CubeState, type PieceKind } from '$lib/cube/sim.js';
+	import { stateFromFacelets, type PieceKind } from '$lib/cube/sim.js';
 	import { ORIENTATION_COUNT, type Mark } from '$lib/cube/cube3d-map.js';
 	import { CORNER_LETTERS, EDGE_LETTERS } from '$lib/cube/speffz.js';
-	import { gradeMemo, trace, type TraceResult, type TraceVerdict } from '$lib/cube/trace.js';
+	import {
+		gradeEntry,
+		trace,
+		type EntryReading,
+		type TraceResult,
+		type TraceVerdict
+	} from '$lib/cube/trace.js';
 	import {
 		buildMarks,
+		caseConflicts,
+		combineVerdicts,
 		conventionCompare,
+		conventionOf,
+		entrySegments,
 		formatMs,
+		hasSeparator,
+		isPass,
+		joinBuffers,
+		kindsOf,
 		optionsFrom,
+		partsVerdictText,
+		readingText,
 		sanitizeEntry,
+		segmentIndex,
 		twistEntries,
 		verdictText,
+		CONVENTION_HEADING,
+		CONVENTION_HINTS,
 		CONVENTIONS,
+		ENTRY_SEPARATOR,
+		PART_LABELS,
+		SEPARATOR_LABEL,
+		TRAIN_KIND_HEADING,
 		TRAIN_KINDS,
+		TRAIN_MODE_HEADING,
 		TRAIN_MODES,
 		type BufferMeta,
 		type TrainKind,
@@ -64,6 +89,26 @@
 	type Stage = 'idle' | 'tracing' | 'input' | 'result';
 
 	/**
+	 * 한 판의 한 갈래 결과 (요구 2).
+	 *
+	 * 코너만·엣지만 하는 판은 이것이 하나, `both` 는 둘이다. 기록은 그래도 한 건이다 —
+	 * 갈래는 채점의 단위이고 기록의 단위는 판이다.
+	 */
+	interface Part {
+		kind: PieceKind;
+		verdict: TraceVerdict;
+		/** 채점 시점의 판독. 결과가 "무엇을 비틀림으로 읽었는가" 를 밝힌다. */
+		reading: EntryReading;
+		answer: TraceResult;
+		/** 두 관례의 타깃 수 (FR-TR-24). */
+		compare: { a: number; b: number };
+		/** 비틀림 목록. 버퍼가 섞였으면 따로 밝힌다 (AD-8). */
+		twists: { letter: string; isBuffer: boolean }[];
+		/** 패리티 (FR-TR-13). 코너 타깃이 홀수일 때다 — 엣지에서는 판단하지 않는다. */
+		parity: boolean;
+	}
+
+	/**
 	 * 엣지 버퍼. 코너와 달리 엣지 데이터셋(#16)이 아직 없어서 읽어올 `meta` 가 없다.
 	 *
 	 * 필드 이름을 `DatasetMeta` 와 같게 둔 이유가 하나다 — 데이터가 생기면 이
@@ -82,11 +127,10 @@
 	 * 붙여넣기 한 번이나 버튼 연타로 화면이 굳는 것을 막는다.
 	 *
 	 * 타깃 열은 코너 평균 8·엣지 평균 12 이고 끊기가 늘면 더 는다. 40 은 그 최악보다
-	 * 넉넉하되 사람이 낼 수 있는 길이의 범위 안이다. 비틀림은 조각 수가 상한이라
-	 * 코너 8·엣지 12 를 넘을 수 없다.
+	 * 넉넉하되 사람이 낼 수 있는 길이의 범위 안이다. 비틀림 선언도 같은 줄에 들어오지만
+	 * 조각 수가 상한이라 이 값을 밀어내지 못한다.
 	 */
-	const MAX_TARGETS = 40;
-	const MAX_TWISTS = 12;
+	const MAX_ENTRY = 40;
 
 	/** 하이라이트 없음. 렌더마다 새 배열을 만들면 뷰어의 `$effect` 가 계속 돈다. */
 	const NO_MARKS: (Mark | null)[] = Array.from({ length: 54 }, () => null);
@@ -95,7 +139,7 @@
 	const KIND_HINT: Record<TrainKind, string> = {
 		corner: '코너만 트레이싱합니다',
 		edge: '엣지만 트레이싱합니다',
-		both: '한 스크램블로 코너를 끝낸 뒤 엣지를 이어서 합니다'
+		both: `한 줄에 코너와 엣지를 이어 치고 한 번에 채점합니다`
 	};
 
 	const KIND_OPTIONS = (Object.keys(TRAIN_KINDS) as TrainKind[]).map((value) => ({
@@ -112,9 +156,9 @@
 	}));
 	const CONVENTION_OPTIONS = (Object.keys(CONVENTIONS) as TwistConvention[]).map((value) => ({
 		value,
-		label: `관례 ${value}`,
-		hint: CONVENTIONS[value],
-		title: CONVENTIONS[value]
+		label: CONVENTIONS[value],
+		hint: CONVENTION_HINTS[value],
+		title: CONVENTION_HINTS[value]
 	}));
 
 	let ds = $state<Dataset | null>(null);
@@ -128,23 +172,48 @@
 	const src = new ScrambleSource();
 
 	let stage = $state<Stage>('idle');
-	/** 이번 판의 조각 종류. `both` 는 코너를 끝낸 뒤 여기가 엣지로 바뀐다. */
-	let pieceKind = $state<PieceKind>('corner');
-	/** 시작 시점에 **고정** 한 관례. 판이 도는 중에 바뀌면 채점 기준이 흔들린다. */
-	let roundConvention = $state<TwistConvention>('A');
+	/**
+	 * 시작 시점에 **고정** 한 훈련 대상 (요구 4).
+	 *
+	 * 설정(`tracing.pieceKind`)을 직접 읽지 않는다. 판이 도는 동안 토글은 잠기지만,
+	 * 잠금이 풀리는 결과 단계에서 설정을 바꿔도 이미 채점한 판의 갈래 구성이
+	 * 흔들리면 안 된다.
+	 */
+	let roundKind = $state<TrainKind>('corner');
+	/**
+	 * 시작 시점에 **고정** 한 관례.
+	 *
+	 * 채점 기준이 아니다 — 판정은 `gradeEntry` 가 입력만 보고 하고, 어느 관례로
+	 * 쳐도 정답은 정답이다. 이 값이 정하는 것은 결과 화면이 정답 예시와 타깃 수를
+	 * 어느 관례로 보여줄지 하나뿐이다.
+	 */
+	let roundConvention = $state<TwistConvention>(CONVENTION_OPTIONS[0].value);
 	/** 54칸 facelet 문자열. 시작 전에는 `null` 이다 — 색 배열이 곧 정답의 일부다. */
 	let facelets = $state<string | null>(null);
-	let cube = $state<CubeState | null>(null);
 	/**
-	 * 두 구획의 입력 (FR-TR-18). 실전이 letter 열과 twist 를 따로 담는 것과 같다.
-	 * 타깃 열은 **순서** 가 의미를 갖고, 비틀림은 **집합** 이라 순서를 채점하지 않는다.
+	 * 한 줄 입력 (FR-TR-18, 요구 2).
+	 *
+	 * 구획을 둘로 나누지 않는다. 24글자 패드가 두 벌이면 버튼이 두 줄이 되는데,
+	 * 그 값을 치르고 얻는 것은 사용자가 이미 아는 사실 — 어느 것이 비틀림인가 —
+	 * 을 한 번 더 적게 하는 것뿐이다. 판정은 `readEntry` 가 한다.
+	 *
+	 * `both` 는 이 한 줄 **안에** 구분자가 서고, 코너와 엣지가 그 앞뒤로 나뉜다.
+	 * 제출도 채점도 한 번이다.
 	 */
-	let targets = $state<string[]>([]);
-	let twists = $state<string[]>([]);
-	let verdict = $state<TraceVerdict | null>(null);
-	let answer = $state<TraceResult | null>(null);
+	let entry = $state<string[]>([]);
+	/** 교차 검증 (요구 2). 구분자와 대소문자가 어긋난 글자 수다. */
+	let conflicts = $state(0);
+	/**
+	 * 채점 결과. 갈래마다 한 건이고 `both` 는 둘이다.
+	 *
+	 * 화면이 `{#each}` 로 그리므로 코너만 하는 판과 `both` 판이 **같은 코드** 를
+	 * 지난다. 갈래별로 분기를 적으면 한쪽만 고쳐지는 날이 온다.
+	 */
+	let parts = $state<Part[]>([]);
 	/** 초기 카메라 각도 (FR-TR-17). SSR 에서는 고정값이라 하이드레이션이 흔들리지 않는다. */
 	let orientation = $state(0);
+	/** 기록 모달 (요구 3). `+layout.svelte` 가 `About` 을 여는 방식과 같다. */
+	let recordsModal: ReturnType<typeof Records> | undefined = $state();
 
 	/* ── 계시 (FR-TR-23) ────────────────────────────────────────
 	 * 측정은 `performance.now()` 다. `Date.now()` 는 시스템 시계 조정에 영향받아
@@ -176,18 +245,46 @@
 	/** `memorize` 는 입력 시점에 큐브가 사라진다. 그것이 두 모드의 유일한 차이다. */
 	let cubeVisible = $derived(!(stage === 'input' && tracing.mode === 'memorize'));
 
-	let meta = $derived<(BufferMeta & { buffer: Cubie }) | null>(
-		!ds ? null : pieceKind === 'edge' ? EDGE_BUFFER : ds.meta
-	);
-	let opts = $derived(meta ? optionsFrom(meta, pieceKind, roundConvention) : null);
+	/** 이번 판의 갈래들. `both` 는 [코너, 엣지] 이고 순서가 구분자의 앞뒤다. */
+	let kinds = $derived(kindsOf(roundKind));
+	/**
+	 * 지금 치고 있는 갈래 (요구 2).
+	 *
+	 * **입력에서 읽는다.** 별도의 상태로 두면 구분자를 지웠을 때 되돌리는 코드를
+	 * 따로 적어야 하고, 그 둘이 어긋나면 패드 글자와 채점 기준이 갈린다.
+	 */
+	let padKind = $derived(kinds[segmentIndex(entry, kinds)]);
+
+	/** 조각 종류별 버퍼. 엣지 데이터셋(#16)이 생기면 이 함수만 바뀐다. */
+	const metaOf = (kind: PieceKind): (BufferMeta & { buffer: Cubie }) | null =>
+		!ds ? null : kind === 'edge' ? EDGE_BUFFER : ds.meta;
+
+	let meta = $derived(metaOf(padKind));
 	let colors = $derived(
 		ds && facelets ? faceletColors(ds.meta.colorScheme, facelets) : grayFacelets()
 	);
 
-	/** 이번 판의 패드 배치. 코너는 대문자, 엣지는 소문자다 (FR-TR-18). */
-	let padLetters = $derived(pieceKind === 'edge' ? EDGE_LETTERS : CORNER_LETTERS);
-	/** 관례 B 에서만 비틀림 구획이 열린다. 관례 A 는 전부 타깃 열에 들어간다. */
-	let twistsOpen = $derived(inputOpen && roundConvention === 'B');
+	/** 지금 갈래의 패드 배치. 코너는 대문자, 엣지는 소문자다 (FR-TR-18). */
+	let padLetters = $derived(padKind === 'edge' ? EDGE_LETTERS : CORNER_LETTERS);
+	/** 구분자를 넣을 수 있는가 — 갈래가 둘이고 아직 안 갈렸을 때뿐이다. */
+	let canSplit = $derived(inputOpen && kinds.length > 1 && !hasSeparator(entry));
+	/**
+	 * 입력 칸의 한 줄 설명. `both` 는 구분자를 어떻게 넣는지가 먼저다 — 그것을
+	 * 모르면 코너와 엣지가 한 덩어리로 붙어 채점이 통째로 어긋난다.
+	 */
+	let entryHint = $derived(
+		kinds.length > 1
+			? `${SEPARATOR_LABEL} 를 눌러 코너와 엣지를 가릅니다. 비틀림은 끊어 넣어도 되고 문자 하나로 적어도 됩니다`
+			: '비틀림은 끊어서 넣어도 되고 문자 하나로 따로 적어도 됩니다. 채점이 알아서 읽습니다'
+	);
+	/**
+	 * 세션 설정 잠금 (요구 4).
+	 *
+	 * 문제가 시작되면 대상·모드·관례를 못 바꾼다. 도중에 바뀌면 이미 친 입력의
+	 * 판정 기준이 흔들리고, 기록의 세 필드가 무엇을 가리키는지 알 수 없게 된다.
+	 * `idle` 로 돌아오는 "다음 문제" 시점에 다시 풀린다.
+	 */
+	let settingsLocked = $derived(stage !== 'idle');
 
 	/**
 	 * 54칸 하이라이트 (FR-TR-16).
@@ -197,19 +294,18 @@
 	 * 배열을 들고 있는 상태 자체를 만들지 않는 편이 안전하다 (FR-TR-15).
 	 *
 	 * 넘기는 것은 **사용자가 입력한 문자열뿐** 이다. 정답은 이 경로에 없다.
+	 *
+	 * `both` 는 **지금 갈래의 몫만** 칠한다. 구분자 앞의 코너 문자를 엣지 좌표로
+	 * 칠하면 엉뚱한 조각이 켜진다 — 두 갈래는 좌표계가 다르다.
 	 */
 	let marks = $derived(
-		meta && stage === 'tracing' ? buildMarks(pieceKind, meta, targets) : NO_MARKS
+		meta && stage === 'tracing'
+			? buildMarks(padKind, meta, entrySegments(entry, kinds)[segmentIndex(entry, kinds)].letters)
+			: NO_MARKS
 	);
 
-	/** 결과의 두 관례 타깃 수 (FR-TR-24). 채점 시점에 굳힌다. */
-	let compare = $state<{ a: number; b: number } | null>(null);
-	/** 결과의 비틀림 목록. 버퍼가 섞였으면 따로 밝힌다 (AD-8). */
-	let answerTwists = $derived(
-		answer && meta ? twistEntries(answer.twists, pieceKind, meta.buffer) : []
-	);
-	/** 패리티 (FR-TR-13). 코너 타깃이 홀수일 때다 — 엣지 세션에서는 판단하지 않는다. */
-	let parity = $derived(pieceKind === 'corner' && (answer?.parity ?? false));
+	/** 한 줄로 합친 판정 (요구 2). `both` 는 처음 틀린 갈래가 그대로 올라온다. */
+	let verdict = $derived(parts.length > 0 ? combineVerdicts(parts) : null);
 	/** 첫 어긋난 지점. 표시는 1부터 센다 (`verdictText` 와 같은 규약). */
 	let wrongIndex = $derived(verdict?.kind === 'wrong-at' ? verdict.index + 1 : null);
 
@@ -248,20 +344,13 @@
 		// 상태 계산에 쓰는 것은 언제나 `core` 다 (AD-10). `scramble` 은 표시용이고
 		// 방향 회전이 섞이면 facelet 배치가 통째로 어긋난다.
 		facelets = new Cube().move(next.core).asString();
+		// 세 설정을 시작 시점에 굳힌다 (요구 4). 판이 도는 동안 토글은 잠기고,
+		// 결과 단계에서 풀려도 이미 채점한 판이 흔들리지 않는다.
 		roundConvention = tracing.convention;
-		pieceKind = tracing.pieceKind === 'edge' ? 'edge' : 'corner';
-		beginRound();
-	}
-
-	/** 한 판의 시작. `both` 의 두 번째 판은 **같은 스크램블** 로 여기만 다시 탄다. */
-	function beginRound() {
-		if (!facelets) return;
-		cube = stateFromFacelets(facelets, pieceKind);
-		targets = [];
-		twists = [];
-		verdict = null;
-		answer = null;
-		compare = null;
+		roundKind = tracing.pieceKind;
+		entry = [];
+		conflicts = 0;
+		parts = [];
 		stoppedAt = null;
 		lastInputAt = null;
 		startedAt = performance.now();
@@ -294,73 +383,91 @@
 	 * 전역 키 훅을 걸지 않는다. 이 핸들러는 입력 칸에 포커스가 있을 때만 도므로
 	 * 다른 화면·다른 버튼에서 친 글자를 훔쳐가지 않는다.
 	 */
-	function onEntry(e: Event & { currentTarget: HTMLInputElement }, twist: boolean) {
-		const cleaned = sanitizeEntry(
-			e.currentTarget.value,
-			pieceKind,
-			// 버퍼 차단은 **타깃 구획에만** 건다. 버퍼가 비틀린 채 남는 경우가 코너
-			// 80.9% 라, 비틀림 구획에서 막으면 관례 B 훈련이 성립하지 않는다.
-			twist ? { max: MAX_TWISTS } : { blocked: meta?.bufferStickers, max: MAX_TARGETS }
-		);
-		if (twist) twists = cleaned;
-		else targets = cleaned;
+	function onEntry(e: Event & { currentTarget: HTMLInputElement }) {
+		const typed = e.currentTarget.value;
+		// 버퍼 문자도 막지 않는다 (요구 5). 잠글 자리가 문맥에 따라 갈리면 사용자가
+		// 예측할 수 없고, 버퍼를 타깃으로 쓴 것은 채점이 짚어 준다.
+		const cleaned = sanitizeEntry(typed, kinds, { max: MAX_ENTRY });
+		// 대소문자는 판정에 쓰지 않고 여기서만 본다 — 구분자가 정본이다 (요구 2).
+		conflicts = caseConflicts(typed, kinds);
+		entry = cleaned;
 		// 거부된 문자를 DOM 에 한 프레임이라도 남기면 커서가 뛴다. 즉시 되돌린다.
 		e.currentTarget.value = cleaned.join('');
 		noteInput();
 	}
 
 	/** `Backspace` 는 브라우저가 처리하고 `oninput` 이 받는다. 여기는 나머지 둘이다. */
-	function onEntryKey(e: KeyboardEvent, twist: boolean) {
+	function onEntryKey(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
 			e.preventDefault();
-			if (twist) twists = [];
-			else targets = [];
+			entry = [];
 		} else if (e.key === 'Enter') {
 			e.preventDefault();
 			if (inputOpen) gradeRound();
 		}
 	}
 
+	/**
+	 * 한 번에 채점한다 (요구 2).
+	 *
+	 * `both` 도 제출은 한 번이다. 갈래마다 **따로 판정** 하되 — 코너와 엣지는
+	 * 좌표계도 버퍼도 다르므로 한 번에 볼 수 없다 — 기록은 한 건으로 남긴다.
+	 */
 	function gradeRound() {
-		if (!cube || !opts || !meta) return;
+		const state = facelets;
+		if (!state || !ds) return;
 		// `follow` 는 마지막 입력이 끝점이다. 입력이 하나도 없으면 지금이 끝점이다.
 		stoppedAt ??= lastInputAt ?? performance.now();
-		// 화면은 **엔진 결과만** 쓴다. 정답 예시와 사용자의 입력을 문자열로 비교하는
-		// 코드가 여기 생기면 "정답이 평균 11가지" 라는 전제가 조용히 깨진다 (AD-7).
-		verdict = gradeMemo(cube, { targets, twists }, opts);
-		answer = trace(cube, opts);
-		compare = conventionCompare(cube, opts);
+		const graded: Part[] = [];
+		for (const { kind, letters } of entrySegments(entry, kinds)) {
+			const m = metaOf(kind);
+			if (!m) return;
+			const o = optionsFrom(m, kind, roundConvention);
+			const cube = stateFromFacelets(state, kind);
+			// 화면은 **엔진 결과만** 쓴다. 정답 예시와 사용자의 입력을 문자열로 비교하는
+			// 코드가 여기 생기면 "정답이 평균 11가지" 라는 전제가 조용히 깨진다 (AD-7).
+			// 판정은 입력만 본다. 세션 관례는 `answer` 의 표시 방식만 정한다.
+			const { verdict: v, reading } = gradeEntry(cube, letters, o);
+			const answer = trace(cube, o);
+			graded.push({
+				kind,
+				verdict: v,
+				reading,
+				answer,
+				compare: conventionCompare(cube, o),
+				twists: twistEntries(answer.twists, kind, m.buffer),
+				parity: kind === 'corner' && answer.parity
+			});
+		}
+		parts = graded;
 		tracing.add({
 			// 이 파일에서 벽시계를 읽는 유일한 자리다. 표시용 시각이고 측정값이 아니다.
 			at: Date.now(),
 			ms: Math.round(stoppedAt - startedAt),
-			pieceKind,
-			buffer: meta.buffer,
+			// 판이 기록의 단위다. `both` 한 판은 두 건이 아니라 한 건이다.
+			pieceKind: roundKind,
+			buffer: joinBuffers(graded.map((p) => metaOf(p.kind)!.buffer)),
 			mode: tracing.mode,
-			twistConvention: roundConvention,
+			// 설정값이 아니라 **사용자가 실제로 친 방식** 이다 (요구 1). 한쪽이라도
+			// 따로 선언했으면 따로 처리로 적는다 — 섞어 친 판을 끊어서 처리로 적으면
+			// 타깃 수가 왜 그만큼인지 설명되지 않는다.
+			twistConvention: conventionOf(graded.some((p) => p.reading.separated)),
 			// 스크램블이 정한 개수다. 사용자의 입력 길이가 아니라 문제의 난이도가 남는다.
-			targetCount: answer.targets.length,
-			correct: verdict.kind === 'correct' || verdict.kind === 'correct-extra'
+			// `both` 는 합계다 — 시간도 두 갈래를 합쳐 잰 값이라 단위가 맞는다.
+			targetCount: graded.reduce((n, p) => n + p.answer.targets.length, 0),
+			// 양쪽 다 맞아야 정답이다. 한쪽만 맞은 판은 오답으로 남는다.
+			correct: graded.every((p) => isPass(p.verdict))
 		});
 		stage = 'result';
 	}
 
-	/**
-	 * 다음. `both` 에서 코너를 끝냈으면 **같은 스크램블로** 엣지를 이어서 한다 —
-	 * 실전이 그렇고, 그때 코너 파지가 가장 어려운 지점이 된다 (FR-TR-19).
-	 */
+	/** 다음 문제. `both` 도 한 판이 여기서 끝난다 — 이어지는 반쪽이 없다 (요구 2). */
 	function next() {
-		if (tracing.pieceKind === 'both' && pieceKind === 'corner') {
-			pieceKind = 'edge';
-			beginRound();
-			return;
-		}
 		stage = 'idle';
 		facelets = null;
-		cube = null;
-		verdict = null;
-		answer = null;
-		compare = null;
+		entry = [];
+		conflicts = 0;
+		parts = [];
 		// 각도는 `idle` 에 들어올 때만 흔든다. 사용자가 미리 잡아둔 각도를 시작이
 		// 뺏으면 회색 상태에서 돌려볼 이유가 없어진다 (FR-TR-22).
 		orientation = randomOrientation();
@@ -378,7 +485,8 @@
 <section
 	class="trace"
 	data-stage={stage}
-	data-piece={pieceKind}
+	data-piece={padKind}
+	data-kind={roundKind}
 	data-orientation={orientation}
 >
 	<div class="cube-slot">
@@ -393,7 +501,7 @@
 	<div class="timer-row">
 		<!-- tabular-nums + 고정 폭. 숫자가 커질 때 옆이 밀리면 비교가 안 된다. -->
 		<span class="timer" data-timer>{formatMs(elapsed)}</span>
-		<span class="piece" data-piece-label>{pieceKind === 'edge' ? '엣지' : '코너'}</span>
+		<span class="piece" data-piece-label>{PART_LABELS[padKind]}</span>
 	</div>
 
 	<!-- 자리를 늘 잡아둔다. 문구가 생겼다 사라진다고 아래가 밀리면 안 된다. -->
@@ -419,146 +527,182 @@
 	</div>
 
 	<!--
-		입력 구획 둘 (FR-TR-18). 실전이 letter 열과 twist 를 따로 담는 것과 같다.
+		입력 한 줄 (FR-TR-18).
 
-		관례 A 에서 비틀림 구획을 `{#if}` 로 **지우지 않는다.** 전부 타깃 열에
-		들어가므로 쓸 일이 없지만, 없앴다 되살리면 관례를 바꿀 때마다 화면이 통째로
-		밀린다 (AD-14). 자리는 두고 잠근다.
+		구획을 둘로 나누지 않는다. 24글자 패드가 두 벌이면 화면에 버튼이 48개가 되고,
+		그 값을 치르고 얻는 것은 "어느 것이 비틀림인가" 를 사용자가 한 번 더 적는
+		일뿐이다. 그 정보는 입력 안에 이미 있다 — 같은 큐비가 연속 두 번이면 끊어서
+		처리한 것이고, 단독으로 선 비틀린 조각이면 선언이다. 가르는 일은 화면이
+		아니라 `readEntry` 가 한다.
 	-->
 	<div class="entry">
-		<section class="slot" data-section="targets">
+		<section class="slot" data-section="entry">
 			<label class="field">
-				<span>타깃 열</span>
+				<span>입력</span>
 				<input
 					type="text"
-					data-targets
+					data-entry
 					inputmode="none"
 					autocomplete="off"
 					autocapitalize="off"
 					spellcheck="false"
 					disabled={!inputOpen}
-					value={targets.join('')}
-					oninput={(e) => onEntry(e, false)}
-					onkeydown={(e) => onEntryKey(e, false)}
+					value={entry.join('')}
+					oninput={onEntry}
+					onkeydown={onEntryKey}
 				/>
 			</label>
-			<StickerPad
-				pad="targets"
-				letters={padLetters}
-				bind:value={targets}
-				blocked={meta?.bufferStickers ?? []}
-				disabled={!inputOpen}
-				max={MAX_TARGETS}
-				onedit={noteInput}
-			/>
-		</section>
-
-		<section class="slot" data-section="twists">
-			<label class="field">
-				<span>비틀림</span>
-				<input
-					type="text"
-					data-twists
-					inputmode="none"
-					autocomplete="off"
-					autocapitalize="off"
-					spellcheck="false"
-					disabled={!twistsOpen}
-					value={twists.join('')}
-					oninput={(e) => onEntry(e, true)}
-					onkeydown={(e) => onEntryKey(e, true)}
-				/>
-			</label>
-			<!-- 순서를 채점하지 않는다 — 집합으로 본다 (FR-TR-18). -->
-			<p class="hint" data-twists-hint>
-				{roundConvention === 'B'
-					? '순서는 채점하지 않습니다. 문자 하나로 적습니다'
-					: '관례 A 에서는 비틀림도 타깃 열에 들어갑니다'}
+			<p class="hint" data-entry-hint>{entryHint}</p>
+			<!--
+				교차 검증 (요구 2). 자리를 늘 잡아둔다 — 문구가 생겼다 사라지며 패드를
+				밀면 누르던 버튼이 움직인다.
+			-->
+			<p class="hint conflict" data-case-hint data-conflicts={conflicts}>
+				{conflicts > 0
+					? `대소문자가 구분자와 어긋난 글자 ${conflicts}개는 구분자 기준으로 읽었습니다`
+					: ''}
 			</p>
 			<StickerPad
-				pad="twists"
+				pad="entry"
 				letters={padLetters}
-				bind:value={twists}
-				disabled={!twistsOpen}
-				max={MAX_TWISTS}
+				bind:value={entry}
+				disabled={!inputOpen}
+				max={MAX_ENTRY}
 				onedit={noteInput}
+				separator={ENTRY_SEPARATOR}
+				separatorLabel={SEPARATOR_LABEL}
+				separatorEnabled={canSplit}
 			/>
 		</section>
 	</div>
 
+	<!--
+		판정 한 줄. `both` 는 갈래 이름을 붙여 둘을 잇는다 — 한쪽만 틀렸을 때 어느
+		쪽인지 여기서 바로 읽힌다 (요구 2).
+	-->
 	<p class="verdict" data-verdict data-kind={verdict?.kind ?? ''} data-wrong-index={wrongIndex}>
-		{verdict ? verdictText(verdict) : ''}
+		{partsVerdictText(parts)}
 	</p>
 
 	<!--
 		결과 (FR-TR-11, 13, 20, 24).
 
 		정답 예시를 사용자의 입력과 비교해 "틀렸다" 고 말하지 않는다. 유효한 메모가
-		평균 11가지라 예시는 예시일 뿐이다 — 판정은 위 `data-verdict` 하나뿐이고
-		그 출처는 `gradeMemo` 다 (AD-7).
+		평균 11가지라 예시는 예시일 뿐이다 — 판정의 출처는 `gradeMemo` 다 (AD-7).
+
+		갈래마다 같은 틀을 되풀이한다. `both` 라고 다른 코드를 타지 않는다.
 	-->
-	{#if answer && compare}
+	{#if parts.length > 0}
 		<div class="result" data-result>
-			<p class="row">
-				<span class="k">정답 예시</span>
-				<span class="v mono" data-answer>{answer.targets.join('')}</span>
-			</p>
-			<p class="note" data-answer-note>
-				정답은 여럿입니다. 끊는 자리를 다르게 잡은 열도 정답이며 위는 그중 하나입니다
-			</p>
-			{#if roundConvention === 'B'}
-				<p class="row">
-					<span class="k">비틀림</span>
-					<span class="v mono" data-answer-twists>
-						{#each answerTwists as t (t.letter)}<span
-								data-twist={t.letter}
-								data-buffer={t.isBuffer ? 'true' : 'false'}>{t.letter}{t.isBuffer ? '(버퍼)' : ''}</span
-							>{/each}{answerTwists.length === 0 ? '없음' : ''}
-					</span>
-				</p>
-				{#if answerTwists.some((t) => t.isBuffer)}
-					<!-- "왜 이게 목록에 있는가" 는 관례 B 를 처음 보면 반드시 나온다 (AD-8). -->
-					<p class="note" data-buffer-note>
-						버퍼가 비틀린 채 남았습니다. 방향의 합이 보존되므로 다른 조각의 비틀림을
-						남기면 버퍼가 그 보정을 떠안습니다
+			{#each parts as p (p.kind)}
+				<section class="part" data-part={p.kind} data-part-kind={p.verdict.kind}>
+					{#if parts.length > 1}
+						<p class="row">
+							<span class="k">{PART_LABELS[p.kind]}</span>
+							<span class="v" data-part-verdict>{verdictText(p.verdict)}</span>
+						</p>
+					{/if}
+					<p class="row">
+						<span class="k">정답 예시</span>
+						<span class="v mono" data-answer>{p.answer.targets.join('')}</span>
 					</p>
-				{/if}
-			{/if}
-			<!-- 사실 한 줄만 적는다. 처리 알고리즘 안내는 이번 범위 밖이다. -->
-			<p class="row" data-parity={parity ? 'true' : 'false'}>
-				<span class="k">패리티</span>
-				<span class="v">{parity ? '코너 타깃이 홀수입니다 (패리티)' : ''}</span>
-			</p>
-			<p class="row" data-convention-compare data-count-a={compare.a} data-count-b={compare.b}>
-				<span class="k">타깃 수</span>
-				<span class="v">관례 A {compare.a}개 · 관례 B {compare.b}개</span>
-			</p>
+					<p class="note" data-answer-note>
+						정답은 여럿입니다. 끊는 자리를 다르게 잡은 열도 정답이며 위는 그중 하나입니다
+					</p>
+					<!--
+						입력을 어떻게 갈랐는지 밝힌다 (요구 1). 판독이 조용하면 사용자는 자기가
+						친 단독 문자가 비틀림 선언으로 읽혔다는 것을 알 수 없다.
+					-->
+					<p
+						class="row"
+						data-reading
+						data-read-convention={conventionOf(p.reading.separated)}
+						data-read-twists={p.reading.twists.join('')}
+					>
+						<span class="k">입력 판독</span>
+						<span class="v">{readingText(p.reading)}</span>
+					</p>
+					{#if roundConvention === 'B'}
+						<p class="row">
+							<span class="k">비틀림</span>
+							<span class="v mono" data-answer-twists>
+								{#each p.twists as t (t.letter)}<span
+										data-twist={t.letter}
+										data-buffer={t.isBuffer ? 'true' : 'false'}
+										>{t.letter}{t.isBuffer ? '(버퍼)' : ''}</span
+									>{/each}{p.twists.length === 0 ? '없음' : ''}
+							</span>
+						</p>
+						{#if p.twists.some((t) => t.isBuffer)}
+							<!-- "왜 이게 목록에 있는가" 는 관례 B 를 처음 보면 반드시 나온다 (AD-8). -->
+							<p class="note" data-buffer-note>
+								버퍼가 비틀린 채 남았습니다. 방향의 합이 보존되므로 다른 조각의 비틀림을
+								남기면 버퍼가 그 보정을 떠안습니다
+							</p>
+						{/if}
+					{/if}
+					<!-- 사실 한 줄만 적는다. 처리 알고리즘 안내는 이번 범위 밖이다. -->
+					<p class="row" data-parity={p.parity ? 'true' : 'false'}>
+						<span class="k">패리티</span>
+						<span class="v">{p.parity ? '코너 타깃이 홀수입니다 (패리티)' : ''}</span>
+					</p>
+					<p
+						class="row"
+						data-convention-compare
+						data-count-a={p.compare.a}
+						data-count-b={p.compare.b}
+					>
+						<span class="k">타깃 수</span>
+						<span class="v">관례 A {p.compare.a}개 · 관례 B {p.compare.b}개</span>
+					</p>
+				</section>
+			{/each}
 		</div>
 	{/if}
 
+	<!--
+		세션 설정. 문제가 도는 동안은 잠긴다 (요구 4). `{#if}` 로 없애지 않는다 —
+		자리가 사라지면 화면이 밀리고 SSR/CSR 요소 개수도 갈린다 (AD-14).
+	-->
 	<div class="settings">
-		<SegToggle name="trace-kind" bind:value={tracing.pieceKind} options={KIND_OPTIONS} />
-		<SegToggle name="trace-mode" bind:value={tracing.mode} options={MODE_OPTIONS} />
+		<SegToggle
+			name="trace-kind"
+			heading={TRAIN_KIND_HEADING}
+			bind:value={tracing.pieceKind}
+			options={KIND_OPTIONS}
+			disabled={settingsLocked}
+		/>
+		<SegToggle
+			name="trace-mode"
+			heading={TRAIN_MODE_HEADING}
+			bind:value={tracing.mode}
+			options={MODE_OPTIONS}
+			disabled={settingsLocked}
+		/>
 		<SegToggle
 			name="trace-convention"
+			heading={CONVENTION_HEADING}
 			bind:value={tracing.convention}
 			options={CONVENTION_OPTIONS}
+			disabled={settingsLocked}
 		/>
 	</div>
 
-	{#if browser && tracing.records.length > 0}
-		<ul class="records" data-records>
-			{#each tracing.recent(5) as r (r.at + '/' + r.pieceKind)}
-				<li data-record>
-					<span class="t">{formatMs(r.ms)}</span>
-					<span>{r.pieceKind === 'edge' ? '엣지' : '코너'}</span>
-					<span>타깃 {r.targetCount}</span>
-					<span>{r.correct ? '정답' : '오답'}</span>
-				</li>
-			{/each}
-		</ul>
-	{/if}
+	<!--
+		기록은 모달 안이다 (요구 3). 본문에는 개수만 남긴다 — 50건이 쌓이면 이 화면이
+		트레이싱 화면이 아니라 기록 화면이 된다.
+	-->
+	<div class="records-row">
+		<span class="count" data-record-count={browser ? tracing.records.length : 0}>
+			기록 {browser ? tracing.records.length : 0}건
+		</span>
+		<button type="button" data-open-records onclick={() => recordsModal?.open()}>
+			최근 기록
+		</button>
+	</div>
 </section>
+
+<Records bind:this={recordsModal} />
 
 <style>
 	.trace {
@@ -648,7 +792,22 @@
 	.hint {
 		margin: 0;
 		font-size: 0.72rem;
+		line-height: 1.4;
 		color: var(--muted);
+	}
+	/* 교차 검증 한 줄. 문구가 없어도 자리를 지킨다 — 패드가 위아래로 뛰면 안 된다. */
+	.conflict {
+		min-height: 1rem;
+	}
+	/* 갈래 사이의 경계. `both` 결과에서 코너와 엣지가 한 덩어리로 읽히지 않게 한다. */
+	.part + .part {
+		padding-top: 0.5rem;
+		border-top: 1px solid var(--border);
+	}
+	.part {
+		display: grid;
+		gap: 0.3rem;
+		min-width: 0;
 	}
 	.field {
 		display: grid;
@@ -719,21 +878,26 @@
 		display: grid;
 		gap: 0.5rem;
 	}
-	.records {
-		display: grid;
-		gap: 0.25rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
+	.records-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		min-width: 0;
+	}
+	.records-row .count {
 		font-size: 0.78rem;
 		color: var(--muted);
 	}
-	.records li {
-		display: flex;
-		gap: 0.6rem;
-		font-family: var(--mono);
-	}
-	.records .t {
-		font-variant-numeric: tabular-nums;
+	.records-row button {
+		min-height: 44px;
+		padding: 0 0.9rem;
+		font-size: 0.85rem;
+		color: var(--fg);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 9px;
+		cursor: pointer;
+		touch-action: manipulation;
 	}
 </style>

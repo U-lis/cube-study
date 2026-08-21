@@ -24,11 +24,23 @@ import {
 	EDGE_LETTERS,
 	EDGE_ROTATION
 } from '../../src/lib/cube/speffz.js';
-import type { TraceVerdict } from '../../src/lib/cube/trace.js';
+import type { EntryReading, TraceVerdict } from '../../src/lib/cube/trace.js';
 import {
 	buildMarks,
+	caseConflicts,
+	combineVerdicts,
+	entrySegments,
+	hasSeparator,
+	isPass,
+	joinBuffers,
+	kindsOf,
+	partsVerdictText,
+	segmentIndex,
 	conventionCompare,
+	conventionOf,
 	formatMs,
+	isTwistConvention,
+	readingText,
 	optionsFrom,
 	parseRecords,
 	pushRecord,
@@ -36,6 +48,11 @@ import {
 	serializeRecords,
 	twistEntries,
 	verdictText,
+	BUFFER_JOIN,
+	CONVENTIONS,
+	ENTRY_SEPARATOR,
+	PART_LABELS,
+	RECORD_KIND_LABELS,
 	MARK_PALETTE,
 	RECORDS_KEY,
 	RECORDS_SCHEMA_VERSION,
@@ -50,6 +67,17 @@ function lcg(seed: number) {
 	let s = seed >>> 0;
 	return () => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296);
 }
+
+/** 판독 결과 한 건. `readEntry` 의 산출 형태만 흉내 낸다 — 판독 자체는 엔진 테스트가 본다. */
+const reading = (targets: string[], twists: string[]): EntryReading => ({
+	targets,
+	twists,
+	roles: [...targets.map(() => 'target' as const), ...twists.map(() => 'twist' as const)],
+	targetAt: targets.map((_, i) => i),
+	twistAt: twists.map((_, i) => targets.length + i),
+	separated: twists.length > 0,
+	absorbed: 0
+});
 
 /** 기록 한 건. 버퍼는 데이터에서 가져온다. */
 const rec = (over: Partial<TraceRecord> = {}): TraceRecord => ({
@@ -136,9 +164,15 @@ describe('T2-2 기록 파싱·직렬화', () => {
 		const rs = [rec({ ms: 10 }), rec({ ms: 20 })];
 		expect(parseRecords(serializeRecords(rs))).toEqual(rs);
 	});
-	it('저장 JSON 에 schemaVersion 1 이 들어간다', () => {
-		expect(JSON.parse(serializeRecords([rec()])).schemaVersion).toBe(1);
-		expect(RECORDS_SCHEMA_VERSION).toBe(1);
+	it('저장 JSON 에 지금 스키마 버전이 들어간다', () => {
+		expect(JSON.parse(serializeRecords([rec()])).schemaVersion).toBe(RECORDS_SCHEMA_VERSION);
+	});
+
+	it('스키마 v1 기록은 버린다 (뜻이 바뀌었다)', () => {
+		// v2 에서 `pieceKind` 에 `both` 가 들어가고 `targetCount` 가 합계가 됐다.
+		// 필드 이름은 그대로라 형태 검사로는 안 걸린다 — 버전이 유일한 근거다.
+		expect(RECORDS_SCHEMA_VERSION).toBeGreaterThan(1);
+		expect(parseRecords(JSON.stringify({ schemaVersion: 1, records: [rec()] }))).toEqual([]);
 	});
 });
 
@@ -182,7 +216,42 @@ describe('T2-4 암기 진도와의 분리 (AD-13)', () => {
 		// 암기 쪽 버전은 export 되지 않는다 — 둘이 한 상수를 공유할 길 자체가 없다.
 		const mod = await import('../../src/lib/domain/memorize.js');
 		expect(Object.keys(mod)).not.toContain('SCHEMA_VERSION');
-		expect(RECORDS_SCHEMA_VERSION).toBe(1);
+		// 기록 스키마를 올려도 암기 진도는 그대로다. 두 버전이 따로 움직인다는 것이
+		// 이 분리의 전부다 — 여기서 같은 수를 기대하면 그 독립이 깨진 것이다.
+		expect(parseStored(serialize({ setup: new Set(['AB']), direct: new Set() }))).toEqual({
+			setup: new Set(['AB']),
+			direct: new Set()
+		});
+	});
+});
+
+describe('T2-4b conventionOf · readingText (요구 1)', () => {
+	it('비틀림 선언이 없으면 끊어서 처리로 적는다', () => {
+		expect(CONVENTIONS[conventionOf(false)]).toBe(CONVENTIONS.A);
+	});
+
+	it('비틀림 선언이 있으면 따로 처리로 적는다', () => {
+		expect(CONVENTIONS[conventionOf(true)]).toBe(CONVENTIONS.B);
+	});
+
+	it('두 값이 서로 다르고 둘 다 알려진 관례다', () => {
+		expect(conventionOf(true)).not.toBe(conventionOf(false));
+		expect(isTwistConvention(conventionOf(true))).toBe(true);
+		expect(isTwistConvention(conventionOf(false))).toBe(true);
+	});
+
+	it('선언이 없으면 전부 타깃으로 읽었다고 적는다', () => {
+		expect(readingText(reading([], []))).toBe('전부 타깃으로 읽었습니다');
+	});
+
+	it('선언을 문자로 밝힌다', () => {
+		expect(readingText(reading(['K'], ['B']))).toContain('B');
+		expect(readingText(reading(['K'], ['B']))).toContain('비틀림');
+	});
+
+	it('축하·배지 표현이 없다 (NFR-TR-5)', () => {
+		for (const text of [readingText(reading([], [])), readingText(reading(['K'], ['B']))])
+			for (const word of ['축하', '배지', '연속', '점수']) expect(text).not.toContain(word);
 	});
 });
 
@@ -282,47 +351,222 @@ describe('T2-7 formatMs', () => {
 // Phase 4 — 입력 정리 (T4-1, T4-2 의 순수부)
 // ─────────────────────────────────────────────────────────────
 
+/** 갈래 묶음. 문자열을 그대로 넘기면 타입이 넓어져 오타가 안 잡힌다. */
+const CORNER_ONLY = kindsOf('corner');
+const EDGE_ONLY = kindsOf('edge');
+const BOTH = kindsOf('both');
+
 describe('T4-0 sanitizeEntry (FR-TR-18)', () => {
 	const many = { max: 99 };
 
 	it('코너 세션은 대문자로 맞춘다', () => {
-		expect(sanitizeEntry('kbd', 'corner', many)).toEqual(['K', 'B', 'D']);
+		expect(sanitizeEntry('kbd', CORNER_ONLY, many)).toEqual(['K', 'B', 'D']);
 	});
 
 	it('엣지 세션은 소문자로 맞춘다', () => {
-		expect(sanitizeEntry('KBD', 'edge', many)).toEqual(['k', 'b', 'd']);
+		expect(sanitizeEntry('KBD', EDGE_ONLY, many)).toEqual(['k', 'b', 'd']);
 	});
 
 	it('알파벳이 아닌 문자는 구분자로 보고 버린다', () => {
-		expect(sanitizeEntry('K B, D\n', 'corner', many)).toEqual(['K', 'B', 'D']);
+		expect(sanitizeEntry('K B, D\n', CORNER_ONLY, many)).toEqual(['K', 'B', 'D']);
 	});
 
 	it('24글자 밖의 문자는 받지 않는다', () => {
 		// Speffz 는 A~X 다. Y·Z 는 어느 조각도 지목하지 않는다.
-		expect(sanitizeEntry('KYZB', 'corner', many)).toEqual(['K', 'B']);
+		expect(sanitizeEntry('KYZB', CORNER_ONLY, many)).toEqual(['K', 'B']);
 	});
 
-	it('blocked 문자를 걸러낸다 (타깃 구획의 버퍼)', () => {
-		const blocked = ds.meta.bufferStickers;
-		const text = [...blocked, 'K'].join('');
-		expect(sanitizeEntry(text, 'corner', { blocked, max: 99 })).toEqual(['K']);
-	});
-
-	it('blocked 를 주지 않으면 버퍼 문자도 통과한다 (관례 B 의 비틀림 구획)', () => {
-		const buffer = ds.meta.bufferStickers[0];
-		expect(sanitizeEntry(buffer, 'corner', many)).toEqual([buffer]);
+	it('버퍼 문자도 그대로 통과한다 (잠금 없음)', () => {
+		// 한 줄 입력에서 버퍼는 비틀림 선언으로 정당하게 쓰인다. 잠글 자리가
+		// 문맥에 따라 갈리면 사용자가 예측할 수 없어 아예 잠그지 않는다.
+		const buffer = ds.meta.bufferStickers;
+		expect(sanitizeEntry([...buffer, 'K'].join(''), CORNER_ONLY, many)).toEqual([...buffer, 'K']);
 	});
 
 	it('상한을 넘으면 자른다', () => {
-		expect(sanitizeEntry('KBDLM', 'corner', { max: 2 })).toEqual(['K', 'B']);
+		expect(sanitizeEntry('KBDLM', CORNER_ONLY, { max: 2 })).toEqual(['K', 'B']);
 	});
 
 	it('상한이 0 이면 빈 열이다', () => {
-		expect(sanitizeEntry('KBD', 'corner', { max: 0 })).toEqual([]);
+		expect(sanitizeEntry('KBD', CORNER_ONLY, { max: 0 })).toEqual([]);
 	});
 
 	it('빈 문자열은 빈 열이다', () => {
-		expect(sanitizeEntry('', 'corner', many)).toEqual([]);
+		expect(sanitizeEntry('', CORNER_ONLY, many)).toEqual([]);
+	});
+});
+
+/**
+ * 요구 2 — `both` 한 판을 한 줄로 치고 한 번에 채점한다.
+ *
+ * 여기서 보는 것은 **구분자의 규칙** 이다. 채점 자체는 `trace.test.ts` 가 보고,
+ * 화면 조립은 `tests/e2e/trace-*.spec.ts` 가 본다.
+ */
+describe('요구 2 구분자 파싱', () => {
+	const many = { max: 99 };
+
+	it('구분자 앞은 코너, 뒤는 엣지로 맞춘다', () => {
+		// 앞은 소문자로, 뒤는 대문자로 쳐도 구분자가 갈래를 정한다.
+		expect(sanitizeEntry(`kb${ENTRY_SEPARATOR}KB`, BOTH, many)).toEqual([
+			'K',
+			'B',
+			ENTRY_SEPARATOR,
+			'k',
+			'b'
+		]);
+	});
+
+	it('갈래가 하나면 구분자를 버린다', () => {
+		expect(sanitizeEntry(`KB${ENTRY_SEPARATOR}KB`, CORNER_ONLY, many)).toEqual([
+			'K',
+			'B',
+			'K',
+			'B'
+		]);
+	});
+
+	it('구분자는 한 번만 선다', () => {
+		const out = sanitizeEntry(`K${ENTRY_SEPARATOR}c${ENTRY_SEPARATOR}i`, BOTH, many);
+		expect(out.filter((c) => c === ENTRY_SEPARATOR)).toHaveLength(1);
+		expect(out).toEqual(['K', ENTRY_SEPARATOR, 'c', 'i']);
+	});
+
+	it('상한은 글자만 센다 — 구분자는 자리를 뺏지 않는다', () => {
+		const out = sanitizeEntry(`KBD${ENTRY_SEPARATOR}ci`, BOTH, { max: 2 });
+		expect(out).toEqual(['K', 'B', ENTRY_SEPARATOR]);
+	});
+
+	it('구분자로 가른 두 열이 갈래별로 나온다', () => {
+		expect(entrySegments(['K', 'B', ENTRY_SEPARATOR, 'c', 'i'], BOTH)).toEqual([
+			{ kind: 'corner', letters: ['K', 'B'] },
+			{ kind: 'edge', letters: ['c', 'i'] }
+		]);
+	});
+
+	it('구분자가 없으면 엣지 열이 비어 있다', () => {
+		expect(entrySegments(['K', 'B'], BOTH)).toEqual([
+			{ kind: 'corner', letters: ['K', 'B'] },
+			{ kind: 'edge', letters: [] }
+		]);
+	});
+
+	it('구분자를 지우면 다시 코너 갈래다 (패드가 되돌아가는 근거)', () => {
+		const split = ['K', ENTRY_SEPARATOR, 'c'];
+		expect(hasSeparator(split)).toBe(true);
+		expect(segmentIndex(split, BOTH)).toBe(1);
+		const undone = split.slice(0, 1);
+		expect(hasSeparator(undone)).toBe(false);
+		expect(segmentIndex(undone, BOTH)).toBe(0);
+	});
+
+	it('갈래가 하나면 구분자를 지나도 번호가 늘지 않는다', () => {
+		expect(segmentIndex(['K', ENTRY_SEPARATOR, 'B'], CORNER_ONLY)).toBe(0);
+	});
+
+	it('대소문자는 교차 검증으로만 쓴다 — 어긋난 글자를 센다', () => {
+		// 구분자가 정본이라 판정은 그대로 가고, 어긋난 글자 수만 따로 알린다.
+		expect(caseConflicts(`kb${ENTRY_SEPARATOR}ci`, BOTH)).toBe(2);
+		expect(caseConflicts(`KB${ENTRY_SEPARATOR}ci`, BOTH)).toBe(0);
+		expect(caseConflicts(`KB${ENTRY_SEPARATOR}CI`, BOTH)).toBe(2);
+	});
+
+	it('갈래가 하나면 셀 것이 없다', () => {
+		expect(caseConflicts('kb', CORNER_ONLY)).toBe(0);
+	});
+
+	it('구분자는 24글자 어느 쪽에도 없다', () => {
+		expect(CORNER_LETTERS).not.toContain(ENTRY_SEPARATOR);
+		expect(EDGE_LETTERS).not.toContain(ENTRY_SEPARATOR);
+	});
+});
+
+describe('요구 2 both 채점 — 갈래별 판정, 기록 한 건', () => {
+	const pass: TraceVerdict = { kind: 'correct' };
+	const extra: TraceVerdict = { kind: 'correct-extra', extra: 2 };
+	const wrong: TraceVerdict = {
+		kind: 'wrong-at',
+		index: 1,
+		reason: 'wrong-piece',
+		expected: null
+	};
+
+	it('둘 다 맞으면 정답이다', () => {
+		expect(
+			combineVerdicts([
+				{ kind: 'corner', verdict: pass },
+				{ kind: 'edge', verdict: pass }
+			])
+		).toEqual(pass);
+	});
+
+	it('한쪽만 틀리면 그 판정이 그대로 올라온다', () => {
+		expect(
+			combineVerdicts([
+				{ kind: 'corner', verdict: pass },
+				{ kind: 'edge', verdict: wrong }
+			])
+		).toEqual(wrong);
+	});
+
+	it('불필요한 끊기는 갈래를 넘어 합쳐진다', () => {
+		expect(
+			combineVerdicts([
+				{ kind: 'corner', verdict: extra },
+				{ kind: 'edge', verdict: extra }
+			])
+		).toEqual({ kind: 'correct-extra', extra: 4 });
+	});
+
+	it('갈래가 둘이면 어느 쪽인지 문구에 남는다', () => {
+		const text = partsVerdictText([
+			{ kind: 'corner', verdict: pass },
+			{ kind: 'edge', verdict: wrong }
+		]);
+		expect(text).toContain(PART_LABELS.corner);
+		expect(text).toContain(PART_LABELS.edge);
+		expect(text).toContain(verdictText(wrong));
+	});
+
+	it('갈래가 하나면 이름을 붙이지 않는다', () => {
+		expect(partsVerdictText([{ kind: 'corner', verdict: pass }])).toBe(verdictText(pass));
+	});
+
+	it('풀리는 판정 둘만 통과로 센다', () => {
+		expect(isPass(pass)).toBe(true);
+		expect(isPass(extra)).toBe(true);
+		expect(isPass(wrong)).toBe(false);
+		expect(isPass({ kind: 'incomplete', remaining: [] })).toBe(false);
+	});
+
+	it('기록은 한 판에 한 건이고 pieceKind 에 both 가 들어간다', () => {
+		const r = rec({ pieceKind: 'both', targetCount: 20 });
+		const rs = pushRecord([], r);
+		expect(rs).toHaveLength(1);
+		expect(parseRecords(serializeRecords(rs))).toEqual(rs);
+	});
+
+	it('both 기록의 버퍼 칸에 두 버퍼가 함께 남는다', () => {
+		const joined = joinBuffers([ds.meta.buffer, edgeBuffer.buffer]);
+		expect(joined).toContain(ds.meta.buffer);
+		expect(joined).toContain(edgeBuffer.buffer);
+		expect(joined.split(BUFFER_JOIN)).toHaveLength(2);
+		// 형태 검사를 통과해야 저장에서 되살아난다.
+		expect(parseRecords(serializeRecords([rec({ pieceKind: 'both', buffer: joined })]))).toHaveLength(1);
+	});
+
+	it('갈래가 하나면 버퍼 칸이 그대로다', () => {
+		expect(joinBuffers([ds.meta.buffer])).toBe(ds.meta.buffer);
+	});
+
+	it('both 는 기록 목록에서 두 조각을 함께 부른다', () => {
+		expect(RECORD_KIND_LABELS.both).toContain(PART_LABELS.corner);
+		expect(RECORD_KIND_LABELS.both).toContain(PART_LABELS.edge);
+	});
+
+	it('kindsOf 가 구분자의 앞뒤 순서를 정한다', () => {
+		expect(kindsOf('both')).toEqual(['corner', 'edge']);
+		expect(kindsOf('corner')).toEqual(['corner']);
+		expect(kindsOf('edge')).toEqual(['edge']);
 	});
 });
 

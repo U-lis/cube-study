@@ -63,7 +63,8 @@
 	const nav = [
 		{ href: '/', label: '조회' },
 		{ href: '/anchors', label: '기준공식' },
-		{ href: '/quiz', label: '퀴즈' }
+		{ href: '/quiz', label: '퀴즈' },
+		{ href: '/trace', label: '트레이싱' }
 	];
 </script>
 

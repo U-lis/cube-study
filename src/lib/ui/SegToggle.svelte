@@ -2,7 +2,10 @@
   2지선다 세그먼티드 토글.
 
   단일 버튼으로 상태만 보여주면 "누르면 무엇이 되는지"를 알 수 없다.
-  두 선택지를 나란히 두고 활성 쪽을 강조한다.
+  선택지를 나란히 두고 활성 쪽을 강조한다.
+
+  선택지는 둘 또는 셋이다. 넷을 넘으면 모바일 폭에서 글자가 잘리기 시작하므로
+  그때는 이 컨트롤이 아니라 목록이 맞다.
 
   설명은 항상 보이는 한 줄로 둔다. 모바일에는 hover 가 없어서
   title 툴팁에만 의존하면 정작 주 사용처에서 안 보인다.
@@ -21,13 +24,20 @@
 		name,
 		value = $bindable(),
 		options
-	}: { name: string; value: T; options: [Option, Option] } = $props();
+	}: { name: string; value: T; options: Option[] } = $props();
 
 	let active = $derived(options.find((o) => o.value === value) ?? options[0]);
 </script>
 
 <div class="wrap">
-	<div class="seg" data-toggle={name} data-value={value} role="group" aria-label={name}>
+	<div
+		class="seg"
+		data-toggle={name}
+		data-value={value}
+		role="group"
+		aria-label={name}
+		style="--cols: {options.length}"
+	>
 		{#each options as o (o.value)}
 			<button
 				type="button"
@@ -50,7 +60,8 @@
 	}
 	.seg {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		/* 선택지 개수는 호출부가 정한다. 인라인 변수로 받아 CSS 를 갈라두지 않는다. */
+		grid-template-columns: repeat(var(--cols, 2), 1fr);
 		gap: 2px;
 		padding: 2px;
 		background: var(--bg);

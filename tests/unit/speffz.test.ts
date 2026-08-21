@@ -14,10 +14,13 @@ import {
 	CORNER_CUBIE,
 	CORNER_FACELETS,
 	CORNER_INDEX,
+	CORNER_ROTATION,
 	EDGE_CUBIE,
 	EDGE_FACELETS,
 	EDGE_INDEX,
-	faceOfIndex
+	faceOfIndex,
+	primaryAxisSticker,
+	rotationOf
 } from '../../src/lib/cube/speffz.js';
 import { CubeSim } from '../../src/lib/cube/sim.js';
 import dataJson from '../../src/lib/data/corner-UBL.json';
@@ -95,5 +98,110 @@ describe('cubejs 관례 확인', () => {
 		const sim = new CubeSim();
 		for (const m of ['x', "y'", 'z2', 'r', "u'"])
 			expect(() => sim.apply(sim.solvedCorners(), m)).not.toThrow();
+	});
+});
+
+/**
+ * T1A-1. 회전 방향 순서 — cubejs 물리로 확인한다.
+ *
+ * 우리가 적은 순서를 우리가 확인하지 않는다. 면 4분회전을 걸어보고, 큐비가
+ * 옮겨간 자리에서 인덱스가 어떻게 대응되는지를 cubejs 에게 묻는다.
+ *
+ * 기대는 두 층이다:
+ *  - U·D 회전: 인덱스가 **그대로** 보존된다. U/D 축을 기준으로 한 방향 정의라
+ *    이 두 회전은 코너를 비틀지 않는다.
+ *  - R·L·F·B 회전: 인덱스가 **순환 이동** 한다. 이동량이 0 이 아닌 것이 곧
+ *    코너 비틀림이므로 0 을 요구할 수 없다. 요구할 수 있는 것은 "순환" 이며,
+ *    한 큐비의 순서가 반대로 적혀 있으면 순환이 아니라 뒤집힘으로 나온다.
+ */
+describe('T1A-1. CORNER_ROTATION', () => {
+	const sim = new CubeSim();
+	const FACES = ['U', 'R', 'F', 'D', 'L', 'B'];
+
+	it('각 큐비의 스티커 3개가 CORNER_FACELETS 와 집합으로 같다', () => {
+		const bad: string[] = [];
+		for (const [cubie, rot] of Object.entries(CORNER_ROTATION)) {
+			const fromRot = rot.map((s) => CORNER_INDEX[s]).sort((a, b) => a - b);
+			const fromFacelets = [...CORNER_FACELETS[cubie]].sort((a, b) => a - b);
+			if (fromRot.join() !== fromFacelets.join()) bad.push(`${cubie}: ${fromRot} != ${fromFacelets}`);
+		}
+		expect(bad).toEqual([]);
+	});
+
+	/** 회전 후 "원래 s 자리에 있던 스티커가 지금 앉아 있는 자리". */
+	const destination = (move: string) => {
+		const st = sim.apply(sim.solvedCorners(), move, 'corner');
+		const to: Record<string, string> = {};
+		for (const [pos, origin] of Object.entries(st)) to[origin] = pos;
+		return to;
+	};
+
+	it('면 4분회전 6개 × 코너 8개 = 48 조합에서 인덱스가 순환 이동한다', () => {
+		const bad: string[] = [];
+		let combos = 0;
+		for (const face of FACES) {
+			const to = destination(face);
+			for (const [cubie, rot] of Object.entries(CORNER_ROTATION)) {
+				combos++;
+				const moved = CORNER_CUBIE[to[rot[0]]];
+				const target = CORNER_ROTATION[moved];
+				const shift = target.indexOf(to[rot[0]]);
+				for (let i = 0; i < rot.length; i++) {
+					const got = to[rot[i]];
+					const want = target[(shift + i) % rot.length];
+					if (got !== want) bad.push(`${face}: ${cubie}[${i}] → ${got}, 기대 ${want}`);
+				}
+			}
+		}
+		expect(combos).toBe(48);
+		expect(bad).toEqual([]);
+	});
+
+	it('U·D 회전은 인덱스를 그대로 보존한다 (방향 정의의 축)', () => {
+		const bad: string[] = [];
+		for (const face of ['U', 'D']) {
+			const to = destination(face);
+			for (const [cubie, rot] of Object.entries(CORNER_ROTATION)) {
+				const moved = CORNER_CUBIE[to[rot[0]]];
+				for (let i = 0; i < rot.length; i++)
+					if (to[rot[i]] !== CORNER_ROTATION[moved][i])
+						bad.push(`${face}: ${cubie}[${i}] → ${to[rot[i]]}, 기대 ${CORNER_ROTATION[moved][i]}`);
+			}
+		}
+		expect(bad).toEqual([]);
+	});
+
+	it('UFL 과 DBL 은 CORNER_FACELETS 나열 순서와 다르다 (AD-3 의 두 예외)', () => {
+		for (const cubie of ['UFL', 'DBL'])
+			expect(CORNER_ROTATION[cubie].map((s) => CORNER_INDEX[s])).not.toEqual(
+				CORNER_FACELETS[cubie]
+			);
+	});
+
+	it('나머지 6개는 CORNER_FACELETS 순서와 같다', () => {
+		for (const cubie of Object.keys(CORNER_ROTATION))
+			if (cubie !== 'UFL' && cubie !== 'DBL')
+				expect(CORNER_ROTATION[cubie].map((s) => CORNER_INDEX[s])).toEqual(CORNER_FACELETS[cubie]);
+	});
+
+	it('rotationOf(edge) 는 큐비마다 2칸이고 EDGE_FACELETS 와 같은 칸을 가리킨다', () => {
+		for (const [cubie, rot] of Object.entries(rotationOf('edge'))) {
+			expect(rot.length).toBe(2);
+			expect(rot.map((s) => EDGE_INDEX[s])).toEqual(EDGE_FACELETS[cubie]);
+		}
+	});
+});
+
+describe('T1A-1. primaryAxisSticker', () => {
+	it('코너 8개 전부 U/D 축 스티커를 하나씩 갖는다', () => {
+		for (const cubie of Object.keys(CORNER_ROTATION))
+			expect(CORNER_ROTATION[cubie]).toContain(primaryAxisSticker('corner', cubie));
+	});
+
+	it('U 면·D 면 코너의 축 스티커는 그 면의 칸이다', () => {
+		for (const cubie of Object.keys(CORNER_ROTATION)) {
+			const s = primaryAxisSticker('corner', cubie);
+			expect(faceOfIndex(CORNER_INDEX[s])).toBe(cubie[0]);
+		}
 	});
 });

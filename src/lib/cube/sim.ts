@@ -20,6 +20,7 @@
 
 import Cube from 'cubejs/lib/cube.js';
 import type { Cubie, Sticker } from '../domain/types.js';
+import type { PieceKind } from './speffz.js';
 import {
 	CORNER_AT,
 	CORNER_CUBIE,
@@ -31,7 +32,7 @@ import {
 	EDGE_LETTERS
 } from './speffz.js';
 
-export type PieceKind = 'corner' | 'edge';
+export type { PieceKind } from './speffz.js';
 export type CubeState = Record<Sticker, Sticker>;
 
 export interface IdentifyOptions {
@@ -59,22 +60,17 @@ const BY_COLOR = {
 };
 
 /**
- * 알고리즘 하나의 스티커 치환 { 위치: 그 자리에 온 스티커의 원래 자리 }.
+ * 54칸 facelet 문자열 → `CubeState` { 위치: 그 자리에 온 스티커의 원래 자리 }.
  *
  * 조각의 정체는 색 조합으로, 방향은 "그 색이 원래 어느 면이었나"로 되찾는다.
  * cubejs 내부 표현(cp/co/ep/eo)을 읽지 않는 이유는 그쪽 인덱스 관례를 우리가
  * 또 하나 떠안게 되기 때문이다. `asString()` 은 공개 API 이고 색은 거짓말을 안 한다.
+ *
+ * `permOf` 에서 떼어낸 것은 알고리즘 문자열 말고 **facelet 문자열** 에서도
+ * 상태를 만들어야 하기 때문이다. 스크램블 워커가 준 문자열 하나에서 상태와
+ * 3D 뷰어의 색을 같이 뽑아야 원본이 둘로 갈라지지 않는다 (AD-2).
  */
-function permOf(alg: string, kind: PieceKind): CubeState {
-	const cube = new Cube();
-	try {
-		cube.move(alg);
-	} catch (e) {
-		// grade.ts 가 읽는 문구로 맞춰준다 (cubejs 는 "Invalid move: X" 라고 한다).
-		const m = /(?:Invalid|Unknown) move: (\S+)/.exec((e as Error).message);
-		throw new Error(`Unknown move: ${m ? m[1] : alg}`);
-	}
-	const s = cube.asString();
+export function stateFromFacelets(s: string, kind: PieceKind): CubeState {
 	const facelets = kind === 'corner' ? CORNER_FACELETS : EDGE_FACELETS;
 	const at = kind === 'corner' ? CORNER_AT : EDGE_AT;
 	const byColor = BY_COLOR[kind];
@@ -88,6 +84,19 @@ function permOf(alg: string, kind: PieceKind): CubeState {
 		}
 	}
 	return perm;
+}
+
+/** 알고리즘 하나의 스티커 치환. 물리는 cubejs 가 하고 우리는 읽기만 한다. */
+function permOf(alg: string, kind: PieceKind): CubeState {
+	const cube = new Cube();
+	try {
+		cube.move(alg);
+	} catch (e) {
+		// grade.ts 가 읽는 문구로 맞춰준다 (cubejs 는 "Invalid move: X" 라고 한다).
+		const m = /(?:Invalid|Unknown) move: (\S+)/.exec((e as Error).message);
+		throw new Error(`Unknown move: ${m ? m[1] : alg}`);
+	}
+	return stateFromFacelets(cube.asString(), kind);
 }
 
 export class CubeSim {

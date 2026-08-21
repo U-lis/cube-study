@@ -18,8 +18,16 @@
  */
 
 import type { Cubie, DatasetMeta, Sticker } from './types.js';
-import type { PieceKind } from '../cube/speffz.js';
+import {
+	cubieOf,
+	lettersOf,
+	rotationOf,
+	CORNER_INDEX,
+	EDGE_INDEX,
+	type PieceKind
+} from '../cube/speffz.js';
 import type { CubeState } from '../cube/sim.js';
+import type { Mark } from '../cube/cube3d-map.js';
 import { trace, type TraceOptions, type TraceVerdict, type TwistConvention } from '../cube/trace.js';
 
 export type { TwistConvention };
@@ -288,4 +296,141 @@ export function formatMs(ms: number): string {
 	const frac = `${String(cs).padStart(2, '0')}`;
 	if (min === 0) return `${sec}.${frac}`;
 	return `${min}:${String(sec).padStart(2, '0')}.${frac}`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * Phase 4 — 입력 정리
+ * ═══════════════════════════════════════════════════════════ */
+
+/**
+ * 입력 문자열을 이 세션의 타깃 열로 정리한다 (FR-TR-18).
+ *
+ * 온스크린 패드와 하드웨어 키보드가 **같은 규칙** 을 지나야 한다. 두 경로가
+ * 각자 정리하면 "패드로는 막히는데 키보드로는 들어가는" 문자가 생기고, 그 차이는
+ * 채점 결과로만 드러나 원인을 찾기 어렵다. 그래서 규칙을 여기 하나로 모은다.
+ *
+ * - 코너는 대문자, 엣지는 소문자로 맞춘다. 대소문자를 틀린 것은 다른 조각을
+ *   지목한 것이 아니다 — 이번 판의 조각 종류가 이미 정해져 있다.
+ * - 알파벳이 아닌 문자(공백·쉼표·줄바꿈)는 구분자로 보고 버린다.
+ * - `blocked` 문자는 받지 않는다. 타깃 구획의 버퍼 스티커가 이 경우다.
+ *   비틀림 구획에는 걸지 않는다 — 버퍼가 비틀린 채 남는 경우가 코너 80.9% 라
+ *   막으면 관례 B 훈련이 성립하지 않는다 (FR-TR-24).
+ * - `max` 를 넘으면 자른다. 붙여넣기 한 번으로 화면이 굳는 것을 막는다.
+ */
+export function sanitizeEntry(
+	text: string,
+	kind: PieceKind,
+	options: { blocked?: readonly Sticker[]; max: number }
+): Sticker[] {
+	const blocked = new Set(options.blocked ?? []);
+	const cased = kind === 'edge' ? text.toLowerCase() : text.toUpperCase();
+	const allowed = new Set(lettersOf(kind));
+	const out: Sticker[] = [];
+	for (const ch of cased) {
+		if (out.length >= options.max) break;
+		if (!allowed.has(ch) || blocked.has(ch)) continue;
+		out.push(ch);
+	}
+	return out;
+}
+
+/**
+ * 비틀림 목록에 버퍼가 섞였는지 표시한다 (FR-TR-24, AD-8).
+ *
+ * "왜 이게 목록에 있는가" 는 관례 B 를 처음 보면 반드시 나오는 질문이다. 방향
+ * 합이 보존되므로 다른 조각의 비틀림을 남기면 버퍼가 그 보정을 떠안는다 —
+ * 그 사실이 학습에 직결되므로 결과 화면이 버퍼임을 따로 밝힌다.
+ */
+export function twistEntries(
+	twists: readonly Sticker[],
+	kind: PieceKind,
+	buffer: Cubie
+): { letter: Sticker; isBuffer: boolean }[] {
+	const cubie = cubieOf(kind);
+	return twists.map((letter) => ({ letter, isBuffer: cubie[letter] === buffer }));
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * Phase 5 — 하이라이트
+ * ═══════════════════════════════════════════════════════════ */
+
+/**
+ * 세 갈래 강조의 색·테두리 (FR-TR-16).
+ *
+ * 팔레트를 **화면이 아니라 여기** 에 둔다. 뷰어는 "무슨 색을 어디에" 만 받고
+ * (AD-12), 무엇을 칠할지는 이 층이 정하기 때문이다.
+ */
+export interface MarkPalette {
+	buffer: Mark;
+	current: Mark;
+	visited: Mark;
+}
+
+/**
+ * 기본 팔레트.
+ *
+ * 색은 스티커 6색(`meta.colorScheme` 이 지목하는 흰·노랑·초록·파랑·빨강·주황)과
+ * **겹치지 않는** 값이어야 한다. 스티커 색과 비슷하면 강조가 색칠로 읽힌다.
+ * 그래서 큐브에 없는 계열 — 청록·자홍·연보라 — 을 쓴다.
+ *
+ * 색만으로 나누지 않는다. 테두리가 실선 / 이중선 / 파선으로 함께 갈린다
+ * (색각 이상 대비, FR-TR-16). 셋 중 하나만 보고도 구분이 된다.
+ */
+export const MARK_PALETTE: MarkPalette = {
+	buffer: { color: '#19e0d8', outline: 'solid' },
+	current: { color: '#ff45c8', outline: 'double' },
+	visited: { color: '#a08cff', outline: 'dashed' }
+};
+
+/** 조각 종류별 문자 → facelet 인덱스. */
+const indexOf = (kind: PieceKind): Record<Sticker, number> =>
+	kind === 'edge' ? EDGE_INDEX : CORNER_INDEX;
+
+/**
+ * 54칸 강조 배열을 만든다 (FR-TR-16).
+ *
+ * **순수 함수다.** 화면에서 배열을 조립하면 단위 테스트가 안 되고, 이 배열이
+ * 틀리면 사용자는 엉뚱한 조각을 훈련하게 된다 — 눈으로는 잘 안 잡히는 종류의
+ * 오류다.
+ *
+ * 규칙:
+ * 1. 버퍼 조각을 먼저 칠한다. 버퍼는 `meta.bufferStickers` 에서 온다 —
+ *    이 함수에 버퍼 문자 리터럴이 없다 (FR-TR-7).
+ * 2. 입력한 문자를 순서대로 칠한다. **마지막 하나가 "현재 타깃"** 이고 나머지는
+ *    "지나간 조각" 이다. 뒤에 칠한 것이 앞을 덮으므로 같은 큐비가 두 번 나와도
+ *    결과가 결정적이다.
+ * 3. **조각 하나를 칠하면 그 조각의 스티커를 전부 칠한다** — 코너 3칸, 엣지 2칸.
+ *    한 칸만 칠하면 큐브를 돌렸을 때 그 조각을 놓친다.
+ *
+ * 개수 상한을 두지 않는다. 지나간 조각은 코너 평균 8 + 엣지 평균 12 이고 끊기가
+ * 늘면 더 는다.
+ *
+ * 정답 경로는 여기에 들어오지 않는다. 이 함수가 받는 것은 **사용자가 입력한
+ * 문자열뿐** 이고, 그것이 힌트 금지(FR-TR-15)를 구조로 지키는 방식이다.
+ */
+export function buildMarks(
+	kind: PieceKind,
+	meta: BufferMeta,
+	entered: readonly Sticker[],
+	palette: MarkPalette = MARK_PALETTE
+): (Mark | null)[] {
+	const marks: (Mark | null)[] = Array.from({ length: 54 }, () => null);
+	const index = indexOf(kind);
+	const rotation = rotationOf(kind);
+	const cubie = cubieOf(kind);
+
+	const paint = (letter: Sticker, mark: Mark): void => {
+		const home = cubie[letter];
+		if (!home) return;
+		for (const s of rotation[home]) marks[index[s]] = mark;
+	};
+
+	// 버퍼가 먼저. 입력이 버퍼 조각에 닿으면 그 위를 덮는다 — 지금 손에 든 것이
+	// 무엇인지가 버퍼 표시보다 먼저 보여야 한다.
+	for (const s of meta.bufferStickers) paint(s, palette.buffer);
+
+	for (let i = 0; i < entered.length; i++)
+		paint(entered[i], i === entered.length - 1 ? palette.current : palette.visited);
+
+	return marks;
 }

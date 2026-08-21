@@ -255,12 +255,20 @@ test.describe('T3-4 세션 설정 (FR-TR-19, 24)', () => {
 		await ready(page);
 		await page.locator('[data-start]').click();
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'corner');
-		const painted = (await pixels(page)).data;
-		await page.locator('[data-targets]').fill('ABC');
+		await page.locator('[data-targets]').fill('BC');
 		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'result');
+		/*
+		 * 그림 비교는 **결과 단계** 에서 한다. 트레이싱 중에는 버퍼 하이라이트가
+		 * 켜져 있고(FR-TR-16) 코너 버퍼와 엣지 버퍼는 서로 다른 자리라, 색이 같아도
+		 * 그림이 다르다. 결과 단계는 하이라이트가 꺼져 있어 색만 남는다.
+		 */
+		const painted = (await pixels(page)).data;
 		await page.locator('[data-next]').click();
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'tracing');
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'edge');
+		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'result');
 		// 같은 스크램블이면 같은 그림이다 — 카메라도 색도 그대로다.
 		expect((await pixels(page)).data.equals(painted)).toBe(true);
 	});

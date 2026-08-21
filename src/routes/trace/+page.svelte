@@ -24,16 +24,22 @@
 	import Cube from 'cubejs/lib/cube.js';
 	import Cube3D from '$lib/ui/Cube3D.svelte';
 	import SegToggle from '$lib/ui/SegToggle.svelte';
+	import StickerPad from '$lib/ui/StickerPad.svelte';
 	import { ScrambleSource } from '$lib/ui/scramble.svelte.js';
 	import { tracing } from '$lib/ui/tracing.svelte.js';
 	import { faceletColors, grayFacelets } from '$lib/ui/facelets.js';
 	import { loadDataset } from '$lib/data/loader.js';
 	import { stateFromFacelets, type CubeState, type PieceKind } from '$lib/cube/sim.js';
-	import { ORIENTATION_COUNT } from '$lib/cube/cube3d-map.js';
+	import { ORIENTATION_COUNT, type Mark } from '$lib/cube/cube3d-map.js';
+	import { CORNER_LETTERS, EDGE_LETTERS } from '$lib/cube/speffz.js';
 	import { gradeMemo, trace, type TraceResult, type TraceVerdict } from '$lib/cube/trace.js';
 	import {
+		buildMarks,
+		conventionCompare,
 		formatMs,
 		optionsFrom,
+		sanitizeEntry,
+		twistEntries,
 		verdictText,
 		CONVENTIONS,
 		TRAIN_KINDS,
@@ -70,6 +76,20 @@
 		bufferStickers: ['c', 'i'],
 		primarySticker: 'c'
 	};
+
+	/**
+	 * 입력 상한 (FR-TR-18). `MoveKeypad.svelte:9` 의 `MAX_MOVES` 와 같은 취지다 —
+	 * 붙여넣기 한 번이나 버튼 연타로 화면이 굳는 것을 막는다.
+	 *
+	 * 타깃 열은 코너 평균 8·엣지 평균 12 이고 끊기가 늘면 더 는다. 40 은 그 최악보다
+	 * 넉넉하되 사람이 낼 수 있는 길이의 범위 안이다. 비틀림은 조각 수가 상한이라
+	 * 코너 8·엣지 12 를 넘을 수 없다.
+	 */
+	const MAX_TARGETS = 40;
+	const MAX_TWISTS = 12;
+
+	/** 하이라이트 없음. 렌더마다 새 배열을 만들면 뷰어의 `$effect` 가 계속 돈다. */
+	const NO_MARKS: (Mark | null)[] = Array.from({ length: 54 }, () => null);
 
 	/** 대상 선택의 한 줄 설명. 라벨은 이름이고 이쪽이 "그래서 무엇이 다른가" 다. */
 	const KIND_HINT: Record<TrainKind, string> = {
@@ -115,8 +135,12 @@
 	/** 54칸 facelet 문자열. 시작 전에는 `null` 이다 — 색 배열이 곧 정답의 일부다. */
 	let facelets = $state<string | null>(null);
 	let cube = $state<CubeState | null>(null);
-	let targetsText = $state('');
-	let twistsText = $state('');
+	/**
+	 * 두 구획의 입력 (FR-TR-18). 실전이 letter 열과 twist 를 따로 담는 것과 같다.
+	 * 타깃 열은 **순서** 가 의미를 갖고, 비틀림은 **집합** 이라 순서를 채점하지 않는다.
+	 */
+	let targets = $state<string[]>([]);
+	let twists = $state<string[]>([]);
 	let verdict = $state<TraceVerdict | null>(null);
 	let answer = $state<TraceResult | null>(null);
 	/** 초기 카메라 각도 (FR-TR-17). SSR 에서는 고정값이라 하이드레이션이 흔들리지 않는다. */
@@ -159,6 +183,35 @@
 	let colors = $derived(
 		ds && facelets ? faceletColors(ds.meta.colorScheme, facelets) : grayFacelets()
 	);
+
+	/** 이번 판의 패드 배치. 코너는 대문자, 엣지는 소문자다 (FR-TR-18). */
+	let padLetters = $derived(pieceKind === 'edge' ? EDGE_LETTERS : CORNER_LETTERS);
+	/** 관례 B 에서만 비틀림 구획이 열린다. 관례 A 는 전부 타깃 열에 들어간다. */
+	let twistsOpen = $derived(inputOpen && roundConvention === 'B');
+
+	/**
+	 * 54칸 하이라이트 (FR-TR-16).
+	 *
+	 * **트레이싱 중에만** 칠한다. `idle` 은 회색 단계라 칠할 것이 없고(FR-TR-22),
+	 * `result` 에서 정답 경로를 칠하면 그것은 다음 판의 힌트가 된다 — 화면이 정답
+	 * 배열을 들고 있는 상태 자체를 만들지 않는 편이 안전하다 (FR-TR-15).
+	 *
+	 * 넘기는 것은 **사용자가 입력한 문자열뿐** 이다. 정답은 이 경로에 없다.
+	 */
+	let marks = $derived(
+		meta && stage === 'tracing' ? buildMarks(pieceKind, meta, targets) : NO_MARKS
+	);
+
+	/** 결과의 두 관례 타깃 수 (FR-TR-24). 채점 시점에 굳힌다. */
+	let compare = $state<{ a: number; b: number } | null>(null);
+	/** 결과의 비틀림 목록. 버퍼가 섞였으면 따로 밝힌다 (AD-8). */
+	let answerTwists = $derived(
+		answer && meta ? twistEntries(answer.twists, pieceKind, meta.buffer) : []
+	);
+	/** 패리티 (FR-TR-13). 코너 타깃이 홀수일 때다 — 엣지 세션에서는 판단하지 않는다. */
+	let parity = $derived(pieceKind === 'corner' && (answer?.parity ?? false));
+	/** 첫 어긋난 지점. 표시는 1부터 센다 (`verdictText` 와 같은 규약). */
+	let wrongIndex = $derived(verdict?.kind === 'wrong-at' ? verdict.index + 1 : null);
 
 	onMount(() => {
 		src.start();
@@ -204,10 +257,11 @@
 	function beginRound() {
 		if (!facelets) return;
 		cube = stateFromFacelets(facelets, pieceKind);
-		targetsText = '';
-		twistsText = '';
+		targets = [];
+		twists = [];
 		verdict = null;
 		answer = null;
+		compare = null;
 		stoppedAt = null;
 		lastInputAt = null;
 		startedAt = performance.now();
@@ -227,24 +281,55 @@
 	}
 
 	/**
-	 * 입력 문자를 타깃 열로 바꾼다.
+	 * 하드웨어 키보드 경로 (FR-TR-18).
 	 *
-	 * 코너는 대문자, 엣지는 소문자다 (FR-TR-18). 사용자가 어느 쪽으로 치든 이번 판의
-	 * 조각 종류로 맞춰준다 — 대소문자를 틀린 것은 다른 조각을 지목한 것이 아니다.
-	 * 공백·줄바꿈·쉼표는 구분자로 본다.
+	 * 패드와 **같은 규칙** 을 지나야 한다 — 정리는 `sanitizeEntry` 하나가 한다.
+	 * 두 경로가 각자 정리하면 "패드로는 막히는데 키보드로는 들어가는" 문자가 생기고,
+	 * 그 차이는 채점 결과로만 드러나 원인을 찾기 어렵다.
+	 *
+	 * 소프트 키보드는 `inputmode="none"` 으로 막는다. 모바일에서는 패드가 입력
+	 * 수단이고, 그 위로 시스템 키보드가 올라오면 큐브가 가려진다. 하드웨어 키보드는
+	 * 그대로 들어온다.
+	 *
+	 * 전역 키 훅을 걸지 않는다. 이 핸들러는 입력 칸에 포커스가 있을 때만 도므로
+	 * 다른 화면·다른 버튼에서 친 글자를 훔쳐가지 않는다.
 	 */
-	const letters = (text: string): string[] =>
-		[...(pieceKind === 'edge' ? text.toLowerCase() : text.toUpperCase())].filter((ch) =>
-			/[A-Za-z]/.test(ch)
+	function onEntry(e: Event & { currentTarget: HTMLInputElement }, twist: boolean) {
+		const cleaned = sanitizeEntry(
+			e.currentTarget.value,
+			pieceKind,
+			// 버퍼 차단은 **타깃 구획에만** 건다. 버퍼가 비틀린 채 남는 경우가 코너
+			// 80.9% 라, 비틀림 구획에서 막으면 관례 B 훈련이 성립하지 않는다.
+			twist ? { max: MAX_TWISTS } : { blocked: meta?.bufferStickers, max: MAX_TARGETS }
 		);
+		if (twist) twists = cleaned;
+		else targets = cleaned;
+		// 거부된 문자를 DOM 에 한 프레임이라도 남기면 커서가 뛴다. 즉시 되돌린다.
+		e.currentTarget.value = cleaned.join('');
+		noteInput();
+	}
+
+	/** `Backspace` 는 브라우저가 처리하고 `oninput` 이 받는다. 여기는 나머지 둘이다. */
+	function onEntryKey(e: KeyboardEvent, twist: boolean) {
+		if (e.key === 'Escape') {
+			e.preventDefault();
+			if (twist) twists = [];
+			else targets = [];
+		} else if (e.key === 'Enter') {
+			e.preventDefault();
+			if (inputOpen) gradeRound();
+		}
+	}
 
 	function gradeRound() {
 		if (!cube || !opts || !meta) return;
 		// `follow` 는 마지막 입력이 끝점이다. 입력이 하나도 없으면 지금이 끝점이다.
 		stoppedAt ??= lastInputAt ?? performance.now();
-		const input = { targets: letters(targetsText), twists: letters(twistsText) };
-		verdict = gradeMemo(cube, input, opts);
+		// 화면은 **엔진 결과만** 쓴다. 정답 예시와 사용자의 입력을 문자열로 비교하는
+		// 코드가 여기 생기면 "정답이 평균 11가지" 라는 전제가 조용히 깨진다 (AD-7).
+		verdict = gradeMemo(cube, { targets, twists }, opts);
 		answer = trace(cube, opts);
+		compare = conventionCompare(cube, opts);
 		tracing.add({
 			// 이 파일에서 벽시계를 읽는 유일한 자리다. 표시용 시각이고 측정값이 아니다.
 			at: Date.now(),
@@ -275,6 +360,7 @@
 		cube = null;
 		verdict = null;
 		answer = null;
+		compare = null;
 		// 각도는 `idle` 에 들어올 때만 흔든다. 사용자가 미리 잡아둔 각도를 시작이
 		// 뺏으면 회색 상태에서 돌려볼 이유가 없어진다 (FR-TR-22).
 		orientation = randomOrientation();
@@ -297,7 +383,7 @@
 >
 	<div class="cube-slot">
 		{#if cubeVisible}
-			<Cube3D facelets={colors} {orientation} label="트레이싱 큐브" />
+			<Cube3D facelets={colors} {marks} {orientation} label="트레이싱 큐브" />
 		{:else}
 			<!-- 큐브를 지운 자리. 크기가 같아야 화면이 밀리지 않는다 (AD-14). -->
 			<div class="cube-gone" data-cube-hidden>큐브를 숨겼습니다</div>
@@ -333,39 +419,122 @@
 	</div>
 
 	<!--
-		입력. Phase 4 가 24글자 패드로 바꾼다. 지금은 구획 둘과 활성 규칙만 세운다 —
-		그 규칙이 두 모드와 두 관례의 차이가 드러나는 자리이기 때문이다.
+		입력 구획 둘 (FR-TR-18). 실전이 letter 열과 twist 를 따로 담는 것과 같다.
+
+		관례 A 에서 비틀림 구획을 `{#if}` 로 **지우지 않는다.** 전부 타깃 열에
+		들어가므로 쓸 일이 없지만, 없앴다 되살리면 관례를 바꿀 때마다 화면이 통째로
+		밀린다 (AD-14). 자리는 두고 잠근다.
 	-->
 	<div class="entry">
-		<label class="field">
-			<span>타깃 열</span>
-			<input
-				type="text"
-				data-targets
-				autocomplete="off"
-				autocapitalize="off"
-				spellcheck="false"
+		<section class="slot" data-section="targets">
+			<label class="field">
+				<span>타깃 열</span>
+				<input
+					type="text"
+					data-targets
+					inputmode="none"
+					autocomplete="off"
+					autocapitalize="off"
+					spellcheck="false"
+					disabled={!inputOpen}
+					value={targets.join('')}
+					oninput={(e) => onEntry(e, false)}
+					onkeydown={(e) => onEntryKey(e, false)}
+				/>
+			</label>
+			<StickerPad
+				pad="targets"
+				letters={padLetters}
+				bind:value={targets}
+				blocked={meta?.bufferStickers ?? []}
 				disabled={!inputOpen}
-				bind:value={targetsText}
-				oninput={noteInput}
+				max={MAX_TARGETS}
+				onedit={noteInput}
 			/>
-		</label>
-		<label class="field">
-			<span>비틀림</span>
-			<input
-				type="text"
-				data-twists
-				autocomplete="off"
-				autocapitalize="off"
-				spellcheck="false"
-				disabled={!inputOpen || roundConvention !== 'B'}
-				bind:value={twistsText}
-				oninput={noteInput}
+		</section>
+
+		<section class="slot" data-section="twists">
+			<label class="field">
+				<span>비틀림</span>
+				<input
+					type="text"
+					data-twists
+					inputmode="none"
+					autocomplete="off"
+					autocapitalize="off"
+					spellcheck="false"
+					disabled={!twistsOpen}
+					value={twists.join('')}
+					oninput={(e) => onEntry(e, true)}
+					onkeydown={(e) => onEntryKey(e, true)}
+				/>
+			</label>
+			<!-- 순서를 채점하지 않는다 — 집합으로 본다 (FR-TR-18). -->
+			<p class="hint" data-twists-hint>
+				{roundConvention === 'B'
+					? '순서는 채점하지 않습니다. 문자 하나로 적습니다'
+					: '관례 A 에서는 비틀림도 타깃 열에 들어갑니다'}
+			</p>
+			<StickerPad
+				pad="twists"
+				letters={padLetters}
+				bind:value={twists}
+				disabled={!twistsOpen}
+				max={MAX_TWISTS}
+				onedit={noteInput}
 			/>
-		</label>
+		</section>
 	</div>
 
-	<p class="verdict" data-verdict>{verdict ? verdictText(verdict) : ''}</p>
+	<p class="verdict" data-verdict data-kind={verdict?.kind ?? ''} data-wrong-index={wrongIndex}>
+		{verdict ? verdictText(verdict) : ''}
+	</p>
+
+	<!--
+		결과 (FR-TR-11, 13, 20, 24).
+
+		정답 예시를 사용자의 입력과 비교해 "틀렸다" 고 말하지 않는다. 유효한 메모가
+		평균 11가지라 예시는 예시일 뿐이다 — 판정은 위 `data-verdict` 하나뿐이고
+		그 출처는 `gradeMemo` 다 (AD-7).
+	-->
+	{#if answer && compare}
+		<div class="result" data-result>
+			<p class="row">
+				<span class="k">정답 예시</span>
+				<span class="v mono" data-answer>{answer.targets.join('')}</span>
+			</p>
+			<p class="note" data-answer-note>
+				정답은 여럿입니다. 끊는 자리를 다르게 잡은 열도 정답이며 위는 그중 하나입니다
+			</p>
+			{#if roundConvention === 'B'}
+				<p class="row">
+					<span class="k">비틀림</span>
+					<span class="v mono" data-answer-twists>
+						{#each answerTwists as t (t.letter)}<span
+								data-twist={t.letter}
+								data-buffer={t.isBuffer ? 'true' : 'false'}>{t.letter}{t.isBuffer ? '(버퍼)' : ''}</span
+							>{/each}{answerTwists.length === 0 ? '없음' : ''}
+					</span>
+				</p>
+				{#if answerTwists.some((t) => t.isBuffer)}
+					<!-- "왜 이게 목록에 있는가" 는 관례 B 를 처음 보면 반드시 나온다 (AD-8). -->
+					<p class="note" data-buffer-note>
+						버퍼가 비틀린 채 남았습니다. 방향의 합이 보존되므로 다른 조각의 비틀림을
+						남기면 버퍼가 그 보정을 떠안습니다
+					</p>
+				{/if}
+			{/if}
+			<!-- 사실 한 줄만 적는다. 처리 알고리즘 안내는 이번 범위 밖이다. -->
+			<p class="row" data-parity={parity ? 'true' : 'false'}>
+				<span class="k">패리티</span>
+				<span class="v">{parity ? '코너 타깃이 홀수입니다 (패리티)' : ''}</span>
+			</p>
+			<p class="row" data-convention-compare data-count-a={compare.a} data-count-b={compare.b}>
+				<span class="k">타깃 수</span>
+				<span class="v">관례 A {compare.a}개 · 관례 B {compare.b}개</span>
+			</p>
+		</div>
+	{/if}
 
 	<div class="settings">
 		<SegToggle name="trace-kind" bind:value={tracing.pieceKind} options={KIND_OPTIONS} />
@@ -468,7 +637,18 @@
 	}
 	.entry {
 		display: grid;
+		gap: 0.9rem;
+	}
+	.slot {
+		display: grid;
 		gap: 0.4rem;
+		/* 320px 에서도 안쪽 격자가 밖으로 밀지 않는다. */
+		min-width: 0;
+	}
+	.hint {
+		margin: 0;
+		font-size: 0.72rem;
+		color: var(--muted);
 	}
 	.field {
 		display: grid;
@@ -492,6 +672,48 @@
 	}
 	.field input:disabled {
 		opacity: 0.55;
+	}
+	/*
+	 * 결과. 배지도 점수도 색 강조도 없다 — 사실만 줄로 적는다 (NFR-TR-5).
+	 * 정답과 오답의 배경색이 다르지도 않다. 틀린 이유를 짚는 것이 이 화면의 일이다.
+	 */
+	.result {
+		display: grid;
+		gap: 0.3rem;
+		padding: 0.6rem 0.7rem;
+		font-size: 0.82rem;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 10px;
+	}
+	.result .row {
+		display: grid;
+		grid-template-columns: 4.5rem 1fr;
+		gap: 0.5rem;
+		margin: 0;
+		min-width: 0;
+	}
+	.result .k {
+		color: var(--muted);
+	}
+	.result .v {
+		min-width: 0;
+		color: var(--fg);
+		/* 타깃 열은 길다. 줄이 넘치면 가로 스크롤이 아니라 줄바꿈이 된다. */
+		overflow-wrap: anywhere;
+	}
+	.result .mono {
+		font-family: var(--mono);
+		letter-spacing: 0.08em;
+	}
+	[data-answer-twists] span {
+		margin-right: 0.4em;
+	}
+	.result .note {
+		margin: 0;
+		font-size: 0.74rem;
+		line-height: 1.5;
+		color: var(--muted);
 	}
 	.settings {
 		display: grid;

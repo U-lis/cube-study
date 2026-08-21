@@ -42,7 +42,7 @@ import {
 	Scene,
 	WebGLRenderer
 } from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 import {
 	assertFacelets,
 	assertMarks,
@@ -110,12 +110,22 @@ export async function createCubeView(canvas: HTMLCanvasElement): Promise<CubeVie
 	const renderer = new WebGLRenderer({ canvas, antialias: true });
 	renderer.setClearColor(new Color('#0d0d0f'), 1);
 
-	const controls = new OrbitControls(camera, canvas);
-	controls.enableDamping = true;
-	controls.dampingFactor = 0.08;
-	controls.enablePan = false;
-	controls.enableZoom = false;
-	controls.rotateSpeed = 0.9;
+	/**
+	 * `OrbitControls` 가 아니라 `TrackballControls` 다.
+	 *
+	 * Orbit 은 턴테이블이다 — 세로 각도가 `[0, π]` 로 잠겨 정수리 너머로 못 넘어가고,
+	 * 가로 회전이 `camera.up` 축 하나를 중심으로만 돌아 롤이 없다. 수평선이 항상
+	 * 수평이라 "큐브를 비스듬히 기울여 잡는" 동작이 표현되지 않는다.
+	 *
+	 * 트레이싱은 실물처럼 아무 방향으로나 굴려 뒷면을 찾는 동작이 기능의 핵심이라
+	 * (FR-TR-14, 15) 축 제한이 없는 쪽을 쓴다.
+	 */
+	const controls = new TrackballControls(camera, canvas);
+	controls.noPan = true;
+	controls.noZoom = true;
+	controls.rotateSpeed = 3.0;
+	/** 낮을수록 관성이 오래 남는다. Orbit 의 dampingFactor 와 반대 방향의 값이다. */
+	controls.dynamicDampingFactor = 0.15;
 
 	/** 해제할 geometry 를 한곳에 모은다. `dispose()` 에서 빠뜨리면 재진입마다 쌓인다. */
 	const geometries: { dispose(): void }[] = [];
@@ -208,6 +218,9 @@ export async function createCubeView(canvas: HTMLCanvasElement): Promise<CubeVie
 	}
 
 	function resize(): void {
+		// TrackballControls 는 포인터 좌표를 캔버스 사각형 기준으로 환산한다.
+		// 크기가 바뀐 뒤 알려주지 않으면 드래그 감도와 중심이 어긋난다.
+		controls.handleResize();
 		const w = canvas.clientWidth || 1;
 		const h = canvas.clientHeight || 1;
 		renderer.setPixelRatio(Math.min(globalThis.devicePixelRatio ?? 1, 2));

@@ -9,12 +9,12 @@
  *
  * 빌드가 없으면 skip 하지 않는다 — 조용히 빠지는 검사는 검사가 아니다
  * (`tests/unit/e2e-tags.test.ts:3-9` 와 같은 규율). 다만 CI 는 `pnpm build` 보다 `pnpm test` 를
- * 먼저 돌리므로(.github/workflows/ci.yml), 산출물이 없거나 소스보다 오래됐으면 **여기서 직접
- * 빌드한다**. 빠지지도 않고, 낡은 산출물로 통과하지도 않는다.
+ * 먼저 돌리므로(.github/workflows/ci.yml), 산출물이 없거나 소스보다 오래됐으면 **직접
+ * 빌드한다**(`ensure-build.ts`). 빠지지도 않고, 낡은 산출물로 통과하지도 않는다.
  */
 import { describe, it, expect, beforeAll } from 'vitest';
-import { execSync } from 'node:child_process';
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { ensureBuild } from './ensure-build.js';
 import { join } from 'node:path';
 
 const BUILD = 'build';
@@ -28,10 +28,6 @@ function walk(dir: string): string[] {
 	return readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
 		e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]
 	);
-}
-
-function newest(dir: string): number {
-	return walk(dir).reduce((max, f) => Math.max(max, statSync(f).mtimeMs), 0);
 }
 
 /**
@@ -60,8 +56,7 @@ let clientFiles: string[] = [];
 let entryScripts = '';
 
 beforeAll(() => {
-	const stale = !existsSync(join(BUILD, 'index.html')) || newest('src') > newest(IMMUTABLE);
-	if (stale) execSync('pnpm run build', { stdio: 'inherit' });
+	ensureBuild();
 	clientFiles = walk(IMMUTABLE).filter((f) => f.endsWith('.js'));
 	entryScripts = readFileSync(join(BUILD, 'index.html'), 'utf8');
 }, 180_000);

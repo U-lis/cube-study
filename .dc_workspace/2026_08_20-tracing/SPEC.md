@@ -153,8 +153,12 @@ doc_dir: 2026_08_20-tracing
 
 ## 비기능 요구사항 (NFR)
 
-- [ ] **NFR-TR-1**: `cubejs/lib/solve.js`(32KB)가 **Worker 청크 안에만** 들어간다. 지금 앱은 `cubejs/lib/cube.js`(24KB)만 직접 가리켜 Kociemba 풀이기를 일부러 빼놓았다 (`src/lib/cube/cubejs.d.ts` 주석). 조회·퀴즈 화면의 초기 번들이 커지면 안 된다.
-  - 빌드 산출물로 확인한다.
+- [ ] **NFR-TR-1**: Kociemba 풀이기는 **Web Worker 안에서만 초기화하고, 트레이싱 화면을 벗어날 때 `terminate()` 로 반납한다.**
+  - **이유는 번들 크기가 아니다.** 실측: `solve.js` 는 raw 28.8KB / **gzip 7.1KB** 다 (`cube.js` 는 22.4KB / gzip 4.6KB). 7KB 를 피하려고 설계를 비틀 이유는 없다.
+  - 비용은 런타임이다. `Cube.initSolver()` 실측 **1695ms, heap +37MB, RSS +102MB**. pruning table 을 메모리에 올리는 값이다. 메인 스레드에 있으면 1.7초 멈추고 100MB 를 계속 붙들며, 조회·퀴즈만 쓰는 사용자도 그 메모리를 떠안는다. Worker 면 통째로 반납된다.
+  - 구현은 Vite 표준 패턴이면 된다 — `new Worker(new URL('./scramble.worker.ts', import.meta.url), { type: 'module' })`. 설정 트릭 없이 별도 청크로 갈라진다. `cubejs` 자체 async API(`lib/async.js`)는 `window.Worker` 와 워커 URI 를 전제하므로 쓰지 않고 워커를 직접 짠다.
+  - **`solve.js` 코드가 메인 청크에 섞이는 것 자체는 허용한다** (gzip 7KB). 금지 대상은 메인 스레드에서의 `initSolver()` 호출이다.
+  - 검증: 빌드 산출물에서 Worker 청크 분리 확인 + 트레이싱 화면 진입 전 메인 스레드 메모리가 튀지 않는지 확인.
 
 - [ ] **NFR-TR-2**: `three`(gzip ~85KB)는 **지연 로드**한다. 트레이싱·3D 화면에 들어갈 때만 받는다. alternatives 데이터와 같은 방식이다.
 
@@ -171,7 +175,8 @@ doc_dir: 2026_08_20-tracing
 ## 제약
 
 - **기록은 소요 시간만 남긴다.** 솔브 레코드·케이스별 약점 통계·추이 그래프는 이번 범위 밖이다(#23).
-  - 저장 필드는 `{ at, ms, pieceKind, buffer, mode, targetCount, correct }` 로 최소화한다.
+  - 저장 필드는 `{ at, ms, pieceKind, buffer, mode, twistConvention, targetCount, correct }` 로 최소화한다.
+  - **`twistConvention`(A/B)을 포함한다.** 관례가 타깃 수를 평균 2.4개 바꾸므로(FR-TR-24), 이 값이 없으면 기록끼리 비교가 성립하지 않는다. `buffer` 를 넣는 것과 같은 논리다.
   - **`buffer` 를 반드시 포함한다.** 같은 스크램블도 버퍼가 다르면 정답이 다르다 — UBL `K F B Q C S G J` vs UFR `S G A K F A B Q`. 나중에 갈라면 마이그레이션이 된다(#20 항목 2).
   - **저장 키와 스키마 버전을 암기 체크와 분리한다.** `src/lib/domain/memorize.ts:51` 의 `parseStored` 는 `schemaVersion` 불일치 시 저장물을 전부 버린다. 같은 키에 얹으면 암기 진도가 날아간다.
   - 보관 개수 상한을 둔다(최근 N건). 무한히 쌓이지 않게 한다.
@@ -217,7 +222,7 @@ doc_dir: 2026_08_20-tracing
 | 조각 교체 | 엣지 UF / DF 양쪽에서 라운드트립·끊기 무작위 통과 |
 | 관례 B | 비틀림을 제외한 타깃 열을 실행하면 **선언한 비틀림 + 버퍼만** 어긋난 채 남는다 — 코너 1475/1475, 엣지 1209/1209 · 1134/1134 |
 | 비틀림 표기 | 제자리 비틀린 코너 2053건 전부 문자 하나로 특정된다 |
-| 번들 | `solve.js` 가 Worker 청크 밖에 없다. `three` 가 초기 청크에 없다 |
+| 번들·런타임 | Worker 청크가 분리된다. `three` 가 초기 청크에 없다. `initSolver()` 가 메인 스레드에서 호출되지 않는다 |
 
 ---
 

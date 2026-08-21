@@ -8,9 +8,18 @@
 	본문에서 목록을 빼는 이유는 길이다. 기록이 50건까지 쌓이는데 화면에 늘어놓으면
 	트레이싱 화면이 기록 화면이 된다.
 
+	─── 표로 적는다 (요구 7) ───────────────────────────────────
+	줄마다 폭이 달라 자릿수가 어긋나면 두 기록을 비교할 수 없다 — 기록을 남기는
+	이유가 비교인데 그 일을 읽는 사람이 눈으로 해야 했다. 네 칸을 `<table>` 의 열로
+	세우고 숫자 칸은 `tabular-nums` + 오른쪽 정렬로 자릿수를 맞춘다.
+
+	`<ul>` 이 아니라 `<table>` 인 이유는 머리글이다. 열이 무엇인지 한 번 적어두면
+	"타깃" 같은 꼬리표를 50줄에 되풀이하지 않아도 된다.
+	────────────────────────────────────────────────────────────
+
 	─── 톤 (NFR-TR-5) ─────────────────────────────────────────
 	최고 기록 강조도 배지도 추이 그래프도 없다. 시간·조각·타깃 수·정오 네 칸을
-	줄로 적는다. 정답과 오답의 배경색이 다르지도 않다.
+	사실로 적는다. 정답과 오답의 배경색이 다르지도 않다.
 	────────────────────────────────────────────────────────────
 -->
 <script lang="ts">
@@ -30,16 +39,28 @@
 		{#if tracing.records.length === 0}
 			<p class="empty" data-records-empty>아직 기록이 없습니다</p>
 		{:else}
-			<ul class="records" data-records>
-				{#each tracing.records as r (r.at + '/' + r.pieceKind)}
-					<li data-record>
-						<span class="t">{formatMs(r.ms)}</span>
-						<span>{RECORD_KIND_LABELS[r.pieceKind]}</span>
-						<span>타깃 {r.targetCount}</span>
-						<span>{r.correct ? '정답' : '오답'}</span>
-					</li>
-				{/each}
-			</ul>
+			<div class="records" data-records>
+				<table>
+					<thead>
+						<tr>
+							<th scope="col" class="num">시간</th>
+							<th scope="col">조각</th>
+							<th scope="col" class="num">타깃</th>
+							<th scope="col">판정</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each tracing.records as r (r.at + '/' + r.pieceKind)}
+							<tr data-record>
+								<td class="num">{formatMs(r.ms)}</td>
+								<td>{RECORD_KIND_LABELS[r.pieceKind]}</td>
+								<td class="num">{r.targetCount}</td>
+								<td>{r.correct ? '정답' : '오답'}</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
 		{/if}
 		<button type="button" data-records-close onclick={() => dialog?.close()}>닫기</button>
 	</div>
@@ -71,24 +92,46 @@
 		color: var(--muted);
 	}
 	.records {
-		display: grid;
-		gap: 0.25rem;
 		/* 50건까지 쌓인다. 모달이 화면을 넘기면 안쪽에서 스크롤한다. */
 		max-height: min(50vh, 20rem);
 		overflow-y: auto;
 		margin: 0 0 1rem;
-		padding: 0;
-		list-style: none;
 		font-size: 0.78rem;
 		color: var(--muted);
 	}
-	.records li {
-		display: flex;
-		gap: 0.6rem;
+	table {
+		width: 100%;
+		/* 열 폭을 내용이 아니라 표가 정한다. 줄마다 칸이 흔들리면 비교가 안 된다. */
+		table-layout: fixed;
+		border-collapse: collapse;
 		font-family: var(--mono);
 	}
-	.records .t {
+	/* 머리글이 스크롤을 따라 남는다 — 50줄을 내려가도 열 이름이 보인다. */
+	th {
+		position: sticky;
+		top: 0;
+		z-index: 1;
+		padding: 0 0.4rem 0.3rem 0;
+		font-weight: 600;
+		text-align: left;
+		background: var(--surface);
+		border-bottom: 1px solid var(--border);
+	}
+	td {
+		padding: 0.15rem 0.4rem 0.15rem 0;
+		color: var(--fg);
+	}
+	th:last-child,
+	td:last-child {
+		padding-right: 0;
+	}
+	/*
+	 * 숫자 칸. `tabular-nums` 가 글자 폭을 고르게 하고 오른쪽 정렬이 자릿수를
+	 * 세로로 맞춘다 (요구 7). 둘 중 하나만 있으면 여전히 어긋나 보인다.
+	 */
+	.num {
 		font-variant-numeric: tabular-nums;
+		text-align: right;
 	}
 	button {
 		width: 100%;

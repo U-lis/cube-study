@@ -12,7 +12,6 @@ import { readFileSync } from 'node:fs';
 import Cube from 'cubejs';
 import { loadDataset } from '../../src/lib/data/loader.js';
 import { parseStored, serialize } from '../../src/lib/domain/memorize.js';
-import { stateFromFacelets } from '../../src/lib/cube/sim.js';
 import { faceletColors } from '../../src/lib/ui/facelets.js';
 import {
 	CORNER_CUBIE,
@@ -36,7 +35,6 @@ import {
 	kindsOf,
 	partsVerdictText,
 	segmentIndex,
-	conventionCompare,
 	conventionOf,
 	formatMs,
 	isTwistConvention,
@@ -61,12 +59,6 @@ import {
 } from '../../src/lib/domain/tracing.js';
 
 const ds = await loadDataset();
-
-/** 시드 고정 LCG. 통계 판정이 실행마다 흔들리면 그것은 검사가 아니다. */
-function lcg(seed: number) {
-	let s = seed >>> 0;
-	return () => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296);
-}
 
 /** 판독 결과 한 건. `readEntry` 의 산출 형태만 흉내 낸다 — 판독 자체는 엔진 테스트가 본다. */
 const reading = (targets: string[], twists: string[]): EntryReading => ({
@@ -291,43 +283,6 @@ describe('T2-5 verdictText (NFR-TR-5)', () => {
 	it('모르는 종류는 던진다 (switch 가 exhaustive 하다)', () => {
 		// 타입 오류는 컴파일이 잡는다(`never` 대입). 실행 시점의 마지막 방어를 확인한다.
 		expect(() => verdictText({ kind: 'nope' } as unknown as TraceVerdict)).toThrow();
-	});
-});
-
-describe('T2-6 conventionCompare (FR-TR-24)', () => {
-	const opts = optionsFrom(ds.meta, 'corner', 'A');
-	/** 무작위 상태 표본. `Cube.random()` 은 풀이기 초기화 없이 돈다. */
-	const states = (() => {
-		const rnd = lcg(20260820);
-		const real = Math.random;
-		Math.random = rnd;
-		try {
-			return Array.from({ length: 1200 }, () => stateFromFacelets(Cube.random().asString(), 'corner'));
-		} finally {
-			Math.random = real;
-		}
-	})();
-
-	it('비틀림이 없으면 두 관례의 타깃 수가 같다', () => {
-		const same = states.map((s) => conventionCompare(s, opts)).filter((r) => r.a === r.b);
-		expect(same.length).toBeGreaterThan(0);
-	});
-	it('비틀림이 있으면 A 가 더 많다', () => {
-		const diff = states.map((s) => conventionCompare(s, opts)).filter((r) => r.a !== r.b);
-		expect(diff.length).toBeGreaterThan(0);
-		expect(diff.every((r) => r.a > r.b)).toBe(true);
-	});
-	it('어떤 상태에서도 A >= B 다', () => {
-		expect(states.every((s) => { const r = conventionCompare(s, opts); return r.a >= r.b; })).toBe(true);
-	});
-	it('비틀림 표본의 평균이 SPEC 측정치 근방이다 (A 8.79 / B 6.37, ±0.2)', () => {
-		const diff = states.map((s) => conventionCompare(s, opts)).filter((r) => r.a !== r.b);
-		const avg = (xs: number[]) => xs.reduce((p, q) => p + q, 0) / xs.length;
-		expect(Math.abs(avg(diff.map((r) => r.a)) - 8.79)).toBeLessThan(0.2);
-		expect(Math.abs(avg(diff.map((r) => r.b)) - 6.37)).toBeLessThan(0.2);
-	});
-	it('패리티는 두 관례에서 동일하다', () => {
-		expect(states.every((s) => { const r = conventionCompare(s, opts); return r.a % 2 === r.b % 2; })).toBe(true);
 	});
 });
 

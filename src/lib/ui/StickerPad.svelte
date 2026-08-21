@@ -10,6 +10,9 @@
 	구분자 버튼은 대상이 `both` 일 때만 눌리지만, 없앴다 넣었다 하지 않는다 —
 	대상 설정은 저장소에서 오므로 SSR 과 CSR 의 버튼 개수가 갈린다. `{#if}` 로 넣다 뺐다 하지 않고
 	`disabled` 로만 잠근다. 이 저장소가 두 번 밟은 함정이다.
+
+	쓸 일이 아예 없는 판(코너만·엣지만)에서는 `visibility: hidden` 으로 **눈에서만**
+	지운다. 요소도 자리도 그대로라 위 규율이 깨지지 않는다.
 	────────────────────────────────────────────────────────────
 
 	─── 24글자 전부가 눌린다 ───────────────────────────────────
@@ -29,7 +32,8 @@
 		pad,
 		separator,
 		separatorLabel,
-		separatorEnabled = false
+		separatorEnabled = false,
+		separatorHidden = false
 	}: {
 		/** 24글자. 코너면 `CORNER_LETTERS`, 엣지면 `EDGE_LETTERS` (`speffz.ts:51-52`). */
 		letters: string[];
@@ -51,6 +55,15 @@
 		 * 하면 대상 설정에 따라 SSR 과 CSR 의 버튼 개수가 갈린다 (AD-14).
 		 */
 		separatorEnabled?: boolean;
+		/**
+		 * 이 세션에서 구분자를 쓸 일이 아예 없는가. 코너만·엣지만 하는 판이다.
+		 *
+		 * **눈에서만 지운다** — `visibility: hidden` 이라 요소도 자리도 그대로다.
+		 * `{#if}` 로 없애면 대상 설정이 저장소에서 오므로 SSR 과 CSR 의 버튼 개수가
+		 * 갈린다 (AD-14). `disabled` 하나로만 두면 영영 눌리지 않는 버튼이 계속
+		 * 보이고, 그것은 "무엇을 더 해야 하나" 를 묻게 만든다.
+		 */
+		separatorHidden?: boolean;
 	} = $props();
 
 	/** 상한이 세는 것은 글자다. 구분자는 갈래의 경계이지 타깃이 아니다. */
@@ -111,9 +124,16 @@
 		>
 			전체 지우기
 		</button>
+		<!--
+			포인트 컬러를 쓰는 유일한 버튼이다. 갈래를 넘기는 유일한 길인데 다른
+			동작 버튼과 같은 회색이라 있는 줄 모르고 지나간다. 색 하나로 알리지
+			않는다 (#26) — 테두리와 글자 굵기가 함께 선다.
+		-->
 		<button
 			type="button"
+			class="separator"
 			data-action="separator"
+			data-hidden={separatorHidden ? 'true' : 'false'}
 			title={separatorLabel}
 			disabled={disabled || !separatorEnabled}
 			onclick={split}
@@ -171,5 +191,19 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		color: var(--muted);
+	}
+	/* 색 + 테두리 + 굵기. 셋이 함께 서야 색을 못 읽는 사람에게도 눈에 띈다 (#26). */
+	.actions button.separator:not(:disabled) {
+		color: var(--accent);
+		border-color: var(--accent);
+		font-weight: 700;
+	}
+	/*
+	 * 자리는 지키고 눈에서만 지운다. `display: none` 이 아니라 `visibility` 인
+	 * 이유가 여기 있다 — 격자 세 칸이 그대로라 나머지 두 버튼의 폭이 변하지
+	 * 않는다. 접근성 트리에서도 함께 빠지므로 스크린 리더가 읽지 않는다.
+	 */
+	.actions button[data-hidden='true'] {
+		visibility: hidden;
 	}
 </style>

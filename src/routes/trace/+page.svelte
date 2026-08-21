@@ -44,7 +44,6 @@
 		buildMarks,
 		caseConflicts,
 		combineVerdicts,
-		conventionCompare,
 		conventionOf,
 		entrySegments,
 		formatMs,
@@ -100,8 +99,6 @@
 		/** 채점 시점의 판독. 결과가 "무엇을 비틀림으로 읽었는가" 를 밝힌다. */
 		reading: EntryReading;
 		answer: TraceResult;
-		/** 두 관례의 타깃 수 (FR-TR-24). */
-		compare: { a: number; b: number };
 		/** 비틀림 목록. 버퍼가 섞였으면 따로 밝힌다 (AD-8). */
 		twists: { letter: string; isBuffer: boolean }[];
 		/** 패리티 (FR-TR-13). 코너 타깃이 홀수일 때다 — 엣지에서는 판단하지 않는다. */
@@ -269,13 +266,28 @@
 	/** 구분자를 넣을 수 있는가 — 갈래가 둘이고 아직 안 갈렸을 때뿐이다. */
 	let canSplit = $derived(inputOpen && kinds.length > 1 && !hasSeparator(entry));
 	/**
+	 * 이 세션에서 갈래를 가를 일이 있는가 (요구 4).
+	 *
+	 * 코너만·엣지만 하는 판에서 구분자 버튼은 영영 눌리지 않는다. `disabled` 로만
+	 * 두면 쓸 일 없는 버튼이 계속 보이므로 **눈에서만** 지운다 — 요소는 그대로
+	 * 있고 자리도 그대로다 (`visibility: hidden`). `{#if}` 로 없애면 대상 설정이
+	 * 저장소에서 오므로 SSR 과 CSR 의 버튼 개수가 갈린다 (AD-14).
+	 *
+	 * 시작 전에는 **설정값** 을 본다. `roundKind` 는 시작 시점에 굳는 값이라
+	 * `idle` 에서는 직전 판의 갈래를 가리키고, 그러면 대상을 바꿔도 버튼이
+	 * 따라오지 않는다.
+	 */
+	let splitUsable = $derived(
+		(stage === 'idle' ? kindsOf(tracing.pieceKind) : kinds).length > 1
+	);
+	/**
 	 * 입력 칸의 한 줄 설명. `both` 는 구분자를 어떻게 넣는지가 먼저다 — 그것을
 	 * 모르면 코너와 엣지가 한 덩어리로 붙어 채점이 통째로 어긋난다.
 	 */
 	let entryHint = $derived(
 		kinds.length > 1
-			? `${SEPARATOR_LABEL} 를 눌러 코너와 엣지를 가릅니다. 비틀림은 끊어 넣어도 되고 문자 하나로 적어도 됩니다`
-			: '비틀림은 끊어서 넣어도 되고 문자 하나로 따로 적어도 됩니다. 채점이 알아서 읽습니다'
+			? `${SEPARATOR_LABEL} 를 눌러 코너와 엣지를 가릅니다. 비틀림은 버퍼막힘(break-in)으로 이어 쳐도 되고 문자 하나로 적어도 됩니다`
+			: '비틀림은 버퍼막힘(break-in)으로 이어 쳐도 되고 문자 하나로 따로 적어도 됩니다. 채점이 알아서 읽습니다'
 	);
 	/**
 	 * 세션 설정 잠금 (요구 4).
@@ -308,6 +320,16 @@
 	let verdict = $derived(parts.length > 0 ? combineVerdicts(parts) : null);
 	/** 첫 어긋난 지점. 표시는 1부터 센다 (`verdictText` 와 같은 규약). */
 	let wrongIndex = $derived(verdict?.kind === 'wrong-at' ? verdict.index + 1 : null);
+	/**
+	 * 판정의 색 (요구 3). 퀴즈 화면과 **같은 규약** 이다 — `ok` / `bad` / 빈 문자열.
+	 *
+	 * 불필요한 버퍼막힘은 `ok` 다. 풀리는 메모를 빨강으로 칠하면 색이 판정과
+	 * 어긋난다 (FR-TR-12). 판단은 `isPass` 하나가 하고 여기서 되풀이하지 않는다.
+	 *
+	 * 색만으로 알리지 않는다 (#26) — 같은 자리에 판정 문구가 함께 선다. 퀴즈가
+	 * 하는 것과 같은 수준이고, 새 표시 방식을 만들지 않는다.
+	 */
+	let resultTone = $derived(verdict ? (isPass(verdict) ? 'ok' : 'bad') : '');
 
 	onMount(() => {
 		src.start();
@@ -434,7 +456,6 @@
 				verdict: v,
 				reading,
 				answer,
-				compare: conventionCompare(cube, o),
 				twists: twistEntries(answer.twists, kind, m.buffer),
 				parity: kind === 'corner' && answer.parity
 			});
@@ -510,6 +531,37 @@
 		{#if browser && src.error}스크램블 생성 실패: {src.error}{/if}
 	</p>
 
+	<!--
+		세션 설정. **시작 버튼 바로 위** 다 — 화면 아래에 두었더니 끝까지 내려가야
+		보여서 있는 줄 모르고 쓴다. 고르고 시작하는 순서가 그대로 세로 순서다.
+
+		문제가 도는 동안은 잠긴다 (요구 4). `{#if}` 로 없애지 않는다 — 자리가
+		사라지면 화면이 밀리고 SSR/CSR 요소 개수도 갈린다 (AD-14).
+	-->
+	<div class="settings">
+		<SegToggle
+			name="trace-kind"
+			heading={TRAIN_KIND_HEADING}
+			bind:value={tracing.pieceKind}
+			options={KIND_OPTIONS}
+			disabled={settingsLocked}
+		/>
+		<SegToggle
+			name="trace-mode"
+			heading={TRAIN_MODE_HEADING}
+			bind:value={tracing.mode}
+			options={MODE_OPTIONS}
+			disabled={settingsLocked}
+		/>
+		<SegToggle
+			name="trace-convention"
+			heading={CONVENTION_HEADING}
+			bind:value={tracing.convention}
+			options={CONVENTION_OPTIONS}
+			disabled={settingsLocked}
+		/>
+	</div>
+
 	<div class="controls">
 		<button type="button" data-start disabled={stage !== 'idle' || !armed} onclick={start}>
 			시작
@@ -542,6 +594,7 @@
 				<input
 					type="text"
 					data-entry
+					data-result={resultTone}
 					inputmode="none"
 					autocomplete="off"
 					autocapitalize="off"
@@ -572,6 +625,7 @@
 				separator={ENTRY_SEPARATOR}
 				separatorLabel={SEPARATOR_LABEL}
 				separatorEnabled={canSplit}
+				separatorHidden={!splitUsable}
 			/>
 		</section>
 	</div>
@@ -579,13 +633,23 @@
 	<!--
 		판정 한 줄. `both` 는 갈래 이름을 붙여 둘을 잇는다 — 한쪽만 틀렸을 때 어느
 		쪽인지 여기서 바로 읽힌다 (요구 2).
+
+		표시 방식은 **퀴즈 화면 그대로** 다 (요구 3) — 입력창 자체가 녹색·빨강으로
+		칠해지고 판정 줄이 같은 토큰으로 테두리를 받는다. 색은 문장을 읽기 전에
+		결과를 알리는 몫만 하고, 무엇이 어긋났는지는 언제나 글자가 말한다 (#26).
 	-->
-	<p class="verdict" data-verdict data-kind={verdict?.kind ?? ''} data-wrong-index={wrongIndex}>
+	<p
+		class="verdict"
+		data-verdict
+		data-kind={verdict?.kind ?? ''}
+		data-result={resultTone}
+		data-wrong-index={wrongIndex}
+	>
 		{partsVerdictText(parts)}
 	</p>
 
 	<!--
-		결과 (FR-TR-11, 13, 20, 24).
+		결과 (FR-TR-11, 13, 20).
 
 		정답 예시를 사용자의 입력과 비교해 "틀렸다" 고 말하지 않는다. 유효한 메모가
 		평균 11가지라 예시는 예시일 뿐이다 — 판정의 출처는 `gradeMemo` 다 (AD-7).
@@ -593,7 +657,7 @@
 		갈래마다 같은 틀을 되풀이한다. `both` 라고 다른 코드를 타지 않는다.
 	-->
 	{#if parts.length > 0}
-		<div class="result" data-result>
+		<div class="result" data-result-panel>
 			{#each parts as p (p.kind)}
 				<section class="part" data-part={p.kind} data-part-kind={p.verdict.kind}>
 					{#if parts.length > 1}
@@ -604,10 +668,10 @@
 					{/if}
 					<p class="row">
 						<span class="k">정답 예시</span>
-						<span class="v mono" data-answer>{p.answer.targets.join('')}</span>
+						<span class="v mono big" data-answer>{p.answer.targets.join('')}</span>
 					</p>
 					<p class="note" data-answer-note>
-						정답은 여럿입니다. 끊는 자리를 다르게 잡은 열도 정답이며 위는 그중 하나입니다
+						정답은 여럿입니다. 버퍼막힘(break-in) 자리를 다르게 잡은 열도 정답이며 위는 그중 하나입니다
 					</p>
 					<!--
 						입력을 어떻게 갈랐는지 밝힌다 (요구 1). 판독이 조용하면 사용자는 자기가
@@ -646,47 +710,10 @@
 						<span class="k">패리티</span>
 						<span class="v">{p.parity ? '코너 타깃이 홀수입니다 (패리티)' : ''}</span>
 					</p>
-					<p
-						class="row"
-						data-convention-compare
-						data-count-a={p.compare.a}
-						data-count-b={p.compare.b}
-					>
-						<span class="k">타깃 수</span>
-						<span class="v">관례 A {p.compare.a}개 · 관례 B {p.compare.b}개</span>
-					</p>
 				</section>
 			{/each}
 		</div>
 	{/if}
-
-	<!--
-		세션 설정. 문제가 도는 동안은 잠긴다 (요구 4). `{#if}` 로 없애지 않는다 —
-		자리가 사라지면 화면이 밀리고 SSR/CSR 요소 개수도 갈린다 (AD-14).
-	-->
-	<div class="settings">
-		<SegToggle
-			name="trace-kind"
-			heading={TRAIN_KIND_HEADING}
-			bind:value={tracing.pieceKind}
-			options={KIND_OPTIONS}
-			disabled={settingsLocked}
-		/>
-		<SegToggle
-			name="trace-mode"
-			heading={TRAIN_MODE_HEADING}
-			bind:value={tracing.mode}
-			options={MODE_OPTIONS}
-			disabled={settingsLocked}
-		/>
-		<SegToggle
-			name="trace-convention"
-			heading={CONVENTION_HEADING}
-			bind:value={tracing.convention}
-			options={CONVENTION_OPTIONS}
-			disabled={settingsLocked}
-		/>
-	</div>
 
 	<!--
 		기록은 모달 안이다 (요구 3). 본문에는 개수만 남긴다 — 50건이 쌓이면 이 화면이
@@ -755,8 +782,34 @@
 		color: var(--muted);
 		text-align: center;
 	}
+	/*
+	 * 판정 줄 — `quiz/+page.svelte` 의 `.verdict` 와 **같은 값** 이다 (요구 3).
+	 * 두 화면이 같은 것을 다르게 그리면 사용자가 판정을 두 번 배운다.
+	 *
+	 * 판정이 없는 동안은 상자를 그리지 않는다. 이 화면은 문구가 없어도 자리를
+	 * 지켜야 해서(AD-14) 요소가 늘 서 있고, 빈 상자는 그 자리를 얼룩으로 만든다.
+	 */
 	.verdict {
+		font-size: 0.95rem;
 		color: var(--fg);
+	}
+	.verdict:not([data-kind='']) {
+		padding: 0.6rem 0.75rem;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 8px;
+	}
+	/*
+	 * 색은 판정을 **한 번 더** 적는 것이지 판정 자체가 아니다 (#26). 같은 줄의
+	 * 문구가 언제나 무엇이 어긋났는지 말하므로 색을 못 읽어도 정보가 남는다.
+	 */
+	.verdict[data-result='ok'] {
+		color: var(--ok);
+		border-color: var(--ok);
+	}
+	.verdict[data-result='bad'] {
+		color: var(--danger);
+		border-color: var(--danger);
 	}
 	.controls {
 		display: grid;
@@ -822,12 +875,34 @@
 		min-width: 0;
 		padding: 0 0.6rem;
 		font-family: var(--mono);
-		font-size: 1rem;
+		/* 퀴즈의 입력 표시(`Alg size="md"`)와 같은 크기다 (요구 3). */
+		font-size: 1.15rem;
 		letter-spacing: 0.08em;
 		color: var(--fg);
 		background: var(--bg);
 		border: 1px solid var(--border);
 		border-radius: 9px;
+		/* 색만 바뀐다. 크기·여백은 그대로라 채점 순간에 레이아웃이 밀리지 않는다. */
+		transition:
+			background-color 120ms ease,
+			border-color 120ms ease;
+	}
+	/*
+	 * 채점이 끝나면 입력창 자체를 칠한다 — `quiz/+page.svelte` 의 `.entry` 와 같은
+	 * 토큰이고 같은 규약이다 (요구 3). 판정 문구는 아래 줄에 그대로 서 있다 (#26).
+	 */
+	.field input[data-result='ok'] {
+		background: var(--ok-bg);
+		border-color: var(--ok);
+	}
+	.field input[data-result='bad'] {
+		background: var(--danger-bg);
+		border-color: var(--danger);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.field input {
+			transition: none;
+		}
 	}
 	.field input:disabled {
 		opacity: 0.55;
@@ -840,7 +915,7 @@
 		display: grid;
 		gap: 0.3rem;
 		padding: 0.6rem 0.7rem;
-		font-size: 0.82rem;
+		font-size: 0.9rem;
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: 10px;
@@ -864,6 +939,11 @@
 	.result .mono {
 		font-family: var(--mono);
 		letter-spacing: 0.08em;
+	}
+	/* 정답 예시는 이 상자에서 실제로 읽는 한 줄이다. 입력창과 같은 크기로 둔다. */
+	.result .v.big {
+		font-size: 1.15rem;
+		line-height: 1.35;
 	}
 	[data-answer-twists] span {
 		margin-right: 0.4em;

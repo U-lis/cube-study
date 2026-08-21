@@ -61,8 +61,8 @@ const edgeMeta = {
  * 무작위 상태에서 성질별로 골라낸 것이고, 성질은 아래 `expected` 가 엔진으로 다시
  * 계산한다 — 여기 적힌 문자열은 "그 성질을 갖는 한 예" 이지 기대값이 아니다.
  *
- *   ODD    코너 타깃 9개(홀수) · 끊기 2회 · 비틀림 없음  → 패리티 표시
- *   EVEN   코너 타깃 8개(짝수) · 끊기 2회 · 비틀림 없음  → 패리티 없음, 두 관례 수가 같음
+ *   ODD    코너 타깃 9개(홀수) · 버퍼막힘 2회 · 비틀림 없음 → 패리티 표시
+ *   EVEN   코너 타깃 8개(짝수) · 버퍼막힘 2회 · 비틀림 없음 → 패리티 없음
  *   TWIST  관례 B 비틀림 2개, 그중 하나가 **버퍼**       → 버퍼 비틀림 별도 표시
  */
 const ODD = "B2 U2 B2 L B2 L' R B R2 B' D F R2 U R B R' D' F U2 L' R2 U' L R";
@@ -89,14 +89,12 @@ const odd = expected(ODD);
 const even = expected(EVEN);
 const evenEdge = edgeExpected(EVEN);
 const twistB = expected(TWIST, 'B');
-/** 관례 A 로 본 같은 스크램블. 두 관례의 타깃 수 비교(FR-TR-24)의 반대쪽이다. */
-const twistA = expected(TWIST);
 
 /** `both` 한 판의 한 줄 입력. 구분자가 코너와 엣지를 가른다. */
 const bothEntry = `${even.targets}${ENTRY_SEPARATOR}${evenEdge.targets}`;
 
 /**
- * 같은 스크램블의 **다른** 유효 메모. 끊는 자리를 마지막 후보로 바꾼다.
+ * 같은 스크램블의 **다른** 유효 메모. 버퍼막힘 자리를 마지막 후보로 바꾼다.
  * 문자열이 달라도 정답이어야 한다 (FR-TR-10).
  */
 const evenAlt = trace(even.state, {
@@ -104,7 +102,7 @@ const evenAlt = trace(even.state, {
 	pickBreakIn: (c) => c[c.length - 1]
 }).targets.join('');
 
-/** 불필요한 끊기 2회를 만드는 문자. 엔진이 `correct-extra` 로 판정하는 것만 쓴다. */
+/** 불필요한 버퍼막힘 2회를 만드는 문자. 엔진이 `correct-extra` 로 판정하는 것만 쓴다. */
 const extraLetter = CORNER_LETTERS.find((l) => {
 	const v = gradeMemo(
 		even.state,
@@ -417,7 +415,7 @@ test.describe('T4-4 채점 결과 (FR-TR-10, 11, 12, 20)', () => {
 		await expect(page.locator('[data-verdict]')).toHaveText('정답');
 	});
 
-	test('끊는 자리를 다르게 잡은 다른 유효 메모도 정답이다', async ({ page }) => {
+	test('버퍼막힘 자리를 다르게 잡은 다른 유효 메모도 정답이다', async ({ page }) => {
 		// 문자열이 다른데도 정답이어야 한다 — 정답은 하나가 아니다 (FR-TR-10).
 		expect(evenAlt).not.toBe(even.targets);
 		await open(page, EVEN);
@@ -427,11 +425,11 @@ test.describe('T4-4 채점 결과 (FR-TR-10, 11, 12, 20)', () => {
 		await expect(page.locator('[data-answer]')).toHaveText(even.targets);
 	});
 
-	test('불필요한 끊기는 오답이 아니라 별도 문구다', async ({ page }) => {
+	test('불필요한 버퍼막힘은 오답이 아니라 별도 문구다', async ({ page }) => {
 		await open(page, EVEN);
 		await play(page, even.targets + extraLetter + extraLetter);
 		await expect(page.locator('[data-verdict]')).toHaveAttribute('data-kind', 'correct-extra');
-		await expect(page.locator('[data-verdict]')).toContainText('불필요한 끊기');
+		await expect(page.locator('[data-verdict]')).toContainText('불필요한 버퍼막힘');
 		await expect(page.locator('[data-verdict]')).not.toContainText('오답');
 	});
 
@@ -471,7 +469,7 @@ test.describe('T4-4 채점 결과 (FR-TR-10, 11, 12, 20)', () => {
 	});
 });
 
-test.describe('T4-5 패리티와 관례 비교 (FR-TR-13, 24)', () => {
+test.describe('T4-5 패리티와 비틀림 표시 (FR-TR-13)', () => {
 	test('코너 타깃이 홀수면 패리티가 표시된다', async ({ page }) => {
 		expect(odd.result.parity).toBe(true);
 		await open(page, ODD);
@@ -489,22 +487,13 @@ test.describe('T4-5 패리티와 관례 비교 (FR-TR-13, 24)', () => {
 		expect((await page.locator('[data-parity] .v').innerText()).trim()).toBe('');
 	});
 
-	test('두 관례의 타깃 수가 함께 나온다', async ({ page }) => {
+	// 관례 A/B 의 타깃 수 비교 줄은 없앴다. 쓸모가 없다고 판정됐다 (SPEC 의
+	// FR-TR-24 는 아직 이 표시를 적고 있고, 문서 정리는 별건이다).
+	test('관례 타깃 수 비교 줄이 없다', async ({ page }) => {
 		await open(page, TWIST, { 'trace.convention': 'B' });
 		await play(page, twistB.targets + twistB.result.twists.join(''));
-		const row = page.locator('[data-convention-compare]');
-		await expect(row).toHaveAttribute('data-count-a', String(twistA.result.targets.length));
-		await expect(row).toHaveAttribute('data-count-b', String(twistB.result.targets.length));
-		// 관례가 타깃 수를 실제로 바꾼다는 것이 이 화면이 보여주려는 것이다.
-		expect(twistA.result.targets.length).not.toBe(twistB.result.targets.length);
-	});
-
-	test('비틀림이 없는 스크램블은 두 수가 같다', async ({ page }) => {
-		await open(page, EVEN);
-		await play(page, even.targets);
-		const row = page.locator('[data-convention-compare]');
-		const a = await row.getAttribute('data-count-a');
-		expect(await row.getAttribute('data-count-b')).toBe(a);
+		await expect(page.locator('[data-convention-compare]')).toHaveCount(0);
+		await expect(page.locator('[data-result-panel]')).not.toContainText('관례 A');
 	});
 
 	test('관례 B 결과의 버퍼 비틀림은 따로 표시된다', async ({ page }) => {
@@ -553,12 +542,39 @@ test.describe('T4-8 both 한 번에 (요구 2)', () => {
 		);
 	});
 
-	test('코너·엣지 전용 판에서는 구분자 버튼이 잠겨 있다', async ({ page }) => {
+	test('코너·엣지 전용 판에서는 구분자 버튼이 자리만 지킨 채 감춰진다', async ({ page }) => {
 		await open(page, EVEN);
 		await page.locator('[data-start]').click();
+		const sep = page.locator('[data-pad="entry"] [data-action="separator"]');
 		// 버튼은 **사라지지 않는다** — 개수가 설정에 따라 갈리면 SSR/CSR 이 어긋난다.
-		await expect(page.locator('[data-pad="entry"] [data-action="separator"]')).toHaveCount(1);
-		await expect(page.locator('[data-pad="entry"] [data-action="separator"]')).toBeDisabled();
+		await expect(sep).toHaveCount(1);
+		await expect(sep).toBeDisabled();
+		// 눈에서만 지운다. `display: none` 이면 자리가 사라져 나머지 두 칸이 넓어진다.
+		await expect(sep).toHaveAttribute('data-hidden', 'true');
+		expect(await sep.evaluate((el) => getComputedStyle(el).visibility)).toBe('hidden');
+		expect(await sep.evaluate((el) => getComputedStyle(el).display)).not.toBe('none');
+	});
+
+	test('both 판에서는 구분자 버튼이 보이고 포인트 컬러로 선다', async ({ page }) => {
+		await open(page, EVEN, both);
+		await page.locator('[data-start]').click();
+		const sep = page.locator('[data-pad="entry"] [data-action="separator"]');
+		await expect(sep).toBeVisible();
+		await expect(sep).toBeEnabled();
+		// 색 하나로 알리지 않는다 (#26) — 테두리와 굵기가 함께 선다.
+		const own = await sep.evaluate((el) => {
+			const s = getComputedStyle(el);
+			return { color: s.color, border: s.borderTopColor, weight: Number(s.fontWeight) };
+		});
+		const other = await page
+			.locator('[data-pad="entry"] [data-action="clear"]')
+			.evaluate((el) => {
+				const s = getComputedStyle(el);
+				return { color: s.color, border: s.borderTopColor, weight: Number(s.fontWeight) };
+			});
+		expect(own.color).not.toBe(other.color);
+		expect(own.border).not.toBe(other.border);
+		expect(own.weight).toBeGreaterThan(other.weight);
 	});
 
 	test('한 줄로 이어 치고 한 번에 채점한다', async ({ page }) => {
@@ -657,6 +673,61 @@ test.describe('T4-6 시간과 기록 (FR-TR-23)', () => {
 		await expect(page.locator('[data-record]')).toHaveCount(3);
 	});
 
+	/**
+	 * 요구 7 — 기록을 읽을 수 있게 만든다.
+	 *
+	 * 자릿수가 세로로 맞아야 두 기록을 비교할 수 있다. 강조도 그래프도 없고
+	 * (NFR-TR-5) 바뀐 것은 정렬뿐이다.
+	 */
+	test('기록이 자릿수 맞은 표로 나온다 @viewport', async ({ page }) => {
+		// 시간과 타깃 수의 자릿수가 서로 다른 세 건을 심는다.
+		const seeded = JSON.stringify({
+			schemaVersion: RECORDS_SCHEMA_VERSION,
+			records: [
+				{ at: 1755660003000, ms: 7010, pieceKind: 'corner', buffer: meta.buffer, mode: 'follow', twistConvention: 'A', targetCount: 8, correct: true },
+				{ at: 1755660002000, ms: 84210, pieceKind: 'both', buffer: meta.buffer, mode: 'follow', twistConvention: 'A', targetCount: 20, correct: false },
+				{ at: 1755660001000, ms: 123, pieceKind: 'edge', buffer: meta.buffer, mode: 'memorize', twistConvention: 'B', targetCount: 12, correct: true }
+			]
+		});
+		await open(page, EVEN, { 'trace.records': seeded });
+		await openRecords(page);
+		await expect(page.locator('[data-record]')).toHaveCount(3);
+		const cells = page.locator('[data-record] td.num');
+		// 숫자 칸은 같은 오른쪽 끝에서 끝난다 — 그것이 자릿수가 맞았다는 뜻이다.
+		const rights = await cells.evaluateAll((els) =>
+			els.map((el) => Math.round(el.getBoundingClientRect().right))
+		);
+		expect(rights.length).toBe(6);
+		expect(new Set(rights.filter((_, i) => i % 2 === 0)).size).toBe(1);
+		expect(new Set(rights.filter((_, i) => i % 2 === 1)).size).toBe(1);
+		// 글자 폭이 고른 숫자여야 오른쪽 정렬이 실제로 자릿수를 맞춘다.
+		const numeric = await cells
+			.first()
+			.evaluate((el) => getComputedStyle(el).fontVariantNumeric);
+		expect(numeric).toContain('tabular-nums');
+	});
+
+	test('기록 표에 강조도 그래프도 없다', async ({ page }) => {
+		const seeded = JSON.stringify({
+			schemaVersion: RECORDS_SCHEMA_VERSION,
+			records: [
+				{ at: 1755660002000, ms: 7010, pieceKind: 'corner', buffer: meta.buffer, mode: 'follow', twistConvention: 'A', targetCount: 8, correct: true },
+				{ at: 1755660001000, ms: 99010, pieceKind: 'corner', buffer: meta.buffer, mode: 'follow', twistConvention: 'A', targetCount: 8, correct: true }
+			]
+		});
+		await open(page, EVEN, { 'trace.records': seeded });
+		await openRecords(page);
+		const text = await page.locator('[data-records]').innerText();
+		for (const word of ['최고', '신기록', '평균', '축하'])
+			expect(text, word).not.toContain(word);
+		await expect(page.locator('[data-records] svg, [data-records] canvas')).toHaveCount(0);
+		// 두 줄의 배경이 같다 — 빠른 판을 색으로 치켜세우지 않는다.
+		const bgs = await page
+			.locator('[data-record]')
+			.evaluateAll((els) => els.map((el) => getComputedStyle(el).backgroundColor));
+		expect(new Set(bgs).size).toBe(1);
+	});
+
 	test('기록 한 건의 필드가 스키마 그대로다', async ({ page }) => {
 		await open(page, EVEN);
 		await play(page, even.targets);
@@ -704,6 +775,58 @@ test.describe('T4-6 시간과 기록 (FR-TR-23)', () => {
 	});
 });
 
+/**
+ * 요구 3 — 판정 표시를 퀴즈 화면과 같게 한다.
+ *
+ * `quiz-feedback.spec.ts` 가 보는 것과 **같은 성질** 이다: 입력창 자체가 칠해지고,
+ * 색은 언제나 문구와 함께 선다 (#26).
+ */
+test.describe('T4-9 판정 표시 (요구 3)', () => {
+	test('채점 전에는 입력창이 칠해지지 않는다', async ({ page }) => {
+		await open(page, EVEN);
+		await page.locator('[data-start]').click();
+		await expect(page.locator('[data-entry]')).toHaveAttribute('data-result', '');
+		await expect(page.locator('[data-verdict]')).toHaveAttribute('data-result', '');
+	});
+
+	test('정답이면 입력창과 판정 줄이 함께 녹색이 된다', async ({ page }) => {
+		await open(page, EVEN);
+		await play(page, even.targets);
+		await expect(page.locator('[data-entry]')).toHaveAttribute('data-result', 'ok');
+		await expect(page.locator('[data-verdict]')).toHaveAttribute('data-result', 'ok');
+		// 색만으로 알리지 않는다 — 같은 자리에 판정 문구가 서 있다 (#26).
+		await expect(page.locator('[data-verdict]')).toHaveText('정답');
+	});
+
+	test('오답이면 빨강이고 이유가 글자로 남는다', async ({ page }) => {
+		await open(page, EVEN);
+		await play(page, even.targets.slice(0, 2));
+		await expect(page.locator('[data-entry]')).toHaveAttribute('data-result', 'bad');
+		await expect(page.locator('[data-verdict]')).toHaveAttribute('data-result', 'bad');
+		await expect(page.locator('[data-verdict]')).toContainText('남았습니다');
+	});
+
+	test('불필요한 버퍼막힘은 풀리므로 녹색이다', async ({ page }) => {
+		await open(page, EVEN);
+		await play(page, even.targets + extraLetter + extraLetter);
+		await expect(page.locator('[data-verdict]')).toHaveAttribute('data-kind', 'correct-extra');
+		await expect(page.locator('[data-entry]')).toHaveAttribute('data-result', 'ok');
+	});
+
+	test('정답 예시와 입력창이 결과 상자의 잔글씨보다 크다', async ({ page }) => {
+		await open(page, EVEN);
+		await play(page, even.targets);
+		const size = (sel: string) =>
+			page.locator(sel).first().evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+		const body = await size('[data-answer-note]');
+		// 실제로 읽는 두 줄이다. 꼬리표와 같은 크기면 눈이 어디를 봐야 할지 모른다.
+		expect(await size('[data-answer]')).toBeGreaterThan(body);
+		expect(await size('[data-entry]')).toBeGreaterThan(body);
+		// 판정 줄은 퀴즈와 같은 0.95rem = 15.2px 다.
+		expect(await size('[data-verdict]')).toBeGreaterThan(15);
+	});
+});
+
 test.describe('T4-7 톤과 접근성 (NFR-TR-5)', () => {
 	test('정답 화면에 축하·배지·연속·점수 문구가 없다', async ({ page }) => {
 		await open(page, EVEN);
@@ -714,7 +837,8 @@ test.describe('T4-7 톤과 접근성 (NFR-TR-5)', () => {
 	});
 
 	test('패드 버튼의 터치 타깃이 44px 이상이다 @viewport', async ({ page }) => {
-		await open(page, EVEN);
+		// 구분자 버튼이 보이는 판으로 연다 — 감춰진 버튼은 잴 수는 있어도 무의미하다.
+		await open(page, EVEN, { 'trace.pieceKind': 'both' });
 		for (const sel of [
 			'[data-pad="entry"] button[data-letter]',
 			'[data-pad="entry"] [data-action="back"]',

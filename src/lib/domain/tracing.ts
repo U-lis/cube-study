@@ -26,14 +26,12 @@ import {
 	EDGE_INDEX,
 	type PieceKind
 } from '../cube/speffz.js';
-import type { CubeState } from '../cube/sim.js';
 import type { Mark } from '../cube/cube3d-map.js';
-import {
-	trace,
-	type EntryReading,
-	type TraceOptions,
-	type TraceVerdict,
-	type TwistConvention
+import type {
+	EntryReading,
+	TraceOptions,
+	TraceVerdict,
+	TwistConvention
 } from '../cube/trace.js';
 
 export type { TwistConvention };
@@ -180,7 +178,7 @@ export const RECORDS_KEY = 'trace.records';
  * 아니지만, 검사를 사람의 판단으로 무르지 않는 편이 낫다.
  */
 export const CONVENTIONS = {
-	A: '끊어서 처리',
+	A: '버퍼막힘으로 처리',
 	B: '따로 처리'
 } satisfies Record<TwistConvention, string>;
 
@@ -193,7 +191,7 @@ export const CONVENTIONS = {
  * 채점 기준을 바꾼다고 읽는다.
  */
 export const CONVENTION_HINTS = {
-	A: '정답 예시에 비틀림까지 끊어 넣어 보여줍니다',
+	A: '정답 예시에 비틀림까지 버퍼막힘(break-in)으로 넣어 보여줍니다',
 	B: '정답 예시에서 비틀림을 빼고 따로 보여줍니다'
 } satisfies Record<TwistConvention, string>;
 
@@ -269,25 +267,6 @@ export function optionsFrom(
 }
 
 /**
- * 같은 상태를 두 관례로 트레이싱한 타깃 수 (FR-TR-24).
- *
- * 결과 화면이 "지금 관례로는 N개, 다른 관례로는 M개" 를 함께 보여준다. 3-style 로
- * 넘어갈 때의 이득이 숫자로 보이는 자리다.
- *
- * 관례 A 쪽은 옵션을 `undefined` 로 지운다. 엔진의 기본이 A 이므로 결과가 같고,
- * 이 파일에 스티커로 읽힐 수 있는 따옴표 문자를 남기지 않는다 (FR-TR-7 정적 검사).
- */
-export function conventionCompare(
-	state: CubeState,
-	opts: TraceOptions
-): { a: number; b: number } {
-	return {
-		a: trace(state, { ...opts, twistConvention: undefined }).targets.length,
-		b: trace(state, { ...opts, twistConvention: 'B' }).targets.length
-	};
-}
-
-/**
  * 판정 문구. **사실만 적는다** (NFR-TR-5, 기존 NFR-9).
  *
  * 축하·연속 정답·배지·점수 표현을 쓰지 않는다. 틀린 이유를 짚는 것이 이 화면의
@@ -301,7 +280,7 @@ export function verdictText(v: TraceVerdict): string {
 		case 'correct':
 			return '정답';
 		case 'correct-extra':
-			return `풀립니다. 불필요한 끊기가 ${v.extra}회 있습니다`;
+			return `풀립니다. 불필요한 버퍼막힘(break-in)이 ${v.extra}회 있습니다`;
 		case 'wrong-at':
 			return `${v.index + 1}번째 타깃 — ${WRONG_REASON[v.reason]}`;
 		case 'incomplete':
@@ -377,7 +356,7 @@ export function readingText(r: EntryReading): string {
 const WRONG_REASON = {
 	'wrong-orientation': '조각은 맞지만 방향이 다릅니다',
 	'wrong-piece': '다른 조각입니다',
-	'already-solved': '이미 해결된 조각으로 끊었습니다',
+	'already-solved': '이미 해결된 조각으로 버퍼막힘(break-in)을 했습니다',
 	'buffer-sticker': '버퍼 스티커는 타깃이 될 수 없습니다'
 } as const;
 

@@ -88,6 +88,7 @@ function edgeExpected(alg: string, convention: 'A' | 'B' = 'A') {
 const odd = expected(ODD);
 const even = expected(EVEN);
 const evenEdge = edgeExpected(EVEN);
+const twistA = expected(TWIST);
 const twistB = expected(TWIST, 'B');
 
 /** `both` 한 판의 한 줄 입력. 구분자가 코너와 엣지를 가른다. */
@@ -383,12 +384,32 @@ test.describe('T4-3 한 줄 입력과 관례 (FR-TR-18, 24)', () => {
 		);
 	});
 
-	test('관례를 바꿔도 입력 구획의 자리가 밀리지 않는다 @viewport', async ({ page }) => {
-		await open(page, EVEN, { 'trace.convention': 'A' });
+	/**
+	 * 관례 토글이 결과 패널로 옮겨 갔다 (요구 3 재검토).
+	 *
+	 * 이 토글은 채점 기준이 아니라 **정답 예시의 표시 방식** 이다. 그것을 화면이
+	 * 증명하는 방법은 하나뿐이다 — 눌렀을 때 정답 예시만 갈리고 판정도 기록도
+	 * 그대로여야 한다. 다시 채점하면 그 순간 이 토글은 채점 기준이 된다.
+	 */
+	test('결과에서 관례를 바꾸면 정답 예시만 갈린다 @viewport', async ({ page }) => {
+		// 비틀림이 있는 스크램블이어야 두 관례의 정답이 다르다. 없으면 글자까지 같다.
+		expect(twistB.targets).not.toBe(twistA.targets);
+		await open(page, TWIST, { 'trace.convention': 'A' });
+		await play(page, twistA.targets);
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'result');
+		await expect(page.locator('[data-answer]')).toHaveText(twistA.targets);
+
+		const verdict = await page.locator('[data-verdict]').innerText();
+		const records = () =>
+			page.evaluate(
+				() => JSON.parse(localStorage.getItem('trace.records') ?? '{}').records.length
+			);
+		const kept = await records();
+
 		/*
-		 * 뷰포트 좌표가 아니라 **문서 좌표** 로 잰다. 토글은 화면 아래쪽에 있어서
-		 * 누르면 브라우저가 스크롤한다 — `boundingBox` 로 재면 그 스크롤을 레이아웃
-		 * 밀림으로 오인한다.
+		 * 입력 구획은 결과 패널 **위** 에 있다. 뷰포트 좌표가 아니라 문서 좌표로
+		 * 잰다 — 토글은 화면 아래쪽이라 누르면 브라우저가 스크롤하고, `boundingBox`
+		 * 로 재면 그 스크롤을 레이아웃 밀림으로 오인한다.
 		 */
 		const place = () =>
 			page.locator('[data-section="entry"]').evaluate((el) => {
@@ -396,11 +417,18 @@ test.describe('T4-3 한 줄 입력과 관례 (FR-TR-18, 24)', () => {
 				return { top: r.top + window.scrollY, height: r.height };
 			});
 		const before = await place();
+
 		await page.locator('[data-toggle="trace-convention"] [data-option="B"]').click();
 		await expect(page.locator('[data-toggle="trace-convention"]')).toHaveAttribute(
 			'data-value',
 			'B'
 		);
+
+		// 정답 예시가 그 자리에서 갈린다. 채점은 다시 돌지 않는다.
+		await expect(page.locator('[data-answer]')).toHaveText(twistB.targets);
+		expect(await page.locator('[data-verdict]').innerText()).toBe(verdict);
+		expect(await records()).toBe(kept);
+
 		const after = await place();
 		expect(Math.abs(after.top - before.top)).toBeLessThan(1);
 		expect(Math.abs(after.height - before.height)).toBeLessThan(1);

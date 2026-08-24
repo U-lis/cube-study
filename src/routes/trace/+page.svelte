@@ -60,7 +60,8 @@
 		verdictText,
 		CONVENTION_HEADING,
 		CONVENTION_HINTS,
-		CONVENTIONS,
+		CONVENTIONS as CONVENTION_LABELS,
+		CONVENTION_VALUES,
 		ENTRY_SEPARATOR,
 		PART_LABELS,
 		SEPARATOR_LABEL,
@@ -68,12 +69,14 @@
 		TRAIN_KINDS,
 		TRAIN_MODE_HEADING,
 		TRAIN_MODES,
+		TWIST_ABSORBED,
+		TWIST_SEPARATED,
 		type BufferMeta,
 		type TrainKind,
 		type TrainMode,
 		type TwistConvention
 	} from '$lib/domain/tracing.js';
-	import type { Cubie, Dataset } from '$lib/domain/types.js';
+	import type { Cubie, Dataset, Sticker } from '$lib/domain/types.js';
 
 	/**
 	 * 세션 단계.
@@ -98,9 +101,24 @@
 		verdict: TraceVerdict;
 		/** 채점 시점의 판독. 결과가 "무엇을 비틀림으로 읽었는가" 를 밝힌다. */
 		reading: EntryReading;
-		answer: TraceResult;
-		/** 비틀림 목록. 버퍼가 섞였으면 따로 밝힌다 (AD-8). */
-		twists: { letter: string; isBuffer: boolean }[];
+		/**
+		 * 관례별 정답 예시. **둘 다** 들고 있다 (요구 3 재검토).
+		 *
+		 * 관례는 채점 기준이 아니라 표시 방식이다 — `gradeEntry` 는 넘겨받은 관례를
+		 * 무시하고 입력에서 읽은 것으로 덮어쓴다 (`trace.ts:535`). 그래서 결과를 본
+		 * 뒤에 관례를 바꿔도 다시 채점할 이유가 없고, 채점을 다시 돌리지 않으려면
+		 * 여기서 두 벌을 들고 있으면 된다. `trace()` 한 번은 조각 8~12개 순회라
+		 * 두 번 돌아도 비용이 없다.
+		 */
+		answers: Record<TwistConvention, TraceResult>;
+		/**
+		 * 이 갈래의 버퍼. 비틀림 목록이 "이건 버퍼다" 를 밝히는 데 쓴다 (AD-8).
+		 *
+		 * 목록 자체를 들고 있지 않는다. 관례 A 의 정답에는 비틀림 열이 아예 없고
+		 * (`TraceResult.twists` 는 A 에서 항상 빈 배열), B 의 것은 `answers` 안에
+		 * 이미 들어 있다. 표시 시점에 고른 관례에서 꺼내면 두 벌을 맞춰 둘 일이 없다.
+		 */
+		buffer: Cubie;
 		/** 패리티 (FR-TR-13). 코너 타깃이 홀수일 때다 — 엣지에서는 판단하지 않는다. */
 		parity: boolean;
 	}
@@ -151,9 +169,9 @@
 		hint: TRAIN_MODES[value],
 		title: TRAIN_MODES[value]
 	}));
-	const CONVENTION_OPTIONS = (Object.keys(CONVENTIONS) as TwistConvention[]).map((value) => ({
+	const CONVENTION_OPTIONS = CONVENTION_VALUES.map((value) => ({
 		value,
-		label: CONVENTIONS[value],
+		label: CONVENTION_LABELS[value],
 		hint: CONVENTION_HINTS[value],
 		title: CONVENTION_HINTS[value]
 	}));
@@ -177,14 +195,6 @@
 	 * 흔들리면 안 된다.
 	 */
 	let roundKind = $state<TrainKind>('corner');
-	/**
-	 * 시작 시점에 **고정** 한 관례.
-	 *
-	 * 채점 기준이 아니다 — 판정은 `gradeEntry` 가 입력만 보고 하고, 어느 관례로
-	 * 쳐도 정답은 정답이다. 이 값이 정하는 것은 결과 화면이 정답 예시와 타깃 수를
-	 * 어느 관례로 보여줄지 하나뿐이다.
-	 */
-	let roundConvention = $state<TwistConvention>(CONVENTION_OPTIONS[0].value);
 	/** 54칸 facelet 문자열. 시작 전에는 `null` 이다 — 색 배열이 곧 정답의 일부다. */
 	let facelets = $state<string | null>(null);
 	/**
@@ -207,6 +217,14 @@
 	 * 지난다. 갈래별로 분기를 적으면 한쪽만 고쳐지는 날이 온다.
 	 */
 	let parts = $state<Part[]>([]);
+	/**
+	 * 결과 단계에서 큐브에 경로를 칠할 갈래 (요구 2 재검토).
+	 *
+	 * `both` 는 갈래가 둘인데 큐브는 하나다. 두 좌표계를 한 번에 칠하면 엉뚱한
+	 * 조각이 켜지므로 (`marks` 주석) 한쪽만 칠하고 사용자가 고르게 한다.
+	 * 채점 직후 기본값은 **어긋난 쪽** 이다 — 복기할 이유가 있는 쪽이 그쪽이다.
+	 */
+	let focusKind = $state<PieceKind | null>(null);
 	/** 초기 카메라 각도 (FR-TR-17). SSR 에서는 고정값이라 하이드레이션이 흔들리지 않는다. */
 	let orientation = $state(0);
 	/** 기록 모달 (요구 3). `+layout.svelte` 가 `About` 을 여는 방식과 같다. */
@@ -299,21 +317,57 @@
 	let settingsLocked = $derived(stage !== 'idle');
 
 	/**
+	 * 상태줄 문구. 하나로 모으는 이유는 **비어 있는지** 를 CSS 가 알아야 하기
+	 * 때문이다 — 판이 도는 동안에는 빈 줄이 자리를 차지하지 않게 접는다 (요구 1).
+	 *
+	 * `idle` 에서는 접지 않는다. 하이드레이션 직후 `armed` 가 거짓이라 "준비 중"
+	 * 이 떴다 사라지는데, 그때 자리까지 없앴다 만들면 화면이 두 번 밀린다 (AD-14).
+	 */
+	let statusText = $derived(
+		!browser ? '' : src.error ? `스크램블 생성 실패: ${src.error}` : armed ? '' : '준비 중'
+	);
+
+	/** 결과 단계에 큐브를 칠할 갈래. 고른 것이 없으면 첫 갈래다. */
+	let focus = $derived(parts.find((x) => x.kind === focusKind) ?? parts[0] ?? null);
+
+	/**
 	 * 54칸 하이라이트 (FR-TR-16).
 	 *
-	 * **트레이싱 중에만** 칠한다. `idle` 은 회색 단계라 칠할 것이 없고(FR-TR-22),
-	 * `result` 에서 정답 경로를 칠하면 그것은 다음 판의 힌트가 된다 — 화면이 정답
-	 * 배열을 들고 있는 상태 자체를 만들지 않는 편이 안전하다 (FR-TR-15).
+	 * ─── 왜 훈련 중에는 버퍼만인가 ──────────────────────────────
+	 * 처음에는 입력한 문자를 따라 "현재 타깃·지나간 조각" 을 칠했다. 그런데 그것은
+	 * **문자 → 위치 매핑을 대신 해 주는 것** 이고, 그 매핑은 트레이싱이 아니라 그
+	 * 앞 단계의 기술이다. 더 나쁜 것은 브루트포스가 열린다는 점이다 — 보고 있는
+	 * 스티커의 문자를 모르겠으면 아무 글자나 눌러 가며 어디가 켜지는지 보면 된다.
+	 * SPEC 이 "막혔을 때 다음 조각 하이라이트" 를 FR-TR-15 와 충돌한다며 거부한
+	 * 것과 같은 부류다. 정답이 아니라 사용자 입력으로 구동된다는 이유로 그 검사를
+	 * 지나갔을 뿐, 새어 나가는 정보는 같다.
 	 *
-	 * 넘기는 것은 **사용자가 입력한 문자열뿐** 이다. 정답은 이 경로에 없다.
+	 * 버퍼는 남긴다. 실물에서도 자기 버퍼는 늘 알고 시작하므로 힌트가 아니다.
 	 *
-	 * `both` 는 **지금 갈래의 몫만** 칠한다. 구분자 앞의 코너 문자를 엣지 좌표로
-	 * 칠하면 엉뚱한 조각이 켜진다 — 두 갈래는 좌표계가 다르다.
+	 * ─── 왜 결과 단계에서는 칠하는가 ───────────────────────────
+	 * 판이 끝난 뒤라 힌트가 될 것이 없다. 다음 판은 다른 스크램블이다.
+	 * `PHASE_5_PLAN_highlight.md:39-40` 이 처음부터 적어 둔 자리이기도 하다 —
+	 * "결과 화면에서는 정답 예시 경로를 같은 방식으로 칠할 수 있다. 다만 훈련
+	 * 중에는 칠하지 않는다."
+	 *
+	 * 어긋난 자리를 큐브에 찍지 않는다. 유효한 메모가 평균 11가지라 사용자가 다른
+	 * 자리에서 끊었으면 예시의 i 번째와 사용자의 i 번째가 애초에 다른 조각이다
+	 * (AD-7). "몇 번째가 어긋났는가" 는 판정 줄이 말하고, 큐브는 예시 경로
+	 * 하나를 통째로 보여주는 몫만 한다.
+	 *
+	 * `both` 는 **고른 갈래의 몫만** 칠한다. 코너 문자를 엣지 좌표로 칠하면 엉뚱한
+	 * 조각이 켜진다 — 두 갈래는 좌표계가 다르다.
 	 */
 	let marks = $derived(
-		meta && stage === 'tracing'
-			? buildMarks(padKind, meta, entrySegments(entry, kinds)[segmentIndex(entry, kinds)].letters)
-			: NO_MARKS
+		stage === 'tracing' && meta
+			? buildMarks(padKind, meta, [])
+			: stage === 'result' && focus && metaOf(focus.kind)
+				? buildMarks(
+						focus.kind,
+						metaOf(focus.kind)!,
+						focus.answers[tracing.convention].targets as Sticker[]
+					)
+				: NO_MARKS
 	);
 
 	/** 한 줄로 합친 판정 (요구 2). `both` 는 처음 틀린 갈래가 그대로 올라온다. */
@@ -366,9 +420,11 @@
 		// 상태 계산에 쓰는 것은 언제나 `core` 다 (AD-10). `scramble` 은 표시용이고
 		// 방향 회전이 섞이면 facelet 배치가 통째로 어긋난다.
 		facelets = new Cube().move(next.core).asString();
-		// 세 설정을 시작 시점에 굳힌다 (요구 4). 판이 도는 동안 토글은 잠기고,
-		// 결과 단계에서 풀려도 이미 채점한 판이 흔들리지 않는다.
-		roundConvention = tracing.convention;
+		// 대상을 시작 시점에 굳힌다 (요구 4). 판이 도는 동안 설정은 접히고, 결과
+		// 단계에서 다시 펴져도 이미 채점한 판의 갈래 구성이 흔들리지 않는다.
+		//
+		// 관례는 여기서 굳히지 않는다. 결과 화면의 표시 토글이 되었으므로 (요구 3
+		// 재검토) 판이 끝난 뒤에 바꾸는 것이 정상 사용이다.
 		roundKind = tracing.pieceKind;
 		entry = [];
 		conflicts = 0;
@@ -378,6 +434,18 @@
 		startedAt = performance.now();
 		nowAt = startedAt;
 		stage = 'tracing';
+		/*
+		 * 맨 위로 되돌린다 (요구 1).
+		 *
+		 * 시작 버튼은 세션 설정 아래에 있어서, 그것을 누르려면 사용자가(또는
+		 * 브라우저가) 이미 조금 내려와 있다. 누르는 순간 설정이 접혀 문서가 짧아지는데
+		 * 스크롤 위치는 그대로라, 한 화면에 들어오도록 만들어 놓고도 큐브 윗부분이
+		 * 잘린 채로 시작된다.
+		 *
+		 * `behavior` 를 주지 않는다. 기본값 `auto` 는 사용자의 동작 감소 설정을
+		 * 브라우저가 알아서 지킨다 — 여기서 `smooth` 를 못 박으면 그 설정을 무른다.
+		 */
+		window.scrollTo({ top: 0 });
 	}
 
 	/** "다 외웠다" — `memorize` 의 종료 시점이다. 입력 시간은 트레이싱 시간이 아니다. */
@@ -444,23 +512,37 @@
 		for (const { kind, letters } of entrySegments(entry, kinds)) {
 			const m = metaOf(kind);
 			if (!m) return;
-			const o = optionsFrom(m, kind, roundConvention);
 			const cube = stateFromFacelets(state, kind);
 			// 화면은 **엔진 결과만** 쓴다. 정답 예시와 사용자의 입력을 문자열로 비교하는
 			// 코드가 여기 생기면 "정답이 평균 11가지" 라는 전제가 조용히 깨진다 (AD-7).
-			// 판정은 입력만 본다. 세션 관례는 `answer` 의 표시 방식만 정한다.
-			const { verdict: v, reading } = gradeEntry(cube, letters, o);
-			const answer = trace(cube, o);
+			// 관례는 판정에 닿지 않는다. `gradeEntry` 가 넘겨받은 값을 버리고 **입력에서
+			// 읽은 것** 으로 덮어쓴다 (`trace.ts:535`). 그래서 어느 관례를 넣어도 판정이
+			// 같고, 결과를 본 뒤 관례를 바꿔도 다시 채점할 이유가 없다.
+			const { verdict: v, reading } = gradeEntry(cube, letters, optionsFrom(m, kind, TWIST_ABSORBED));
+			// 관례별 정답 예시를 **둘 다** 뽑는다 (요구 3 재검토). 결과 화면의 토글이
+			// 이 둘을 갈아끼우는 것으로 끝나고, 채점은 다시 돌지 않는다.
+			const answers = Object.fromEntries(
+				CONVENTION_VALUES.map((c) => [c, trace(cube, optionsFrom(m, kind, c))])
+			) as Record<TwistConvention, TraceResult>;
 			graded.push({
 				kind,
 				verdict: v,
 				reading,
-				answer,
-				twists: twistEntries(answer.twists, kind, m.buffer),
-				parity: kind === 'corner' && answer.parity
+				answers,
+				buffer: m.buffer,
+				// 패리티는 스크램블의 성질이지 관례의 성질이 아니다. 비틀림 하나를 끊어서
+				// 흡수하면 타깃이 2개 늘어 홀짝이 보존되므로 두 관례의 값이 같다. 그래도
+				// 한쪽을 정본으로 못 박는다 — 우연히 같은 것에 기대는 코드는 언젠가
+				// 조용히 어긋난다.
+				parity: kind === 'corner' && answers[TWIST_ABSORBED].parity
 			});
 		}
 		parts = graded;
+		// 복기할 이유가 있는 쪽을 큐브에 먼저 띄운다. 전부 맞았으면 첫 갈래다.
+		focusKind = (graded.find((x) => !isPass(x.verdict)) ?? graded[0])?.kind ?? null;
+		// 사용자가 실제로 친 방식 (요구 1). 한쪽이라도 따로 선언했으면 따로 처리다 —
+		// 섞어 친 판을 끊어서 처리로 적으면 타깃 수가 왜 그만큼인지 설명되지 않는다.
+		const recorded = conventionOf(graded.some((x) => x.reading.separated));
 		tracing.add({
 			// 이 파일에서 벽시계를 읽는 유일한 자리다. 표시용 시각이고 측정값이 아니다.
 			at: Date.now(),
@@ -469,13 +551,13 @@
 			pieceKind: roundKind,
 			buffer: joinBuffers(graded.map((p) => metaOf(p.kind)!.buffer)),
 			mode: tracing.mode,
-			// 설정값이 아니라 **사용자가 실제로 친 방식** 이다 (요구 1). 한쪽이라도
-			// 따로 선언했으면 따로 처리로 적는다 — 섞어 친 판을 끊어서 처리로 적으면
-			// 타깃 수가 왜 그만큼인지 설명되지 않는다.
-			twistConvention: conventionOf(graded.some((p) => p.reading.separated)),
+			twistConvention: recorded,
 			// 스크램블이 정한 개수다. 사용자의 입력 길이가 아니라 문제의 난이도가 남는다.
 			// `both` 는 합계다 — 시간도 두 갈래를 합쳐 잰 값이라 단위가 맞는다.
-			targetCount: graded.reduce((n, p) => n + p.answer.targets.length, 0),
+			// **기록의 관례와 같은 관례로 센다.** 두 필드가 다른 관례를 가리키면 한
+			// 기록 안에서 타깃 수가 왜 그만큼인지 설명되지 않는다. 표시 토글(요구 3
+			// 재검토)이 무엇을 가리키고 있든 기록은 사용자가 친 방식으로 남는다.
+			targetCount: graded.reduce((n, p) => n + p.answers[recorded].targets.length, 0),
 			// 양쪽 다 맞아야 정답이다. 한쪽만 맞은 판은 오답으로 남는다.
 			correct: graded.every((p) => isPass(p.verdict))
 		});
@@ -489,6 +571,7 @@
 		entry = [];
 		conflicts = 0;
 		parts = [];
+		focusKind = null;
 		// 각도는 `idle` 에 들어올 때만 흔든다. 사용자가 미리 잡아둔 각도를 시작이
 		// 뺏으면 회색 상태에서 돌려볼 이유가 없어진다 (FR-TR-22).
 		orientation = randomOrientation();
@@ -508,6 +591,8 @@
 	data-stage={stage}
 	data-piece={padKind}
 	data-kind={roundKind}
+	data-mode={tracing.mode}
+	data-input-open={inputOpen ? 'true' : 'false'}
 	data-orientation={orientation}
 >
 	<div class="cube-slot">
@@ -519,24 +604,55 @@
 		{/if}
 	</div>
 
+	<!--
+		결과 단계에서 큐브에 칠할 갈래를 고른다 (요구 2 재검토).
+
+		`both` 일 때만 선다 — 갈래가 하나면 고를 것이 없다. 여기는 `{#if}` 로 넣고
+		빼도 된다. 하이드레이션 시점은 언제나 `idle` 이라 SSR 과 CSR 모두 이 자리가
+		비어 있고, 생기는 것은 사용자가 채점을 누른 뒤다 (AD-14).
+	-->
+	{#if stage === 'result' && parts.length > 1}
+		<div class="focus" data-focus-row>
+			<span class="k">큐브에 표시</span>
+			{#each parts as p (p.kind)}
+				<button
+					type="button"
+					data-focus={p.kind}
+					class:on={focusKind === p.kind}
+					aria-pressed={focusKind === p.kind}
+					onclick={() => (focusKind = p.kind)}>{PART_LABELS[p.kind]}</button
+				>
+			{/each}
+		</div>
+	{/if}
+
 	<div class="timer-row">
 		<!-- tabular-nums + 고정 폭. 숫자가 커질 때 옆이 밀리면 비교가 안 된다. -->
 		<span class="timer" data-timer>{formatMs(elapsed)}</span>
 		<span class="piece" data-piece-label>{PART_LABELS[padKind]}</span>
 	</div>
 
-	<!-- 자리를 늘 잡아둔다. 문구가 생겼다 사라진다고 아래가 밀리면 안 된다. -->
-	<p class="status" data-status>
-		{#if browser && !armed}준비 중{/if}
-		{#if browser && src.error}스크램블 생성 실패: {src.error}{/if}
+	<!--
+		`idle` 에서는 자리를 늘 잡아둔다 — 하이드레이션 직후 "준비 중" 이 떴다
+		사라지는데 자리까지 없앴다 만들면 화면이 두 번 밀린다 (AD-14).
+		판이 도는 동안에는 접는다 (요구 1). 그 구간에는 뜰 문구가 없다.
+	-->
+	<p class="status" data-status data-empty={statusText === '' ? 'true' : 'false'}>
+		{statusText}
 	</p>
 
 	<!--
 		세션 설정. **시작 버튼 바로 위** 다 — 화면 아래에 두었더니 끝까지 내려가야
 		보여서 있는 줄 모르고 쓴다. 고르고 시작하는 순서가 그대로 세로 순서다.
 
-		문제가 도는 동안은 잠긴다 (요구 4). `{#if}` 로 없애지 않는다 — 자리가
-		사라지면 화면이 밀리고 SSR/CSR 요소 개수도 갈린다 (AD-14).
+		남은 것은 둘뿐이다. 비틀림 관례는 채점이 아니라 정답 예시의 표시 방식이라
+		결과 패널로 옮겼다 (요구 3 재검토).
+
+		문제가 도는 동안은 **접는다** (요구 1). 큐브부터 입력 패드까지가 한 화면에
+		들어와야 하는데 이 두 토글이 그 사이에서 180px 을 차지한다. `{#if}` 가 아니라
+		CSS 다 — 요소가 그대로 남으므로 SSR/CSR 구성이 갈리지 않고, 하이드레이션
+		시점은 언제나 `idle` 이라 접힌 모습이 SSR 에 실릴 일도 없다 (AD-14).
+		`disabled` 도 그대로 둔다 — 접는 것은 눈이고, 잠그는 것은 값이다 (요구 4).
 	-->
 	<div class="settings">
 		<SegToggle
@@ -551,13 +667,6 @@
 			heading={TRAIN_MODE_HEADING}
 			bind:value={tracing.mode}
 			options={MODE_OPTIONS}
-			disabled={settingsLocked}
-		/>
-		<SegToggle
-			name="trace-convention"
-			heading={CONVENTION_HEADING}
-			bind:value={tracing.convention}
-			options={CONVENTION_OPTIONS}
 			disabled={settingsLocked}
 		/>
 	</div>
@@ -605,7 +714,14 @@
 					onkeydown={onEntryKey}
 				/>
 			</label>
-			<p class="hint" data-entry-hint>{entryHint}</p>
+			<!--
+				판이 도는 동안은 접는다 (요구 1). 시작 전에 읽는 안내다.
+				`both` 만 예외다 — 구분자를 어떻게 넣는지는 치는 도중에 필요한 정보이고,
+				모르면 코너와 엣지가 한 덩어리로 붙어 채점이 통째로 어긋난다.
+			-->
+			<p class="hint" data-entry-hint data-both={splitUsable ? 'true' : 'false'}>
+				{entryHint}
+			</p>
 			<!--
 				교차 검증 (요구 2). 자리를 늘 잡아둔다 — 문구가 생겼다 사라지며 패드를
 				밀면 누르던 버튼이 움직인다.
@@ -658,7 +774,33 @@
 	-->
 	{#if parts.length > 0}
 		<div class="result" data-result-panel>
+			<!--
+				관례 토글이 여기 있는 이유 (요구 3 재검토).
+
+				이 토글은 입력에도 채점에도 닿지 않는다 — `gradeEntry` 는 넘겨받은 관례를
+				버리고 입력에서 읽은 것으로 덮어쓴다 (`trace.ts:535`). 정하는 것은 바로 아래
+				정답 예시를 어느 관례로 적을지 하나뿐이다. 그런데 세션 설정 자리에 있으면
+				"채점 기준을 고르는 스위치" 로 읽힌다 — 설명 한 줄로 그 오해를 막으려 했지만
+				자리가 말하는 것을 문장이 이기지 못한다.
+
+				바꾸는 대상 옆에 두면 눌러 보는 것으로 무엇을 바꾸는지 안다. 정답 예시와
+				함께 서고 함께 사라지므로, 한 판의 정답을 두 관례로 번갈아 볼 수 있다 —
+				세션 설정이던 시절에는 관례를 바꾸려면 다음 판을 새로 돌려야 했다.
+
+				잠그지 않는다. 판이 끝난 뒤에 바꾸는 것이 정상 사용이다.
+			-->
+			<SegToggle
+				name="trace-convention"
+				heading={CONVENTION_HEADING}
+				bind:value={tracing.convention}
+				options={CONVENTION_OPTIONS}
+			/>
+			<p class="note" data-marks-note>
+				큐브에 {focus ? PART_LABELS[focus.kind] : ''} 정답 예시의 경로를 칠했습니다
+			</p>
 			{#each parts as p (p.kind)}
+				{@const shown = p.answers[tracing.convention]}
+				{@const tw = twistEntries(shown.twists, p.kind, p.buffer)}
 				<section class="part" data-part={p.kind} data-part-kind={p.verdict.kind}>
 					{#if parts.length > 1}
 						<p class="row">
@@ -668,7 +810,7 @@
 					{/if}
 					<p class="row">
 						<span class="k">정답 예시</span>
-						<span class="v mono big" data-answer>{p.answer.targets.join('')}</span>
+						<span class="v mono big" data-answer>{shown.targets.join('')}</span>
 					</p>
 					<p class="note" data-answer-note>
 						정답은 여럿입니다. 버퍼막힘(break-in) 자리를 다르게 잡은 열도 정답이며 위는 그중 하나입니다
@@ -686,18 +828,18 @@
 						<span class="k">입력 판독</span>
 						<span class="v">{readingText(p.reading)}</span>
 					</p>
-					{#if roundConvention === 'B'}
+					{#if tracing.convention === TWIST_SEPARATED}
 						<p class="row">
 							<span class="k">비틀림</span>
 							<span class="v mono" data-answer-twists>
-								{#each p.twists as t (t.letter)}<span
+								{#each tw as t (t.letter)}<span
 										data-twist={t.letter}
 										data-buffer={t.isBuffer ? 'true' : 'false'}
 										>{t.letter}{t.isBuffer ? '(버퍼)' : ''}</span
-									>{/each}{p.twists.length === 0 ? '없음' : ''}
+									>{/each}{tw.length === 0 ? '없음' : ''}
 							</span>
 						</p>
-						{#if p.twists.some((t) => t.isBuffer)}
+						{#if tw.some((t) => t.isBuffer)}
 							<!-- "왜 이게 목록에 있는가" 는 관례 B 를 처음 보면 반드시 나온다 (AD-8). -->
 							<p class="note" data-buffer-note>
 								버퍼가 비틀린 채 남았습니다. 방향의 합이 보존되므로 다른 조각의 비틀림을
@@ -741,6 +883,29 @@
 	/* 캔버스 자리는 SSR 에서 확정된다. 하이드레이션 후 크기가 바뀌면 화면이 밀린다. */
 	.cube-slot {
 		width: 100%;
+		/*
+		 * 높이 상한 (요구 1). 큐브는 정사각이라 폭을 묶으면 높이가 묶인다.
+		 *
+		 * ─── 왜 `vh` 비율이 아니라 뺄셈인가 ────────────────────────
+		 * 44vh 처럼 비율로 묶으면 화면이 짧아질수록 **모자라게** 준다. 큐브 아래에
+		 * 서는 것들(타이머·버튼·입력칸·패드)은 비율이 아니라 고정 높이라서, 화면이
+		 * 짧아져도 그만큼 줄지 않기 때문이다. 실측으로 그 고정분이 약 26rem 이다.
+		 *
+		 * 그래서 남는 자리를 그대로 준다. 화면이 길면 420px 에서 멈추고, 짧으면
+		 * 큐브가 먼저 양보한다. 180px 아래로는 내려가지 않는다 — 그보다 작으면
+		 * 스티커를 눈으로 읽을 수 없어서 화면이 한 장에 들어오는 값어치가 없다.
+		 *
+		 * `svh` 는 주소 표시줄이 **떠 있을 때** 의 높이다. 그쪽으로 맞춰야 줄이
+		 * 내려왔을 때 넘치지 않는다. `dvh` 는 주소 표시줄이 숨을 때마다 값이 바뀌어
+		 * 큐브가 스크롤 중에 커졌다 작아진다. 앞 줄의 `vh` 는 `svh` 를 모르는
+		 * 브라우저의 몫이다.
+		 * ────────────────────────────────────────────────────────────
+		 *
+		 * 단계와 무관하게 같은 값이다. 시작할 때 크기가 변하면 그 순간 화면이 튄다.
+		 */
+		max-width: clamp(180px, calc(100vh - 26rem), 420px);
+		max-width: clamp(180px, calc(100svh - 26rem), 420px);
+		margin: 0 auto;
 	}
 	.cube-gone {
 		display: flex;
@@ -811,10 +976,72 @@
 		color: var(--danger);
 		border-color: var(--danger);
 	}
+	/*
+	 * ─── 한 화면에 넣기 (요구 1) ────────────────────────────────
+	 * 큐브부터 입력 패드까지가 스크롤 없이 보여야 한다. 그 사이에 서 있던 것들을
+	 * 판이 도는 동안 접는다. 전부 **CSS** 다 — 요소는 그대로 남으므로 SSR 과 CSR 의
+	 * 구성이 갈리지 않고 (AD-14), 하이드레이션 시점은 언제나 `idle` 이라 접힌 모습이
+	 * SSR 에 실릴 일도 없다.
+	 * ────────────────────────────────────────────────────────────
+	 */
+	.trace:not([data-stage='idle']) .settings {
+		display: none;
+	}
+	/* 판이 도는 동안 뜰 문구가 없다. `idle` 의 자리는 그대로 둔다 — 위 주석 참조. */
+	.trace:not([data-stage='idle']) .status[data-empty='true'] {
+		display: none;
+	}
+	/* 시작 전에 읽는 안내다. `both` 의 구분자 설명만 치는 도중에도 필요하다. */
+	.trace:not([data-stage='idle']) .hint[data-both='false'] {
+		display: none;
+	}
 	.controls {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
 		gap: 0.4rem;
+	}
+	/*
+	 * 단계마다 실제로 누를 수 있는 버튼 하나만 남긴다. 넷을 2×2 로 깔면 90px 인데
+	 * 그중 셋은 언제나 눌리지 않는 버튼이다.
+	 *
+	 * 조건이 `data-stage` 하나로 안 되는 것은 채점뿐이다 — `follow` 는 트레이싱
+	 * 중에 이미 입력이 열려 있고 `memorize` 는 "다 외웠다" 뒤에 열린다. 그 판단은
+	 * 이미 `inputOpen` 이 하고 있으므로 그것을 속성으로 내보내 쓴다.
+	 */
+	.controls button {
+		display: none;
+	}
+	[data-stage='idle'] [data-start],
+	[data-stage='tracing'][data-mode='memorize'] [data-memorized],
+	[data-input-open='true'] [data-grade],
+	[data-stage='result'] [data-next] {
+		display: block;
+	}
+	/* 결과 단계에서 큐브에 칠할 갈래 고르기. `both` 에서만 선다. */
+	.focus {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.4rem;
+	}
+	.focus .k {
+		font-size: 0.78rem;
+		color: var(--muted);
+	}
+	.focus button {
+		min-height: 32px;
+		padding: 0 0.7rem;
+		font-size: 0.8rem;
+		color: var(--muted);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		cursor: pointer;
+		touch-action: manipulation;
+	}
+	/* 고른 쪽은 색이 아니라 테두리와 글자색으로 밝힌다 (#26 과 같은 규약). */
+	.focus button.on {
+		color: var(--fg);
+		border-color: var(--fg);
 	}
 	.controls button {
 		/* 터치 타깃 44px (FR-MC-4 와 같은 기준). */

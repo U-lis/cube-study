@@ -731,11 +731,19 @@ describe('T5-1 정적 검사 — 뒷면을 새게 하는 코드가 없다 (FR-TR
 		}
 	});
 
-	it('화면이 정답 경로를 하이라이트로 넘기지 않는다', () => {
-		// `buildMarks` 에 넘기는 것은 사용자의 입력뿐이어야 한다. `answer` 가 여기
-		// 섞이면 그 순간 화면이 정답을 그려준다.
-		const call = /buildMarks\([^)]*\)/.exec(page)?.[0] ?? '';
-		expect(call).not.toBe('');
-		expect(call).not.toContain('answer');
+	it('훈련 중에는 정답이 하이라이트로 가지 않는다', () => {
+		/*
+		 * 규칙이 좁아졌다 (요구 2 재검토). **결과 단계** 에서는 정답 예시 경로를
+		 * 칠한다 — 판이 끝났으므로 힌트가 될 것이 없고, 복기가 그 표시의 몫이다.
+		 * 훈련 중(`tracing`)에 정답이 닿으면 안 된다는 것은 그대로다.
+		 *
+		 * 그래서 `buildMarks` 호출 전부가 아니라 **`stage === 'tracing'` 가지가 받는
+		 * 인자** 만 본다. 가지가 사라지거나 모양이 바뀌면 정규식이 비어 나오고 첫
+		 * 단언에서 걸린다 — 검사가 조용히 무력해지는 것이 이 종류의 검사에서 가장
+		 * 흔한 고장이다.
+		 */
+		const branch = /stage === 'tracing' && meta\s*\?\s*buildMarks\(([^)]*)\)/.exec(page)?.[1] ?? '';
+		expect(branch).not.toBe('');
+		expect(branch).not.toContain('answer');
 	});
 });

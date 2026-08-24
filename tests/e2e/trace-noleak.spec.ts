@@ -8,8 +8,19 @@
  * ─── 어떻게 재는가 ──────────────────────────────────────────
  * 하이라이트 색은 스티커 6색과 겹치지 않는 청록·자홍·연보라다(`MARK_PALETTE`).
  * 그래서 캔버스에서 그 세 색의 픽셀만 세면 "지금 무엇이 칠해져 있는가" 를 바깥에서
- * 셀 수 있다. 훈련 중에 정답 경로가 칠해지지 않는다는 것도 이 방법으로 잰다 —
- * 입력이 없으면 자홍(현재 타깃)과 연보라(지나간 조각)가 **0** 이어야 한다.
+ * 셀 수 있다.
+ *
+ * ─── 훈련 중에는 버퍼만이다 (요구 2 재검토) ────────────────
+ * 처음에는 입력한 문자를 따라 현재 타깃·지나간 조각을 칠했다. 그것은 **문자 →
+ * 위치 매핑을 대신 해 주는 것** 이고, 그 매핑은 트레이싱이 아니라 그 앞 단계의
+ * 기술이다. 더 나쁜 것은 브루트포스가 열린다는 점이다 — 스티커의 문자를 몰라도
+ * 아무 글자나 눌러 가며 어디가 켜지는지 보면 된다. SPEC 이 "막혔을 때 다음 조각
+ * 하이라이트" 를 FR-TR-15 와 충돌한다며 거부한 것과 같은 부류다.
+ *
+ * 그래서 훈련 중에는 자홍(현재 타깃)과 연보라(지나간 조각)가 **언제나 0** 이다.
+ * 무엇을 얼마나 치든 그렇다. 정답 경로는 **채점이 끝난 뒤** 에만 칠해진다 — 판이
+ * 끝났으므로 힌트가 될 것이 없고, 그때부터는 복기가 그 표시의 몫이다.
+ * ────────────────────────────────────────────────────────────
  *
  * 캔버스는 돌려야 보이지만 DOM 은 개발자 도구로 그냥 보인다. 그래서 T5-2 의 본론은
  * 픽셀이 아니라 **DOM 텍스트와 속성** 이다.
@@ -22,6 +33,7 @@ import data from '../../src/lib/data/corner-UBL.json' with { type: 'json' };
 import { stateFromFacelets } from '../../src/lib/cube/sim.js';
 import { trace } from '../../src/lib/cube/trace.js';
 import { optionsFrom, MARK_PALETTE } from '../../src/lib/domain/tracing.js';
+import { CORNER_INDEX } from '../../src/lib/cube/speffz.js';
 
 const meta = (data as unknown as { meta: Parameters<typeof optionsFrom>[0] & { buffer: string } })
 	.meta;
@@ -31,6 +43,20 @@ const FIXED = "R2 B' U2 L2 U2 D2 B' F2 U' B F2 U2 D2 R2 L B2 U F2 U' R' U' D' L 
 const facelets = new Cube().move(FIXED).asString();
 const answer = trace(stateFromFacelets(facelets, 'corner'), optionsFrom(meta, 'corner', 'A'));
 const targets = answer.targets.join('');
+
+/**
+ * 이 각도(VIEW=15, U·L·B)에서 화면에 걸리는 facelet 인덱스.
+ * 면 순서는 `URFDLB` 이므로 U 는 0..8, L 은 36..44, B 는 45..53 이다.
+ */
+const onVisibleFace = (i: number): boolean => i < 9 || i >= 36;
+
+/**
+ * 정답 경로 중 이 각도에서 실제로 보이는 스티커.
+ *
+ * 하나도 없으면 픽셀로는 "안 칠했다" 와 "안 보인다" 를 구분할 수 없다. 픽스처를
+ * 갈아 끼웠을 때 검사가 조용히 무력해지는 대신 여기서 먼저 걸리게 한다.
+ */
+const shownAnswer = answer.targets.filter((t) => onVisibleFace(CORNER_INDEX[t]));
 
 async function open(
 	page: Page,
@@ -228,63 +254,65 @@ test.describe('T5-3 하이라이트 (FR-TR-16)', () => {
 		expect(m.visited).toBe(0);
 	});
 
-	test('타깃을 하나 넣으면 현재 타깃이 칠해진다', async ({ page }) => {
+	test('트레이싱 중에는 버퍼만 칠한다', async ({ page }) => {
 		await open(page);
 		await page.locator('[data-start]').click();
 		await settled(page);
-		await page.locator('[data-entry]').fill(SHOWN[0]);
-		await expect
-			.poll(async () => (await marks(page)).current, { timeout: 8000 })
-			.toBeGreaterThan(0);
-		// 아직 지나간 조각은 없다 — 첫 글자가 곧 현재다.
-		expect((await marks(page)).visited).toBe(0);
-	});
+		const before = await marks(page);
+		expect(before.buffer).toBeGreaterThan(0);
+		expect(before.current).toBe(0);
+		expect(before.visited).toBe(0);
 
-	test('여러 개를 넣으면 현재와 지나간 조각이 함께 보인다', async ({ page }) => {
-		await open(page);
-		await page.locator('[data-start]').click();
-		await settled(page);
+		// 이 각도에서 **보이는** 자리의 문자를 친다. 안 보이는 문자를 쳐서 0 이 나오면
+		// 무엇을 확인한 것인지 알 수 없다.
 		await page.locator('[data-entry]').fill(SHOWN);
-		await expect
-			.poll(async () => (await marks(page)).visited, { timeout: 8000 })
-			.toBeGreaterThan(0);
-		const m = await marks(page);
-		// 셋이 동시에 서로 다른 색으로 칠해진다.
-		expect(m.buffer).toBeGreaterThan(0);
-		expect(m.current).toBeGreaterThan(0);
-		expect(m.visited).toBeGreaterThan(0);
+		await expect(page.locator('[data-entry]')).toHaveValue(SHOWN);
+		await page.waitForTimeout(300);
+		const after = await marks(page);
+		expect(after.current).toBe(0);
+		expect(after.visited).toBe(0);
+		expect(after.buffer).toBeGreaterThan(0);
 	});
 
-	test('지우면 하이라이트가 되돌아간다', async ({ page }) => {
+	test('입력이 길어져도 하이라이트가 늘지 않고 채점까지 간다', async ({ page }) => {
 		await open(page);
 		await page.locator('[data-start]').click();
 		await settled(page);
-		await page.locator('[data-entry]').fill(SHOWN);
-		await expect
-			.poll(async () => (await marks(page)).visited, { timeout: 8000 })
-			.toBeGreaterThan(0);
-		await page.locator('[data-pad="entry"] [data-action="clear"]').click();
-		await expect.poll(async () => (await marks(page)).current, { timeout: 8000 }).toBe(0);
-		const m = await marks(page);
-		expect(m.visited).toBe(0);
-		expect(m.buffer).toBeGreaterThan(0);
-	});
-
-	test('스무 개를 넘겨도 상한 없이 전부 표시된다', async ({ page }) => {
-		await open(page);
-		await page.locator('[data-start]').click();
-		await settled(page);
-		// 24글자 전부. 지나간 조각에는 개수 상한이 없다.
 		const many = SHOWN + 'FGHIJKLMNOPQSTUVWX';
 		expect(many.length).toBeGreaterThanOrEqual(20);
 		await page.locator('[data-entry]').fill(many);
 		expect((await page.locator('[data-entry]').inputValue()).length).toBe(many.length);
-		await expect
-			.poll(async () => (await marks(page)).visited, { timeout: 8000 })
-			.toBeGreaterThan(0);
+		await page.waitForTimeout(300);
+		const m = await marks(page);
+		expect(m.current).toBe(0);
+		expect(m.visited).toBe(0);
 		// 오류 없이 계속 돈다 — 채점까지 간다.
 		await page.locator('[data-grade]').click();
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'result');
+	});
+
+	test('채점이 끝나면 정답 예시 경로가 칠해진다', async ({ page }) => {
+		// 픽스처 가드 — 정답 경로가 이 각도에서 하나도 안 보이면 픽셀로 잴 수 없다.
+		expect(shownAnswer.length).toBeGreaterThan(0);
+		await open(page);
+		await page.locator('[data-start]').click();
+		await settled(page);
+		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'result');
+		// 판이 끝났으므로 힌트가 아니다. 여기서부터는 복기가 이 표시의 몫이다.
+		await expect
+			.poll(
+				async () => {
+					const m = await marks(page);
+					return m.current + m.visited;
+				},
+				{ timeout: 8000 }
+			)
+			.toBeGreaterThan(0);
+		expect((await marks(page)).buffer).toBeGreaterThan(0);
+		// 다음 문제로 가면 회색으로 돌아가고 칠도 걷힌다.
+		await page.locator('[data-next]').click();
+		await expect.poll(async () => (await marks(page)).buffer, { timeout: 8000 }).toBe(0);
 	});
 });
 
@@ -301,7 +329,7 @@ test.describe('T5-4 회귀 @viewport', () => {
 		expect(over).toBeLessThanOrEqual(0);
 	});
 
-	test('하이라이트가 늘어도 레이아웃이 밀리지 않는다 @viewport', async ({ page }) => {
+	test('입력이 늘어도 레이아웃이 밀리지 않는다 @viewport', async ({ page }) => {
 		await open(page);
 		await page.locator('[data-start]').click();
 		await settled(page);
@@ -312,9 +340,7 @@ test.describe('T5-4 회귀 @viewport', () => {
 			});
 		const before = await place();
 		await page.locator('[data-entry]').fill(SHOWN);
-		await expect
-			.poll(async () => (await marks(page)).current, { timeout: 8000 })
-			.toBeGreaterThan(0);
+		await expect(page.locator('[data-entry]')).toHaveValue(SHOWN);
 		const after = await place();
 		expect(Math.abs(after.top - before.top)).toBeLessThan(1);
 		expect(Math.abs(after.height - before.height)).toBeLessThan(1);

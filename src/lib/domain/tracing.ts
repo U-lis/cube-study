@@ -132,6 +132,28 @@ export interface TraceRecord {
 	correct: boolean;
 }
 
+/**
+ * 타깃 하나당 걸린 시간 (초).
+ *
+ * ─── 왜 원시 타깃 수가 아니라 이것을 보여주는가 ────────────
+ * `ms` 하나로는 판끼리 비교가 안 된다. 8타깃 20초와 12타깃 20초는 다른 성적인데
+ * 표에서는 같은 줄로 보인다. 나눠 놓으면 그 자리가 실제로 "빨라지고 있는가" 를
+ * 읽는 열이 된다.
+ *
+ * `targetCount` 는 그래서 남아 있다 — 보여줄 값이 아니라 이 나눗셈의 분모로서다.
+ * `twistConvention` 도 같은 이유다: 관례 B 는 비틀림을 타깃 열에서 빼지만 외우는
+ * 수고는 그대로라 초/타깃이 부풀어 오른다. 분모를 알아도 관례를 모르면 그 왜곡을
+ * 걷어낼 수 없다.
+ * ────────────────────────────────────────────────────────────
+ *
+ * 타깃이 0인 판(이미 풀린 스크램블)은 나눌 수 없다. 0 으로 나눈 무한대를 화면에
+ * 흘리지 않고 여기서 막는다.
+ */
+export function msPerTarget(ms: number, targetCount: number): string {
+	if (targetCount <= 0) return '—';
+	return `${(ms / targetCount / 1000).toFixed(1)}s`;
+}
+
 /** `both` 기록의 두 버퍼를 잇는 문자. 큐비 이름에 안 쓰이는 글자여야 한다. */
 export const BUFFER_JOIN = '+';
 
@@ -204,6 +226,26 @@ export const CONVENTION_HEADING = '제자리 비틀림 처리';
  * 순서를 타입으로 고정한다.
  */
 const [ABSORBED, SEPARATED] = Object.keys(CONVENTIONS) as [TwistConvention, TwistConvention];
+
+/**
+ * 끊어서 처리 — 비틀림까지 타깃 열에 흡수한 관례다. 엔진의 기본값이기도 하다.
+ *
+ * 이름으로 내보내는 이유는 화면이 따옴표를 적지 않게 하기 위해서다. 관례
+ * 이름은 스티커가 아니지만, 검사를 사람의 판단으로 무르지 않는 편이 낫다
+ * (위 `CONVENTIONS` 주석).
+ */
+export const TWIST_ABSORBED = ABSORBED;
+
+/** 따로 처리 — 정답 예시에서 비틀림을 빼고 목록으로 따로 내는 관례다. */
+export const TWIST_SEPARATED = SEPARATED;
+
+/**
+ * 관례 두 값. 화면이 정답 예시를 **두 관례로 모두** 뽑는 데 쓴다 (요구 3 재검토).
+ *
+ * 순서는 `CONVENTIONS` 의 키 순서다. 화면의 토글 순서도 같은 표에서 나오므로
+ * 둘이 어긋날 자리가 없다.
+ */
+export const CONVENTION_VALUES: readonly TwistConvention[] = [ABSORBED, SEPARATED];
 
 /**
  * 판독 결과를 관례 이름으로 옮긴다.

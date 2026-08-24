@@ -67,9 +67,6 @@
 		CONVENTION_HINTS,
 		CONVENTIONS as CONVENTION_LABELS,
 		CONVENTION_VALUES,
-		EDGE_BUFFER_HEADING,
-		EDGE_BUFFER_HINTS,
-		EDGE_BUFFER_VALUES,
 		ENTRY_SEPARATOR,
 		PART_LABELS,
 		SEPARATOR_LABEL,
@@ -80,7 +77,6 @@
 		TWIST_ABSORBED,
 		TWIST_SEPARATED,
 		type BufferMeta,
-		type EdgeBuffer,
 		type TrainKind,
 		type TrainMode,
 		type TwistConvention
@@ -133,28 +129,33 @@
 	}
 
 	/**
-	 * 엣지 버퍼 두 벌. 코너와 달리 엣지 데이터셋(#16)이 아직 없어서 읽어올 `meta` 가
-	 * 없다.
+	 * 엣지 버퍼. 코너와 달리 엣지 데이터셋(#16)이 아직 없어서 읽어올 `meta` 가 없다.
 	 *
-	 * **버퍼가 코드에 남는 유일한 자리이고, 그것도 엔진이 아니라 조립부다** —
-	 * FR-TR-7 은 엔진과 도메인에 상수를 두지 말라는 요구이고, 정적 검사도 그 둘만
-	 * 본다 (`trace.test.ts:856`, `tracing.test.ts:679`). 데이터가 생기면 이 표는
-	 * `loadDataset({ pieceType: 'edge' }).meta` 로 **바뀌는 것이 아니라 지워진다.**
+	 * ─── 왜 DF 인가 ────────────────────────────────────────────
+	 * 이 앱이 가르치는 것은 코너 3-style 이고 **엣지 3-style 은 과정에 없다** —
+	 * 데이터셋조차 없다 (#16). 지금 엣지를 트레이싱할 이유가 있는 사람은 M2 를
+	 * 배우는 사람이고 (#17), M2 의 버퍼는 DF 다. 한동안 UF 로 박혀 있었는데 그것은
+	 * 이 앱에서 아무도 쓰지 않는 값이었다.
+	 *
+	 * **고르게 하지 않는다.** 반대편(UF)은 이 앱의 과정에 없으므로, 토글을 두면
+	 * 아무도 안 누르는 선택지가 세로를 먹고 서 있게 된다. 엣지 3-style 데이터가
+	 * 생기는 날(#16) 이 상수는 바뀌는 것이 아니라 **지워진다** — 그때는 버퍼가
+	 * 데이터셋의 `meta` 에서 온다.
+	 * ────────────────────────────────────────────────────────────
 	 *
 	 * 적는 것은 **대표 스티커 한 글자뿐이다.** 큐비 이름도 버퍼 스티커 목록도
 	 * Speffz 좌표에서 나온다 — 손으로 적으면 `['c', 'i']` 같은 짝이 하나 틀려도
 	 * 아무도 모르고, 그 오류는 타깃이 통째로 어긋나는 형태로만 드러난다.
+	 *
+	 * 버퍼가 코드에 남는 유일한 자리이고, 그것도 엔진이 아니라 조립부다 (FR-TR-7).
+	 * 정적 검사도 엔진과 도메인만 본다 (`trace.test.ts:856`, `tracing.test.ts:679`).
 	 */
-	const edgeMeta = (primary: string): BufferMeta & { buffer: Cubie } => {
-		const cubie = EDGE_CUBIE[primary];
-		return { buffer: cubie, bufferStickers: EDGE_ROTATION[cubie], primarySticker: primary };
+	const EDGE_PRIMARY = 'u';
+	const EDGE_BUFFER: BufferMeta & { buffer: Cubie } = {
+		buffer: EDGE_CUBIE[EDGE_PRIMARY],
+		bufferStickers: EDGE_ROTATION[EDGE_CUBIE[EDGE_PRIMARY]],
+		primarySticker: EDGE_PRIMARY
 	};
-
-	/** 이름 → 대표 스티커. 이름은 도메인이 정하고 스티커는 여기가 안다. */
-	const EDGE_PRIMARY: Record<EdgeBuffer, string> = { DF: 'u', UF: 'c' };
-	const EDGE_META = Object.fromEntries(
-		EDGE_BUFFER_VALUES.map((b) => [b, edgeMeta(EDGE_PRIMARY[b])])
-	) as Record<EdgeBuffer, BufferMeta & { buffer: Cubie }>;
 
 	/**
 	 * 입력 상한 (FR-TR-18). `MoveKeypad.svelte:9` 의 `MAX_MOVES` 와 같은 취지다 —
@@ -188,13 +189,6 @@
 		hint: TRAIN_MODES[value],
 		title: TRAIN_MODES[value]
 	}));
-	// 라벨이 곧 값이다 — 버퍼 이름(UF·DF)이 그 자체로 사람이 읽는 이름이다.
-	const EDGE_BUFFER_OPTIONS = EDGE_BUFFER_VALUES.map((value) => ({
-		value,
-		label: value,
-		hint: EDGE_BUFFER_HINTS[value],
-		title: EDGE_BUFFER_HINTS[value]
-	}));
 	const CONVENTION_OPTIONS = CONVENTION_VALUES.map((value) => ({
 		value,
 		label: CONVENTION_LABELS[value],
@@ -221,13 +215,6 @@
 	 * 흔들리면 안 된다.
 	 */
 	let roundKind = $state<TrainKind>('corner');
-	/**
-	 * 시작 시점에 **고정** 한 엣지 버퍼.
-	 *
-	 * `roundKind` 와 같은 이유다. 판이 도는 동안 설정은 잠기지만, 잠금이 값의
-	 * 유일한 방어면 잠금 규칙이 바뀌는 날 이 판의 정답이 조용히 갈린다.
-	 */
-	let roundEdgeBuffer = $state<EdgeBuffer>(EDGE_BUFFER_VALUES[0]);
 	/** 54칸 facelet 문자열. 시작 전에는 `null` 이다 — 색 배열이 곧 정답의 일부다. */
 	let facelets = $state<string | null>(null);
 	/**
@@ -305,7 +292,7 @@
 
 	/** 조각 종류별 버퍼. 엣지 데이터셋(#16)이 생기면 이 함수만 바뀐다. */
 	const metaOf = (kind: PieceKind): (BufferMeta & { buffer: Cubie }) | null =>
-		!ds ? null : kind === 'edge' ? EDGE_META[roundEdgeBuffer] : ds.meta;
+		!ds ? null : kind === 'edge' ? EDGE_BUFFER : ds.meta;
 
 	let meta = $derived(metaOf(padKind));
 	let colors = $derived(
@@ -459,7 +446,6 @@
 		// 관례는 여기서 굳히지 않는다. 결과 화면의 표시 토글이 되었으므로 (요구 3
 		// 재검토) 판이 끝난 뒤에 바꾸는 것이 정상 사용이다.
 		roundKind = tracing.pieceKind;
-		roundEdgeBuffer = tracing.edgeBuffer;
 		entry = [];
 		conflicts = 0;
 		parts = [];
@@ -701,24 +687,6 @@
 			heading={TRAIN_MODE_HEADING}
 			bind:value={tracing.mode}
 			options={MODE_OPTIONS}
-			disabled={settingsLocked}
-		/>
-		<!--
-			엣지 버퍼 (#16, #17).
-
-			대상이 코너만일 때도 **그대로 세워 둔다.** 대상은 `localStorage` 에서 오므로
-			SSR 은 언제나 기본값(코너)으로 그리고, 거기서 이 토글을 `{#if}` 로 빼면
-			엣지로 저장해 둔 사람의 화면이 하이드레이션 직후 90px 튄다 (AD-14). 머리말이
-			"엣지 버퍼" 라고 적혀 있으므로 코너만 하는 판에서 서 있어도 읽는 데 지장이 없다.
-
-			코너에는 짝이 되는 설정이 없다. 코너 버퍼는 데이터셋의 `meta` 가 정하고,
-			그것을 바꾸는 일은 설정이 아니라 데이터셋 교체다 (#20, #24).
-		-->
-		<SegToggle
-			name="trace-edge-buffer"
-			heading={EDGE_BUFFER_HEADING}
-			bind:value={tracing.edgeBuffer}
-			options={EDGE_BUFFER_OPTIONS}
 			disabled={settingsLocked}
 		/>
 	</div>
@@ -1045,6 +1013,22 @@
 	}
 	/* 시작 전에 읽는 안내다. `both` 의 구분자 설명만 치는 도중에도 필요하다. */
 	.trace:not([data-stage='idle']) .hint[data-both='false'] {
+		display: none;
+	}
+	/*
+	 * 채점이 끝나면 입력 패드를 접는다.
+	 *
+	 * 결과 단계에서 패드는 누를 수도 없고(`disabled`) 읽을 것도 없다. 24칸이 정답
+	 * 예시와 판정 사이에 그대로 서서 화면의 절반을 먹는다 — 결과를 보는 화면에는
+	 * 결과만 있으면 된다.
+	 *
+	 * **입력칸은 남긴다.** 무엇을 쳤는지가 판정("3번째 타깃이 어긋납니다")을 읽는 데
+	 * 필요하고, 그 칸 자체가 ok/bad 로 칠해져 판정을 한 번 더 말한다.
+	 *
+	 * 자식 컴포넌트의 요소라 `:global()` 이 필요하다. 신호는 `data-stage` 뿐이므로
+	 * 마크업은 단계와 무관하게 같다 (AD-14).
+	 */
+	.trace[data-stage='result'] :global([data-pad='entry']) {
 		display: none;
 	}
 	.controls {

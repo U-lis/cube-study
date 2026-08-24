@@ -44,22 +44,14 @@ const meta = (data as unknown as { meta: Parameters<typeof optionsFrom>[0] & { b
 	.meta;
 
 /**
- * 엣지 버퍼. 엣지 데이터셋(#16)이 아직 없어서 화면이 표로 들고 있고
- * (`+page.svelte` 의 `EDGE_META`), 여기서는 그 대표 스티커 하나만 받아 좌표에서
+ * 엣지 버퍼. 엣지 데이터셋(#16)이 아직 없어서 화면이 상수로 들고 있고
+ * (`+page.svelte` 의 `EDGE_BUFFER`), 여기서는 그 대표 스티커 하나만 받아 좌표에서
  * 나머지를 만든다. 데이터가 생기면 양쪽 다 지워진다.
  *
- * **앱의 기본값에 기대지 않고 저장소에 명시해서 연다.** 기본값이 UF 이던 시절
- * 이 파일은 그것을 적지 않고 맞아떨어지는 데 기대고 있었고, 기본값이 M2 의 DF 로
- * 바뀌자 엣지 기대값이 통째로 어긋났다. 픽스처가 무엇을 전제하는지는 픽스처가
- * 적어야 한다.
+ * **M2 의 DF 다.** 엣지 3-style 은 이 앱의 과정에 없으므로 (#16) 고를 수 있게
+ * 하지 않는다 — 근거는 화면 쪽 상수의 주석에 있다.
  */
-const EDGE_BUFFER = 'DF';
 const EDGE_PRIMARY = 'u';
-/** 엣지가 끼는 판은 전부 이것을 얹어서 연다. */
-const withEdge = (extra: Record<string, string> = {}) => ({
-	'trace.edgeBuffer': EDGE_BUFFER,
-	...extra
-});
 const edgeMeta = {
 	buffer: EDGE_CUBIE[EDGE_PRIMARY],
 	bufferStickers: EDGE_ROTATION[EDGE_CUBIE[EDGE_PRIMARY]],
@@ -220,7 +212,7 @@ test.describe('T4-1 패드 입력 (FR-TR-18)', () => {
 	});
 
 	test('엣지 세션의 패드는 소문자 24글자다', async ({ page }) => {
-		await open(page, EVEN, withEdge({ 'trace.pieceKind': 'edge' }));
+		await open(page, EVEN, { 'trace.pieceKind': 'edge' });
 		await page.locator('[data-start]').click();
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'edge');
 		const labels = await keys(page).allInnerTexts();
@@ -309,7 +301,7 @@ test.describe('T4-2 하드웨어 키보드 (FR-TR-18)', () => {
 	});
 
 	test('엣지 세션은 대문자로 쳐도 소문자로 들어간다', async ({ page }) => {
-		await open(page, EVEN, withEdge({ 'trace.pieceKind': 'edge' }));
+		await open(page, EVEN, { 'trace.pieceKind': 'edge' });
 		await page.locator('[data-start]').click();
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'edge');
 		await page.locator('[data-entry]').focus();
@@ -553,7 +545,7 @@ test.describe('T4-5 패리티와 비틀림 표시 (FR-TR-13)', () => {
  * 구분자가 갈래를 가르는가, 판정이 갈래별로 나오는가, 기록이 한 건인가 셋이다.
  */
 test.describe('T4-8 both 한 번에 (요구 2)', () => {
-	const both = withEdge({ 'trace.pieceKind': 'both' });
+	const both = { 'trace.pieceKind': 'both' };
 
 	test('구분자 버튼이 패드를 엣지로 바꾸고, 지우면 되돌아온다', async ({ page }) => {
 		await open(page, EVEN, both);
@@ -867,16 +859,45 @@ test.describe('T4-9 판정 표시 (요구 3)', () => {
 });
 
 /**
- * 엣지 버퍼 교체 (#16, #17).
+ * 엣지 버퍼는 DF 다 (#16, #17).
  *
- * 엔진은 처음부터 두 버퍼를 지원했고 단위 테스트가 그것을 확인해 왔다
- * (`trace.test.ts:50,55` 가 UF·DF 를 같은 표로 돌린다). 막고 있던 것은 화면의 상수
- * 하나였다 — 이 검사는 그 상수가 설정으로 열렸는지, 그리고 **고른 버퍼가 정답과
- * 기록까지 관통하는지** 를 본다.
+ * 엔진은 UF·DF 를 모두 지원하고 단위 테스트가 둘 다 확인한다
+ * (`trace.test.ts:50,55`). 화면이 그중 하나를 **고정으로** 고른다 — 엣지 3-style 은
+ * 이 앱의 과정에 없고 (데이터셋조차 없다), 지금 엣지를 트레이싱할 이유가 있는 사람은
+ * M2 를 배우는 사람이라 그쪽 버퍼 하나면 된다.
+ *
+ * 한동안 UF 로 박혀 있었다. 이 검사는 그것이 되돌아오는 것을 막는다.
  */
+test.describe('T4-11 결과 화면의 정리', () => {
+	test('채점이 끝나면 입력 패드가 사라지고 입력칸은 남는다', async ({ page }) => {
+		await open(page, EVEN);
+		await page.locator('[data-start]').click();
+		// 치는 동안에는 패드가 있어야 한다 — 그것이 모바일의 입력 수단이다.
+		await expect(page.locator('[data-pad="entry"]')).toBeVisible();
+
+		await page.locator('[data-entry]').fill(even.targets);
+		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'result');
+
+		// 결과를 보는 화면에는 결과만 있으면 된다.
+		await expect(page.locator('[data-pad="entry"]')).toBeHidden();
+		// DOM 에서 빼지 않는다. 마크업이 단계마다 갈리면 안 된다 (AD-14).
+		await expect(page.locator('[data-pad="entry"]')).toHaveCount(1);
+
+		// 입력칸은 남는다. 판정이 "몇 번째가 어긋났나" 를 말하므로 무엇을 쳤는지가 필요하다.
+		await expect(page.locator('[data-entry]')).toBeVisible();
+		await expect(page.locator('[data-entry]')).toHaveValue(even.targets);
+		await expect(page.locator('[data-answer]')).toBeVisible();
+
+		// 다음 문제로 가면 다시 선다.
+		await page.locator('[data-next]').click();
+		await expect(page.locator('[data-pad="entry"]')).toBeVisible();
+	});
+});
+
 test.describe('T4-10 엣지 버퍼 (#16, #17)', () => {
-	/** 이름 → 대표 스티커. 화면의 `EDGE_PRIMARY` 와 같은 표다. */
-	const PRIMARY: Record<string, string> = { DF: 'u', UF: 'c' };
+	/** 화면이 쓰지 **않아야** 하는 쪽. 두 버퍼의 정답이 다르다는 것이 이 검사의 전제다. */
+	const UF_PRIMARY = 'c';
 
 	const answerFor = (primary: string): string => {
 		const m = {
@@ -889,51 +910,31 @@ test.describe('T4-10 엣지 버퍼 (#16, #17)', () => {
 	};
 
 	/*
-	 * 이것이 먼저다. 두 버퍼의 정답이 같으면 아래 두 검사가 통과해도 아무것도
-	 * 증명하지 못한다 — 설정이 아무 데도 안 닿아 있어도 통과한다.
+	 * 이것이 먼저다. 두 버퍼의 정답이 같으면 아래 검사가 통과해도 아무것도 증명하지
+	 * 못한다 — 화면이 UF 를 쓰고 있어도 지나간다.
 	 */
-	test('두 버퍼의 정답 열이 서로 다르다', () => {
-		expect(answerFor(PRIMARY.DF)).not.toBe(answerFor(PRIMARY.UF));
+	test('DF 와 UF 의 정답 열이 서로 다르다', () => {
+		expect(answerFor(EDGE_PRIMARY)).not.toBe(answerFor(UF_PRIMARY));
 	});
 
-	/*
-	 * 두 갈래를 `for` 로 돌리지 않고 풀어 적는다. `e2e-tags.test.ts` 의 파서가
-	 * `test('...')` 의 **문자열 리터럴** 제목만 읽고, 템플릿 리터럴로 만든 제목은
-	 * 빈 문자열로 잡힌다. 제목을 못 읽으면 `@viewport` 태그도 못 읽어서 그 테스트가
-	 * mobile 프로젝트에서 조용히 빠진다 — 검사를 무르는 대신 형태를 맞춘다.
-	 */
-	async function playWith(page: Page, name: string, primary: string): Promise<void> {
-		await open(page, EVEN, { 'trace.pieceKind': 'edge', 'trace.edgeBuffer': name });
-		await expect(page.locator('[data-toggle="trace-edge-buffer"]')).toHaveAttribute(
-			'data-value',
-			name
-		);
-		await play(page, answerFor(primary));
+	test('엣지 판은 DF 버퍼로 채점되고 기록에도 DF 가 남는다', async ({ page }) => {
+		await open(page, EVEN, { 'trace.pieceKind': 'edge' });
+		await play(page, answerFor(EDGE_PRIMARY));
 		await expect(page.locator('[data-verdict]')).toHaveAttribute('data-kind', 'correct');
 
 		const rec = await page.evaluate(
 			() => JSON.parse(localStorage.getItem('trace.records')!).records[0]
 		);
-		// 기록의 버퍼 칸은 큐비 이름이다. 같은 스크램블도 버퍼가 다르면 정답이 다르므로
-		// 이 값이 없으면 기록끼리 비교가 성립하지 않는다 (SPEC 제약).
-		expect(rec.buffer).toBe(EDGE_CUBIE[primary]);
-	}
-
-	test('DF 로 고르면 그 버퍼의 정답이 맞고 기록에도 DF 가 남는다', async ({ page }) => {
-		await playWith(page, 'DF', PRIMARY.DF);
+		// 같은 스크램블도 버퍼가 다르면 정답이 다르므로 이 값이 없으면 기록끼리 비교가
+		// 성립하지 않는다 (SPEC 제약).
+		expect(rec.buffer).toBe(EDGE_CUBIE[EDGE_PRIMARY]);
 	});
 
-	test('UF 로 고르면 그 버퍼의 정답이 맞고 기록에도 UF 가 남는다', async ({ page }) => {
-		await playWith(page, 'UF', PRIMARY.UF);
-	});
-
-	test('고른 버퍼는 새로고침 후에도 남는다', async ({ page }) => {
+	test('버퍼를 고르는 토글이 화면에 없다', async ({ page }) => {
+		// 고를 수 있는 반대편이 이 앱의 과정에 없다. 선택지를 세워 두면 아무도 안 누르는
+		// 토글이 세로만 먹는다.
 		await open(page, EVEN, { 'trace.pieceKind': 'edge' });
-		const toggle = page.locator('[data-toggle="trace-edge-buffer"]');
-		await toggle.locator('[data-option="UF"]').click();
-		await expect(toggle).toHaveAttribute('data-value', 'UF');
-		await page.reload();
-		await expect(toggle).toHaveAttribute('data-value', 'UF');
+		await expect(page.locator('[data-toggle="trace-edge-buffer"]')).toHaveCount(0);
 	});
 });
 
@@ -948,7 +949,7 @@ test.describe('T4-7 톤과 접근성 (NFR-TR-5)', () => {
 
 	test('패드 버튼의 터치 타깃이 44px 이상이다 @viewport', async ({ page }) => {
 		// 구분자 버튼이 보이는 판으로 연다 — 감춰진 버튼은 잴 수는 있어도 무의미하다.
-		await open(page, EVEN, withEdge({ 'trace.pieceKind': 'both' }));
+		await open(page, EVEN, { 'trace.pieceKind': 'both' });
 		for (const sel of [
 			'[data-pad="entry"] button[data-letter]',
 			'[data-pad="entry"] [data-action="back"]',
@@ -962,7 +963,7 @@ test.describe('T4-7 톤과 접근성 (NFR-TR-5)', () => {
 
 	test('320px 폭에서 가로 스크롤이 생기지 않는다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 320, height: 720 });
-		await open(page, EVEN, withEdge({ 'trace.pieceKind': 'both' }));
+		await open(page, EVEN, { 'trace.pieceKind': 'both' });
 		await page.locator('[data-start]').click();
 		await page.locator('[data-entry]').fill(bothEntry);
 		await page.locator('[data-grade]').click();

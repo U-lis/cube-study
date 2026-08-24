@@ -80,39 +80,6 @@ export const RECORD_KIND_LABELS = {
 export type TrainMode = 'follow' | 'memorize';
 
 /**
- * 엣지 버퍼 두 이름과 그 쓰임.
- *
- * ─── 왜 고르게 하는가 ──────────────────────────────────────
- * 처음에는 UF 하나로 박혀 있었다. 그런데 이 앱이 지금 가르치는 것은 코너
- * 3-style 이고 **엣지 3-style 은 과정에 없다** — 데이터셋조차 없다 (#16).
- * 지금 엣지를 트레이싱할 이유가 있는 사람은 M2 를 배우는 사람이고 (#17),
- * M2 의 버퍼는 DF 다. 하나만 두는 것은 아무도 안 쓰는 기본값을 강요하는
- * 것이었다. 그래서 기본값도 M2 쪽이다 — 아래 키 순서가 그것을 정한다.
- *
- * 엔진은 처음부터 둘 다 지원했다. `tests/unit/trace.test.ts:50,55` 가 두 버퍼를
- * 같은 표로 돌리고, 평균 타깃 수가 양쪽 11.99 로 같은 것까지 확인한다 (SPEC
- * 검증 기준의 "조각 교체"). 막고 있던 것은 화면의 상수 하나였다.
- *
- * **이름을 키로 적는다.** 값으로 적으면 버퍼 리터럴 정적 검사에 걸린다 (위
- * `CONVENTIONS` 주석과 같은 이유). 여기 있는 것은 이름과 설명뿐이고 **어느
- * 스티커가 그 버퍼인지는 모른다** — 그것은 조립부가 안다 (FR-TR-7).
- * ────────────────────────────────────────────────────────────
- */
-export const EDGE_BUFFER_HINTS = {
-	DF: 'M2 의 버퍼입니다',
-	UF: '엣지 3-style 에서 흔히 쓰는 버퍼입니다'
-};
-
-/** 엣지 버퍼 이름. 키에서 뽑는다 — 다시 적으면 위 정적 검사에 걸린다. */
-export type EdgeBuffer = keyof typeof EDGE_BUFFER_HINTS;
-
-/** 화면 토글의 순서이자 값 목록. **먼저 선 것이 기본값이다.** */
-export const EDGE_BUFFER_VALUES = Object.keys(EDGE_BUFFER_HINTS) as EdgeBuffer[];
-
-/** 토글 머리말. 라벨(UF·DF)만으로는 무엇을 고르는 자리인지 알 수 없다. */
-export const EDGE_BUFFER_HEADING = '엣지 버퍼';
-
-/**
  * 한 판의 기록. 필드가 8개이고 SPEC 이 이것을 고정했다 (제약, AD-13).
  *
  * `at` 은 표시용 시각이라 벽시계이고, `ms` 는 측정값이라 단조 시계다 (FR-TR-23).
@@ -312,9 +279,6 @@ export const isTrainKind = (v: unknown): v is TrainKind =>
 
 export const isTrainMode = (v: unknown): v is TrainMode =>
 	typeof v === 'string' && v in TRAIN_MODES;
-
-export const isEdgeBuffer = (v: unknown): v is EdgeBuffer =>
-	typeof v === 'string' && v in EDGE_BUFFER_HINTS;
 
 /**
  * 엔진이 버퍼에 대해 알아야 하는 전부.

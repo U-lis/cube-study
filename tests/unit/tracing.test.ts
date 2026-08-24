@@ -30,7 +30,6 @@ import {
 	combineVerdicts,
 	entrySegments,
 	hasSeparator,
-	isEdgeBuffer,
 	isPass,
 	joinBuffers,
 	kindsOf,
@@ -49,8 +48,6 @@ import {
 	verdictText,
 	BUFFER_JOIN,
 	CONVENTIONS,
-	EDGE_BUFFER_HINTS,
-	EDGE_BUFFER_VALUES,
 	ENTRY_SEPARATOR,
 	PART_LABELS,
 	RECORD_KIND_LABELS,
@@ -675,30 +672,6 @@ describe('T5-1 buildMarks (FR-TR-16, 7)', () => {
 	it('모르는 문자는 조용히 무시한다 (입력 정리가 앞에 있다)', () => {
 		expect(() => buildMarks('corner', ds.meta, ['Z'])).not.toThrow();
 		expect(painted(buildMarks('corner', ds.meta, ['Z']))).toHaveLength(3);
-	});
-});
-
-describe('엣지 버퍼 이름 (#16, #17)', () => {
-	it('두 개이고 M2 의 DF 가 기본값이다', () => {
-		/*
-		 * 기본값은 **목록의 첫 값** 이다. 엣지 3-style 은 아직 이 앱의 과정에 없으므로
-		 * (데이터셋조차 없다), 지금 엣지를 트레이싱하는 사람은 M2 를 배우는 사람이다.
-		 * 순서가 곧 기본값이라 이 검사가 순서를 지킨다.
-		 */
-		expect(EDGE_BUFFER_VALUES).toHaveLength(2);
-		expect(EDGE_BUFFER_VALUES[0]).toBe('DF');
-		expect(EDGE_BUFFER_VALUES).toContain('UF');
-	});
-
-	it('설명이 어느 방법의 버퍼인지 밝힌다', () => {
-		// 라벨은 UF·DF 뿐이라 그것만으로는 무엇을 고르는지 알 수 없다.
-		for (const b of EDGE_BUFFER_VALUES) expect(EDGE_BUFFER_HINTS[b]).not.toBe('');
-		expect(EDGE_BUFFER_HINTS.DF).toContain('M2');
-	});
-
-	it('낡은 저장값을 걸러낸다', () => {
-		for (const b of EDGE_BUFFER_VALUES) expect(isEdgeBuffer(b)).toBe(true);
-		for (const bad of ['UB', 'df', '', null, 1, {}]) expect(isEdgeBuffer(bad)).toBe(false);
 	});
 });
 

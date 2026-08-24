@@ -869,6 +869,20 @@ test.describe('T4-9 판정 표시 (요구 3)', () => {
  * 한동안 UF 로 박혀 있었다. 이 검사는 그것이 되돌아오는 것을 막는다.
  */
 test.describe('T4-11 결과 화면의 정리', () => {
+	test('시작 전에는 입력칸도 패드도 보이지 않는다', async ({ page }) => {
+		await open(page, EVEN);
+		// 고르고 시작하는 단계다. 입력은 아직 할 수도 없고 칠 것도 없다.
+		await expect(page.locator('[data-entry]')).toBeHidden();
+		await expect(page.locator('[data-pad="entry"]')).toBeHidden();
+		// DOM 에서 빼지 않는다 (AD-14).
+		await expect(page.locator('[data-entry]')).toHaveCount(1);
+		await expect(page.locator('[data-pad="entry"]')).toHaveCount(1);
+
+		await page.locator('[data-start]').click();
+		await expect(page.locator('[data-entry]')).toBeVisible();
+		await expect(page.locator('[data-pad="entry"]')).toBeVisible();
+	});
+
 	test('채점이 끝나면 입력 패드가 사라지고 입력칸은 남는다', async ({ page }) => {
 		await open(page, EVEN);
 		await page.locator('[data-start]').click();
@@ -889,8 +903,12 @@ test.describe('T4-11 결과 화면의 정리', () => {
 		await expect(page.locator('[data-entry]')).toHaveValue(even.targets);
 		await expect(page.locator('[data-answer]')).toBeVisible();
 
-		// 다음 문제로 가면 다시 선다.
+		// 다음 문제로 가면 시작 전 화면으로 돌아간다 — 패드는 접힌 채다.
 		await page.locator('[data-next]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'idle');
+		await expect(page.locator('[data-pad="entry"]')).toBeHidden();
+		// 다시 시작하면 선다.
+		await page.locator('[data-start]').click();
 		await expect(page.locator('[data-pad="entry"]')).toBeVisible();
 	});
 });
@@ -950,6 +968,8 @@ test.describe('T4-7 톤과 접근성 (NFR-TR-5)', () => {
 	test('패드 버튼의 터치 타깃이 44px 이상이다 @viewport', async ({ page }) => {
 		// 구분자 버튼이 보이는 판으로 연다 — 감춰진 버튼은 잴 수는 있어도 무의미하다.
 		await open(page, EVEN, { 'trace.pieceKind': 'both' });
+		// 패드는 시작 후에만 선다. 시작 전에는 상자가 없어 잴 것도 없다.
+		await page.locator('[data-start]').click();
 		for (const sel of [
 			'[data-pad="entry"] button[data-letter]',
 			'[data-pad="entry"] [data-action="back"]',

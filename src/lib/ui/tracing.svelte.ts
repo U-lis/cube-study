@@ -16,6 +16,7 @@
  */
 import { browser } from '$app/environment';
 import {
+	isEdgeBuffer,
 	isTrainKind,
 	isTrainMode,
 	isTwistConvention,
@@ -24,6 +25,8 @@ import {
 	serializeRecords,
 	RECORDS_KEY,
 	type TraceRecord,
+	EDGE_BUFFER_VALUES,
+	type EdgeBuffer,
 	type TrainKind,
 	type TrainMode,
 	type TwistConvention
@@ -32,6 +35,7 @@ import {
 const KEY_PIECE_KIND = 'trace.pieceKind';
 const KEY_MODE = 'trace.mode';
 const KEY_CONVENTION = 'trace.convention';
+const KEY_EDGE_BUFFER = 'trace.edgeBuffer';
 
 /**
  * 저장된 설정 읽기. 판정 함수를 도메인에서 받아 쓴다 — 유효값 목록이 두 곳에
@@ -56,6 +60,17 @@ class Tracing {
 	mode = $state<TrainMode>(read(KEY_MODE, isTrainMode, 'follow'));
 	/** 비틀림 관례 (FR-TR-24). 기본은 입문의 방식이자 엔진의 기본값이다. */
 	convention = $state<TwistConvention>(read(KEY_CONVENTION, isTwistConvention, 'A'));
+	/**
+	 * 엣지 버퍼 (#16, #17).
+	 *
+	 * 기본값은 목록의 첫 값이고 그것이 M2 의 DF 다. 엣지 3-style 은 아직 이 앱의
+	 * 과정에 없으므로 (데이터셋조차 없다), 지금 엣지를 트레이싱하는 사람은
+	 * M2 를 배우는 사람이다 — 근거는 `EDGE_BUFFER_HINTS` 주석에 있다.
+	 *
+	 * 코너에는 같은 설정이 없다. 코너 버퍼는 데이터셋의 `meta` 가 정하고 (UBL),
+	 * 그것을 바꾸는 일은 데이터셋 교체다 (#20, #24).
+	 */
+	edgeBuffer = $state<EdgeBuffer>(read(KEY_EDGE_BUFFER, isEdgeBuffer, EDGE_BUFFER_VALUES[0]));
 	/** 최근 것이 앞. 상한은 도메인의 `RECORD_LIMIT` 이 정한다. */
 	records = $state<TraceRecord[]>(loadRecords());
 
@@ -65,6 +80,7 @@ class Tracing {
 				$effect(() => localStorage.setItem(KEY_PIECE_KIND, this.pieceKind));
 				$effect(() => localStorage.setItem(KEY_MODE, this.mode));
 				$effect(() => localStorage.setItem(KEY_CONVENTION, this.convention));
+				$effect(() => localStorage.setItem(KEY_EDGE_BUFFER, this.edgeBuffer));
 				$effect(() => localStorage.setItem(RECORDS_KEY, serializeRecords(this.records)));
 			});
 		}

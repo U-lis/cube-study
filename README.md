@@ -110,6 +110,10 @@ data/schema-history/   데이터 스키마 v1~v9 기록 (앱은 읽지 않는다
 
 배경과 설계 근거는 `.dc_workspace/handoff/`와 `.dc_workspace/2026_08_03-corner-3style/`에 있다.
 
+작업을 이어받을 때는 `.dc_workspace/CONTINUE.md` 부터 본다 — 지금 어디까지 왔고 다음이
+무엇인지, 그리고 이미 밟은 함정들이 거기 있다. 다음에 할 일 후보는
+`.dc_workspace/BACKLOG.md` 다.
+
 ## 배포
 
 정적 빌드이므로 서버 런타임이 필요 없다. 홈서버로는 스크립트 하나면 된다.

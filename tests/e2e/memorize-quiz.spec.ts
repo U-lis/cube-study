@@ -79,9 +79,9 @@ async function nextViaSubmit(page: Page): Promise<void> {
 		await page.locator('[data-anchor-pick]').first().click();
 	} else {
 		await page.locator('[data-move="R"]').click();
-		await page.locator('[data-action="submit"]').click();
+		await page.locator('[data-grade]').click();
 	}
-	await page.locator('[data-action="next"]').click();
+	await page.locator('[data-next]').click();
 }
 
 /** 여러 회 출제하며 나온 케이스 코드 집합을 모은다. */
@@ -249,8 +249,8 @@ test.describe('T5-5. 암기 케이스 0개 — 안내, fallback 없음 (FR-MC-20
 		// 케이스 UI 는 없다 (current === null)
 		await expect(page.locator('[data-case]')).toHaveCount(0);
 		// 채점/다음 버튼도 없다
-		await expect(page.locator('[data-action="submit"]')).toHaveCount(0);
-		await expect(page.locator('[data-action="next"]')).toHaveCount(0);
+		await expect(page.locator('[data-grade]')).toHaveCount(0);
+		await expect(page.locator('[data-next]')).toHaveCount(0);
 		// 키패드도 뜨지 않는다 — 입력할 곳이 없다
 		await expect(page.locator('[data-move]')).toHaveCount(0);
 

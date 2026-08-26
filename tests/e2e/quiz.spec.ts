@@ -68,8 +68,8 @@ test.describe('퀴즈 출제 (FR-16)', () => {
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		const first = await currentCase(page);
 		await type(page, "R U R' U'");
-		await page.locator('[data-action="submit"]').click();
-		await page.locator('[data-action="next"]').click();
+		await page.locator('[data-grade]').click();
+		await page.locator('[data-next]').click();
 		expect(await currentCase(page)).not.toBe(first);
 	});
 });
@@ -105,7 +105,7 @@ test.describe('무브 입력 (FR-17)', () => {
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		await expect(page.locator('[data-action="undo"]')).toBeDisabled();
 		await expect(page.locator('[data-action="clear"]')).toBeDisabled();
-		await expect(page.locator('[data-action="submit"]')).toBeDisabled();
+		await expect(page.locator('[data-grade]')).toBeDisabled();
 	});
 });
 
@@ -114,8 +114,8 @@ test.describe('판정 (FR-18)', () => {
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		const code = await currentCase(page);
 		await type(page, cases[code].direct.alg);
-		await page.locator('[data-action="submit"]').click();
-		await expect(page.locator('[data-verdict="correct"]')).toHaveText('정답');
+		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-kind="correct"]')).toHaveText('정답');
 		await expect(page.locator('.answer')).toBeVisible();
 	});
 
@@ -123,15 +123,15 @@ test.describe('판정 (FR-18)', () => {
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		const code = await currentCase(page);
 		await type(page, cases[code].setup.alg);
-		await page.locator('[data-action="submit"]').click();
-		await expect(page.locator('[data-verdict="correct"]')).toBeVisible();
+		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-kind="correct"]')).toBeVisible();
 	});
 
 	test('sexy move 는 3-cycle 이 아니라는 오답', async ({ page }) => {
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		await type(page, "R U R' U'");
-		await page.locator('[data-action="submit"]').click();
-		await expect(page.locator('[data-verdict="wrong"]')).toContainText('3-cycle이 아닙니다');
+		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-kind="wrong"]')).toContainText('3-cycle이 아닙니다');
 	});
 
 	test('엣지를 건드리면 부분 정답', async ({ page }) => {
@@ -141,18 +141,18 @@ test.describe('판정 (FR-18)', () => {
 		// 정답 알고리즘 앞에 붙이면 코너는 정답, 엣지만 오염된다.
 		const UA_PERM = "R U' R U R U R U' R' U' R2";
 		await type(page, `${UA_PERM} ${cases[code].direct.alg}`);
-		await page.locator('[data-action="submit"]').click();
-		await expect(page.locator('[data-verdict="edge-dirty"]')).toContainText(
+		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-kind="edge-dirty"]')).toContainText(
 			'코너는 맞지만 엣지를 건드립니다'
 		);
-		await expect(page.locator('[data-verdict="edge-dirty"]')).toContainText('UF');
+		await expect(page.locator('[data-kind="edge-dirty"]')).toContainText('UF');
 	});
 
 	test('조회 화면 링크가 해당 케이스로 이동한다', async ({ page }) => {
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		const code = await currentCase(page);
 		await type(page, cases[code].direct.alg);
-		await page.locator('[data-action="submit"]').click();
+		await page.locator('[data-grade]').click();
 		await page.locator(`[data-goto="${code}"]`).click();
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', code);
 	});
@@ -163,7 +163,7 @@ test.describe('NFR-9 톤', () => {
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		const code = await currentCase(page);
 		await type(page, cases[code].direct.alg);
-		await page.locator('[data-action="submit"]').click();
+		await page.locator('[data-grade]').click();
 		const body = await page.locator('body').innerText();
 		expect(body).not.toMatch(/축하|훌륭|잘했|대단|힘내|다시 도전/);
 		expect(await page.locator('[data-verdict]').innerText()).toBe('정답');
@@ -180,7 +180,7 @@ test.describe('setup 입력 방식', () => {
 	test('입력 방식 토글이 있고 기본은 direct', async ({ page }) => {
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		await expect(page.locator('[data-toggle="quiz-input"]')).toHaveAttribute('data-value', 'direct');
-		await expect(page.locator('[data-action="submit"]')).toBeVisible();
+		await expect(page.locator('[data-grade]')).toBeVisible();
 		await expect(page.locator('[data-anchor-pick]')).toHaveCount(0);
 	});
 
@@ -191,7 +191,7 @@ test.describe('setup 입력 방식', () => {
 		const expected = anchorNames.length * 2;
 		const btns = page.locator('[data-anchor-pick]');
 		await expect(btns).toHaveCount(expected);
-		await expect(page.locator('[data-action="submit"]')).toHaveCount(0);
+		await expect(page.locator('[data-grade]')).toHaveCount(0);
 		// 셋업 무브 입력이 필요하므로 18버튼 키패드는 그대로 남는다
 		await expect(page.locator('[data-move]')).toHaveCount(18);
 		for (let i = 0; i < expected; i++) {
@@ -226,7 +226,7 @@ test.describe('setup 입력 방식', () => {
 		const { S } = cases[code].setup;
 		if (S) await type(page, S);
 		await page.locator(`[data-anchor-pick="${caseRefLabel(code)}"]`).click();
-		await expect(page.locator('[data-verdict="correct"]')).toHaveText('정답');
+		await expect(page.locator('[data-kind="correct"]')).toHaveText('정답');
 		await expect(page.locator('.answer')).toBeVisible();
 	});
 
@@ -263,7 +263,7 @@ test.describe('setup 입력 방식', () => {
 		const wrong = anchorNames.find((n) => n !== cases[code].setup.anchor)!;
 		await page.locator(`[data-anchor-pick="${wrong}"]`).click();
 		await expect(page.locator('[data-verdict]')).toBeVisible();
-		await expect(page.locator('[data-verdict="correct"]')).toHaveCount(0);
+		await expect(page.locator('[data-kind="correct"]')).toHaveCount(0);
 	});
 
 	/** 방향이 틀리면 다른 케이스를 푸는 알고리즘이 된다. 관대하게 채점하지 않는다. */
@@ -275,7 +275,7 @@ test.describe('setup 입력 방식', () => {
 		if (S) await type(page, S);
 		await page.locator(`[data-anchor-pick="${refLabel(anchor, !usesInverse)}"]`).click();
 		await expect(page.locator('[data-verdict]')).toBeVisible();
-		await expect(page.locator('[data-verdict="correct"]')).toHaveCount(0);
+		await expect(page.locator('[data-kind="correct"]')).toHaveCount(0);
 	});
 
 	test('입력 방식을 바꾸면 문제는 그대로, 입력만 비워진다', async ({ page }) => {

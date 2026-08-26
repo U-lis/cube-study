@@ -169,6 +169,16 @@
 		if (picked) parts.push({ text: refLabel(picked), role: 'anchor' });
 		return parts;
 	});
+	/**
+	 * 단계 (FR-NAV-14). 이름은 트레이싱과 공유하고, 단계는 강제하지 않는다 (AD-NAV-5).
+	 *
+	 * 퀴즈에 `idle` 은 없다 — 연달아 푸는 화면이라 문제마다 시작을 누르게 하면 흐름이
+	 * 끊긴다. `input` 도 따로 내지 않는다. 문제가 뜨는 순간 입력이 열려 `active` 와
+	 * 겹치기 때문이다. 실제로 갈리는 것은 판정이 있는가 하나다.
+	 *
+	 * 데이터셋이 아직 없거나 pool 이 비면 낼 단계가 없다 — 빈 문자열이다.
+	 */
+	let stage = $derived(!current ? '' : verdict ? 'result' : 'active');
 </script>
 
 <svelte:head><title>3-Style Corner — 퀴즈</title></svelte:head>
@@ -178,7 +188,7 @@
 <h1>퀴즈</h1>
 
 {#if ds}
-	<section class="quiz">
+	<section class="quiz" data-stage={stage}>
 		<div class="input-mode">
 			<SegToggle name="quiz-input" bind:value={settings.quizInput} options={INPUT_OPTIONS} />
 		</div>
@@ -239,7 +249,19 @@
 			</div>
 
 			{#if verdict}
-				<div class="verdict" data-verdict={verdict.kind}>{verdictText(verdict)}</div>
+				<!--
+					판정 줄의 표기를 트레이싱과 맞춘다 (FR-NAV-12). 두 화면이 같은 것을
+					다르게 그리면 사용자가 판정을 두 번 배운다. `data-kind` 가 무엇인지를,
+					`data-result` 가 좋은 소식인지를 말한다 — 색은 뒤쪽만 보고 칠한다.
+				-->
+				<div
+					class="verdict"
+					data-verdict
+					data-kind={verdict.kind}
+					data-result={verdict.kind === 'correct' ? 'ok' : 'bad'}
+				>
+					{verdictText(verdict)}
+				</div>
 
 				<!-- 정답은 판정 후에만 렌더한다 -->
 				<div class="answer">
@@ -260,7 +282,7 @@
 
 			<div class="controls">
 				{#if verdict}
-					<button type="button" class="primary" data-action="next" onclick={next}
+					<button type="button" class="primary" data-next onclick={next}
 						>다음 문제</button
 					>
 				{:else if settings.quizInput === 'setup'}
@@ -270,7 +292,7 @@
 					<button
 						type="button"
 						class="primary"
-						data-action="submit"
+						data-grade
 						onclick={submit}
 						disabled={!canSubmit}>제출</button
 					>
@@ -394,15 +416,12 @@
 	 * 입력창과 같은 토큰을 쓴다. 정답을 accent 로 칠하던 것을 ok 로 바꾼 이유는,
 	 * accent 가 기준공식 이름에도 쓰이는 색이라 "정답" 의 뜻을 겸할 수 없어서다.
 	 */
-	.verdict[data-verdict='correct'] {
+	/* 색은 `data-result` 하나만 본다. 판정 종류가 늘어도 이 규칙은 안 늘어난다. */
+	.verdict[data-result='ok'] {
 		color: var(--ok);
 		border-color: var(--ok);
 	}
-	.verdict[data-verdict='edge-dirty'],
-	.verdict[data-verdict='twist'],
-	.verdict[data-verdict='wrong'],
-	.verdict[data-verdict='identity'],
-	.verdict[data-verdict='invalid-move'] {
+	.verdict[data-result='bad'] {
 		color: var(--danger);
 		border-color: var(--danger);
 	}

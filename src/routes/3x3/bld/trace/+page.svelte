@@ -694,22 +694,6 @@
 		/>
 	</div>
 
-	<div class="controls">
-		<button type="button" data-start disabled={stage !== 'idle' || !armed} onclick={start}>
-			시작
-		</button>
-		<button
-			type="button"
-			data-memorized
-			disabled={!(stage === 'tracing' && tracing.mode === 'memorize')}
-			onclick={memorized}
-		>
-			다 외웠다
-		</button>
-		<button type="button" data-grade disabled={!inputOpen} onclick={gradeRound}>채점</button>
-		<button type="button" data-next disabled={stage !== 'result'} onclick={next}>다음 문제</button>
-	</div>
-
 	<!--
 		입력 한 줄 (FR-TR-18).
 
@@ -879,6 +863,34 @@
 			{/each}
 		</div>
 	{/if}
+
+	<!--
+		진행 버튼은 **본문 최하단** 이다 (FR-NAV-13, AD-NAV-9). 그 단계에 보여줄 것을
+		다 보여준 다음에 선다.
+
+		0.5.0 개발 중에는 설정 바로 아래(본문 위)에 있었다. 자리를 옮긴 근거는 셋이다 —
+		`채점` 은 24칸 자판에서 손을 뗀 직후에 누르므로 손을 위로 되올리지 않는 편이
+		가깝고, `다음 문제` 는 결과를 읽은 뒤에 누르므로 결과보다 위에 설 수 없고,
+		`시작` 은 `idle` 에서 아래가 전부 접히므로(FR-NAV-18) 최하단이 곧 설정 바로
+		아래다. 자리 하나로 셋이 다 맞는 곳에 선다.
+
+		덤으로 탭 순서가 바로잡힌다 — 읽고 → 채우고 → 진행.
+	-->
+	<div class="controls">
+		<button type="button" data-start disabled={stage !== 'idle' || !armed} onclick={start}>
+			시작
+		</button>
+		<button
+			type="button"
+			data-memorized
+			disabled={!(stage === 'tracing' && tracing.mode === 'memorize')}
+			onclick={memorized}
+		>
+			다 외웠다
+		</button>
+		<button type="button" data-grade disabled={!inputOpen} onclick={gradeRound}>채점</button>
+		<button type="button" data-next disabled={stage !== 'result'} onclick={next}>다음 문제</button>
+	</div>
 
 	<!--
 		기록은 모달 안이다 (요구 3). 본문에는 개수만 남긴다 — 50건이 쌓이면 이 화면이

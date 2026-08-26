@@ -128,7 +128,7 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		await expect(page.locator('[data-case]')).toBeVisible();
 		await page.locator('[data-move="R"]').click();
-		await page.locator('[data-action="submit"]').click();
+		await page.locator('[data-grade]').click();
 		await expect(page.locator('[data-verdict]')).toBeVisible();
 
 		await context.setOffline(false);

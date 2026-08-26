@@ -109,7 +109,9 @@ data/schema-history/   데이터 스키마 v1~v9 기록 (앱은 읽지 않는다
 - **프라임 기호는 반드시 ASCII `'`(U+0027).** 알고리즘 렌더는 `Alg.svelte` 한 곳만 거치며 `{@html}`을 쓰지 않는다. 무브 사이에는 실제 공백 텍스트 노드가 들어간다 — 복사했을 때 무브 구분이 유지되어야 한다.
 - **화면 코드를 쓰기 전에 `.dc_workspace/SVELTE.md`.** 이 저장소가 Svelte/SvelteKit 의 무엇을 쓰고 무엇을 안 쓰는지, 그리고 **새 화면의 URL 을 어느 축에 앉히는지**가 거기 있다. 서버가 없다는 사실이 프레임워크 기능의 절반을 잘라내므로, 공식 문서의 예제를 그대로 옮기면 안 되는 자리가 많다.
 
-배경과 설계 근거는 `.dc_workspace/handoff/`와 `.dc_workspace/2026_08_03-corner-3style/`에 있다.
+화면 규약(구성·흐름·표기)은 `.dc_workspace/CONVENTIONS.md` 가 정본이고, 규칙 요약과
+문서 지도는 저장소 루트 `CLAUDE.md` 에 있다. 배경과 설계 근거는
+`.dc_workspace/handoff/`와 `.dc_workspace/2026_08_03-corner-3style/`에 있다.
 
 작업을 이어받을 때는 `.dc_workspace/CONTINUE.md` 부터 본다 — 지금 어디까지 왔고 다음이
 무엇인지, 그리고 이미 밟은 함정들이 거기 있다. 다음에 할 일 후보는

@@ -16,11 +16,14 @@ import type { Face } from '$lib/domain/types.js';
 /**
  * 색 이름 → 칠할 값. 표준 배색(WCA 기준 배열)의 이름들이다.
  *
+ * 내보내는 이유는 E2E 가 캔버스 픽셀에서 "스티커 색이 실렸는가" 를 세기 때문이다.
+ * 그 값을 검사에 다시 적으면 표가 둘이 되고, 한쪽만 고치는 날이 온다.
+ *
  * 데이터가 모르는 이름을 들고 오면 회색으로 떨어진다. 던지지 않는 이유는
  * 훈련 화면이 색 하나 때문에 통째로 죽는 것보다, 한 면이 회색으로 보이는 편이
  * 사용자에게 덜 나쁘기 때문이다.
  */
-const PAINT: Record<string, string> = {
+export const PAINT: Record<string, string> = {
 	W: '#f0f0f0',
 	Y: '#f2d02c',
 	G: '#0aa04a',

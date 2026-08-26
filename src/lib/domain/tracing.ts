@@ -635,13 +635,15 @@ export function twistEntries(
  * ═══════════════════════════════════════════════════════════ */
 
 /**
- * 세 갈래 강조의 색·테두리 (FR-TR-16).
+ * 두 갈래 강조의 색·테두리 (FR-TR-16).
  *
  * 팔레트를 **화면이 아니라 여기** 에 둔다. 뷰어는 "무슨 색을 어디에" 만 받고
  * (AD-12), 무엇을 칠할지는 이 층이 정하기 때문이다.
+ *
+ * 버퍼는 여기 없다. 아래 `buildMarks` 주석 참고 — 버퍼 자리를 표시하는 것 자체를
+ * 그만뒀다.
  */
 export interface MarkPalette {
-	buffer: Mark;
 	current: Mark;
 	visited: Mark;
 }
@@ -651,13 +653,12 @@ export interface MarkPalette {
  *
  * 색은 스티커 6색(`meta.colorScheme` 이 지목하는 흰·노랑·초록·파랑·빨강·주황)과
  * **겹치지 않는** 값이어야 한다. 스티커 색과 비슷하면 강조가 색칠로 읽힌다.
- * 그래서 큐브에 없는 계열 — 청록·자홍·연보라 — 을 쓴다.
+ * 그래서 큐브에 없는 계열 — 자홍·연보라 — 을 쓴다.
  *
- * 색만으로 나누지 않는다. 테두리가 실선 / 이중선 / 파선으로 함께 갈린다
- * (색각 이상 대비, FR-TR-16). 셋 중 하나만 보고도 구분이 된다.
+ * 색만으로 나누지 않는다. 테두리가 이중선 / 파선으로 함께 갈린다
+ * (색각 이상 대비, FR-TR-16). 둘 중 하나만 보고도 구분이 된다.
  */
 export const MARK_PALETTE: MarkPalette = {
-	buffer: { color: '#19e0d8', outline: 'solid' },
 	current: { color: '#ff45c8', outline: 'double' },
 	visited: { color: '#a08cff', outline: 'dashed' }
 };
@@ -674,23 +675,31 @@ const indexOf = (kind: PieceKind): Record<Sticker, number> =>
  * 오류다.
  *
  * 규칙:
- * 1. 버퍼 조각을 먼저 칠한다. 버퍼는 `meta.bufferStickers` 에서 온다 —
- *    이 함수에 버퍼 문자 리터럴이 없다 (FR-TR-7).
- * 2. 입력한 문자를 순서대로 칠한다. **마지막 하나가 "현재 타깃"** 이고 나머지는
+ * 1. 입력한 문자를 순서대로 칠한다. **마지막 하나가 "현재 타깃"** 이고 나머지는
  *    "지나간 조각" 이다. 뒤에 칠한 것이 앞을 덮으므로 같은 큐비가 두 번 나와도
  *    결과가 결정적이다.
- * 3. **조각 하나를 칠하면 그 조각의 스티커를 전부 칠한다** — 코너 3칸, 엣지 2칸.
+ * 2. **조각 하나를 칠하면 그 조각의 스티커를 전부 칠한다** — 코너 3칸, 엣지 2칸.
  *    한 칸만 칠하면 큐브를 돌렸을 때 그 조각을 놓친다.
  *
  * 개수 상한을 두지 않는다. 지나간 조각은 코너 평균 8 + 엣지 평균 12 이고 끊기가
  * 늘면 더 는다.
  *
- * 정답 경로는 여기에 들어오지 않는다. 이 함수가 받는 것은 **사용자가 입력한
- * 문자열뿐** 이고, 그것이 힌트 금지(FR-TR-15)를 구조로 지키는 방식이다.
+ * ─── 버퍼를 칠하지 않는다 ──────────────────────────────────
+ * 처음에는 버퍼 조각을 늘 칠했다. "실물에서도 자기 버퍼는 늘 알고 시작하므로
+ * 힌트가 아니다" 가 근거였는데, 그 말이 정확히 뒤집힌다 — **실물 큐브에는 버퍼
+ * 자리에 아무 표시도 없다.** 초록·흰색으로 방향을 잡고 버퍼가 어디인지 찾는 것이
+ * 트레이싱의 첫 동작이고, 그 자리를 칠해 주면 그 동작을 대신 해 주는 것이다.
+ *
+ * 그래서 이 함수는 이제 `meta` 를 받지 않는다. 받을 이유가 버퍼뿐이었다.
+ * 훈련 중에는 입력 열도 칠하지 않으므로(훈련 화면의 `marks` 주석) 이 함수가
+ * 실제로 도는 곳은 결과 단계 하나다.
+ *
+ * 이 함수는 받은 문자 열이 사용자가 친 것인지 정답인지 **모른다.** 훈련 중에
+ * 정답이 여기로 오지 않는 것은 호출부가 아예 부르지 않기 때문이고, 그 사실은
+ * 화면 소스를 읽는 정적 검사가 못 박는다 (FR-TR-15).
  */
 export function buildMarks(
 	kind: PieceKind,
-	meta: BufferMeta,
 	entered: readonly Sticker[],
 	palette: MarkPalette = MARK_PALETTE
 ): (Mark | null)[] {
@@ -704,10 +713,6 @@ export function buildMarks(
 		if (!home) return;
 		for (const s of rotation[home]) marks[index[s]] = mark;
 	};
-
-	// 버퍼가 먼저. 입력이 버퍼 조각에 닿으면 그 위를 덮는다 — 지금 손에 든 것이
-	// 무엇인지가 버퍼 표시보다 먼저 보여야 한다.
-	for (const s of meta.bufferStickers) paint(s, palette.buffer);
 
 	for (let i = 0; i < entered.length; i++)
 		paint(entered[i], i === entered.length - 1 ? palette.current : palette.visited);

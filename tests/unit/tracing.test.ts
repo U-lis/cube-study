@@ -568,19 +568,24 @@ const painted = (marks: ReturnType<typeof buildMarks>): number[] =>
 	marks.flatMap((m, i) => (m ? [i] : []));
 
 describe('T5-1 buildMarks (FR-TR-16, 7)', () => {
-	it('빈 입력 열이면 버퍼 조각만 칠해진다 (코너 3칸)', () => {
-		const marks = buildMarks('corner', ds.meta, []);
-		const ix = painted(marks);
-		expect(ix).toHaveLength(3);
-		expect(new Set(ix)).toEqual(
-			new Set(CORNER_ROTATION[ds.meta.buffer].map((s) => CORNER_INDEX[s]))
-		);
-		expect(ix.every((i) => marks[i]!.color === MARK_PALETTE.buffer.color)).toBe(true);
+	it('빈 입력 열이면 한 칸도 안 칠해진다', () => {
+		expect(painted(buildMarks('corner', []))).toEqual([]);
+		expect(painted(buildMarks('edge', []))).toEqual([]);
+	});
+
+	it('버퍼 조각은 입력에 없는 한 칠해지지 않는다 — 실물에 그런 표시가 없다', () => {
+		// 코너: 버퍼 UBL 의 세 칸. 엣지: 위 edgeBuffer 의 두 칸.
+		const target = CORNER_LETTERS.find((l) => !ds.meta.bufferStickers.includes(l))!;
+		const marks = buildMarks('corner', [target]);
+		for (const s of CORNER_ROTATION[ds.meta.buffer]) expect(marks[CORNER_INDEX[s]]).toBeNull();
+		const eTarget = EDGE_LETTERS.find((l) => !edgeBuffer.bufferStickers.includes(l))!;
+		const eMarks = buildMarks('edge', [eTarget]);
+		for (const s of EDGE_ROTATION[edgeBuffer.buffer]) expect(eMarks[EDGE_INDEX[s]]).toBeNull();
 	});
 
 	it('코너 타깃 하나면 그 조각의 3칸 전부가 현재 타깃 색이다', () => {
 		const target = CORNER_LETTERS.find((l) => !ds.meta.bufferStickers.includes(l))!;
-		const marks = buildMarks('corner', ds.meta, [target]);
+		const marks = buildMarks('corner', [target]);
 		const cells = CORNER_ROTATION[CORNER_CUBIE[target]].map((s) => CORNER_INDEX[s]);
 		expect(cells).toHaveLength(3);
 		for (const i of cells) expect(marks[i]).toEqual(MARK_PALETTE.current);
@@ -588,7 +593,7 @@ describe('T5-1 buildMarks (FR-TR-16, 7)', () => {
 
 	it('엣지 타깃 하나면 2칸 전부다', () => {
 		const target = EDGE_LETTERS.find((l) => !edgeBuffer.bufferStickers.includes(l))!;
-		const marks = buildMarks('edge', edgeBuffer, [target]);
+		const marks = buildMarks('edge', [target]);
 		const cells = EDGE_ROTATION[EDGE_CUBIE[target]].map((s) => EDGE_INDEX[s]);
 		expect(cells).toHaveLength(2);
 		for (const i of cells) expect(marks[i]).toEqual(MARK_PALETTE.current);
@@ -596,7 +601,7 @@ describe('T5-1 buildMarks (FR-TR-16, 7)', () => {
 
 	it('타깃 5개면 마지막 하나가 현재, 앞 4개가 지나간 조각이다', () => {
 		const entered = CORNER_LETTERS.filter((l) => !ds.meta.bufferStickers.includes(l)).slice(0, 5);
-		const marks = buildMarks('corner', ds.meta, entered);
+		const marks = buildMarks('corner', entered);
 		entered.forEach((letter, n) => {
 			const want = n === 4 ? MARK_PALETTE.current : MARK_PALETTE.visited;
 			for (const s of CORNER_ROTATION[CORNER_CUBIE[letter]])
@@ -608,7 +613,7 @@ describe('T5-1 buildMarks (FR-TR-16, 7)', () => {
 		// 24글자를 다 쓰고 하나 더 얹는다. 지나간 조각에는 개수 상한이 없다.
 		const entered = [...EDGE_LETTERS, EDGE_LETTERS[0]];
 		expect(entered).toHaveLength(25);
-		const marks = buildMarks('edge', edgeBuffer, entered);
+		const marks = buildMarks('edge', entered);
 		// 엣지 24문자는 12큐비 × 2칸 = 24칸. 큐브의 엣지 칸 전부다.
 		expect(painted(marks)).toHaveLength(24);
 	});
@@ -620,7 +625,7 @@ describe('T5-1 buildMarks (FR-TR-16, 7)', () => {
 		const other = CORNER_LETTERS.find(
 			(l) => CORNER_CUBIE[l] !== CORNER_CUBIE[letter] && !ds.meta.bufferStickers.includes(l)
 		)!;
-		const marks = buildMarks('corner', ds.meta, [letter, other, sibling]);
+		const marks = buildMarks('corner', [letter, other, sibling]);
 		for (const s of CORNER_ROTATION[CORNER_CUBIE[letter]])
 			expect(marks[CORNER_INDEX[s]]).toEqual(MARK_PALETTE.current);
 		for (const s of CORNER_ROTATION[CORNER_CUBIE[other]])
@@ -629,11 +634,11 @@ describe('T5-1 buildMarks (FR-TR-16, 7)', () => {
 
 	it('반환 배열은 언제나 54칸이다', () => {
 		for (const entered of [[], ['K'], CORNER_LETTERS])
-			expect(buildMarks('corner', ds.meta, entered)).toHaveLength(54);
+			expect(buildMarks('corner', entered)).toHaveLength(54);
 	});
 
 	it('모든 Mark 이 color 와 outline 을 함께 갖는다 (색 단독 금지)', () => {
-		const marks = buildMarks('corner', ds.meta, CORNER_LETTERS);
+		const marks = buildMarks('corner', CORNER_LETTERS);
 		const hits = marks.filter((m) => m !== null);
 		expect(hits.length).toBeGreaterThan(0);
 		for (const m of hits) {
@@ -642,14 +647,14 @@ describe('T5-1 buildMarks (FR-TR-16, 7)', () => {
 		}
 	});
 
-	it('세 종류의 색이 서로 다르다', () => {
-		const { buffer, current, visited } = MARK_PALETTE;
-		expect(new Set([buffer.color, current.color, visited.color]).size).toBe(3);
+	it('두 종류의 색이 서로 다르다', () => {
+		const { current, visited } = MARK_PALETTE;
+		expect(new Set([current.color, visited.color]).size).toBe(2);
 	});
 
-	it('세 종류의 테두리가 서로 다르다 — 색을 못 봐도 구분된다', () => {
-		const { buffer, current, visited } = MARK_PALETTE;
-		expect(new Set([buffer.outline, current.outline, visited.outline]).size).toBe(3);
+	it('두 종류의 테두리가 서로 다르다 — 색을 못 봐도 구분된다', () => {
+		const { current, visited } = MARK_PALETTE;
+		expect(new Set([current.outline, visited.outline]).size).toBe(2);
 	});
 
 	it('하이라이트 색이 스티커 6색과 겹치지 않는다', () => {
@@ -661,17 +666,17 @@ describe('T5-1 buildMarks (FR-TR-16, 7)', () => {
 
 	it('팔레트를 바꾸면 그 값이 그대로 나간다 (화면이 정하고 뷰어가 받는다)', () => {
 		const custom = {
-			buffer: { color: '#111111', outline: 'solid' as const },
 			current: { color: '#222222', outline: 'double' as const },
 			visited: { color: '#333333', outline: 'dashed' as const }
 		};
-		const marks = buildMarks('corner', ds.meta, [], custom);
-		expect(marks[CORNER_INDEX[ds.meta.primarySticker]]).toEqual(custom.buffer);
+		const target = CORNER_LETTERS.find((l) => !ds.meta.bufferStickers.includes(l))!;
+		const marks = buildMarks('corner', [target], custom);
+		expect(marks[CORNER_INDEX[target]]).toEqual(custom.current);
 	});
 
 	it('모르는 문자는 조용히 무시한다 (입력 정리가 앞에 있다)', () => {
-		expect(() => buildMarks('corner', ds.meta, ['Z'])).not.toThrow();
-		expect(painted(buildMarks('corner', ds.meta, ['Z']))).toHaveLength(3);
+		expect(() => buildMarks('corner', ['Z'])).not.toThrow();
+		expect(painted(buildMarks('corner', ['Z']))).toEqual([]);
 	});
 });
 
@@ -731,19 +736,23 @@ describe('T5-1 정적 검사 — 뒷면을 새게 하는 코드가 없다 (FR-TR
 		}
 	});
 
-	it('훈련 중에는 정답이 하이라이트로 가지 않는다', () => {
+	it('훈련 중에는 하이라이트가 없다 — buildMarks 는 결과 단계에서만 돈다', () => {
 		/*
-		 * 규칙이 좁아졌다 (요구 2 재검토). **결과 단계** 에서는 정답 예시 경로를
-		 * 칠한다 — 판이 끝났으므로 힌트가 될 것이 없고, 복기가 그 표시의 몫이다.
-		 * 훈련 중(`tracing`)에 정답이 닿으면 안 된다는 것은 그대로다.
+		 * 규칙이 좁아졌다. 버퍼 표시까지 걷어냈으므로(요구: 실물 큐브에 그런 표시가
+		 * 없다) 훈련 중 큐브에는 강조가 하나도 없다. 남은 호출은 화면 전체에 하나뿐이고
+		 * 그 하나가 결과 단계의 것이다.
 		 *
-		 * 그래서 `buildMarks` 호출 전부가 아니라 **`stage === 'tracing'` 가지가 받는
-		 * 인자** 만 본다. 가지가 사라지거나 모양이 바뀌면 정규식이 비어 나오고 첫
-		 * 단언에서 걸린다 — 검사가 조용히 무력해지는 것이 이 종류의 검사에서 가장
-		 * 흔한 고장이다.
+		 * `marks` 파생식을 통째로 떠서 본다. 식이 사라지거나 모양이 바뀌면 정규식이
+		 * 비어 나오고 첫 단언에서 걸린다 — 검사가 조용히 무력해지는 것이 이 종류의
+		 * 검사에서 가장 흔한 고장이다.
 		 */
-		const branch = /stage === 'tracing' && meta\s*\?\s*buildMarks\(([^)]*)\)/.exec(page)?.[1] ?? '';
-		expect(branch).not.toBe('');
-		expect(branch).not.toContain('answer');
+		const src = code(page);
+		expect((src.match(/buildMarks\(/g) ?? []).length).toBe(1);
+		const derived = /let marks = \$derived\(([\s\S]*?)\n\t\);/.exec(src)?.[1] ?? '';
+		expect(derived).not.toBe('');
+		expect(derived).toContain("stage === 'result'");
+		// 그 밖의 단계는 빈 배열이다. 'tracing' 이 이 식에 등장하면 다시 칠하는 것이다.
+		expect(derived).toContain('NO_MARKS');
+		expect(derived).not.toContain("'tracing'");
 	});
 });

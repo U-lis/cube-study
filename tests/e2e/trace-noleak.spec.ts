@@ -10,15 +10,19 @@
  * 그래서 캔버스에서 그 세 색의 픽셀만 세면 "지금 무엇이 칠해져 있는가" 를 바깥에서
  * 셀 수 있다.
  *
- * ─── 훈련 중에는 버퍼만이다 (요구 2 재검토) ────────────────
+ * ─── 훈련 중에는 아무것도 안 칠한다 ────────────────────────
  * 처음에는 입력한 문자를 따라 현재 타깃·지나간 조각을 칠했다. 그것은 **문자 →
  * 위치 매핑을 대신 해 주는 것** 이고, 그 매핑은 트레이싱이 아니라 그 앞 단계의
  * 기술이다. 더 나쁜 것은 브루트포스가 열린다는 점이다 — 스티커의 문자를 몰라도
  * 아무 글자나 눌러 가며 어디가 켜지는지 보면 된다. SPEC 이 "막혔을 때 다음 조각
  * 하이라이트" 를 FR-TR-15 와 충돌한다며 거부한 것과 같은 부류다.
  *
- * 그래서 훈련 중에는 자홍(현재 타깃)과 연보라(지나간 조각)가 **언제나 0** 이다.
- * 무엇을 얼마나 치든 그렇다. 정답 경로는 **채점이 끝난 뒤** 에만 칠해진다 — 판이
+ * 그다음 버퍼 표시도 걷었다. **실물 큐브에는 버퍼 자리에 아무 표시가 없다.**
+ * 초록·흰색으로 방향을 잡고 버퍼를 찾는 것까지가 훈련이라, 칠해 주면 그 몫을
+ * 화면이 가져간다.
+ *
+ * 그래서 훈련 중에는 팔레트 두 색이 **언제나 0** 이다. 무엇을 얼마나 치든,
+ * 시작 직후에도 그렇다. 정답 경로는 **채점이 끝난 뒤** 에만 칠해진다 — 판이
  * 끝났으므로 힌트가 될 것이 없고, 그때부터는 복기가 그 표시의 몫이다.
  * ────────────────────────────────────────────────────────────
  *
@@ -33,6 +37,7 @@ import data from '../../src/lib/data/corner-UBL.json' with { type: 'json' };
 import { stateFromFacelets } from '../../src/lib/cube/sim.js';
 import { trace } from '../../src/lib/cube/trace.js';
 import { optionsFrom, MARK_PALETTE } from '../../src/lib/domain/tracing.js';
+import { PAINT } from '../../src/lib/ui/facelets.js';
 import { CORNER_INDEX } from '../../src/lib/cube/speffz.js';
 
 const meta = (data as unknown as { meta: Parameters<typeof optionsFrom>[0] & { buffer: string } })
@@ -121,18 +126,17 @@ const rgb = (hex: string): [number, number, number] => [
 ];
 
 /**
- * 팔레트 세 색의 픽셀 수. 허용 오차는 채널당 24 다 — 스티커 6색과 팔레트 3색은
+ * 팔레트 두 색의 픽셀 수. 허용 오차는 채널당 24 다 — 스티커 6색과 팔레트 2색은
  * 어느 채널에서든 그보다 훨씬 멀리 떨어져 있어(단위 테스트가 확인한다) 서로를
  * 오인할 수 없다.
  */
-async function marks(page: Page): Promise<{ buffer: number; current: number; visited: number }> {
+async function marks(page: Page): Promise<{ current: number; visited: number }> {
 	const { data, channels } = await pixels(page);
 	const want = {
-		buffer: rgb(MARK_PALETTE.buffer.color),
 		current: rgb(MARK_PALETTE.current.color),
 		visited: rgb(MARK_PALETTE.visited.color)
 	};
-	const out = { buffer: 0, current: 0, visited: 0 };
+	const out = { current: 0, visited: 0 };
 	for (let i = 0; i + channels <= data.length; i += channels) {
 		for (const [name, c] of Object.entries(want) as [keyof typeof out, number[]][]) {
 			if (
@@ -146,9 +150,40 @@ async function marks(page: Page): Promise<{ buffer: number; current: number; vis
 	return out;
 }
 
+/**
+ * 스티커 6색의 픽셀 수. 회색 단계(FR-TR-22)와 색이 실린 단계를 가르는 신호다.
+ *
+ * 버퍼 하이라이트를 걷어내기 전에는 그 청록 픽셀이 "그려졌다" 의 신호였다. 이제
+ * 훈련 중에는 강조가 하나도 없으므로 **스티커 색 자체** 를 센다. 값은
+ * `facelets.ts` 의 `PAINT` 에서 그대로 온다 — 검사에 색을 다시 적지 않는다.
+ *
+ * **흰색은 뺀다.** 큐비 테두리 선이 흰색이라 `#f0f0f0` 과 채널당 15 밖에 안 떨어져
+ * 있고, 그 선은 회색 단계에도 그려진다. 흰색을 세면 idle 에서도 0 이 아니게 되어
+ * 신호가 죽는다. 나머지 다섯 색만으로 충분하다 — 스크램블된 큐브의 어느 면에나
+ * 흰색 아닌 스티커가 있다.
+ */
+async function painted(page: Page): Promise<number> {
+	const { data, channels } = await pixels(page);
+	const want = Object.entries(PAINT)
+		.filter(([name]) => name !== 'W')
+		.map(([, hex]) => rgb(hex));
+	let n = 0;
+	for (let i = 0; i + channels <= data.length; i += channels)
+		for (const c of want)
+			if (
+				Math.abs(data[i] - c[0]) <= 24 &&
+				Math.abs(data[i + 1] - c[1]) <= 24 &&
+				Math.abs(data[i + 2] - c[2]) <= 24
+			) {
+				n++;
+				break;
+			}
+	return n;
+}
+
 /** 캔버스에 색이 실릴 때까지 기다린다. 그리기는 rAF 라 한 프레임 늦는다. */
 async function settled(page: Page): Promise<void> {
-	await expect.poll(async () => (await marks(page)).buffer, { timeout: 8000 }).toBeGreaterThan(0);
+	await expect.poll(async () => await painted(page), { timeout: 8000 }).toBeGreaterThan(0);
 }
 
 test.describe('T5-2 뒷면 누출 금지 (FR-TR-15)', () => {
@@ -202,8 +237,7 @@ test.describe('T5-2 뒷면 누출 금지 (FR-TR-15)', () => {
 		await page.locator('[data-start]').click();
 		await settled(page);
 		const m = await marks(page);
-		// 버퍼는 늘 보인다. 정답 경로를 미리 칠했다면 여기서 현재·지나감이 잡힌다.
-		expect(m.buffer).toBeGreaterThan(0);
+		// 색은 실렸다(`settled`). 정답 경로를 미리 칠했다면 여기서 잡힌다.
 		expect(m.current).toBe(0);
 		expect(m.visited).toBe(0);
 	});
@@ -248,18 +282,19 @@ test.describe('T5-3 하이라이트 (FR-TR-16)', () => {
 	test('회색 단계에는 하이라이트가 없다', async ({ page }) => {
 		await open(page);
 		// idle 은 색 배열 자체가 없는 단계다 (FR-TR-22). 칠할 것도 없다.
-		await expect.poll(async () => (await marks(page)).buffer, { timeout: 8000 }).toBe(0);
+		await expect.poll(async () => await painted(page), { timeout: 8000 }).toBe(0);
 		const m = await marks(page);
 		expect(m.current).toBe(0);
 		expect(m.visited).toBe(0);
 	});
 
-	test('트레이싱 중에는 버퍼만 칠한다', async ({ page }) => {
+	test('트레이싱 중에는 아무것도 칠하지 않는다 — 버퍼 자리도 표시가 없다', async ({ page }) => {
 		await open(page);
 		await page.locator('[data-start]').click();
 		await settled(page);
+		// 색은 실렸는데(스티커 6색) 강조는 0 이다. 버퍼 자리도 예외가 아니다 —
+		// 실물 큐브에 그런 표시가 없고, 버퍼를 찾는 것까지가 훈련이다.
 		const before = await marks(page);
-		expect(before.buffer).toBeGreaterThan(0);
 		expect(before.current).toBe(0);
 		expect(before.visited).toBe(0);
 
@@ -271,7 +306,6 @@ test.describe('T5-3 하이라이트 (FR-TR-16)', () => {
 		const after = await marks(page);
 		expect(after.current).toBe(0);
 		expect(after.visited).toBe(0);
-		expect(after.buffer).toBeGreaterThan(0);
 	});
 
 	test('입력이 길어져도 하이라이트가 늘지 않고 채점까지 간다', async ({ page }) => {
@@ -309,10 +343,11 @@ test.describe('T5-3 하이라이트 (FR-TR-16)', () => {
 				{ timeout: 8000 }
 			)
 			.toBeGreaterThan(0);
-		expect((await marks(page)).buffer).toBeGreaterThan(0);
 		// 다음 문제로 가면 회색으로 돌아가고 칠도 걷힌다.
 		await page.locator('[data-next]').click();
-		await expect.poll(async () => (await marks(page)).buffer, { timeout: 8000 }).toBe(0);
+		await expect.poll(async () => await painted(page), { timeout: 8000 }).toBe(0);
+		const cleared = await marks(page);
+		expect(cleared.current + cleared.visited).toBe(0);
 	});
 });
 

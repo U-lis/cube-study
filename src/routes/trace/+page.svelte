@@ -294,7 +294,6 @@
 	const metaOf = (kind: PieceKind): (BufferMeta & { buffer: Cubie }) | null =>
 		!ds ? null : kind === 'edge' ? EDGE_BUFFER : ds.meta;
 
-	let meta = $derived(metaOf(padKind));
 	let colors = $derived(
 		ds && facelets ? faceletColors(ds.meta.colorScheme, facelets) : grayFacelets()
 	);
@@ -353,7 +352,7 @@
 	/**
 	 * 54칸 하이라이트 (FR-TR-16).
 	 *
-	 * ─── 왜 훈련 중에는 버퍼만인가 ──────────────────────────────
+	 * ─── 왜 훈련 중에는 아무것도 안 칠하는가 ───────────────────
 	 * 처음에는 입력한 문자를 따라 "현재 타깃·지나간 조각" 을 칠했다. 그런데 그것은
 	 * **문자 → 위치 매핑을 대신 해 주는 것** 이고, 그 매핑은 트레이싱이 아니라 그
 	 * 앞 단계의 기술이다. 더 나쁜 것은 브루트포스가 열린다는 점이다 — 보고 있는
@@ -362,7 +361,12 @@
 	 * 것과 같은 부류다. 정답이 아니라 사용자 입력으로 구동된다는 이유로 그 검사를
 	 * 지나갔을 뿐, 새어 나가는 정보는 같다.
 	 *
-	 * 버퍼는 남긴다. 실물에서도 자기 버퍼는 늘 알고 시작하므로 힌트가 아니다.
+	 * 그래서 한동안 버퍼만 칠했다. "실물에서도 자기 버퍼는 늘 알고 시작하므로
+	 * 힌트가 아니다" 가 근거였는데, 그 근거가 뒤집혔다 — **실물 큐브에는 버퍼
+	 * 자리에 아무 표시도 없다.** 초록·흰색으로 방향을 잡고 버퍼가 어디인지 찾는
+	 * 것까지가 훈련이고, 칠해 주면 그 몫을 화면이 가져간다. 코너·엣지 둘 다다.
+	 *
+	 * 남는 결론은 하나다 — 훈련 중 큐브에는 강조가 없다.
 	 *
 	 * ─── 왜 결과 단계에서는 칠하는가 ───────────────────────────
 	 * 판이 끝난 뒤라 힌트가 될 것이 없다. 다음 판은 다른 스크램블이다.
@@ -379,15 +383,9 @@
 	 * 조각이 켜진다 — 두 갈래는 좌표계가 다르다.
 	 */
 	let marks = $derived(
-		stage === 'tracing' && meta
-			? buildMarks(padKind, meta, [])
-			: stage === 'result' && focus && metaOf(focus.kind)
-				? buildMarks(
-						focus.kind,
-						metaOf(focus.kind)!,
-						focus.answers[tracing.convention].targets as Sticker[]
-					)
-				: NO_MARKS
+		stage === 'result' && focus
+			? buildMarks(focus.kind, focus.answers[tracing.convention].targets as Sticker[])
+			: NO_MARKS
 	);
 
 	/** 한 줄로 합친 판정 (요구 2). `both` 는 처음 틀린 갈래가 그대로 올라온다. */

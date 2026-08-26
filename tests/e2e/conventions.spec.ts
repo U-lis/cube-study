@@ -167,9 +167,10 @@ test.describe('T4 진행 버튼 (FR-NAV-13, AD-NAV-9)', () => {
 	test('퀴즈의 진행 버튼이 본문 최하단에 선다 @viewport', async ({ page }) => {
 		await ready(page, QUIZ);
 		const y = async (sel: string) => (await page.locator(sel).first().boundingBox())!.y;
-		// 문제 → 입력칸 → 진행 버튼 순서. 버튼이 문제나 입력보다 위에 서지 않는다.
+		// 문제 → 입력칸 → 자판 → 진행 버튼. 버튼이 그중 무엇보다도 위에 서지 않는다.
 		expect(await y('[data-grade]')).toBeGreaterThan(await y('[data-case]'));
 		expect(await y('[data-grade]')).toBeGreaterThan(await y('.entry'));
+		expect(await y('[data-grade]')).toBeGreaterThan(await y('[data-move="R"]'));
 	});
 
 	test('트레이싱의 진행 버튼이 본문 최하단에 선다 @viewport', async ({ page }) => {

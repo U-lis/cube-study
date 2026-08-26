@@ -17,7 +17,7 @@ async function type(page: Page, alg: string) {
 	for (const mv of alg.trim().split(/\s+/)) await page.locator(`[data-move="${mv}"]`).click();
 }
 async function currentCase(page: Page): Promise<string> {
-	const h = page.locator('h1[data-case]');
+	const h = page.locator('[data-case]');
 	await expect(h).toBeVisible();
 	return (await h.getAttribute('data-case'))!;
 }

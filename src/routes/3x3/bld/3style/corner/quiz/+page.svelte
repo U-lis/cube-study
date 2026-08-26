@@ -175,6 +175,8 @@
 
 <UpLink href="/" label="홈" />
 
+<h1>퀴즈</h1>
+
 {#if ds}
 	<section class="quiz">
 		<div class="input-mode">
@@ -205,7 +207,12 @@
 			<p class="empty-pool" data-empty-pool>암기 표시한 공식이 없습니다</p>
 		{:else if current}
 			<header>
-				<h1 data-case={current.case}>{current.case}</h1>
+				<!--
+					케이스 코드는 **문제**이지 화면 이름이 아니다 (FR-NAV-9). 0.4.2 까지
+					여기가 `<h1>` 이었다 — 화면마다 `<h1>` 의 뜻이 갈리던 자리 중 하나다.
+					크기·자리는 그대로 두고 태그만 내렸다.
+				-->
+				<div class="case" data-case={current.case}>{current.case}</div>
 				<div class="targets">
 					<span>{targetText(current.target1)}</span>
 					<span>{targetText(current.target2)}</span>
@@ -327,7 +334,13 @@
 	header {
 		text-align: center;
 	}
+	/* 화면 이름. 다른 화면(기준공식)과 같은 톤이다. */
 	h1 {
+		font-size: 1.3rem;
+		margin: 0.2rem 0 0.6rem;
+	}
+	/* 문제로 내려온 케이스 코드. 옛 h1 의 크기를 그대로 물려받는다. */
+	.case {
 		margin: 0;
 		font-family: var(--mono);
 		font-size: 3rem;

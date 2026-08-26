@@ -81,6 +81,8 @@
 	<UpLink href="/" label="홈" />
 {/if}
 
+<h1>조회</h1>
+
 <div class="top">
 	<!-- X 는 결과까지 치운다. 포커스 초기화(다시 칠 준비)와 구분한다 -->
 	<CaseInput bind:this={caseInput} bind:value={raw} onclear={() => (shown = null)} />
@@ -106,6 +108,10 @@
 {/if}
 
 <style>
+	h1 {
+		font-size: 1.3rem;
+		margin: 0.2rem 0 0.4rem;
+	}
 	.top {
 		position: sticky;
 		top: 0;

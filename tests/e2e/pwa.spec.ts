@@ -126,7 +126,7 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 		await expect(page.locator(`[data-anchor="${anAnchorPath.split('/').pop()}"]`)).toBeVisible();
 
 		await page.goto('/3x3/bld/3style/corner/quiz');
-		await expect(page.locator('h1[data-case]')).toBeVisible();
+		await expect(page.locator('[data-case]')).toBeVisible();
 		await page.locator('[data-move="R"]').click();
 		await page.locator('[data-action="submit"]').click();
 		await expect(page.locator('[data-verdict]')).toBeVisible();
@@ -336,13 +336,13 @@ test.describe('뒤로가기 (설치된 앱)', () => {
 		await asStandalone(page);
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		await armed(page);
-		await expect(page.locator('h1[data-case]')).toBeVisible();
+		await expect(page.locator('[data-case]')).toBeVisible();
 
 		await page.goBack();
 
 		await expect(page.locator('[data-toast]')).toHaveText('한 번 더 누르면 닫힙니다');
 		// 이전 화면으로 이동하지 않는다 — 뒤로가기는 닫기만 뜻한다
-		await expect(page.locator('h1[data-case]')).toBeVisible();
+		await expect(page.locator('[data-case]')).toBeVisible();
 	});
 
 	/**
@@ -398,7 +398,7 @@ test.describe('뒤로가기 (브라우저 탭)', () => {
 	test('뒤로가기가 이전 화면으로 그대로 이동한다', async ({ page }) => {
 		await page.goto('/3x3/bld/3style/corner/lookup');
 		await page.locator('nav a:text-is("퀴즈")').click();
-		await expect(page.locator('h1[data-case]')).toBeVisible();
+		await expect(page.locator('[data-case]')).toBeVisible();
 		await page.goBack();
 		await expect(page.getByLabel('케이스 코드')).toBeVisible();
 		await expect(page.locator('[data-toast]')).toHaveCount(0);

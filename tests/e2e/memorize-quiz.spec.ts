@@ -58,9 +58,9 @@ async function seedMemorizedOnly(page: Page, on: boolean): Promise<void> {
 	}, on ? 'true' : 'false');
 }
 
-/** 현재 화면의 케이스 코드. h1[data-case] 가 반드시 렌더된 상태여야 한다. */
+/** 현재 화면의 케이스 코드. [data-case] 가 반드시 렌더된 상태여야 한다. */
 async function currentCase(page: Page): Promise<string> {
-	const h = page.locator('h1[data-case]');
+	const h = page.locator('[data-case]');
 	await expect(h).toBeVisible();
 	return (await h.getAttribute('data-case'))!;
 }
@@ -247,7 +247,7 @@ test.describe('T5-5. 암기 케이스 0개 — 안내, fallback 없음 (FR-MC-20
 		);
 
 		// 케이스 UI 는 없다 (current === null)
-		await expect(page.locator('h1[data-case]')).toHaveCount(0);
+		await expect(page.locator('[data-case]')).toHaveCount(0);
 		// 채점/다음 버튼도 없다
 		await expect(page.locator('[data-action="submit"]')).toHaveCount(0);
 		await expect(page.locator('[data-action="next"]')).toHaveCount(0);
@@ -272,7 +272,7 @@ test.describe('T5-5. 암기 케이스 0개 — 안내, fallback 없음 (FR-MC-20
 		await toggleReady(page);
 
 		await expect(page.locator('[data-empty-pool]')).toHaveCount(0);
-		await expect(page.locator('h1[data-case]')).toHaveText(target);
+		await expect(page.locator('[data-case]')).toHaveText(target);
 	});
 });
 
@@ -315,12 +315,12 @@ test.describe('T5-6. memorizedOnly 도중 변경 → 즉시 재출제 (FR-MC-18,
 		await seedQuizInput(page, 'direct');
 		await page.goto('/3x3/bld/3style/corner/quiz');
 		await toggleReady(page);
-		await expect(page.locator('h1[data-case]')).toBeVisible();
+		await expect(page.locator('[data-case]')).toBeVisible();
 
 		await page.locator('[data-memorized-only-input]').click();
 		await expect(page.locator('[data-memorized-only-input]')).toBeChecked();
 		await expect(page.locator('[data-empty-pool]')).toBeVisible();
-		await expect(page.locator('h1[data-case]')).toHaveCount(0);
+		await expect(page.locator('[data-case]')).toHaveCount(0);
 	});
 });
 

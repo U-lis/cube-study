@@ -440,7 +440,7 @@ test.describe('T3-6 워커 반납 (NFR-TR-1)', () => {
 
 	test('퀴즈 화면은 워커를 띄우지 않는다', async ({ page }) => {
 		await page.goto('/3x3/bld/3style/corner/quiz');
-		await expect(page.locator('h1[data-case]')).toBeVisible();
+		await expect(page.locator('[data-case]')).toBeVisible();
 		await page.waitForTimeout(1500);
 		expect(page.workers().length).toBe(0);
 	});

@@ -51,7 +51,7 @@ test.describe('CaseView 체크박스 (FR-MC-3(a))', () => {
 	test('T2-1. setup 모드에서 체크·저장·복원·재클릭 (FR-MC-3(a), 5)', async ({ page }) => {
 		const code = Object.keys(parsed.cases)[0];
 		await withMode(page, 'setup');
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await lookupReady(page);
 		await page.getByLabel('케이스 코드').fill(code);
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', code);
@@ -90,7 +90,7 @@ test.describe('CaseView 체크박스 (FR-MC-3(a))', () => {
 	}) => {
 		const code = Object.keys(parsed.cases)[0];
 		await withMode(page, 'setup');
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await lookupReady(page);
 		await page.getByLabel('케이스 코드').fill(code);
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', code);
@@ -130,7 +130,7 @@ test.describe('기준 상세 체크박스 (FR-MC-3(b))', () => {
 		const target = codes[0];
 
 		// 초기 상태: 페이지 열기 전에 localStorage 는 비어 있다 (addInitScript 없음)
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		const rowBox = page.locator(`[data-memorize-setup="${target}"] [data-memorize-input]`);
 
 		// step 1: 각 <li> 에 체크박스가 있다 — 데이터의 anchor.count 만큼
@@ -177,7 +177,7 @@ test.describe('이벤트 독립 (AD-7)', () => {
 		test.skip(codes.length < 1, `${firstAnchor} 에 케이스가 없다`);
 		const target = codes[0];
 
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		const urlBefore = page.url();
 
 		// 체크박스 클릭 → 상태 반영을 기다린 뒤 URL 이 그대로인지 확인.
@@ -192,14 +192,14 @@ test.describe('이벤트 독립 (AD-7)', () => {
 		test.skip(codes.length < 1, `${firstAnchor} 에 케이스가 없다`);
 		const target = codes[0];
 
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		// 이 시점의 checked 스냅샷 (하이드레이션 + $effect 저장이 끝날 시간을 준다)
 		await expect(page.locator(`[data-memorize-setup="${target}"] [data-memorize-input]`))
 			.not.toBeChecked();
 		const before = await readChecked(page);
 
 		// <a> 링크 클릭 → 조회 화면으로 이동. 도착까지 기다린 뒤 확인
-		await page.locator(`a[href="/?c=${target}&from=${firstAnchor}"]`).click();
+		await page.locator(`a[href="/3x3/bld/3style/corner/lookup?c=${target}&from=${firstAnchor}"]`).click();
 		await page.waitForURL(new RegExp(`\\?c=${target}(&|$)`));
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', target);
 
@@ -211,7 +211,7 @@ test.describe('이벤트 독립 (AD-7)', () => {
 test.describe('터치 대상 크기 (FR-MC-4)', () => {
 	test('T2-5. 체크박스 라벨 높이 44px 이상 @viewport', async ({ page }) => {
 		const code = Object.keys(parsed.cases)[0];
-		await page.goto(`/?c=${code}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${code}`);
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', code);
 
 		// CaseView 의 체크박스 라벨
@@ -221,7 +221,7 @@ test.describe('터치 대상 크기 (FR-MC-4)', () => {
 		expect(cvRect!.height).toBeGreaterThanOrEqual(44);
 
 		// 기준 상세 화면의 행 체크박스 라벨
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		const rowBox = page.locator('[data-memorize-setup]').first();
 		const rRect = await rowBox.boundingBox();
 		expect(rRect).not.toBeNull();
@@ -232,7 +232,7 @@ test.describe('터치 대상 크기 (FR-MC-4)', () => {
 test.describe('레이아웃 안정성 (NFR-MC-2)', () => {
 	test('T2-6a. CaseView 체크박스 토글 전후 .main 의 top 이 동일하다 @viewport', async ({ page }) => {
 		const code = Object.keys(parsed.cases)[0];
-		await page.goto(`/?c=${code}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${code}`);
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', code);
 
 		const main = page.locator('section.case .main');
@@ -244,7 +244,7 @@ test.describe('레이아웃 안정성 (NFR-MC-2)', () => {
 	});
 
 	test('T2-6b. 기준 상세 <ul> 높이가 토글 전후 동일하다 @viewport', async ({ page }) => {
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		const ul = page.locator('ul').first();
 		const before = await ul.boundingBox();
 		await page.locator('[data-memorize-setup]').first().locator('[data-memorize-input]').click();
@@ -264,9 +264,9 @@ test.describe('프리렌더 (AD-4)', () => {
 		});
 		// 체크박스가 있는 화면 두 개를 순회
 		const code = Object.keys(parsed.cases)[0];
-		await page.goto(`/?c=${code}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${code}`);
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', code);
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await expect(page.locator('[data-memorize-setup]').first()).toBeVisible();
 		expect(warnings).toEqual([]);
 	});

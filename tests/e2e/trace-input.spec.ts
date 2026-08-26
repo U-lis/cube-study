@@ -147,7 +147,7 @@ const wrongPiece = (() => {
 })();
 
 /**
- * 워커를 고정 값 스텁으로 바꾸고 `/trace` 를 연다.
+ * 워커를 고정 값 스텁으로 바꾸고 `/3x3/bld/trace` 를 연다.
  *
  * 스텁은 `ScrambleQueue` 가 보는 프로토콜만 지킨다 — `init` 에 `ready`,
  * `request` 에 요청한 개수만큼 `scramble`. 큐가 몇 번 채워져도 같은 값이라
@@ -177,7 +177,7 @@ async function open(
 		},
 		[alg, settings] as [string, Record<string, string>]
 	);
-	await page.goto('/trace');
+	await page.goto('/3x3/bld/trace');
 	await expect(page.locator('[data-start]')).toBeEnabled({ timeout: 15_000 });
 }
 

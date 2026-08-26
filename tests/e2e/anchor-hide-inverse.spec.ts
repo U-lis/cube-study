@@ -31,7 +31,7 @@ const visibleRows = (page: Page) => page.locator('[data-case-row]:visible');
 
 test.describe('역공식 숨김', () => {
 	test.beforeEach(async ({ page }) => {
-		await page.goto(`/anchors/${CODE}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${CODE}`);
 		await page.waitForSelector('[data-case-row]');
 	});
 
@@ -70,7 +70,7 @@ test.describe('역공식 숨김', () => {
 	test('"기준 없음" 그룹에는 토글이 없다', async ({ page }) => {
 		// 현재 데이터에는 기준 없는 케이스가 0건이라 이 페이지 자체가 없다.
 		// 데이터가 바뀌어 생기면 역방향 개념이 없으므로 토글도 없어야 한다.
-		const res = await page.goto('/anchors/direct');
+		const res = await page.goto('/3x3/bld/3style/corner/algs/direct');
 		if (res && res.status() === 200 && (await page.locator('[data-case-row]').count()) > 0) {
 			await expect(page.locator('[data-inverse-toggle]')).toHaveCount(0);
 		}

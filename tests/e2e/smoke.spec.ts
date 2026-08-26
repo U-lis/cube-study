@@ -18,7 +18,7 @@ test.describe('전수 스모크', () => {
 			if (m.type() === 'error') errors.push(m.text());
 		});
 
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		const input = page.getByLabel('케이스 코드');
 		for (const code of codes) {
 			await input.fill(code);
@@ -30,7 +30,7 @@ test.describe('전수 스모크', () => {
 
 test.describe('성능 (NFR-1)', () => {
 	test('2글자 입력에서 결과 갱신까지 100ms 이내', async ({ page }) => {
-		await page.goto('/?c=TU');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=TU');
 		await expect(page.locator('section.case')).toBeVisible();
 		const input = page.getByLabel('케이스 코드');
 

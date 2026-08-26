@@ -94,7 +94,7 @@ async function open(
 		},
 		[FIXED, settings] as [string, Record<string, string>]
 	);
-	await page.goto('/trace');
+	await page.goto('/3x3/bld/trace');
 	await expect(page.locator('[data-stage]')).toHaveAttribute('data-orientation', String(VIEW));
 	await expect(page.locator('[data-start]')).toBeEnabled({ timeout: 15_000 });
 }

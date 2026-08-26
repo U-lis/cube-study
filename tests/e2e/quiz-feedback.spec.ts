@@ -36,7 +36,7 @@ const bg = (page: Page) =>
  * 기대지 않고 스타일로 직접 끈다. 앱의 prefers-reduced-motion 처리는 그대로 둔다.
  */
 async function openQuiz(page: Page) {
-	await page.goto('/quiz');
+	await page.goto('/3x3/bld/3style/corner/quiz');
 	await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
 }
 
@@ -113,7 +113,7 @@ test.describe('출제 분포 (최근 20개 제외)', () => {
 		page
 	}) => {
 		test.slow();
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		const drawn: string[] = [];
 		for (let i = 0; i < DRAWS; i++) {
 			const code = await currentCase(page);
@@ -131,7 +131,7 @@ test.describe('출제 분포 (최근 20개 제외)', () => {
 
 	test('역케이스도 최근 20개 안에서는 다시 안 나온다', async ({ page }) => {
 		test.slow();
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		const drawn: string[] = [];
 		for (let i = 0; i < DRAWS; i++) {
 			const code = await currentCase(page);

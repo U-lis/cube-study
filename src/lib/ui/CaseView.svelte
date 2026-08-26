@@ -215,7 +215,7 @@
 	</div>
 
 	<footer>
-		<a href="/?c={entry.inverse}{from ? `&from=${from}` : ''}" data-inverse={entry.inverse}
+		<a href="/3x3/bld/3style/corner/lookup?c={entry.inverse}{from ? `&from=${from}` : ''}" data-inverse={entry.inverse}
 			>역 케이스 {entry.inverse}</a
 		>
 	</footer>

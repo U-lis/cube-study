@@ -60,7 +60,7 @@ test.describe('기준 상세 진도 표시 (FR-MC-10)', () => {
 		const codes = anchoredCases(firstAnchor);
 		test.skip(codes.length < 1, `${firstAnchor} 에 케이스가 없다`);
 
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await progressReady(page);
 
 		// 표시 형식: {checked}/{total}
@@ -80,7 +80,7 @@ test.describe('기준 상세 진도 표시 (FR-MC-10)', () => {
 		test.skip(codes.length < 2, `${firstAnchor} 케이스 2개 미만`);
 		const [c1, c2] = codes;
 
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await progressReady(page);
 		const progress = page.locator('[data-progress]').first();
 
@@ -119,7 +119,7 @@ test.describe('기준 상세 진도 표시 (FR-MC-10)', () => {
 			);
 		}, [c1, c2]);
 
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await progressReady(page);
 		// direct 체크가 있어도 setup 진도는 0
 		await expect(page.locator('[data-progress]').first()).toContainText(`0/${codes.length}`);
@@ -128,7 +128,7 @@ test.describe('기준 상세 진도 표시 (FR-MC-10)', () => {
 
 test.describe('기준공식 목록 진도 표시 (FR-MC-11)', () => {
 	test('T3-4. 초기값 각 카드 0/{전체} — 항목 숨김·재분류 없음', async ({ page }) => {
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		await progressReady(page);
 
 		// 데이터의 anchors 전부가 카드로 나타나야 한다 (숨김·필터 없음)
@@ -147,13 +147,13 @@ test.describe('기준공식 목록 진도 표시 (FR-MC-11)', () => {
 		const total = parsed.anchors[firstAnchor].count;
 
 		// 상세 화면에서 체크
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await progressReady(page);
 		await page.locator(`[data-memorize-setup="${target}"] [data-memorize-input]`).click();
 		await expect.poll(() => readChecked(page).then((s) => s.setup)).toContain(target);
 
 		// 목록으로 이동 → 해당 카드 진도가 1/N
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		await progressReady(page);
 		await expect(page.locator(`[data-anchor="${firstAnchor}"] [data-progress]`)).toContainText(
 			`1/${total}`
@@ -173,7 +173,7 @@ test.describe('레이아웃 안정성 (T3-6, AD-4, NFR-MC-2)', () => {
 		const codes = anchoredCases(firstAnchor);
 		test.skip(codes.length < 1, `${firstAnchor} 에 케이스가 없다`);
 
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await progressReady(page);
 
 		const progress = page.locator('[data-progress]').first();
@@ -195,7 +195,7 @@ test.describe('레이아웃 안정성 (T3-6, AD-4, NFR-MC-2)', () => {
 		const codes = anchoredCases(firstAnchor);
 		test.skip(codes.length < 1, `${firstAnchor} 에 케이스가 없다`);
 
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		await progressReady(page);
 
 		const card = page.locator(`[data-anchor="${firstAnchor}"] [data-progress]`);
@@ -220,12 +220,12 @@ test.describe('SSR 산출물 검증 (AD-4)', () => {
 		// 하이드레이션에 의한 값 갱신이 없다.
 		const anchorNames = Object.keys(parsed.anchors);
 		let listHtml = '';
-		await context.route('**/anchors', async (route) => {
+		await context.route('**/algs', async (route) => {
 			const res = await route.fetch();
 			listHtml = await res.text();
 			await route.fulfill({ response: res });
 		});
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		expect(listHtml).toContain('data-progress');
 		for (const name of anchorNames) {
 			// data-anchor 카드 안에 `0/{count}` 텍스트가 있어야 한다

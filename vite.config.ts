@@ -54,6 +54,22 @@ export default defineConfig({
 	plugins: [
 		fixCubejsSolveThis(),
 		sveltekit({
+			/*
+			 * 자산 경로를 절대경로로 낸다 (`./_app/…` 대신 `/_app/…`).
+			 *
+			 * 기본값 `relative: true` 는 각 페이지가 자기 위치를 기준으로 자산을 가리키게
+			 * 한다. 그 자체는 문제가 없는데, **서비스워커의 `navigateFallback: '/'` 와
+			 * 겹치면 깊은 경로에서 깨진다** — SW 는 프리캐시에 없는 이동 요청(`/a/b/c/d`,
+			 * 확장자가 없다)에 `index.html` 을 내주고, 그 HTML 의 `./_app/…` 은 브라우저가
+			 * `/a/b/c/_app/…` 으로 푼다. 404 가 나고 화면은 홈에서 멈춘다.
+			 *
+			 * 0.4.2 까지는 라우트가 한 칸(`/quiz`)이라 `./_app/…` 이 우연히 `/_app/…` 과
+			 * 같아서 드러나지 않았다. 라우트를 축으로 옮기면서 실제로 깨졌다 —
+			 * `notation.spec.ts` 가 두 번째 이동에서 잡았다 (SW 가 그때 제어를 잡는다).
+			 *
+			 * 이 앱은 언제나 도메인 루트에서 서비스되므로 절대경로로 잃는 것이 없다.
+			 */
+			paths: { relative: false },
 			compilerOptions: {
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
@@ -86,6 +102,23 @@ export default defineConfig({
 			workbox: {
 				// json 을 빠뜨리면 오프라인에서 데이터 로드가 통째로 죽는다 (NFR-8)
 				globPatterns: ['**/*.{js,css,html,json,svg,png,woff2}'],
+				/*
+				 * 프리캐시를 찾을 때 **쿼리를 전부 무시한다.**
+				 *
+				 * 프리캐시 키는 `…/lookup.html` 인데 이동 요청은 `…/lookup?c=LB` 로 온다.
+				 * 기본값(`utm_*`·`fbclid` 만 무시)으로는 이 둘이 안 맞아 `navigateFallback`
+				 * 으로 떨어진다. 0.4.2 까지는 그 폴백이 `/` = **조회 화면 자신** 이라
+				 * 사고가 드러나지 않았다 — 엉뚱한 HTML 을 받아도 같은 화면이었고, 쿼리는
+				 * 어차피 클라이언트가 URL 에서 읽었다.
+				 *
+				 * 이제 `/` 는 홈이다. 그대로 두면 서비스워커가 잡은 뒤부터 `?c=` 가 붙은
+				 * 모든 주소가 홈을 띄운다 — 설치한 사람의 북마크가 통째로 죽는다.
+				 * `notation.spec.ts` 가 두 번째 이동에서 이것을 잡았다.
+				 *
+				 * 쿼리는 화면 상태일 뿐 다른 문서를 가리키지 않으므로(`?c=`·`?from=`)
+				 * 무시해도 잃는 것이 없다.
+				 */
+				ignoreURLParametersMatching: [/.*/],
 				navigateFallback: '/'
 			}
 		})

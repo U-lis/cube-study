@@ -44,14 +44,14 @@ const block = (page: Page) => page.locator('[data-alt-block]');
 
 test.describe('아는 기준으로', () => {
 	test('아무것도 안 배웠으면 블록이 없다 (기본 상태)', async ({ page }) => {
-		await page.goto(`/?c=${FOREIGN.case}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${FOREIGN.case}`);
 		await expect(page.locator(`[data-case="${FOREIGN.case}"]`)).toBeVisible();
 		await expect(block(page)).toHaveCount(0);
 	});
 
 	test('기준 하나를 배우면 그 기준 경로가 뜬다', async ({ page }) => {
 		await seedSetup(page, ownCases(LEARNED));
-		await page.goto(`/?c=${FOREIGN.case}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${FOREIGN.case}`);
 
 		await expect(block(page)).toBeVisible();
 		await expect(page.locator(`[data-alt-route="${LEARNED}"]`)).toBeVisible();
@@ -61,20 +61,20 @@ test.describe('아는 기준으로', () => {
 
 	test('자기 케이스를 하나만 체크하면 아직 안 뜬다', async ({ page }) => {
 		await seedSetup(page, [ownCases(LEARNED)[0]]);
-		await page.goto(`/?c=${FOREIGN.case}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${FOREIGN.case}`);
 		await expect(block(page)).toHaveCount(0);
 	});
 
 	test('배정된 기준을 배우면 블록이 사라진다', async ({ page }) => {
 		await seedSetup(page, [...ownCases(LEARNED), ...ownCases(FOREIGN.setup.anchor)]);
-		await page.goto(`/?c=${FOREIGN.case}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${FOREIGN.case}`);
 		await expect(page.locator(`[data-case="${FOREIGN.case}"]`)).toBeVisible();
 		await expect(block(page)).toHaveCount(0);
 	});
 
 	test('무브 수와 증가분을 함께 적는다', async ({ page }) => {
 		await seedSetup(page, ownCases(LEARNED));
-		await page.goto(`/?c=${FOREIGN.case}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${FOREIGN.case}`);
 
 		const row = page.locator(`[data-alt-route="${LEARNED}"]`);
 		const want = alts.cases[FOREIGN.case][LEARNED].moves;
@@ -85,7 +85,7 @@ test.describe('아는 기준으로', () => {
 
 	test('optimized 표기에서는 뜨지 않는다', async ({ page }) => {
 		await seedSetup(page, ownCases(LEARNED));
-		await page.goto(`/?c=${FOREIGN.case}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${FOREIGN.case}`);
 		await expect(block(page)).toBeVisible();
 
 		await page.locator('[data-toggle="mode"] [data-option="direct"]').click();

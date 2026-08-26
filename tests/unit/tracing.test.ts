@@ -704,7 +704,7 @@ describe('T5-1 정적 검사 — 버퍼 리터럴이 없다 (FR-TR-7)', () => {
 describe('T5-1 정적 검사 — 뒷면을 새게 하는 코드가 없다 (FR-TR-15)', () => {
 	const viewer = readFileSync('src/lib/cube/cube3d.ts', 'utf8');
 	const wrapper = readFileSync('src/lib/ui/Cube3D.svelte', 'utf8');
-	const page = readFileSync('src/routes/trace/+page.svelte', 'utf8');
+	const page = readFileSync('src/routes/3x3/bld/trace/+page.svelte', 'utf8');
 
 	/**
 	 * 주석을 걷어낸 코드만 본다. 이 저장소의 주석은 "미니맵·전개도를 만들지 않는다"

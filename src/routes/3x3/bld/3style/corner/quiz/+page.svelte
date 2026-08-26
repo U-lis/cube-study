@@ -13,6 +13,7 @@
 	import MoveKeypad from '$lib/ui/MoveKeypad.svelte';
 	import AnchorPad from '$lib/ui/AnchorPad.svelte';
 	import SegToggle from '$lib/ui/SegToggle.svelte';
+	import UpLink from '$lib/ui/UpLink.svelte';
 	import { settings } from '$lib/ui/settings.svelte.js';
 	import { memorize } from '$lib/ui/memorize.svelte.js';
 	import { loadDataset } from '$lib/data/loader.js';
@@ -172,6 +173,8 @@
 
 <svelte:head><title>3-Style Corner — 퀴즈</title></svelte:head>
 
+<UpLink href="/" label="홈" />
+
 {#if ds}
 	<section class="quiz">
 		<div class="input-mode">
@@ -244,7 +247,7 @@
 							셋업으로 어느 기준공식에도 닿지 않는 케이스입니다
 						</p>
 					{/if}
-					<a href="/?c={current.case}" data-goto={current.case}>조회 화면에서 보기</a>
+					<a href="/3x3/bld/3style/corner/lookup?c={current.case}" data-goto={current.case}>조회 화면에서 보기</a>
 				</div>
 			{/if}
 

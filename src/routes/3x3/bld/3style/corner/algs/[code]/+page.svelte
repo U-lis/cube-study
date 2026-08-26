@@ -62,7 +62,7 @@
 	오른쪽 체크박스 열이 이름 없는 칸이 된다.
 -->
 <div class="head" data-anchor-head>
-	<UpLink href="/anchors" label="기준공식" />
+	<UpLink href="/3x3/bld/3style/corner/algs" label="기준공식" />
 
 <h1>{data.isDirect ? '기준 없음' : data.code}</h1>
 
@@ -231,7 +231,7 @@
 			class:hidden={(memorize.hideMemorized && memorize.isChecked('setup', c.case)) ||
 				(settings.hideInverse && c.setup.usesInverse)}
 		>
-			<a href="/?c={c.case}&from={data.code}">
+			<a href="/3x3/bld/3style/corner/lookup?c={c.case}&from={data.code}">
 				<span class="code">{c.case}</span>
 				{#if c.setup.S}
 					<Alg parts={[{ text: c.setup.S, role: 'setup' }]} size="sm" />

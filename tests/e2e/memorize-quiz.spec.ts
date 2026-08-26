@@ -102,7 +102,7 @@ async function toggleReady(page: Page): Promise<void> {
 
 test.describe('T5-1. 토글 존재 및 기본값 (FR-MC-18)', () => {
 	test('localStorage 없음 → 토글 렌더, OFF, 저장·복원', async ({ page }) => {
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await toggleReady(page);
 		const input = page.locator('[data-memorized-only-input]');
 
@@ -142,7 +142,7 @@ test.describe('T5-2. 토글 OFF — 전체 출제 유지 (FR-MC-18)', () => {
 		const single = allCodes[0];
 		await seedChecked(page, [], [single]);
 		await seedQuizInput(page, 'direct');
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await toggleReady(page);
 		await expect(page.locator('[data-memorized-only-input]')).not.toBeChecked();
 
@@ -161,7 +161,7 @@ test.describe('T5-3. direct 모드 토글 ON — pool 제한 (FR-MC-19)', () => 
 		await seedChecked(page, [], picks);
 		await seedQuizInput(page, 'direct');
 		await seedMemorizedOnly(page, true);
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await toggleReady(page);
 
 		await expect(page.locator('[data-empty-pool]')).toHaveCount(0);
@@ -184,7 +184,7 @@ test.describe('T5-4. quizInput 전환 시 pool 즉시 갱신 (FR-MC-19)', () => 
 		await seedQuizInput(page, 'direct');
 		await seedMemorizedOnly(page, true);
 
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await toggleReady(page);
 
 		// step 1: direct pool = [dA, dB]
@@ -236,7 +236,7 @@ test.describe('T5-5. 암기 케이스 0개 — 안내, fallback 없음 (FR-MC-20
 		await seedQuizInput(page, 'direct');
 		await seedMemorizedOnly(page, true);
 
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await toggleReady(page);
 		await expect(page.locator('[data-memorized-only-input]')).toBeChecked();
 
@@ -268,7 +268,7 @@ test.describe('T5-5. 암기 케이스 0개 — 안내, fallback 없음 (FR-MC-20
 		await seedChecked(page, [], [target]);
 		await seedQuizInput(page, 'direct');
 		await seedMemorizedOnly(page, true);
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await toggleReady(page);
 
 		await expect(page.locator('[data-empty-pool]')).toHaveCount(0);
@@ -285,7 +285,7 @@ test.describe('T5-6. memorizedOnly 도중 변경 → 즉시 재출제 (FR-MC-18,
 		const only = allCodes[0];
 		await seedChecked(page, [], [only]);
 		await seedQuizInput(page, 'direct');
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await toggleReady(page);
 
 		// 초기 문제가 우연히 `only` 라면 판별력이 없다. 다른 문제가 나올 때까지
@@ -313,7 +313,7 @@ test.describe('T5-6. memorizedOnly 도중 변경 → 즉시 재출제 (FR-MC-18,
 		// OFF 상태로 열어서 임의 케이스가 나온 뒤 ON → 안내로 전환.
 		await seedChecked(page, [], []);
 		await seedQuizInput(page, 'direct');
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await toggleReady(page);
 		await expect(page.locator('h1[data-case]')).toBeVisible();
 
@@ -328,7 +328,7 @@ test.describe('레이아웃 안정성 (안내 등장 시 튀지 않음)', () => 
 	test('입력 방식 토글 위치가 안내 등장 전후 동일 @viewport', async ({ page }) => {
 		await seedChecked(page, [], []);
 		await seedQuizInput(page, 'direct');
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await toggleReady(page);
 
 		const inputMode = page.locator('.input-mode');

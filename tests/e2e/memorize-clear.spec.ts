@@ -54,7 +54,7 @@ async function openAbout(page: Page): Promise<void> {
 
 test.describe('T6-1. 버튼 존재 및 위치 (FR-MC-21)', () => {
 	test('About 모달에 전체 해제 버튼, 업데이트 확인 아래, 높이 44px 이상 @viewport', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await openAbout(page);
 
 		const idle = page.locator('[data-clear-memorize="idle"]');
@@ -77,7 +77,7 @@ test.describe('T6-2. 2단계 확인 흐름 (FR-MC-22)', () => {
 		const seededDirect = allCodes.slice(0, 1);
 		await seedChecked(page, seededSetup, seededDirect);
 
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await openAbout(page);
 
 		// 첫 클릭 → confirming
@@ -111,7 +111,7 @@ test.describe('T6-3. 브라우저 confirm() 미사용 (FR-MC-22)', () => {
 			d.dismiss();
 		});
 
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await openAbout(page);
 		await page.locator('[data-clear-memorize="idle"]').click();
 		await page.locator('[data-clear-memorize="confirming"]').click();
@@ -124,7 +124,7 @@ test.describe('T6-3. 브라우저 confirm() 미사용 (FR-MC-22)', () => {
 test.describe('T6-4. 모달 닫기 → idle 리셋 (FR-MC-22)', () => {
 	test('confirming 상태에서 닫고 다시 열면 idle 로 복귀', async ({ page }) => {
 		await seedChecked(page, allCodes.slice(0, 1), []);
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 
 		// 첫 회: confirming 까지 만든 뒤 닫기
 		await openAbout(page);
@@ -159,7 +159,7 @@ test.describe('T6-5. 전체 해제 실행 결과 (FR-MC-21)', () => {
 		const seededSetup = allCodes.slice(0, 3);
 		const seededDirect = allCodes.slice(0, 2);
 		await seedChecked(page, seededSetup, seededDirect);
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await openAbout(page);
 		await page.locator('[data-clear-memorize="idle"]').click();
 		await page.locator('[data-clear-memorize="confirming"]').click();
@@ -172,8 +172,8 @@ test.describe('T6-5. 전체 해제 실행 결과 (FR-MC-21)', () => {
 		// 복원되므로 하단 nav 링크를 통한 클라이언트 사이드 네비게이션을 쓴다.
 		await page.locator('[data-about-close]').click();
 		await expect(page.locator('[data-about]')).not.toBeVisible();
-		await page.locator('nav a[href="/anchors"]').click();
-		await page.waitForURL(/\/anchors$/);
+		await page.locator('nav a[href="/3x3/bld/3style/corner/algs"]').click();
+		await page.waitForURL(/\/3x3\/bld\/3style\/corner\/algs$/);
 
 		// data-progress 를 가진 요소가 있어야 하고 전부 "0/N" 패턴
 		const progressLocs = page.locator('[data-progress]');
@@ -185,7 +185,7 @@ test.describe('T6-5. 전체 해제 실행 결과 (FR-MC-21)', () => {
 
 		// 기준 상세 화면도 클라이언트 사이드 네비게이션으로 이동
 		await page.locator(`a[data-anchor="${firstAnchor}"]`).click();
-		await page.waitForURL(new RegExp(`/anchors/${firstAnchor}$`));
+		await page.waitForURL(new RegExp(`/3x3/bld/3style/corner/algs/${firstAnchor}$`));
 		const boxes = page.locator('[data-memorize-setup] [data-memorize-input]');
 		const boxCount = await boxes.count();
 		expect(boxCount).toBeGreaterThan(0);
@@ -200,7 +200,7 @@ test.describe('T6-6. 첫 클릭 후 취소 — 실행 안 됨 (FR-MC-22)', () =>
 		const seededSetup = allCodes.slice(0, 2);
 		const seededDirect = allCodes.slice(0, 1);
 		await seedChecked(page, seededSetup, seededDirect);
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 
 		await openAbout(page);
 		await page.locator('[data-clear-memorize="idle"]').click();
@@ -227,7 +227,7 @@ test.describe('grep 검증 (About 파일에 confirm( 없음)', () => {
 			dialogs.push(d.type());
 			d.dismiss();
 		});
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await openAbout(page);
 		await page.locator('[data-clear-memorize="idle"]').click();
 		await page.locator('[data-clear-memorize="confirming"]').click();

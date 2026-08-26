@@ -9,6 +9,7 @@
 	import { wakeLock } from '$lib/ui/wakelock.svelte.js';
 	import About from '$lib/ui/About.svelte';
 	import Toast from '$lib/ui/Toast.svelte';
+	import { tabsFor, isHome } from '$lib/ui/nav.js';
 	let { children } = $props();
 
 	// 설치된 앱에서만 켜진다. 화면 이동 뒤마다 감시 항목을 다시 심는다.
@@ -60,12 +61,17 @@
 
 	let about: ReturnType<typeof About> | undefined = $state();
 	const THEME_LABEL = { system: '시스템', light: '라이트', dark: '다크' } as const;
-	const nav = [
-		{ href: '/', label: '조회' },
-		{ href: '/anchors', label: '기준공식' },
-		{ href: '/quiz', label: '퀴즈' },
-		{ href: '/trace', label: '트레이싱' }
-	];
+	/*
+	 * 하단 탭 (FR-NAV-4·5·6·23).
+	 *
+	 * 소속·순서를 손으로 적은 배열이 여기 있었다. 지금은 경로가 정한다 — 형제는
+	 * 기능 칸만 다른 실재 화면이고, 그 계산은 `nav.ts` 하나에 있다.
+	 *
+	 * 활성 판정을 `pathname === href` 정확 일치로 하지 않는 이유는 상세 화면이다.
+	 * `/…/algs/GC` 에서 목록 탭이 꺼지면 지금 어디에 있는지가 화면에서 사라진다.
+	 */
+	let tabs = $derived(tabsFor(page.url.pathname, page.route.id));
+	let showTabs = $derived(!isHome(page.url.pathname) && tabs.length > 0);
 </script>
 
 <!--
@@ -187,11 +193,18 @@
 		<Toast text="새 버전으로 업데이트했습니다" onclose={() => sw.dismiss()} />
 	{/if}
 	<main>{@render children()}</main>
-	<nav>
-		{#each nav as item (item.href)}
-			<a href={item.href} class:on={page.url.pathname === item.href}>{item.label}</a>
-		{/each}
-	</nav>
+	<!--
+		탭바를 `{#if}` 로 넣고 뺀다. 이것은 NFR-NAV-1(요소 개수 불변)의 예외가 아니다 —
+		갈리는 것은 **라우트 사이**이고, 한 라우트는 서버가 그린 것과 하이드레이션한 것이
+		언제나 같다. `tabsFor` 가 `localStorage` 를 안 읽는 순수 함수인 것이 그 보장이다.
+	-->
+	{#if showTabs}
+		<nav>
+			{#each tabs as tab (tab.href)}
+				<a href={tab.href} class:on={tab.active}>{tab.label}</a>
+			{/each}
+		</nav>
+	{/if}
 </div>
 
 <style>

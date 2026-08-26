@@ -19,6 +19,7 @@
 	────────────────────────────────────────────────────────────
 -->
 <script lang="ts">
+	import UpLink from '$lib/ui/UpLink.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import Cube from 'cubejs/lib/cube.js';
@@ -597,6 +598,8 @@
 </script>
 
 <svelte:head><title>트레이싱 훈련</title></svelte:head>
+
+<UpLink href="/" label="홈" />
 
 <!--
 	`data-orientation` 은 검사용 신호다 (FR-TR-17). 회색 큐브는 24방향에서 **같은

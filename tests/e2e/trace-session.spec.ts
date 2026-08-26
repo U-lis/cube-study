@@ -20,7 +20,7 @@ async function open(page: Page, settings: Record<string, string> = {}): Promise<
 	await page.addInitScript((s) => {
 		for (const [k, v] of Object.entries(s)) localStorage.setItem(k, v);
 	}, settings);
-	await page.goto('/trace');
+	await page.goto('/3x3/bld/trace');
 	await expect(page.locator('[data-stage]')).toHaveAttribute('data-stage', 'idle');
 }
 
@@ -395,7 +395,7 @@ test.describe('T3-5 카메라 각도 (FR-TR-17)', () => {
 	test('세션마다 초기 각도가 달라진다', async ({ page }) => {
 		const seen = new Set<string>();
 		for (let i = 0; i < 10; i++) {
-			await page.goto('/trace');
+			await page.goto('/3x3/bld/trace');
 			const v = await page.locator('[data-stage]').getAttribute('data-orientation');
 			seen.add(v ?? '');
 		}
@@ -413,27 +413,33 @@ test.describe('T3-5 카메라 각도 (FR-TR-17)', () => {
 });
 
 test.describe('T3-6 워커 반납 (NFR-TR-1)', () => {
+	/*
+	 * 트레이싱에는 하단 탭이 없다 (FR-NAV-5 — 형제가 없다). 그래서 화면을 뜨고
+	 * 돌아오는 길이 홈을 거친다. **전체 새로고침이 아니라 클라이언트 이동이어야**
+	 * 이 검사가 뜻을 갖는다 — 새로고침은 워커를 무조건 버리므로 아무것도 증명하지
+	 * 않는다. 그래서 `goto` 가 아니라 링크를 누른다.
+	 */
 	test('화면을 벗어나면 워커가 종료된다', async ({ page }) => {
 		await open(page);
 		await ready(page);
 		expect(page.workers().length).toBeGreaterThan(0);
-		await page.locator('nav a[href="/quiz"]').click();
-		await expect(page.locator('h1[data-case]')).toBeVisible();
+		await page.locator('[data-up-link]').click();
+		await expect(page.locator('[data-home]')).toBeVisible();
 		await expect.poll(() => page.workers().length, { timeout: 10_000 }).toBe(0);
 	});
 
 	test('다시 들어오면 새 워커가 준비된다', async ({ page }) => {
 		await open(page);
 		await ready(page);
-		await page.locator('nav a[href="/quiz"]').click();
+		await page.locator('[data-up-link]').click();
 		await expect.poll(() => page.workers().length, { timeout: 10_000 }).toBe(0);
-		await page.locator('nav a[href="/trace"]').click();
+		await page.locator('[data-home] a[href="/3x3/bld/trace"]').click();
 		await ready(page);
 		expect(page.workers().length).toBeGreaterThan(0);
 	});
 
 	test('퀴즈 화면은 워커를 띄우지 않는다', async ({ page }) => {
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await expect(page.locator('h1[data-case]')).toBeVisible();
 		await page.waitForTimeout(1500);
 		expect(page.workers().length).toBe(0);
@@ -443,7 +449,7 @@ test.describe('T3-6 워커 반납 (NFR-TR-1)', () => {
 test.describe('T3-7 레이아웃 @viewport', () => {
 	test('모바일 폭에서 가로 스크롤이 생기지 않는다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 320, height: 720 });
-		await page.goto('/trace');
+		await page.goto('/3x3/bld/trace');
 		const over = await page.evaluate(
 			() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 		);
@@ -497,7 +503,7 @@ test.describe('T3-7 레이아웃 @viewport', () => {
 		 * 상자가 없으므로 각자 자기 단계에서 잰다 — 규칙은 `min-height` 하나지만
 		 * 그 규칙이 실제로 먹는 것을 보는 것이 이 검사의 일이다.
 		 */
-		await page.goto('/trace');
+		await page.goto('/3x3/bld/trace');
 		await ready(page);
 		const tall = async (sel: string) => {
 			const box = await page.locator(sel).boundingBox();
@@ -518,7 +524,7 @@ test.describe('T3-7 레이아웃 @viewport', () => {
 	});
 
 	test('타이머 숫자가 길어져도 옆이 밀리지 않는다 @viewport', async ({ page }) => {
-		await page.goto('/trace');
+		await page.goto('/3x3/bld/trace');
 		const label = page.locator('[data-piece-label]');
 		const before = (await label.boundingBox())!;
 		await ready(page);
@@ -535,7 +541,7 @@ test.describe('T3-7 프리렌더 자리 @viewport', () => {
 
 	test('스크립트 없이도 캔버스 자리가 같은 크기로 존재한다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 412, height: 900 });
-		await page.goto('/trace');
+		await page.goto('/3x3/bld/trace');
 		const box = (await canvas(page).boundingBox())!;
 		expect(box.width).toBeGreaterThan(100);
 		// 정사각 자리. 하이드레이션 후에도 이 비율이 바뀌지 않아야 화면이 안 밀린다.

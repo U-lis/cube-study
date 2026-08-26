@@ -4,7 +4,7 @@ import data from '../../src/lib/data/corner-UBL.json' with { type: 'json' };
 const meta = (data as unknown as { meta: { anchorLearnOrder?: string[] } }).meta;
 const anchors = (data as unknown as { anchors: Record<string, unknown> }).anchors;
 /** 기준 상세 페이지 하나. 이름을 박아두면 데이터 교체 때 404 를 밟는다. */
-const anAnchorPath = `/anchors/${(meta.anchorLearnOrder ?? Object.keys(anchors))[0]}`;
+const anAnchorPath = `/3x3/bld/3style/corner/algs/${(meta.anchorLearnOrder ?? Object.keys(anchors))[0]}`;
 
 test.describe('PWA (FR-20, NFR-8)', () => {
 	test('manifest 가 유효하다', async ({ request }) => {
@@ -32,7 +32,7 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 	 * +layout.svelte 가 직접 넣는다. 빠지면 설치가 통째로 불가능해진다.
 	 */
 	test('모든 페이지가 manifest 를 링크한다', async ({ page }) => {
-		for (const path of ['/', '/quiz', '/anchors', anAnchorPath]) {
+		for (const path of ['/', '/3x3/bld/3style/corner/quiz', '/3x3/bld/3style/corner/algs', anAnchorPath]) {
 			await page.goto(path);
 			const href = await page
 				.locator('link[rel="manifest"]')
@@ -43,7 +43,7 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 	});
 
 	test('설치 조건을 만족한다', async ({ page, request }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		const href = await page.locator('link[rel="manifest"]').first().getAttribute('href');
 		const m = await (await request.get(href!)).json();
 
@@ -74,11 +74,11 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 			const u = new URL(r.url());
 			if (u.host !== 'localhost:4174') external.push(r.url());
 		});
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await page.getByLabel('케이스 코드').fill('LB');
 		await expect(page.locator('section.case')).toBeVisible();
-		await page.goto('/anchors');
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/algs');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		expect(external).toEqual([]);
 	});
 
@@ -88,7 +88,7 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 		page.on('response', (r) => {
 			if (r.status() === 404) failed.push(`404 ${r.url()}`);
 		});
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		await page.waitForFunction(
 			async () => !!(await navigator.serviceWorker?.getRegistration())?.active,
 			undefined,
@@ -98,7 +98,7 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 	});
 
 	test('오프라인에서 조회·브라우저·퀴즈가 동작한다', async ({ page, context }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		// 첫 로드에서 controller 는 null 이다. registration 이 active 가 될 때까지 기다린 뒤
 		// reload 해야 페이지가 서비스워커의 제어를 받는다.
 		await page.waitForFunction(
@@ -122,10 +122,10 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 		await page.getByLabel('케이스 코드').fill('LB');
 		await expect(page.locator('section.case')).toHaveAttribute('data-case', 'LB');
 
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		await expect(page.locator(`[data-anchor="${anAnchorPath.split('/').pop()}"]`)).toBeVisible();
 
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await expect(page.locator('h1[data-case]')).toBeVisible();
 		await page.locator('[data-move="R"]').click();
 		await page.locator('[data-action="submit"]').click();
@@ -138,21 +138,21 @@ test.describe('PWA (FR-20, NFR-8)', () => {
 test.describe('테마 (FR-21)', () => {
 	test('시스템 다크 설정을 따른다', async ({ page }) => {
 		await page.emulateMedia({ colorScheme: 'dark' });
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
 		expect(bg).toBe('rgb(17, 17, 19)');
 	});
 
 	test('시스템 라이트 설정을 따른다', async ({ page }) => {
 		await page.emulateMedia({ colorScheme: 'light' });
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
 		expect(bg).toBe('rgb(255, 255, 255)');
 	});
 
 	test('수동 선택이 시스템 설정을 이기고 새로고침 후에도 유지된다', async ({ page }) => {
 		await page.emulateMedia({ colorScheme: 'dark' });
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		const toggle = page.locator('[data-theme-toggle]');
 
 		// system -> light
@@ -171,7 +171,7 @@ test.describe('테마 (FR-21)', () => {
 
 	test('FOUC 없음: 초기 렌더부터 저장된 테마가 적용된다', async ({ page }) => {
 		await page.emulateMedia({ colorScheme: 'dark' });
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await page.locator('[data-theme-toggle]').click(); // light 고정
 		await page.reload();
 		// 문서 파싱 직후 data-theme 이 이미 붙어 있어야 한다
@@ -182,7 +182,7 @@ test.describe('테마 (FR-21)', () => {
 	test('양 테마에서 insert/interchange 색이 배경과 충분히 대비된다', async ({ page }) => {
 		for (const scheme of ['light', 'dark'] as const) {
 			await page.emulateMedia({ colorScheme: scheme });
-			await page.goto('/?c=CI');
+			await page.goto('/3x3/bld/3style/corner/lookup?c=CI');
 			const seg = page.locator('[data-toggle="mode"]');
 			await seg.locator('[data-option="direct"]').click();
 			await expect(seg).toHaveAttribute('data-value', 'direct');
@@ -215,7 +215,7 @@ test.describe('테마 (FR-21)', () => {
 test.describe('반응형 (FR-22)', () => {
 	test('모바일에서 가로 스크롤이 없다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 375, height: 667 });
-		for (const path of ['/', '/?c=CU', '/anchors', anAnchorPath, '/quiz']) {
+		for (const path of ['/', '/3x3/bld/3style/corner/lookup?c=CU', '/3x3/bld/3style/corner/algs', anAnchorPath, '/3x3/bld/3style/corner/quiz']) {
 			await page.goto(path);
 			const overflow = await page.evaluate(
 				() => document.documentElement.scrollWidth > document.documentElement.clientWidth
@@ -226,22 +226,32 @@ test.describe('반응형 (FR-22)', () => {
 
 	test('스크롤해도 입력 필드가 화면 상단에 남는다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 375, height: 667 });
-		await page.goto('/?c=CU'); // 내용이 긴 케이스
+		await page.goto('/3x3/bld/3style/corner/lookup?c=CU'); // 내용이 긴 케이스
 		const input = page.getByLabel('케이스 코드');
+		// 데이터셋이 붙어 결과 카드가 서야 문서가 스크롤될 길이가 된다.
+		await expect(page.locator('section.case')).toBeVisible();
 
-		await page.mouse.wheel(0, 1200);
-		await page.waitForTimeout(300);
+		/*
+		 * `mouse.wheel` 이 아니라 `scrollTo` 로 민다. 휠은 이 환경에서 문서를 안 움직일
+		 * 때가 있고, 그러면 **스크롤을 안 한 채로 "상단에 있다" 를 확인** 하게 된다 —
+		 * 통과하든 실패하든 sticky 와 무관한 답이다. 그래서 실제로 밀렸는지를 먼저 못
+		 * 박는다.
+		 */
+		await page.evaluate(() => window.scrollTo(0, 2000));
+		await page.waitForTimeout(200);
+		const scrolled = await page.evaluate(() => window.scrollY);
+		expect(scrolled, '문서가 안 밀리면 sticky 를 잴 수 없다').toBeGreaterThan(0);
 
 		const box = (await input.boundingBox())!;
-		// 스크롤 후에도 뷰포트 상단 영역에 보여야 한다
+		// 되돌아가기 링크(FR-NAV-7)는 함께 밀려 올라가고 입력만 붙어 남는다.
 		expect(box.y).toBeGreaterThanOrEqual(0);
-		expect(box.y).toBeLessThan(80);
+		expect(box.y).toBeLessThan(24);
 		await expect(input).toBeInViewport();
 	});
 
 	test('모바일에서 무브 버튼 18개가 모두 보인다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 375, height: 667 });
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		const btns = page.locator('[data-move]');
 		await expect(btns).toHaveCount(18);
 		for (let i = 0; i < 18; i++) await expect(btns.nth(i)).toBeVisible();
@@ -249,7 +259,7 @@ test.describe('반응형 (FR-22)', () => {
 
 	test('데스크탑에서 최대 폭이 유지된다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 1280, height: 800 });
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		const w = await page.evaluate(
 			() => document.querySelector('.shell')!.getBoundingClientRect().width
 		);
@@ -297,7 +307,7 @@ const planted = async (page: import('@playwright/test').Page) => {
 test.describe('뒤로가기 (설치된 앱)', () => {
 	test('탭을 옮겨도 히스토리가 쌓이지 않는다', async ({ page }) => {
 		await asStandalone(page);
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await armed(page);
 		const before = await page.evaluate(() => history.length);
 
@@ -311,12 +321,12 @@ test.describe('뒤로가기 (설치된 앱)', () => {
 
 	test('케이스 링크를 따라가도 히스토리가 쌓이지 않는다', async ({ page }) => {
 		await asStandalone(page);
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		await armed(page);
 		const before = await page.evaluate(() => history.length);
 
 		await page.locator('[data-anchor]').first().click();
-		await page.locator('a[href^="/?c="]').first().click();
+		await page.locator('a[href^="/3x3/bld/3style/corner/lookup?c="]').first().click();
 		await expect(page.locator('section.case')).toBeVisible();
 
 		expect(await page.evaluate(() => history.length)).toBe(before);
@@ -324,7 +334,7 @@ test.describe('뒤로가기 (설치된 앱)', () => {
 
 	test('한 번 누르면 예고만 하고 화면이 남는다', async ({ page }) => {
 		await asStandalone(page);
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		await armed(page);
 		await expect(page.locator('h1[data-case]')).toBeVisible();
 
@@ -344,7 +354,7 @@ test.describe('뒤로가기 (설치된 앱)', () => {
 	 */
 	test('켠 직후 아무 이동 없이 눌러도 예고가 뜬다', async ({ page }) => {
 		await asStandalone(page);
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await planted(page);
 
 		await page.goBack();
@@ -360,7 +370,7 @@ test.describe('뒤로가기 (설치된 앱)', () => {
 	 */
 	test('메모리에서 복구되어도 감시 항목이 다시 심어진다', async ({ page }) => {
 		await asStandalone(page);
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await planted(page);
 
 		// 뒤로가기로 나가는 상황: 감시 항목이 소모된다.
@@ -375,7 +385,7 @@ test.describe('뒤로가기 (설치된 앱)', () => {
 
 	test('예고는 잠시 뒤 사라진다', async ({ page }) => {
 		await asStandalone(page);
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await armed(page);
 		await page.goBack();
 		await expect(page.locator('[data-toast]')).toBeVisible();
@@ -386,7 +396,7 @@ test.describe('뒤로가기 (설치된 앱)', () => {
 /** 브라우저 탭에서는 가로채지 않는다. 가두는 짓이고 닫을 앱도 아니다. */
 test.describe('뒤로가기 (브라우저 탭)', () => {
 	test('뒤로가기가 이전 화면으로 그대로 이동한다', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await page.locator('nav a:text-is("퀴즈")').click();
 		await expect(page.locator('h1[data-case]')).toBeVisible();
 		await page.goBack();

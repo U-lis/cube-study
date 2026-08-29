@@ -2,7 +2,10 @@
   2지선다 세그먼티드 토글.
 
   단일 버튼으로 상태만 보여주면 "누르면 무엇이 되는지"를 알 수 없다.
-  두 선택지를 나란히 두고 활성 쪽을 강조한다.
+  선택지를 나란히 두고 활성 쪽을 강조한다.
+
+  선택지는 둘 또는 셋이다. 넷을 넘으면 모바일 폭에서 글자가 잘리기 시작하므로
+  그때는 이 컨트롤이 아니라 목록이 맞다.
 
   설명은 항상 보이는 한 줄로 둔다. 모바일에는 hover 가 없어서
   title 툴팁에만 의존하면 정작 주 사용처에서 안 보인다.
@@ -19,15 +22,42 @@
 
 	let {
 		name,
+		heading = '',
 		value = $bindable(),
-		options
-	}: { name: string; value: T; options: [Option, Option] } = $props();
+		options,
+		disabled = false
+	}: {
+		name: string;
+		/**
+		 * 무엇을 고르는 자리인가. 라벨만으로는 알 수 없다.
+		 *
+		 * 비워 두면 머리말을 그리지 않는다 — 이 컨트롤을 이미 쓰고 있는 조회·퀴즈
+		 * 화면은 문맥이 제목으로 서 있어서 한 줄이 더 붙으면 군더더기다.
+		 */
+		heading?: string;
+		value: T;
+		options: Option[];
+		/**
+		 * 잠금. 요소를 `{#if}` 로 없애지 않는다 (AD-14) — 자리를 지켜야 화면이
+		 * 밀리지 않는다. 잠긴 표시는 **색이 아니라** 투명도와 커서다.
+		 */
+		disabled?: boolean;
+	} = $props();
 
 	let active = $derived(options.find((o) => o.value === value) ?? options[0]);
 </script>
 
 <div class="wrap">
-	<div class="seg" data-toggle={name} data-value={value} role="group" aria-label={name}>
+	{#if heading}<p class="heading" data-heading={name}>{heading}</p>{/if}
+	<div
+		class="seg"
+		data-toggle={name}
+		data-value={value}
+		data-locked={disabled ? 'true' : 'false'}
+		role="group"
+		aria-label={heading || name}
+		style="--cols: {options.length}"
+	>
 		{#each options as o (o.value)}
 			<button
 				type="button"
@@ -35,6 +65,7 @@
 				class:on={value === o.value}
 				aria-pressed={value === o.value}
 				title={o.title}
+				{disabled}
 				onclick={() => (value = o.value)}
 			>
 				{o.label}
@@ -50,7 +81,8 @@
 	}
 	.seg {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		/* 선택지 개수는 호출부가 정한다. 인라인 변수로 받아 CSS 를 갈라두지 않는다. */
+		grid-template-columns: repeat(var(--cols, 2), 1fr);
 		gap: 2px;
 		padding: 2px;
 		background: var(--bg);
@@ -77,6 +109,19 @@
 		color: var(--bg);
 		background: var(--fg);
 		font-weight: 600;
+	}
+	/* 잠금은 색 하나로 알리지 않는다 — 투명도와 커서가 함께 바뀐다 (#26). */
+	.seg[data-locked='true'] {
+		opacity: 0.5;
+	}
+	.seg[data-locked='true'] button {
+		cursor: not-allowed;
+	}
+	.heading {
+		margin: 0 0 0.25rem;
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: var(--muted);
 	}
 	.hint {
 		margin: 0.3rem 0 0;

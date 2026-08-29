@@ -78,7 +78,7 @@ test.describe('기본 상태 (FR-MC-14)', () => {
 		const codes = anchoredCases(firstAnchor);
 		test.skip(codes.length < 1, `${firstAnchor} 에 케이스가 없다`);
 
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await pageReady(page);
 
 		// 토글은 OFF
@@ -102,7 +102,7 @@ test.describe('체크 + 토글 ON (FR-MC-13, 17)', () => {
 		const target = codes[0];
 
 		await seedSetup(page, [target]);
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await pageReady(page);
 
 		// 토글 OFF 상태에서 li 개수·ul top 기록
@@ -145,7 +145,7 @@ test.describe('모두 암기 안내 (FR-MC-15)', () => {
 		// 해당 기준의 모든 케이스를 setup 체크로 심고 토글 ON 으로 연다
 		await seedSetup(page, codes);
 		await seedHide(page, true);
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await pageReady(page);
 
 		// 안내 표시
@@ -177,7 +177,7 @@ test.describe('토글 + 체크 해제 → 즉시 재표시 (FR-MC-13)', () => {
 
 		await seedSetup(page, [target]);
 		await seedHide(page, true);
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await pageReady(page);
 
 		// 초기: 대상은 숨김, 진도는 1/N
@@ -208,7 +208,7 @@ test.describe('localStorage 저장·복원 (FR-MC-14)', () => {
 		const codes = anchoredCases(firstAnchor);
 		test.skip(codes.length < 1, `${firstAnchor} 에 케이스가 없다`);
 
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await pageReady(page);
 
 		// ON → 저장 = "true"
@@ -244,7 +244,7 @@ test.describe('진도 분모 불변 (FR-MC-16)', () => {
 		const total = codes.length;
 
 		await seedSetup(page, [codes[0]]);
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 		await pageReady(page);
 
 		// OFF 상태: 1/total
@@ -269,12 +269,12 @@ test.describe('SSR 산출물 검증 (AD-4, FR-MC-15)', () => {
 		test.skip(codes.length < 1, `${firstAnchor} 에 케이스가 없다`);
 
 		let html = '';
-		await context.route(`**/anchors/${firstAnchor}`, async (route) => {
+		await context.route(`**/algs/${firstAnchor}`, async (route) => {
 			const res = await route.fetch();
 			html = await res.text();
 			await route.fulfill({ response: res });
 		});
-		await page.goto(`/anchors/${firstAnchor}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${firstAnchor}`);
 
 		// SSR 에 안내 문구 없음
 		expect(html).not.toContain('모두 암기 표시되어 있습니다');

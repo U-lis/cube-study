@@ -24,7 +24,7 @@ test.describe('조회', () => {
 	test('셋업 없는 케이스는 setup+strict 에서 기준공식 이름만 나온다', async ({ page }) => {
 		const code = findCase((c) => c.setup.S === '')!;
 		const c = parsed.cases[code];
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).fill(code);
 		await expect(result(page)).toHaveAttribute('data-case', code);
 		await expect(page.locator(`[data-anchor="${c.setup.anchor}"]`)).toBeVisible();
@@ -32,24 +32,24 @@ test.describe('조회', () => {
 	});
 
 	test('compact 로 전환하면 실제 무브 열이 나온다', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		await page.locator('[data-toggle="notation"] [data-option="compact"]').click();
 		await expect(page.locator('.main .alg')).toHaveText(parsed.cases['LB'].setup.alg);
 	});
 
 	test('소문자 입력도 조회된다', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).fill('lb');
 		await expect(result(page)).toHaveAttribute('data-case', 'LB');
 	});
 
 	test('딥링크 /?c=TU', async ({ page }) => {
-		await page.goto('/?c=TU');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=TU');
 		await expect(result(page)).toHaveAttribute('data-case', 'TU');
 	});
 
 	test('역 케이스 링크가 이동한다', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		await page.locator('[data-inverse="BL"]').click();
 		await expect(result(page)).toHaveAttribute('data-case', 'BL');
 	});
@@ -58,14 +58,14 @@ test.describe('조회', () => {
 		// v3 에는 해당 케이스가 없다. 데이터가 다시 담으면 이 검증이 살아난다.
 		const code = findCase((c) => c.setup.anchor === '(직접)');
 		test.skip(!code, '기준 없는 케이스가 데이터에 없다');
-		await page.goto(`/?c=${code}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${code}`);
 		await expect(page.locator('[data-badge="direct-anchor"]')).toBeVisible();
 	});
 
 	test('역방향 케이스는 이름에 프라임이 붙고 뒤집은 무브열을 보여준다', async ({ page }) => {
 		const code = findCase((c) => c.setup.usesInverse === true)!;
 		const c = parsed.cases[code];
-		await page.goto(`/?c=${code}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${code}`);
 		await expect(page.locator(`[data-anchor="${c.setup.anchor}"]`)).toHaveText(refLabel(c));
 		await expect(page.locator('[data-inverse-note]')).toContainText(c.setup.anchor);
 	});
@@ -73,7 +73,7 @@ test.describe('조회', () => {
 
 test.describe('sticky 결과 (FR-4)', () => {
 	test('한 글자 지워도 결과가 사라지지 않고 흐려진다 @viewport', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).fill('LB');
 		await expect(result(page)).toBeVisible();
 		const before = await result(page).boundingBox();
@@ -88,13 +88,13 @@ test.describe('sticky 결과 (FR-4)', () => {
 	});
 
 	test('한 글자 상태에서 후보 18개', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).fill('L');
 		await expect(page.locator('.candidates')).toHaveAttribute('data-count', '18');
 	});
 
 	test('새 2글자가 완성되면 결과가 교체되고 stale 이 풀린다', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).fill('LB');
 		await input(page).fill('L');
 		await input(page).fill('LC');
@@ -103,7 +103,7 @@ test.describe('sticky 결과 (FR-4)', () => {
 	});
 
 	test('입력을 비워도 결과는 남는다 (치우는 것은 X 의 몫)', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).fill('LB');
 		await expect(result(page)).toBeVisible();
 
@@ -116,7 +116,7 @@ test.describe('sticky 결과 (FR-4)', () => {
 	});
 
 	test('X 를 누르면 결과가 사라진다', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).fill('LB');
 		await expect(result(page)).toBeVisible();
 
@@ -127,7 +127,7 @@ test.describe('sticky 결과 (FR-4)', () => {
 	});
 
 	test('치운 뒤 다시 입력하면 결과가 돌아온다', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		await page.locator('[data-action="clear"]').click();
 		await expect(result(page)).toHaveCount(0);
 		await input(page).fill('TU');
@@ -136,7 +136,7 @@ test.describe('sticky 결과 (FR-4)', () => {
 	});
 
 	test('조회 페이지에 들어오면 입력에 커서가 있다', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await expect(input(page)).toBeFocused();
 		// 키보드 없이 바로 타이핑되는지까지 확인한다
 		await page.keyboard.type('LB');
@@ -144,8 +144,8 @@ test.describe('sticky 결과 (FR-4)', () => {
 	});
 
 	test('다른 화면을 거쳐 돌아와도 커서가 잡힌다', async ({ page }) => {
-		await page.goto('/quiz');
-		await page.locator('nav a[href="/"]').click();
+		await page.goto('/3x3/bld/3style/corner/quiz');
+		await page.locator('nav a[href="/3x3/bld/3style/corner/lookup"]').click();
 		await expect(input(page)).toBeFocused();
 	});
 
@@ -154,7 +154,7 @@ test.describe('sticky 결과 (FR-4)', () => {
 	 * 정작 보러 온 공식이 안 보인다.
 	 */
 	test('유효한 두 글자가 차면 포커스가 풀린다 (키보드 내림)', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await expect(input(page)).toBeFocused();
 		await page.keyboard.type('LB');
 		await expect(result(page)).toHaveAttribute('data-case', 'LB');
@@ -162,14 +162,14 @@ test.describe('sticky 결과 (FR-4)', () => {
 	});
 
 	test('딥링크로 들어와도 포커스가 풀려 있다', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		await expect(result(page)).toHaveAttribute('data-case', 'LB');
 		await expect(input(page)).not.toBeFocused();
 	});
 
 	/** 무효한 입력은 볼 공식이 없다. 그 자리에서 고치도록 포커스를 유지한다. */
 	test('무효한 두 글자에서는 포커스가 유지된다', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await expect(input(page)).toBeFocused();
 		await page.keyboard.type('AB'); // 버퍼 스티커
 		await expect(page.locator('[data-reason="buffer"]')).toBeVisible();
@@ -178,7 +178,7 @@ test.describe('sticky 결과 (FR-4)', () => {
 
 	/** 다시 탭했다는 것은 새 케이스를 치겠다는 뜻이다. 백스페이스를 요구하지 않는다. */
 	test('다시 포커스하면 입력이 비워지고 결과는 남는다', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		// 하이드레이션 전에 치면 키가 새고, 값이 안 차면 blur 도 일어나지 않는다.
 		// 커서가 놓인 것이 앱이 살아났다는 신호다 (바로 위 테스트와 같은 대기).
 		await expect(input(page)).toBeFocused();
@@ -196,7 +196,7 @@ test.describe('sticky 결과 (FR-4)', () => {
 	});
 
 	test('값이 없으면 X 가 보이지 않는다', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await expect(page.locator('[data-action="clear"]')).toHaveCount(0);
 		await input(page).fill('L');
 		await expect(page.locator('[data-action="clear"]')).toBeVisible();
@@ -205,19 +205,19 @@ test.describe('sticky 결과 (FR-4)', () => {
 
 test.describe('무효 입력 (FR-5)', () => {
 	test('AB 는 버퍼 사유', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).fill('AB');
 		await expect(page.locator('[data-reason="buffer"]')).toContainText('버퍼(UBL)');
 	});
 
 	test('BN 은 동일 큐비 사유', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).fill('BN');
 		await expect(page.locator('[data-reason="same-cubie"]')).toContainText('UBR');
 	});
 
 	test('무효 입력에도 직전 결과가 남는다', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		await expect(result(page)).toBeVisible();
 		await input(page).fill('BN');
 		await expect(result(page)).toHaveAttribute('data-case', 'LB');
@@ -225,14 +225,14 @@ test.describe('무효 입력 (FR-5)', () => {
 	});
 
 	test('Speffz 밖 문자는 입력되지 않고 aria-invalid 가 켜진다', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).pressSequentially('Y');
 		await expect(input(page)).toHaveValue('');
 		await expect(input(page)).toHaveAttribute('aria-invalid', 'true');
 	});
 
 	test('숫자도 걸러진다', async ({ page }) => {
-		await page.goto('/');
+		await page.goto('/3x3/bld/3style/corner/lookup');
 		await input(page).pressSequentially('L1B');
 		await expect(input(page)).toHaveValue('LB');
 	});
@@ -240,7 +240,7 @@ test.describe('무효 입력 (FR-5)', () => {
 
 test.describe('토글 (FR-9, FR-10)', () => {
 	test('strict 는 괄호, compact 는 평문', async ({ page }) => {
-		await page.goto('/?c=CI');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=CI');
 		const alg = page.locator('.main .alg');
 		await expect(alg).toContainText('[');
 		await page.locator('[data-toggle="notation"] [data-option="compact"]').click();
@@ -251,7 +251,7 @@ test.describe('토글 (FR-9, FR-10)', () => {
 		const code = Object.keys(parsed.cases).find(
 			(k) => (parsed.cases[k] as unknown as { sameAlg: boolean }).sameAlg
 		)!;
-		await page.goto(`/?c=${code}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${code}`);
 		await expect(page.locator('[data-badge="same-alg"]')).toHaveCount(0);
 		await page.locator('[data-toggle="notation"] [data-option="compact"]').click();
 		await expect(page.locator('[data-badge="same-alg"]')).toBeVisible();
@@ -259,7 +259,7 @@ test.describe('토글 (FR-9, FR-10)', () => {
 
 	test('direct/setup 토글', async ({ page }) => {
 		const anchor = parsed.cases['CI'].setup.anchor;
-		await page.goto('/?c=CI');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=CI');
 		await expect(page.locator(`[data-anchor="${anchor}"]`)).toBeVisible();
 		await page.locator('[data-toggle="mode"] [data-option="direct"]').click();
 		await expect(page.locator(`[data-anchor="${anchor}"]`)).toHaveCount(0);
@@ -270,7 +270,7 @@ test.describe('토글 (FR-9, FR-10)', () => {
 	});
 
 	test('두 선택지가 항상 보이고 활성 상태가 표시된다', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		for (const [name, on, off] of [
 			['mode', 'setup', 'direct'],
 			['notation', 'strict', 'compact']
@@ -284,7 +284,7 @@ test.describe('토글 (FR-9, FR-10)', () => {
 	});
 
 	test('토글 라벨이 의도한 용어로 표시된다', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		const mode = page.locator('[data-toggle="mode"]');
 		await expect(mode.locator('[data-option="setup"]')).toHaveText('setup');
 		await expect(mode.locator('[data-option="direct"]')).toHaveText('optimized');
@@ -295,7 +295,7 @@ test.describe('토글 (FR-9, FR-10)', () => {
 	});
 
 	test('라벨이 세그먼트 폭을 넘치지 않는다', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		const over = await page.evaluate(() =>
 			[...document.querySelectorAll('.seg button')].some((b) => b.scrollWidth > b.clientWidth)
 		);
@@ -303,7 +303,7 @@ test.describe('토글 (FR-9, FR-10)', () => {
 	});
 
 	test('각 토글에 설명이 항상 보인다 (hover 없이도)', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		await expect(page.locator('[data-hint="mode"]')).toHaveText('기준공식 + 셋업');
 		await expect(page.locator('[data-hint="notation"]')).toHaveText('구조 · 상쇄 전');
 		await page.locator('[data-toggle="notation"] [data-option="compact"]').click();
@@ -313,7 +313,7 @@ test.describe('토글 (FR-9, FR-10)', () => {
 
 test.describe('기준공식 브라우저 (FR-11, FR-12)', () => {
 	test('기준 목록이 데이터의 학습 순서대로 나온다', async ({ page }) => {
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		await expect(page.locator('[data-anchor]')).toHaveCount(anchorNames.length);
 		// FR-MC-11: 표시가 `{체크}/{전체}` 로 바뀌었다. 텍스트 대신 data-count 속성으로 검증한다.
 		const counts = await page
@@ -328,13 +328,13 @@ test.describe('기준공식 브라우저 (FR-11, FR-12)', () => {
 	});
 
 	test('백분율 표기가 없다 (NFR-9)', async ({ page }) => {
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		await expect(page.locator('body')).not.toContainText('%');
 	});
 
 	test('기준 클릭 시 담당 케이스 수만큼 나온다', async ({ page }) => {
 		const first = anchorNames[0];
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		await page.locator(`[data-anchor="${first}"]`).click();
 		await expect(page.locator('[data-count]')).toHaveAttribute(
 			'data-count',
@@ -343,21 +343,21 @@ test.describe('기준공식 브라우저 (FR-11, FR-12)', () => {
 	});
 
 	test('케이스 클릭 시 조회로 이동', async ({ page }) => {
-		await page.goto(`/anchors/${anchorNames[0]}`);
-		await page.locator('a[href^="/?c="]').first().click();
+		await page.goto(`/3x3/bld/3style/corner/algs/${anchorNames[0]}`);
+		await page.locator('a[href^="/3x3/bld/3style/corner/lookup?c="]').first().click();
 		await expect(page.locator('section.case')).toBeVisible();
 	});
 
 	test('파생공식이 알파벳순이다', async ({ page }) => {
 		const first = anchorNames[0];
-		await page.goto(`/anchors/${first}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${first}`);
 		const codes = await page.locator('li .code').allTextContents();
 		expect(codes.length).toBeGreaterThan(1);
 		expect(codes).toEqual([...codes].sort());
 	});
 
 	test('기준 목록에 [A, B] 가 무브열과 함께 나온다', async ({ page }) => {
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		for (const name of anchorNames) {
 			const card = page.locator(`[data-anchor="${name}"]`);
 			// 대괄호 표기와 무브열이 둘 다 있어야 한다. 하나로 갈음하지 않는다.
@@ -370,7 +370,7 @@ test.describe('기준공식 브라우저 (FR-11, FR-12)', () => {
 	});
 
 	test('기준 상세에도 [A, B] 가 나온다', async ({ page }) => {
-		await page.goto(`/anchors/${anchorNames[0]}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${anchorNames[0]}`);
 		const box = page.locator('.anchor');
 		await expect(box).toContainText('[');
 		expect(await box.locator('.alg').count()).toBe(2);
@@ -381,7 +381,7 @@ test.describe('기준공식 브라우저 (FR-11, FR-12)', () => {
 	 * 표기를 보고 외운 사람이 실제와 다른 것을 외우면 안 된다.
 	 */
 	test('[A, B] 를 펼치면 기준 무브열과 같다', async ({ page }) => {
-		await page.goto('/anchors');
+		await page.goto('/3x3/bld/3style/corner/algs');
 		for (const name of anchorNames) {
 			const comm = page.locator(`[data-anchor="${name}"] .alg`).first();
 			const txt = (await comm.textContent())!.trim();
@@ -401,32 +401,40 @@ test.describe('기준공식 브라우저 (FR-11, FR-12)', () => {
 
 test.describe('상위로 이동 (뒤로가기 대체)', () => {
 	test('기준 상세에서 기준 목록으로', async ({ page }) => {
-		await page.goto(`/anchors/${anchorNames[0]}`);
+		await page.goto(`/3x3/bld/3style/corner/algs/${anchorNames[0]}`);
 		await page.locator('[data-up-link]').click();
-		await expect(page).toHaveURL(/\/anchors$/);
+		await expect(page).toHaveURL(/\/3x3\/bld\/3style\/corner\/algs$/);
 	});
 
 	test('기준에서 들어간 조회 화면은 그 기준으로 돌아간다', async ({ page }) => {
 		const first = anchorNames[0];
-		await page.goto(`/anchors/${first}`);
-		await page.locator('a[href^="/?c="]').first().click();
+		await page.goto(`/3x3/bld/3style/corner/algs/${first}`);
+		await page.locator('a[href^="/3x3/bld/3style/corner/lookup?c="]').first().click();
 		await page.waitForURL(/[?&]from=/);
 		const up = page.locator('[data-up-link]');
 		// 목적지를 버튼에 적어둔다 — 눌러봐야 아는 뒤로가기와 다른 점이다
 		await expect(up).toHaveText(first);
 		await up.click();
-		await expect(page).toHaveURL(new RegExp(`/anchors/${first}$`));
+		await expect(page).toHaveURL(new RegExp(`/3x3/bld/3style/corner/algs/${first}$`));
 	});
 
-	test('탭으로 직접 온 조회 화면에는 링크가 없다', async ({ page }) => {
-		await page.goto('/');
-		await expect(page.locator('[data-up-link]')).toHaveCount(0);
+	test('탭으로 직접 온 조회 화면은 홈으로 올라간다', async ({ page }) => {
+		// FR-NAV-7: 기능 화면에는 언제나 되돌아갈 링크가 있다. 기준에서 온 것이
+		// 아니면 그 자리는 홈이다. 링크가 **하나뿐** 인 것이 요점 — 둘이 뜨면
+		// 개수가 SSR/CSR 에서 갈릴 수 있는 구조라는 뜻이다 (NFR-NAV-1).
+		await page.goto('/3x3/bld/3style/corner/lookup');
+		const up = page.locator('[data-up-link]');
+		await expect(up).toHaveCount(1);
+		await expect(up).toHaveText('홈');
+		await up.click();
+		await expect(page).toHaveURL(/\/$/);
+		await expect(page.locator('[data-home]')).toBeVisible();
 	});
 
 	test('역케이스로 넘어가도 출처가 남는다', async ({ page }) => {
 		const first = anchorNames[0];
-		await page.goto(`/anchors/${first}`);
-		await page.locator('a[href^="/?c="]').first().click();
+		await page.goto(`/3x3/bld/3style/corner/algs/${first}`);
+		await page.locator('a[href^="/3x3/bld/3style/corner/lookup?c="]').first().click();
 		// 도착을 기다리지 않고 다음 동작을 하면 아직 옛 페이지에 있을 수 있다.
 		await page.waitForURL(/[?&]from=/);
 		await page.locator('[data-inverse]').click();
@@ -436,8 +444,8 @@ test.describe('상위로 이동 (뒤로가기 대체)', () => {
 
 	test('출처는 새로고침해도 유지된다 (히스토리가 아니라 URL 에 있다)', async ({ page }) => {
 		const first = anchorNames[0];
-		await page.goto(`/anchors/${first}`);
-		await page.locator('a[href^="/?c="]').first().click();
+		await page.goto(`/3x3/bld/3style/corner/algs/${first}`);
+		await page.locator('a[href^="/3x3/bld/3style/corner/lookup?c="]').first().click();
 		// reload 는 재시도가 없다. 도착 전에 부르면 옛 주소를 다시 열어버리고,
 		// 그러면 이 테스트는 조회 화면이 아니라 기준 상세를 검사하게 된다.
 		await page.waitForURL(/[?&]from=/);

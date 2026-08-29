@@ -24,7 +24,7 @@ const TAG = '@viewport';
  * 최소 크기라 이 저장소에서는 사실상 예약어다.
  */
 const SIGNALS =
-	/setViewportSize|viewportSize|isMobile|hasTouch|\.tap\(|innerWidth|matchMedia|boundingBox|\b44\b/;
+	/setViewportSize|viewportSize|isMobile|hasTouch|\.tap\(|innerWidth|matchMedia|boundingBox|getBoundingClientRect|\b44\b/;
 
 interface E2ETest {
 	file: string;

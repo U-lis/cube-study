@@ -13,6 +13,7 @@
 	import MoveKeypad from '$lib/ui/MoveKeypad.svelte';
 	import AnchorPad from '$lib/ui/AnchorPad.svelte';
 	import SegToggle from '$lib/ui/SegToggle.svelte';
+	import UpLink from '$lib/ui/UpLink.svelte';
 	import { settings } from '$lib/ui/settings.svelte.js';
 	import { memorize } from '$lib/ui/memorize.svelte.js';
 	import { loadDataset } from '$lib/data/loader.js';
@@ -168,12 +169,26 @@
 		if (picked) parts.push({ text: refLabel(picked), role: 'anchor' });
 		return parts;
 	});
+	/**
+	 * 단계 (FR-NAV-14). 이름은 트레이싱과 공유하고, 단계는 강제하지 않는다 (AD-NAV-5).
+	 *
+	 * 퀴즈에 `idle` 은 없다 — 연달아 푸는 화면이라 문제마다 시작을 누르게 하면 흐름이
+	 * 끊긴다. `input` 도 따로 내지 않는다. 문제가 뜨는 순간 입력이 열려 `active` 와
+	 * 겹치기 때문이다. 실제로 갈리는 것은 판정이 있는가 하나다.
+	 *
+	 * 데이터셋이 아직 없거나 pool 이 비면 낼 단계가 없다 — 빈 문자열이다.
+	 */
+	let stage = $derived(!current ? '' : verdict ? 'result' : 'active');
 </script>
 
 <svelte:head><title>3-Style Corner — 퀴즈</title></svelte:head>
 
+<UpLink href="/" label="홈" />
+
+<h1>퀴즈</h1>
+
 {#if ds}
-	<section class="quiz">
+	<section class="quiz" data-stage={stage}>
 		<div class="input-mode">
 			<SegToggle name="quiz-input" bind:value={settings.quizInput} options={INPUT_OPTIONS} />
 		</div>
@@ -202,7 +217,12 @@
 			<p class="empty-pool" data-empty-pool>암기 표시한 공식이 없습니다</p>
 		{:else if current}
 			<header>
-				<h1 data-case={current.case}>{current.case}</h1>
+				<!--
+					케이스 코드는 **문제**이지 화면 이름이 아니다 (FR-NAV-9). 0.4.2 까지
+					여기가 `<h1>` 이었다 — 화면마다 `<h1>` 의 뜻이 갈리던 자리 중 하나다.
+					크기·자리는 그대로 두고 태그만 내렸다.
+				-->
+				<div class="case" data-case={current.case}>{current.case}</div>
 				<div class="targets">
 					<span>{targetText(current.target1)}</span>
 					<span>{targetText(current.target2)}</span>
@@ -228,8 +248,28 @@
 				{/if}
 			</div>
 
+			<!--
+				영역 순서: 입력칸 → 자판 → 판정 → 결과 → 진행 버튼 (FR-NAV-8 의 표).
+				자판이 판정 위에 서고 진행 버튼이 맨 아래 선다 — 트레이싱과 같은 순서다.
+				0.4.2 까지는 제출 버튼이 자판 위에 있었는데, 그러면 자판에서 손을 뗀 뒤
+				손을 다시 위로 올려야 눌린다.
+			-->
+			<MoveKeypad bind:moves />
+
 			{#if verdict}
-				<div class="verdict" data-verdict={verdict.kind}>{verdictText(verdict)}</div>
+				<!--
+					판정 줄의 표기를 트레이싱과 맞춘다 (FR-NAV-12). 두 화면이 같은 것을
+					다르게 그리면 사용자가 판정을 두 번 배운다. `data-kind` 가 무엇인지를,
+					`data-result` 가 좋은 소식인지를 말한다 — 색은 뒤쪽만 보고 칠한다.
+				-->
+				<div
+					class="verdict"
+					data-verdict
+					data-kind={verdict.kind}
+					data-result={verdict.kind === 'correct' ? 'ok' : 'bad'}
+				>
+					{verdictText(verdict)}
+				</div>
 
 				<!-- 정답은 판정 후에만 렌더한다 -->
 				<div class="answer">
@@ -244,13 +284,13 @@
 							셋업으로 어느 기준공식에도 닿지 않는 케이스입니다
 						</p>
 					{/if}
-					<a href="/?c={current.case}" data-goto={current.case}>조회 화면에서 보기</a>
+					<a href="/3x3/bld/3style/corner/lookup?c={current.case}" data-goto={current.case}>조회 화면에서 보기</a>
 				</div>
 			{/if}
 
 			<div class="controls">
 				{#if verdict}
-					<button type="button" class="primary" data-action="next" onclick={next}
+					<button type="button" class="primary" data-next onclick={next}
 						>다음 문제</button
 					>
 				{:else if settings.quizInput === 'setup'}
@@ -260,14 +300,12 @@
 					<button
 						type="button"
 						class="primary"
-						data-action="submit"
+						data-grade
 						onclick={submit}
 						disabled={!canSubmit}>제출</button
 					>
 				{/if}
 			</div>
-
-			<MoveKeypad bind:moves />
 		{/if}
 	</section>
 {:else}
@@ -324,7 +362,13 @@
 	header {
 		text-align: center;
 	}
+	/* 화면 이름. 다른 화면(기준공식)과 같은 톤이다. */
 	h1 {
+		font-size: 1.3rem;
+		margin: 0.2rem 0 0.6rem;
+	}
+	/* 문제로 내려온 케이스 코드. 옛 h1 의 크기를 그대로 물려받는다. */
+	.case {
 		margin: 0;
 		font-family: var(--mono);
 		font-size: 3rem;
@@ -378,15 +422,12 @@
 	 * 입력창과 같은 토큰을 쓴다. 정답을 accent 로 칠하던 것을 ok 로 바꾼 이유는,
 	 * accent 가 기준공식 이름에도 쓰이는 색이라 "정답" 의 뜻을 겸할 수 없어서다.
 	 */
-	.verdict[data-verdict='correct'] {
+	/* 색은 `data-result` 하나만 본다. 판정 종류가 늘어도 이 규칙은 안 늘어난다. */
+	.verdict[data-result='ok'] {
 		color: var(--ok);
 		border-color: var(--ok);
 	}
-	.verdict[data-verdict='edge-dirty'],
-	.verdict[data-verdict='twist'],
-	.verdict[data-verdict='wrong'],
-	.verdict[data-verdict='identity'],
-	.verdict[data-verdict='invalid-move'] {
+	.verdict[data-result='bad'] {
 		color: var(--danger);
 		border-color: var(--danger);
 	}

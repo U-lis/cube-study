@@ -39,7 +39,7 @@ test.describe('앱 정보 (About)', () => {
 	});
 
 	test('모든 페이지에서 접근 가능하다', async ({ page }) => {
-		for (const path of ['/', '/anchors', '/quiz']) {
+		for (const path of ['/', '/3x3/bld/3style/corner/algs', '/3x3/bld/3style/corner/quiz']) {
 			await page.goto(path);
 			await expect(page.locator('[data-about-open]')).toBeVisible();
 		}

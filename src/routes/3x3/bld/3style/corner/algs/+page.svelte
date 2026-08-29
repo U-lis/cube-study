@@ -8,6 +8,7 @@
 	SSR 에서는 ds 가 undefined 라 progressMap 이 비고 `0/{count}` 로 렌더된다 (AD-4).
 -->
 <script lang="ts">
+	import UpLink from '$lib/ui/UpLink.svelte';
 	import { onMount } from 'svelte';
 	import Alg from '$lib/ui/Alg.svelte';
 	import { targetText } from '$lib/domain/validate.js';
@@ -59,6 +60,8 @@
 
 <svelte:head><title>3-Style Corner — 기준공식</title></svelte:head>
 
+<UpLink href="/" label="홈" />
+
 <h1>기준공식</h1>
 
 <ul>
@@ -70,7 +73,7 @@
 		-->
 		{@const comm = formatCommutator(r.alg)}
 		<li>
-			<a href="/anchors/{r.name}" data-anchor={r.name}>
+			<a href="/3x3/bld/3style/corner/algs/{r.name}" data-anchor={r.name}>
 				<div class="head">
 					<span class="name">{r.name}</span>
 					<!--
@@ -96,7 +99,7 @@
 	{/each}
 	{#if directCount > 0}
 		<li>
-			<a href="/anchors/direct" data-anchor="direct">
+			<a href="/3x3/bld/3style/corner/algs/direct" data-anchor="direct">
 				<div class="head">
 					<span class="name">기준 없음</span>
 					<span class="count" data-count={directCount} data-progress>

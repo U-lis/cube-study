@@ -17,7 +17,7 @@ async function type(page: Page, alg: string) {
 	for (const mv of alg.trim().split(/\s+/)) await page.locator(`[data-move="${mv}"]`).click();
 }
 async function currentCase(page: Page): Promise<string> {
-	const h = page.locator('h1[data-case]');
+	const h = page.locator('[data-case]');
 	await expect(h).toBeVisible();
 	return (await h.getAttribute('data-case'))!;
 }
@@ -36,7 +36,7 @@ const bg = (page: Page) =>
  * 기대지 않고 스타일로 직접 끈다. 앱의 prefers-reduced-motion 처리는 그대로 둔다.
  */
 async function openQuiz(page: Page) {
-	await page.goto('/quiz');
+	await page.goto('/3x3/bld/3style/corner/quiz');
 	await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
 }
 
@@ -53,8 +53,8 @@ test.describe('판정 시인성', () => {
 		const code = await currentCase(page);
 		const before = await bg(page);
 		await type(page, cases[code].direct.alg);
-		await page.locator('[data-action="submit"]').click();
-		await expect(page.locator('[data-verdict="correct"]')).toBeVisible();
+		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-kind="correct"]')).toBeVisible();
 		await expect(page.locator('.entry')).toHaveAttribute('data-result', 'ok');
 		expect(await bg(page)).not.toBe(before);
 	});
@@ -64,15 +64,15 @@ test.describe('판정 시인성', () => {
 		const code = await currentCase(page);
 
 		await type(page, cases[code].direct.alg);
-		await page.locator('[data-action="submit"]').click();
+		await page.locator('[data-grade]').click();
 		await expect(page.locator('.entry')).toHaveAttribute('data-result', 'ok');
 		const okBg = await bg(page);
 
 		// 다음 문제에서 확실한 오답(sexy move)을 넣는다
-		await page.locator('[data-action="next"]').click();
+		await page.locator('[data-next]').click();
 		const beforeBg = await bg(page);
 		await type(page, "R U R' U'");
-		await page.locator('[data-action="submit"]').click();
+		await page.locator('[data-grade]').click();
 		await expect(page.locator('.entry')).toHaveAttribute('data-result', 'bad');
 		const badBg = await bg(page);
 
@@ -85,9 +85,9 @@ test.describe('판정 시인성', () => {
 		const code = await currentCase(page);
 		const before = await bg(page);
 		await type(page, cases[code].direct.alg);
-		await page.locator('[data-action="submit"]').click();
+		await page.locator('[data-grade]').click();
 		await expect(page.locator('.entry')).toHaveAttribute('data-result', 'ok');
-		await page.locator('[data-action="next"]').click();
+		await page.locator('[data-next]').click();
 		await expect(page.locator('.entry')).toHaveAttribute('data-result', '');
 		expect(await bg(page)).toBe(before);
 	});
@@ -96,7 +96,7 @@ test.describe('판정 시인성', () => {
 		await openQuiz(page);
 		const code = await currentCase(page);
 		await type(page, cases[code].direct.alg);
-		await page.locator('[data-action="submit"]').click();
+		await page.locator('[data-grade]').click();
 		await expect(page.locator('.verdict')).toHaveText('정답');
 	});
 });
@@ -113,7 +113,7 @@ test.describe('출제 분포 (최근 20개 제외)', () => {
 		page
 	}) => {
 		test.slow();
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		const drawn: string[] = [];
 		for (let i = 0; i < DRAWS; i++) {
 			const code = await currentCase(page);
@@ -121,8 +121,8 @@ test.describe('출제 분포 (최근 20개 제외)', () => {
 			drawn.push(code);
 			// 판정 없이 넘기려면 아무 입력이나 넣고 제출해야 한다
 			await type(page, 'R');
-			await page.locator('[data-action="submit"]').click();
-			await page.locator('[data-action="next"]').click();
+			await page.locator('[data-grade]').click();
+			await page.locator('[data-next]').click();
 		}
 		// 21칸 이상 떨어진 재출현은 막지 않는다 — 그것까지 막으면 남은 후보를 역산할 수
 		// 있게 된다. 여기서 세는 것은 40개가 실제로 뽑혔다는 것뿐이다.
@@ -131,7 +131,7 @@ test.describe('출제 분포 (최근 20개 제외)', () => {
 
 	test('역케이스도 최근 20개 안에서는 다시 안 나온다', async ({ page }) => {
 		test.slow();
-		await page.goto('/quiz');
+		await page.goto('/3x3/bld/3style/corner/quiz');
 		const drawn: string[] = [];
 		for (let i = 0; i < DRAWS; i++) {
 			const code = await currentCase(page);
@@ -139,8 +139,8 @@ test.describe('출제 분포 (최근 20개 제외)', () => {
 			expect(drawn.slice(-20).map((c) => cases[c].inverse)).not.toContain(code);
 			drawn.push(code);
 			await type(page, 'R');
-			await page.locator('[data-action="submit"]').click();
-			await page.locator('[data-action="next"]').click();
+			await page.locator('[data-grade]').click();
+			await page.locator('[data-next]').click();
 		}
 	});
 });

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { CubeSim } from '../../src/lib/cube/sim.js';
+import Cube from 'cubejs/lib/cube.js';
+import { CubeSim, stateFromFacelets } from '../../src/lib/cube/sim.js';
 
 const sim = new CubeSim();
 
@@ -53,5 +54,32 @@ describe('affectedCubies', () => {
 	it('LB 는 엣지 큐비를 건드리지 않는다', () => {
 		const st = sim.applyToEdges(sim.solvedEdges(), "R D2 R' U R D2 R' U'");
 		expect(sim.affectedCubies(st, 'edge')).toEqual([]);
+	});
+});
+
+/**
+ * T1A-2. `stateFromFacelets` — `permOf` 에서 떼어낸 순수 추출인지 확인한다.
+ *
+ * 같은 알고리즘을 두 경로로 돌려 같은 상태가 나오면 분리가 동작을 안 바꾼 것이다.
+ * (378 전수 회귀는 `data-regression.test.ts` 가 계속 지킨다.)
+ */
+describe('T1A-2. stateFromFacelets', () => {
+	const solved = new Cube().asString();
+
+	it('풀린 문자열은 풀린 코너 상태', () => {
+		expect(stateFromFacelets(solved, 'corner')).toEqual(sim.solvedCorners());
+	});
+
+	it('풀린 문자열은 풀린 엣지 상태', () => {
+		expect(stateFromFacelets(solved, 'edge')).toEqual(sim.solvedEdges());
+	});
+
+	it('알고리즘 경로와 facelet 경로가 같은 상태를 낸다', () => {
+		const algs = ["R U R' U'", 'M2 U M2 U2 M2 U M2', "R' D2 R U R' D2 R U'", "x y' L F' B"];
+		for (const alg of algs)
+			for (const kind of ['corner', 'edge'] as const)
+				expect(stateFromFacelets(new Cube().move(alg).asString(), kind)).toEqual(
+					sim.apply(kind === 'corner' ? sim.solvedCorners() : sim.solvedEdges(), alg, kind)
+				);
 	});
 });

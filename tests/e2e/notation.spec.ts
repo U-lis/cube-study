@@ -21,14 +21,14 @@ const directOf = (code: string) => cases[code].direct;
  */
 test.describe('알고리즘 표기', () => {
 	test('무브 사이 공백이 텍스트에 실제로 존재한다', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		await page.locator('[data-toggle="notation"] [data-option="compact"]').click(); // compact 로
 		const text = await page.locator('.main .alg').innerText();
 		expect(text).toBe(setupOf('LB').alg);
 	});
 
 	test('프라임이 ASCII U+0027 이다', async ({ page }) => {
-		await page.goto('/?c=LB');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=LB');
 		await page.locator('[data-toggle="notation"] [data-option="compact"]').click();
 		const text = await page.locator('.main .alg').innerText();
 		expect(text).toContain("'");
@@ -39,14 +39,14 @@ test.describe('알고리즘 표기', () => {
 
 	test('setup strict 는 [S : anchor] 형태', async ({ page }) => {
 		const s = setupOf('CI');
-		await page.goto('/?c=CI');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=CI');
 		expect(await page.locator('.main .alg').innerText()).toBe(
 			`[ ${s.S} : ${s.anchor}${s.usesInverse ? "'" : ''} ]`
 		);
 	});
 
 	test('direct strict 는 [S : [A , B]] 형태', async ({ page }) => {
-		await page.goto('/?c=CI');
+		await page.goto('/3x3/bld/3style/corner/lookup?c=CI');
 		await page.locator('[data-toggle="mode"] [data-option="direct"]').click();
 		await expect(page.locator('[data-toggle="mode"]')).toHaveAttribute('data-value', 'direct');
 		// 기대값을 박아두지 않는다 — 0.3.1 의 L 표기 교정 때 이 줄만 홀로 틀렸다.
@@ -63,7 +63,7 @@ test.describe('알고리즘 표기', () => {
 			setupOf(a).alg.length >= setupOf(b).alg.length ? a : b
 		);
 		await page.setViewportSize({ width: 320, height: 700 });
-		await page.goto(`/?c=${longest}`);
+		await page.goto(`/3x3/bld/3style/corner/lookup?c=${longest}`);
 		await page.locator('[data-toggle="notation"] [data-option="compact"]').click();
 		const spans = page.locator('.main .alg .mv');
 		await expect(spans.first()).toBeVisible();
@@ -84,7 +84,7 @@ test.describe('알고리즘 표기', () => {
 
 	test('여러 케이스에서 공백 구분이 유지된다', async ({ page }) => {
 		for (const code of ['TU', 'SC', 'NG', 'CU', 'FS']) {
-			await page.goto(`/?c=${code}`);
+			await page.goto(`/3x3/bld/3style/corner/lookup?c=${code}`);
 			await page.locator('[data-toggle="notation"] [data-option="compact"]').click();
 			const text = await page.locator('.main .alg').innerText();
 			// 무브가 2개 이상이면 공백이 있어야 한다

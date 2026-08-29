@@ -62,7 +62,7 @@
 	오른쪽 체크박스 열이 이름 없는 칸이 된다.
 -->
 <div class="head" data-anchor-head>
-	<UpLink href="/anchors" label="기준공식" />
+	<UpLink href="/3x3/bld/3style/corner/algs" label="기준공식" />
 
 <h1>{data.isDirect ? '기준 없음' : data.code}</h1>
 
@@ -101,9 +101,14 @@
 		FR-MC-14: 상태는 memorize.hideMemorized 가 localStorage 에 자동 저장한다.
 		AD-4: SSR 은 기본값 false 라 항상 unchecked 로 렌더된다.
 
-		상태를 글자 대신 눈 아이콘으로 알린다 — 켜면 눈이 감긴다(가림).
-		두 아이콘의 viewBox 와 크기가 같아 상태가 바뀌어도 폭이 흔들리지 않는다.
-		글자가 없으므로 aria-label/title 로 이름을 남긴다.
+		아이콘이 **무엇을 가리는지** 를 스스로 말해야 한다. 둘 다 눈이면 나란히
+		놓였을 때 글자를 읽어야 구분되고, 나중에 "아이콘만 보기" 를 만들면 통째로
+		구분이 사라진다. 그래서 암기는 체크된 체크박스, 역공식은 되돌이 화살표다 —
+		둘 다 그 토글이 **가리는 대상 자체**를 그린다.
+
+		가리는 중인가는 두 아이콘 공통으로 **사선** 이 말한다 — 0.3.0 에서 눈이
+		감기던 자리다. 그림의 viewBox 와 크기가 같아 상태가 바뀌어도 폭이 흔들리지
+		않는다. 글자가 없어도 읽히도록 aria-label/title 로 이름을 남긴다.
 	-->
 	<div class="toggles">
 	<label
@@ -112,23 +117,30 @@
 		title={memorize.hideMemorized ? '외운 것을 가리는 중' : '외운 것도 보이는 중'}
 	>
 		<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-			<!-- 눈: 두 상태 공통 -->
-			<path
-				d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6z"
+			<!--
+				체크된 체크박스.
+
+				뇌를 그려 봤다가 이것으로 바꿨다. **가리는 대상이 곧 이 그림** 이기 때문이다 —
+				이 화면에서 "암기" 는 오른쪽 열의 체크박스를 체크하는 일이고, 이 토글이
+				숨기는 것은 그렇게 체크된 줄이다. 뇌는 암기라는 개념을 가리키므로 한 홉
+				멀고, 18px 에서는 구름이나 브로콜리로도 읽힌다.
+
+				목록의 진짜 체크박스와 같은 모양인 것이 흠이 아니라 근거다. 다만 **체크가
+				들어 있는 상태**로 그려서 조작 대상이 아니라 그림임을 남긴다.
+			-->
+			<g
 				fill="none"
 				stroke="currentColor"
 				stroke-width="1.8"
+				stroke-linecap="round"
 				stroke-linejoin="round"
-			/>
-			<circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+			>
+				<rect x="3.5" y="3.5" width="17" height="17" rx="3.5" />
+				<path d="M7.5 12.4l3.1 3.1 6-6.4" />
+			</g>
 			{#if memorize.hideMemorized}
 				<!-- 가리는 중일 때만 사선. 위치·크기는 그대로라 폭이 안 바뀐다 -->
-				<path
-					d="M4 20L20 4"
-					stroke="currentColor"
-					stroke-width="1.8"
-					stroke-linecap="round"
-				/>
+				<path d="M4 20L20 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
 			{/if}
 		</svg>
 		<span class="hide-label">암기 숨김</span>
@@ -147,8 +159,8 @@
 		것이라, 정방향만 훑으며 외울 때 목록이 두 배로 길어 보인다. 줄에 붙는 "역"
 		배지가 가려지는 대상이다.
 
-		아이콘은 암기 숨김과 같은 눈이다. 상태(가리는 중인가)는 아이콘이, 무엇을
-		가리는지는 글자가 맡는다 — 0.3.0 에서 세운 규칙 그대로다.
+		아이콘은 되돌이 화살표다 — 역공식이 정공식을 거꾸로 돌리는 것이라는 뜻을
+		그림이 직접 맡는다. 상태(가리는 중인가)는 암기 숨김과 같은 사선이다.
 	-->
 	{#if hasInverse}
 		<label
@@ -157,21 +169,22 @@
 			title={settings.hideInverse ? '역공식을 가리는 중' : '역공식도 보이는 중'}
 		>
 			<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-				<path
-					d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6z"
+				<!--
+					되돌이 화살표. 오른쪽에서 올라가 위를 돌아 왼쪽으로 내려오고, 내려온
+					끝에 화살촉이 선다 — 방향이 뒤집힌다는 뜻이 그림 하나로 읽힌다.
+				-->
+				<g
 					fill="none"
 					stroke="currentColor"
 					stroke-width="1.8"
+					stroke-linecap="round"
 					stroke-linejoin="round"
-				/>
-				<circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+				>
+					<path d="M17 17.5V11a5 5 0 0 0-10 0v6.5" />
+					<path d="M4 14.5l3 3 3-3" />
+				</g>
 				{#if settings.hideInverse}
-					<path
-						d="M4 20L20 4"
-						stroke="currentColor"
-						stroke-width="1.8"
-						stroke-linecap="round"
-					/>
+					<path d="M4 20L20 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
 				{/if}
 			</svg>
 			<span class="hide-label">역공식 숨김</span>
@@ -218,7 +231,7 @@
 			class:hidden={(memorize.hideMemorized && memorize.isChecked('setup', c.case)) ||
 				(settings.hideInverse && c.setup.usesInverse)}
 		>
-			<a href="/?c={c.case}&from={data.code}">
+			<a href="/3x3/bld/3style/corner/lookup?c={c.case}&from={data.code}">
 				<span class="code">{c.case}</span>
 				{#if c.setup.S}
 					<Alg parts={[{ text: c.setup.S, role: 'setup' }]} size="sm" />
@@ -317,7 +330,8 @@
 	 * 진도는 왼쪽, 토글은 오른쪽. 목록 바로 위 한 줄.
 	 * 토글이 둘이라 좁은 화면에서는 줄바꿈을 허용한다 — 320px 에서 한 줄에 넣으면
 	 * 라벨이 잘리는데, 이 화면에서 잘려서는 안 되는 것이 정확히 그 라벨이다.
-	 * 눈 아이콘 둘은 생김새가 같아서 글자가 없으면 어느 쪽인지 알 수 없다.
+	 * 아이콘(체크박스·되돌이 화살표)이 무엇을 가리는지 말하지만, 라벨이 잘려 반만 남으면
+	 * 그 줄이 무슨 스위치인지 되레 헷갈린다.
 	 */
 	.list-head {
 		display: flex;

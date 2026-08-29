@@ -480,6 +480,13 @@ test.describe('T3-7 레이아웃 @viewport', () => {
 	 * 그 간극을 메우는 일은 #<Z-FOLD-ISSUE> 로 넘겼다.
 	 */
 	test('시작하면 화면이 맨 위로 되돌아간다 @viewport', async ({ page }) => {
+		/*
+		 * 세로를 못 박는다. 이 검사에는 **스크롤된 문서** 가 필요한데, 프로젝트
+		 * 기본 뷰포트에서 문서가 넘치는지는 글꼴 실측에 달려 있다 — 로컬에서는
+		 * 넘쳐서 통과했고 CI 러너에서는 안 넘쳐서 `scrollY` 가 0 에 머물렀다.
+		 * 그 높이 차는 이 검사가 보려는 것이 아니므로 조건을 우연에 맡기지 않는다.
+		 */
+		await page.setViewportSize({ width: 412, height: 560 });
 		await open(page, { 'trace.mode': 'follow' });
 		await ready(page);
 		// 설정을 한 번 건드려 문서를 스크롤시킨 뒤 시작한다 — 실제 사용 순서와 같다.

@@ -3,7 +3,7 @@
 [![CI](https://github.com/U-lis/cube-study/actions/workflows/ci.yml/badge.svg)](https://github.com/U-lis/cube-study/actions/workflows/ci.yml)
 [![사이트 점검](https://github.com/U-lis/cube-study/actions/workflows/site-check.yml/badge.svg)](https://github.com/U-lis/cube-study/actions/workflows/site-check.yml)
 
-3BLD(눈가리고 큐브 맞추기) 학습용 앱. 현재 **코너 3-style (UBL 버퍼)** 조회와 퀴즈를 제공한다.
+3BLD(눈가리고 큐브 맞추기) 학습용 앱. 현재 **코너 3-style (UBL 버퍼)** 의 조회·기준공식·퀴즈와, 코너·엣지 **트레이싱 훈련** 을 제공한다.
 
 버전과 커밋 해시는 앱 우상단 정보 버튼에서 확인할 수 있다. 버전의 정본은 `package.json` 하나이며 빌드 타임에 주입된다.
 
@@ -17,6 +17,9 @@ PDF에서 인덱스를 찾아 스크롤로 뒤지는 대신, 스티커 2글자�
 | **기준공식 브라우저** | 기준을 데이터가 정한 학습 순서로. 기준별 케이스 목록. 기준별 암기 진도·"외운거 안보기"·"역공식 안보기" |
 | **아는 기준으로** | 배정된 기준을 아직 안 배웠으면 조회 카드에 아는 기준의 경로를 함께 보여준다. 배운 기준은 그 기준의 자기 케이스 2개 암기 체크로 판정한다 |
 | **퀴즈** | direct(무브 직접 입력) 또는 setup(셋업 + 기준공식 선택). 큐브 시뮬레이터가 채점. "암기한 것만" 필터 |
+| **트레이싱 훈련** | 랜덤 스테이트 스크램블을 3D 큐브로 보여주고, 타깃 열을 입력하면 실제 큐브 효과로 채점. 코너·엣지·양쪽, 보고 따라가기/외운 다음 입력, 비틀림 관례 A·B. 최근 50건 기록 |
+
+화면 주소는 `/{퍼즐}/{종목}/{방법}/{세트}/{기능}` 축을 따른다 — 조회 `/3x3/bld/3style/corner/lookup`, 기준공식 `.../algs`, 퀴즈 `.../quiz`, 트레이싱 `/3x3/bld/trace`. `/` 는 홈이고 기능 넷을 나열한다. 새 화면을 어느 축에 앉히는지는 `.dc_workspace/SVELTE.md` 가 정본이다.
 
 기준공식의 개수·이름·순서·방향은 전부 데이터가 정한다 (현재 10개: `GC BU DO CH IT OI SC VJ SV TH`). 코드에 박아두지 않으므로 데이터를 교체하면 화면이 따라간다 — `data/schema-history/README.md` 참고.
 
@@ -93,9 +96,13 @@ Speffz 문자가 어느 facelet 인가 — 하나뿐이고, 그 좌표는 데이
 ```
 src/lib/
 ├── data/         corner-UBL.json + {pieceType, buffer} 로더
-├── cube/         큐브 시뮬레이터 (cubejs 백엔드), Speffz 좌표, 표기 유틸
-├── domain/       타입, 입력 검증, 표기 생성, 퀴즈 채점, 기준공식 취급, 암기 상태 (memorize.ts)
-└── ui/           컴포넌트, 표시 설정, 암기 Svelte 스토어 (memorize.svelte.ts)
+├── cube/         큐브 시뮬레이터 (cubejs 백엔드), Speffz 좌표, 표기 유틸,
+│              트레이싱 엔진 (trace.ts), 스크램블 워커, 3D 큐브 (cube3d.ts)
+├── domain/       타입, 입력 검증, 표기 생성, 퀴즈 채점, 기준공식 취급,
+│              암기 상태 (memorize.ts), 트레이싱 채점·세션 (tracing.ts)
+└── ui/           컴포넌트, 표시 설정, Svelte 스토어 (memorize/tracing/scramble.svelte.ts)
+
+src/routes/      화면. 경로가 곧 축이다 (3x3/bld/3style/corner/…, 3x3/bld/trace)
 
 data/schema-history/   데이터 스키마 v1~v9 기록 (앱은 읽지 않는다)
 ```

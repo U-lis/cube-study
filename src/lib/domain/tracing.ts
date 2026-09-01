@@ -56,11 +56,21 @@ const [CORNER, EDGE] = Object.keys({
 } satisfies Record<PieceKind, number>) as [PieceKind, PieceKind];
 
 /**
- * 한 판이 다루는 조각 종류들. `both` 는 **순서가 뜻을 갖는다** — 구분자 앞이
- * 코너, 뒤가 엣지다.
+ * 한 판이 다루는 조각 종류들. `both` 는 **순서가 뜻을 갖는다** — 배열 앞이 구분자
+ * 앞이고, 패드 글자·대소문자 교차검증·채점이 전부 이 순서를 위치로 따라간다.
+ *
+ * `first` 가 그 순서를 정한다 (FR-TR-25). 실전 3BLD 는 외운 순서의 **역순** 으로
+ * 실행하고, 통상 관례(CEEC)는 코너를 먼저 외워 마지막에 푼다 — 즉 엣지를 먼저
+ * 친다. 0.5.0 까지는 `[CORNER, EDGE]` 상수였으므로 코너가 엣지를 **외우는** 동안만
+ * 붙들렸고, 실전에서 코너가 붙들리는 구간(엣지 실행 전체)이 훈련에서 빠져 있었다.
+ *
+ * 외우는 순서는 여기서 정하지 않는다 — 앱은 큐브를 보여줄 뿐이고 사용자가 어느
+ * 순서로 몇 번을 오가며 훑는지 모른다. 그래서 "역순" 을 계산할 수 없고, 치는
+ * 순서를 사용자가 고른다.
  */
-export function kindsOf(kind: TrainKind): PieceKind[] {
-	return kind === 'both' ? [CORNER, EDGE] : [kind];
+export function kindsOf(kind: TrainKind, first: PieceKind = CORNER): PieceKind[] {
+	if (kind !== 'both') return [kind];
+	return first === EDGE ? [EDGE, CORNER] : [CORNER, EDGE];
 }
 
 /** 결과 화면이 조각 종류를 부르는 이름. */
@@ -111,6 +121,20 @@ export interface TraceRecord {
 	buffer: Cubie;
 	mode: TrainMode;
 	/**
+	 * 먼저 친 갈래 (FR-TR-25). `both` 판에서만 뜻이 있고, 한 갈래짜리 판은 그
+	 * 갈래 자신이다.
+	 *
+	 * 남기는 이유는 `twistConvention` 과 같다 — 조건이 다르면 성적을 나란히 놓을
+	 * 수 없다. 엣지를 먼저 치는 판은 코너를 그만큼 더 오래 붙들고 있으므로 같은
+	 * 초/타깃이라도 다른 성적이다.
+	 *
+	 * **선택 필드다.** 0.5.0 이 남긴 v2 기록에는 이 칸이 없고, 그 기록들은 전부
+	 * 코너를 먼저 친 판이다(당시 `kindsOf` 가 상수였다). 스키마 버전을 올리면
+	 * 파서가 저장물을 통째로 버려 사용자의 기록 50건이 날아가므로 올리지 않고,
+	 * 없는 칸은 `entryFirstOf` 가 그때의 동작으로 되메운다.
+	 */
+	entryFirst?: PieceKind;
+	/**
 	 * 관례가 타깃 수를 평균 2.4개 바꾼다. 없으면 기록끼리 비교가 성립하지 않는다.
 	 *
 	 * 설정값이 아니라 **사용자가 실제로 친 방식** 이다 (요구 1) — `conventionOf` 가
@@ -130,6 +154,25 @@ export interface TraceRecord {
 	targetCount: number;
 	/** `both` 는 **양쪽 다** 맞아야 정답이다. 한쪽만 맞은 판은 오답으로 남는다. */
 	correct: boolean;
+}
+
+/**
+ * 기록이 먼저 친 갈래. 칸이 없는 v2 기록은 그때의 동작으로 되메운다 (위 주석).
+ */
+export const entryFirstOf = (r: TraceRecord): PieceKind =>
+	r.entryFirst ?? kindsOf(r.pieceKind)[0];
+
+/**
+ * 기록 한 줄의 조각 표기. `both` 는 **친 순서대로** 잇는다.
+ *
+ * 열을 하나 더 두지 않는 이유는 폭이다. 순서는 조각 구성의 일부이지 별개의
+ * 축이 아니므로 같은 칸이 말하는 편이 맞다.
+ */
+export function recordKindLabel(r: TraceRecord): string {
+	if (r.pieceKind !== 'both') return RECORD_KIND_LABELS[r.pieceKind];
+	return kindsOf(r.pieceKind, entryFirstOf(r))
+		.map((k) => PART_LABELS[k])
+		.join('+');
 }
 
 /**
@@ -264,6 +307,29 @@ export const TRAIN_KINDS = {
 
 export const TRAIN_KIND_HEADING = '훈련 대상';
 export const TRAIN_MODE_HEADING = '훈련 모드';
+export const ENTRY_ORDER_HEADING = '치는 순서';
+
+/**
+ * 어느 갈래를 먼저 치는가 (FR-TR-25). `both` 판에서만 뜻이 있다.
+ *
+ * 값의 집합을 객체의 키로 두는 이유는 위 `CONVENTIONS` 주석과 같다 — 유효값
+ * 검사와 화면의 라벨이 한 표에서 나온다.
+ */
+export const ENTRY_ORDERS = {
+	corner: '코너 먼저',
+	edge: '엣지 먼저'
+} satisfies Record<PieceKind, string>;
+
+/**
+ * 이 설정이 **무엇을 훈련하는가**. 라벨만 보면 단순한 입력 편의로 읽힌다.
+ *
+ * 실전은 외운 순서의 역순으로 실행한다. 통상 관례(CEEC)는 코너를 먼저 외우고
+ * 마지막에 푸는 것이라, 그 부하를 재현하려면 엣지를 먼저 쳐야 한다.
+ */
+export const ENTRY_ORDER_HINTS = {
+	corner: '코너를 먼저 칩니다. 코너를 붙들고 있는 구간이 짧습니다',
+	edge: '엣지를 먼저 칩니다. 코너를 엣지 치는 내내 붙들고 있게 됩니다'
+} satisfies Record<PieceKind, string>;
 
 export const TRAIN_MODES = {
 	follow: '큐브를 보면서 하나씩 입력합니다',
@@ -279,6 +345,9 @@ export const isTrainKind = (v: unknown): v is TrainKind =>
 
 export const isTrainMode = (v: unknown): v is TrainMode =>
 	typeof v === 'string' && v in TRAIN_MODES;
+
+export const isEntryOrder = (v: unknown): v is PieceKind =>
+	typeof v === 'string' && v in ENTRY_ORDERS;
 
 /**
  * 엔진이 버퍼에 대해 알아야 하는 전부.
@@ -430,7 +499,7 @@ export function parseRecords(raw: string | null): TraceRecord[] {
 }
 
 /**
- * 기록 한 건의 형태 판정. 8개 필드를 전부 본다.
+ * 기록 한 건의 형태 판정. 필수 8개를 전부 보고, 선택 필드는 있을 때만 본다.
  *
  * `pieceKind` / `mode` / `twistConvention` 은 값의 집합까지 확인한다. 문자열이기만
  * 하면 통과시키면, 낡은 저장물의 모르는 값이 화면까지 흘러가 필터·집계에서
@@ -446,6 +515,9 @@ function isRecord(v: unknown): v is TraceRecord {
 		typeof r.buffer === 'string' &&
 		r.buffer !== '' &&
 		isTrainMode(r.mode) &&
+		// 선택 필드다. 없으면 통과시키고 `entryFirstOf` 가 되메운다 — 있는데
+		// 모르는 값이면 낡은 저장물이므로 거른다.
+		(r.entryFirst === undefined || isEntryOrder(r.entryFirst)) &&
 		isTwistConvention(r.twistConvention) &&
 		typeof r.targetCount === 'number' &&
 		typeof r.correct === 'boolean'
@@ -548,8 +620,14 @@ export function sanitizeEntry(
  */
 export const ENTRY_SEPARATOR = '/';
 
-/** 구분자를 넣는 버튼의 라벨. 무엇이 시작되는지를 적는다. */
-export const SEPARATOR_LABEL = `${PART_LABELS.edge} 시작`;
+/**
+ * 구분자를 넣는 버튼의 라벨. 무엇이 시작되는지를 적는다.
+ *
+ * 갈래 순서를 고를 수 있게 되면서 상수일 수 없다 (FR-TR-25) — 엣지를 먼저 치는
+ * 판에서 "엣지 시작" 이라고 적으면 이미 치고 있는 갈래를 가리킨다.
+ */
+export const separatorLabel = (kinds: readonly PieceKind[]): string =>
+	`${PART_LABELS[kinds[kinds.length - 1]]} 시작`;
 
 /** 이 입력이 이미 갈렸는가. 패드가 어느 글자를 보여줄지의 근거다. */
 export const hasSeparator = (entry: readonly string[]): boolean =>

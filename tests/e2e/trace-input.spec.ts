@@ -30,7 +30,8 @@ import {
 	optionsFrom,
 	ENTRY_SEPARATOR,
 	RECORDS_SCHEMA_VERSION,
-	SEPARATOR_LABEL
+	kindsOf,
+	separatorLabel
 } from '../../src/lib/domain/tracing.js';
 import {
 	CORNER_CUBIE,
@@ -569,7 +570,7 @@ test.describe('T4-8 both 한 번에 (요구 2)', () => {
 	test('구분자 버튼의 라벨이 무엇이 시작되는지 적는다', async ({ page }) => {
 		await open(page, EVEN, both);
 		await expect(page.locator('[data-pad="entry"] [data-action="separator"]')).toHaveText(
-			SEPARATOR_LABEL
+			separatorLabel(kindsOf('both'))
 		);
 	});
 
@@ -691,6 +692,107 @@ test.describe('T4-8 both 한 번에 (요구 2)', () => {
 	});
 });
 
+/**
+ * T4-10 치는 순서 (FR-TR-25).
+ *
+ * 실전 3BLD 는 외운 순서의 **역순** 으로 실행한다. 통상 관례(CEEC)는 코너를 먼저
+ * 외워 마지막에 푸는 것이므로 엣지를 먼저 친다. 0.5.0 은 `[코너, 엣지]` 로 고정돼
+ * 있어 코너가 엣지를 **외우는** 동안만 붙들렸고, 실전에서 코너가 붙들리는
+ * 구간(엣지 실행 전체)이 훈련에서 빠져 있었다.
+ *
+ * 여기서 보는 것은 순서가 **정말로 뜻을 갖는가** 다 — 패드·구분자·채점·기록이
+ * 전부 따라오는지. 순서가 라벨만 바뀌고 채점이 그대로면 훈련이 아니다.
+ */
+test.describe('T4-10 치는 순서 (FR-TR-25)', () => {
+	const edgeFirst = { 'trace.pieceKind': 'both', 'trace.entryFirst': 'edge' };
+	const edgeFirstEntry = `${evenEdge.targets}${ENTRY_SEPARATOR}${even.targets}`;
+
+	test('엣지 먼저면 패드가 엣지로 시작하고 구분자가 코너를 가리킨다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await page.locator('[data-start]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'edge');
+		await expect(page.locator('[data-pad="entry"] [data-action="separator"]')).toHaveText(
+			separatorLabel(kindsOf('both', 'edge'))
+		);
+		// 구분자를 넘기면 코너로 바뀐다 — 0.5.0 과 반대다.
+		await page.locator('[data-pad="entry"] [data-action="separator"]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'corner');
+	});
+
+	test('엣지→코너 순으로 친 판이 정답이다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await play(page, edgeFirstEntry);
+		await expect(page.locator('[data-verdict]')).toHaveAttribute('data-kind', 'correct');
+		await expect(page.locator('[data-part="corner"] [data-answer]')).toHaveText(even.targets);
+		await expect(page.locator('[data-part="edge"] [data-answer]')).toHaveText(evenEdge.targets);
+	});
+
+	/** 순서가 라벨뿐이면 이 검사가 통과한다. 통과하면 안 된다. */
+	test('같은 판에 코너→엣지 순으로 치면 정답이 아니다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await play(page, bothEntry);
+		await expect(page.locator('[data-verdict]')).not.toHaveAttribute('data-kind', 'correct');
+	});
+
+	test('기록에 친 순서가 남고 조각 표기가 그 순서를 적는다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await play(page, edgeFirstEntry);
+		const rec = await page.evaluate(
+			() => JSON.parse(localStorage.getItem('trace.records')!).records[0]
+		);
+		expect(rec.entryFirst).toBe('edge');
+		expect(rec.pieceKind).toBe('both');
+		await openRecords(page);
+		await expect(page.locator('[data-records] tbody tr').first()).toContainText('엣지+코너');
+	});
+
+	/**
+	 * 시작 전에는 설정값을 봐야 한다. `kinds` 는 시작 시점에 굳는 값이라 그것을
+	 * 그대로 쓰면 직전 판의 순서를 적는다 — 순서를 바꿔도 버튼이 안 따라온다.
+	 */
+	test('시작 전에 순서를 바꾸면 구분자 라벨이 따라온다', async ({ page }) => {
+		await open(page, EVEN, { 'trace.pieceKind': 'both' });
+		const sep = page.locator('[data-pad="entry"] [data-action="separator"]');
+		await expect(sep).toHaveText(separatorLabel(kindsOf('both', 'corner')));
+		await page.locator('[data-toggle="trace-order"] [data-option="edge"]').click();
+		await expect(sep).toHaveText(separatorLabel(kindsOf('both', 'edge')));
+	});
+
+	test('설정이 새로고침 뒤에도 그대로다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await page.reload();
+		await expect(page.locator('[data-start]')).toBeEnabled({ timeout: 30_000 });
+		await expect(
+			page.locator('[data-toggle="trace-order"] [data-option="edge"]')
+		).toHaveAttribute('aria-pressed', 'true');
+	});
+
+	test('판이 도는 동안 잠기고 다음 문제에서 풀린다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		const option = page.locator('[data-toggle="trace-order"] [data-option="corner"]');
+		await expect(option).toBeEnabled();
+		await page.locator('[data-start]').click();
+		await expect(option).toBeDisabled();
+		await page.locator('[data-entry]').fill(edgeFirstEntry);
+		await page.locator('[data-grade]').click();
+		// 결과 단계에서도 잠겨 있다 — 이미 채점한 판의 조건이 흔들리면 안 된다.
+		await expect(option).toBeDisabled();
+		await page.locator('[data-next]').click();
+		await expect(option).toBeEnabled();
+	});
+
+	test('한 갈래짜리 판에서는 자리만 지킨 채 감춰진다', async ({ page }) => {
+		await open(page, EVEN);
+		const order = page.locator('[data-toggle="trace-order"]');
+		// 사라지지 않는다 — 개수가 설정에 따라 갈리면 SSR/CSR 이 어긋난다 (AD-14).
+		await expect(order).toHaveCount(1);
+		expect(
+			await order.evaluate((el) => getComputedStyle(el.parentElement!).visibility)
+		).toBe('hidden');
+		await expect(order.locator('[data-option="edge"]')).toBeDisabled();
+	});
+});
+
 test.describe('T4-6 시간과 기록 (FR-TR-23)', () => {
 	test('세 판을 돌리면 직전 기록들이 모달에 보인다', async ({ page }) => {
 		await open(page, EVEN);
@@ -766,8 +868,20 @@ test.describe('T4-6 시간과 기록 (FR-TR-23)', () => {
 			() => JSON.parse(localStorage.getItem('trace.records')!).records[0]
 		);
 		expect(Object.keys(rec).sort()).toEqual(
-			['at', 'buffer', 'correct', 'mode', 'ms', 'pieceKind', 'targetCount', 'twistConvention'].sort()
+			[
+				'at',
+				'buffer',
+				'correct',
+				'entryFirst',
+				'mode',
+				'ms',
+				'pieceKind',
+				'targetCount',
+				'twistConvention'
+			].sort()
 		);
+		// 한 갈래짜리 판은 그 갈래 자신이다 (FR-TR-25).
+		expect(rec.entryFirst).toBe('corner');
 		expect(rec.buffer).toBe(meta.buffer);
 		expect(rec.targetCount).toBe(even.result.targets.length);
 		expect(rec.correct).toBe(true);

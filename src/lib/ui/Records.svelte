@@ -29,7 +29,7 @@
 -->
 <script lang="ts">
 	import { tracing } from './tracing.svelte.js';
-	import { formatMs, msPerTarget, RECORD_KIND_LABELS } from '$lib/domain/tracing.js';
+	import { formatMs, msPerTarget, recordKindLabel } from '$lib/domain/tracing.js';
 
 	let dialog: HTMLDialogElement | undefined = $state();
 
@@ -58,7 +58,7 @@
 						{#each tracing.records as r (r.at + '/' + r.pieceKind)}
 							<tr data-record>
 								<td class="num">{formatMs(r.ms)}</td>
-								<td>{RECORD_KIND_LABELS[r.pieceKind]}</td>
+								<td>{recordKindLabel(r)}</td>
 								<td class="num" data-per-target>{msPerTarget(r.ms, r.targetCount)}</td>
 								<td>{r.correct ? '정답' : '오답'}</td>
 							</tr>

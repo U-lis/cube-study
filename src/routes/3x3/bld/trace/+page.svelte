@@ -70,10 +70,13 @@
 		CONVENTION_VALUES,
 		ENTRY_SEPARATOR,
 		PART_LABELS,
-		SEPARATOR_LABEL,
+		separatorLabel,
 		TRAIN_KIND_HEADING,
 		TRAIN_KINDS,
 		TRAIN_MODE_HEADING,
+		ENTRY_ORDER_HEADING,
+		ENTRY_ORDERS,
+		ENTRY_ORDER_HINTS,
 		TRAIN_MODES,
 		TWIST_ABSORBED,
 		TWIST_SEPARATED,
@@ -190,6 +193,12 @@
 		hint: TRAIN_MODES[value],
 		title: TRAIN_MODES[value]
 	}));
+	const ORDER_OPTIONS = (Object.keys(ENTRY_ORDERS) as PieceKind[]).map((value) => ({
+		value,
+		label: ENTRY_ORDERS[value],
+		hint: ENTRY_ORDER_HINTS[value],
+		title: ENTRY_ORDER_HINTS[value]
+	}));
 	const CONVENTION_OPTIONS = CONVENTION_VALUES.map((value) => ({
 		value,
 		label: CONVENTION_LABELS[value],
@@ -216,6 +225,11 @@
 	 * 흔들리면 안 된다.
 	 */
 	let roundKind = $state<TrainKind>('corner');
+	/**
+	 * 이번 판에 먼저 치는 갈래 (FR-TR-25). 대상과 같은 이유로 시작 시점에 굳는다 —
+	 * 도중에 바뀌면 이미 친 글자가 다른 갈래의 것으로 읽힌다.
+	 */
+	let roundEntryFirst = $state<PieceKind>('corner');
 	/** 54칸 facelet 문자열. 시작 전에는 `null` 이다 — 색 배열이 곧 정답의 일부다. */
 	let facelets = $state<string | null>(null);
 	/**
@@ -281,8 +295,18 @@
 	/** `memorize` 는 입력 시점에 큐브가 사라진다. 그것이 두 모드의 유일한 차이다. */
 	let cubeVisible = $derived(!(stage === 'input' && tracing.mode === 'memorize'));
 
-	/** 이번 판의 갈래들. `both` 는 [코너, 엣지] 이고 순서가 구분자의 앞뒤다. */
-	let kinds = $derived(kindsOf(roundKind));
+	/** 이번 판의 갈래들. 순서가 구분자의 앞뒤이고 설정이 그것을 정한다 (FR-TR-25). */
+	let kinds = $derived(kindsOf(roundKind, roundEntryFirst));
+	/**
+	 * 화면에 **적는** 갈래 구성. `idle` 에서는 설정값을 본다.
+	 *
+	 * `kinds` 는 시작 시점에 굳는 값이라 `idle` 에서는 직전 판을 가리킨다. 채점은
+	 * 그래야 맞지만 라벨은 아니다 — 대상이나 순서를 바꿔도 구분자 버튼이 안
+	 * 따라오면 무엇이 시작될지를 틀리게 적는다.
+	 */
+	let plannedKinds = $derived(
+		stage === 'idle' ? kindsOf(tracing.pieceKind, tracing.entryFirst) : kinds
+	);
 	/**
 	 * 지금 치고 있는 갈래 (요구 2).
 	 *
@@ -315,16 +339,14 @@
 	 * `idle` 에서는 직전 판의 갈래를 가리키고, 그러면 대상을 바꿔도 버튼이
 	 * 따라오지 않는다.
 	 */
-	let splitUsable = $derived(
-		(stage === 'idle' ? kindsOf(tracing.pieceKind) : kinds).length > 1
-	);
+	let splitUsable = $derived(plannedKinds.length > 1);
 	/**
 	 * 입력 칸의 한 줄 설명. `both` 는 구분자를 어떻게 넣는지가 먼저다 — 그것을
 	 * 모르면 코너와 엣지가 한 덩어리로 붙어 채점이 통째로 어긋난다.
 	 */
 	let entryHint = $derived(
-		kinds.length > 1
-			? `${SEPARATOR_LABEL} 를 눌러 코너와 엣지를 가릅니다. 비틀림은 버퍼막힘(break-in)으로 이어 쳐도 되고 문자 하나로 적어도 됩니다`
+		plannedKinds.length > 1
+			? `${separatorLabel(plannedKinds)} 를 눌러 두 갈래를 가릅니다. 비틀림은 버퍼막힘(break-in)으로 이어 쳐도 되고 문자 하나로 적어도 됩니다`
 			: '비틀림은 버퍼막힘(break-in)으로 이어 쳐도 되고 문자 하나로 따로 적어도 됩니다. 채점이 알아서 읽습니다'
 	);
 	/**
@@ -445,6 +467,7 @@
 		// 관례는 여기서 굳히지 않는다. 결과 화면의 표시 토글이 되었으므로 (요구 3
 		// 재검토) 판이 끝난 뒤에 바꾸는 것이 정상 사용이다.
 		roundKind = tracing.pieceKind;
+		roundEntryFirst = tracing.entryFirst;
 		entry = [];
 		conflicts = 0;
 		parts = [];
@@ -570,6 +593,9 @@
 			pieceKind: roundKind,
 			buffer: joinBuffers(graded.map((p) => metaOf(p.kind)!.buffer)),
 			mode: tracing.mode,
+			// 이 판에 실제로 친 순서다. 설정이 아니라 굳은 값을 적는다 — 결과 단계에서
+			// 설정을 바꿔도 이미 채점한 판의 조건은 흔들리지 않는다.
+			entryFirst: kinds[0],
 			twistConvention: recorded,
 			// 스크램블이 정한 개수다. 사용자의 입력 길이가 아니라 문제의 난이도가 남는다.
 			// `both` 는 합계다 — 시간도 두 갈래를 합쳐 잰 값이라 단위가 맞는다.
@@ -692,6 +718,20 @@
 			options={MODE_OPTIONS}
 			disabled={settingsLocked}
 		/>
+		<!--
+			치는 순서 (FR-TR-25). 갈래가 하나인 판에서는 고를 것이 없으므로 **눈에서만**
+			지운다 — `{#if}` 로 없애면 대상 설정이 저장소에서 오므로 SSR 과 CSR 의
+			요소 개수가 갈린다 (AD-14). 위 `splitUsable` 과 같은 처리다.
+		-->
+		<div class="order" data-usable={splitUsable ? 'true' : 'false'}>
+			<SegToggle
+				name="trace-order"
+				heading={ENTRY_ORDER_HEADING}
+				bind:value={tracing.entryFirst}
+				options={ORDER_OPTIONS}
+				disabled={settingsLocked || !splitUsable}
+			/>
+		</div>
 	</div>
 
 	<!--
@@ -746,7 +786,7 @@
 				max={MAX_ENTRY}
 				onedit={noteInput}
 				separator={ENTRY_SEPARATOR}
-				separatorLabel={SEPARATOR_LABEL}
+				separatorLabel={separatorLabel(plannedKinds)}
 				separatorEnabled={canSplit}
 				separatorHidden={!splitUsable}
 			/>
@@ -1260,6 +1300,11 @@
 		line-height: 1.5;
 		color: var(--muted);
 	}
+	/* 자리는 지키고 눈에서만 지운다. 위 마크업 주석 참조 (AD-14). */
+	.order[data-usable='false'] {
+		visibility: hidden;
+	}
+
 	.settings {
 		display: grid;
 		gap: 0.5rem;

@@ -21,7 +21,8 @@ import {
 	EDGE_CUBIE,
 	EDGE_INDEX,
 	EDGE_LETTERS,
-	EDGE_ROTATION
+	EDGE_ROTATION,
+	type PieceKind
 } from '../../src/lib/cube/speffz.js';
 import type { EntryReading, TraceVerdict } from '../../src/lib/cube/trace.js';
 import {
@@ -40,8 +41,12 @@ import {
 	isTwistConvention,
 	readingText,
 	optionsFrom,
+	entryFirstOf,
+	isEntryOrder,
 	parseRecords,
 	pushRecord,
+	recordKindLabel,
+	separatorLabel,
 	sanitizeEntry,
 	serializeRecords,
 	twistEntries,
@@ -51,6 +56,7 @@ import {
 	ENTRY_SEPARATOR,
 	PART_LABELS,
 	RECORD_KIND_LABELS,
+	ENTRY_ORDERS,
 	MARK_PALETTE,
 	RECORDS_KEY,
 	RECORDS_SCHEMA_VERSION,
@@ -244,6 +250,84 @@ describe('T2-4b conventionOf · readingText (요구 1)', () => {
 	it('축하·배지 표현이 없다 (NFR-TR-5)', () => {
 		for (const text of [readingText(reading([], [])), readingText(reading(['K'], ['B']))])
 			for (const word of ['축하', '배지', '연속', '점수']) expect(text).not.toContain(word);
+	});
+});
+
+describe('T2-8 치는 순서 (FR-TR-25)', () => {
+	it('한 갈래짜리 판은 순서가 뜻이 없다 — 무엇을 넣어도 자기 자신이다', () => {
+		for (const first of Object.keys(ENTRY_ORDERS) as PieceKind[]) {
+			expect(kindsOf('corner', first)).toEqual(['corner']);
+			expect(kindsOf('edge', first)).toEqual(['edge']);
+		}
+	});
+
+	it('both 는 고른 갈래가 앞에 선다', () => {
+		expect(kindsOf('both', 'corner')).toEqual(['corner', 'edge']);
+		expect(kindsOf('both', 'edge')).toEqual(['edge', 'corner']);
+	});
+
+	/** 0.5.0 의 동작이 기본값이다. 인자를 안 주면 그때와 같아야 한다. */
+	it('기본값은 코너 먼저 — 0.5.0 의 동작이다', () => {
+		expect(kindsOf('both')).toEqual(['corner', 'edge']);
+	});
+
+	it('구분자 라벨은 뒤 갈래를 적는다 — 이미 치고 있는 갈래가 아니다', () => {
+		expect(separatorLabel(kindsOf('both', 'corner'))).toContain(PART_LABELS.edge);
+		expect(separatorLabel(kindsOf('both', 'edge'))).toContain(PART_LABELS.corner);
+	});
+
+	it('유효값 검사는 두 갈래만 통과시킨다', () => {
+		expect(isEntryOrder('corner')).toBe(true);
+		expect(isEntryOrder('edge')).toBe(true);
+		expect(isEntryOrder('both')).toBe(false);
+		expect(isEntryOrder(null)).toBe(false);
+	});
+});
+
+describe('T2-9 기록의 치는 순서 — v2 를 버리지 않는다', () => {
+	/**
+	 * 스키마 버전을 올리면 파서가 저장물을 통째로 버린다. 0.5.0 사용자의 기록
+	 * 50건이 날아가므로 올리지 않는다는 것을 검사로 못 박는다.
+	 */
+	it('칸이 없는 v2 기록도 그대로 복원된다', () => {
+		const back = parseRecords(serializeRecords([rec({ pieceKind: 'both' })]));
+		expect(back).toHaveLength(1);
+		expect(back[0].entryFirst).toBeUndefined();
+	});
+
+	it('칸이 없으면 코너 먼저로 되메운다 — 0.5.0 이 그렇게만 동작했다', () => {
+		expect(entryFirstOf(rec({ pieceKind: 'both' }))).toBe('corner');
+	});
+
+	it('한 갈래짜리 v2 기록은 그 갈래로 되메운다', () => {
+		expect(entryFirstOf(rec({ pieceKind: 'edge' }))).toBe('edge');
+	});
+
+	it('칸이 있으면 그 값을 쓰고 왕복해도 남는다', () => {
+		const r = rec({ pieceKind: 'both', entryFirst: 'edge' });
+		expect(entryFirstOf(r)).toBe('edge');
+		expect(parseRecords(serializeRecords([r]))[0].entryFirst).toBe('edge');
+	});
+
+	it('모르는 값이 든 기록은 거른다', () => {
+		const raw = JSON.stringify({
+			schemaVersion: RECORDS_SCHEMA_VERSION,
+			records: [{ ...rec(), entryFirst: 'both' }]
+		});
+		expect(parseRecords(raw)).toEqual([]);
+	});
+
+	it('기록 라벨이 친 순서대로 잇는다', () => {
+		expect(recordKindLabel(rec({ pieceKind: 'both', entryFirst: 'corner' }))).toBe(
+			RECORD_KIND_LABELS.both
+		);
+		expect(recordKindLabel(rec({ pieceKind: 'both', entryFirst: 'edge' }))).toBe(
+			`${PART_LABELS.edge}+${PART_LABELS.corner}`
+		);
+	});
+
+	it('한 갈래짜리 기록의 라벨은 그대로다', () => {
+		expect(recordKindLabel(rec({ pieceKind: 'corner' }))).toBe(RECORD_KIND_LABELS.corner);
 	});
 });
 

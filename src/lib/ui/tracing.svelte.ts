@@ -16,6 +16,7 @@
  */
 import { browser } from '$app/environment';
 import {
+	isEntryOrder,
 	isTrainKind,
 	isTrainMode,
 	isTwistConvention,
@@ -28,10 +29,12 @@ import {
 	type TrainMode,
 	type TwistConvention
 } from '$lib/domain/tracing.js';
+import type { PieceKind } from '$lib/cube/speffz.js';
 
 const KEY_PIECE_KIND = 'trace.pieceKind';
 const KEY_MODE = 'trace.mode';
 const KEY_CONVENTION = 'trace.convention';
+const KEY_ENTRY_FIRST = 'trace.entryFirst';
 
 /**
  * 저장된 설정 읽기. 판정 함수를 도메인에서 받아 쓴다 — 유효값 목록이 두 곳에
@@ -56,6 +59,11 @@ class Tracing {
 	mode = $state<TrainMode>(read(KEY_MODE, isTrainMode, 'follow'));
 	/** 비틀림 관례 (FR-TR-24). 기본은 입문의 방식이자 엔진의 기본값이다. */
 	convention = $state<TwistConvention>(read(KEY_CONVENTION, isTwistConvention, 'A'));
+	/**
+	 * 먼저 치는 갈래 (FR-TR-25). 기본은 코너 먼저 — 0.5.0 의 동작이고, 갈래를
+	 * 가르는 것 자체가 처음인 단계에서 순서까지 뒤집힌 채 시작하지 않게 한다.
+	 */
+	entryFirst = $state<PieceKind>(read(KEY_ENTRY_FIRST, isEntryOrder, 'corner'));
 	/** 최근 것이 앞. 상한은 도메인의 `RECORD_LIMIT` 이 정한다. */
 	records = $state<TraceRecord[]>(loadRecords());
 
@@ -65,6 +73,7 @@ class Tracing {
 				$effect(() => localStorage.setItem(KEY_PIECE_KIND, this.pieceKind));
 				$effect(() => localStorage.setItem(KEY_MODE, this.mode));
 				$effect(() => localStorage.setItem(KEY_CONVENTION, this.convention));
+				$effect(() => localStorage.setItem(KEY_ENTRY_FIRST, this.entryFirst));
 				$effect(() => localStorage.setItem(RECORDS_KEY, serializeRecords(this.records)));
 			});
 		}

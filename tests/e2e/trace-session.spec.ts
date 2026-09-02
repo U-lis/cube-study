@@ -287,7 +287,7 @@ test.describe('T3-4 세션 설정 (FR-TR-19, 24)', () => {
 	});
 
 	test('both 는 한 줄로 이어 치고 한 번에 채점한다 (요구 2)', async ({ page }) => {
-		await open(page, { 'trace.pieceKind': 'both', 'trace.mode': 'follow' });
+		await open(page, { 'trace.target': 'corner-edge', 'trace.mode': 'follow' });
 		await ready(page);
 		await page.locator('[data-start]').click();
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'corner');

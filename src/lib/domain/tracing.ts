@@ -59,7 +59,7 @@ const [CORNER, EDGE] = Object.keys({
  * 한 판이 다루는 조각 종류들. `both` 는 **순서가 뜻을 갖는다** — 배열 앞이 구분자
  * 앞이고, 패드 글자·대소문자 교차검증·채점이 전부 이 순서를 위치로 따라간다.
  *
- * `first` 가 그 순서를 정한다 (FR-TR-25). 실전 3BLD 는 외운 순서의 **역순** 으로
+ * `first` 가 그 순서를 정한다 (FR-TR-19). 실전 3BLD 는 외운 순서의 **역순** 으로
  * 실행하고, 통상 관례(CEEC)는 코너를 먼저 외워 마지막에 푼다 — 즉 엣지를 먼저
  * 친다. 0.5.0 까지는 `[CORNER, EDGE]` 상수였으므로 코너가 엣지를 **외우는** 동안만
  * 붙들렸고, 실전에서 코너가 붙들리는 구간(엣지 실행 전체)이 훈련에서 빠져 있었다.
@@ -121,7 +121,7 @@ export interface TraceRecord {
 	buffer: Cubie;
 	mode: TrainMode;
 	/**
-	 * 먼저 친 갈래 (FR-TR-25). `both` 판에서만 뜻이 있고, 한 갈래짜리 판은 그
+	 * 먼저 친 갈래 (FR-TR-19). `both` 판에서만 뜻이 있고, 한 갈래짜리 판은 그
 	 * 갈래 자신이다.
 	 *
 	 * 남기는 이유는 `twistConvention` 과 같다 — 조건이 다르면 성적을 나란히 놓을
@@ -299,6 +299,11 @@ export const CONVENTION_VALUES: readonly TwistConvention[] = [ABSORBED, SEPARATE
 export const conventionOf = (separated: boolean): TwistConvention =>
 	separated ? SEPARATED : ABSORBED;
 
+/**
+ * 조각 구성 셋의 이름. **기록층의 표** 다 — 화면 토글의 라벨은 `TRAIN_TARGETS` 이
+ * 낸다. 여기 남아 있는 이유는 `isTrainKind` 가 저장된 기록의 `pieceKind` 를
+ * 이 표로 검사하기 때문이고, 값을 빼면 쌓인 기록이 통째로 걸러진다.
+ */
 export const TRAIN_KINDS = {
 	corner: '코너만',
 	edge: '엣지만',
@@ -307,29 +312,92 @@ export const TRAIN_KINDS = {
 
 export const TRAIN_KIND_HEADING = '훈련 대상';
 export const TRAIN_MODE_HEADING = '훈련 모드';
-export const ENTRY_ORDER_HEADING = '치는 순서';
+
+/* ═══════════════════════════════════════════════════════════
+ * 훈련 대상 — 외우는 순서까지 한 축에 (FR-TR-19)
+ * ═══════════════════════════════════════════════════════════ */
 
 /**
- * 어느 갈래를 먼저 치는가 (FR-TR-25). `both` 판에서만 뜻이 있다.
+ * 한 판이 무엇을 다루는가. 이름은 **외우는 순서** 다.
  *
- * 값의 집합을 객체의 키로 두는 이유는 위 `CONVENTIONS` 주석과 같다 — 유효값
- * 검사와 화면의 라벨이 한 표에서 나온다.
+ * ─── 왜 축이 하나인가 ───────────────────────────────────────
+ * 잠깐 대상(셋) 과 치는 순서(둘) 가 따로 선 두 토글이었다. 조합은 여섯인데 그중
+ * 둘은 같은 판이고(한 갈래짜리 판에 순서는 뜻이 없다), 설정 줄이 셋으로 늘어
+ * 시작 버튼이 화면 밖으로 밀렸다. 사람이 실제로 고르는 것은 "코너부터 외운다 /
+ * 엣지부터 외운다" 하나이므로 축도 하나여야 한다.
+ *
+ * 치는 순서는 여기서 **파생된다** — 고르는 값이 아니다 (`entryKindsOf`).
+ * ────────────────────────────────────────────────────────────
  */
-export const ENTRY_ORDERS = {
-	corner: '코너 먼저',
-	edge: '엣지 먼저'
-} satisfies Record<PieceKind, string>;
+export type TrainTarget = 'corner' | 'edge' | 'corner-edge' | 'edge-corner';
+
+/** 외우는 순서. 배열 순서가 곧 뜻이고, 화면 라벨의 화살표가 이것을 적는다. */
+const MEMO_ORDER = {
+	corner: [CORNER],
+	edge: [EDGE],
+	'corner-edge': [CORNER, EDGE],
+	'edge-corner': [EDGE, CORNER]
+} satisfies Record<TrainTarget, PieceKind[]>;
+
+/** 토글 라벨. 조각 이름을 다시 적지 않는다 — `PART_LABELS` 가 정본이다. */
+export const TRAIN_TARGETS = {
+	corner: PART_LABELS.corner,
+	edge: PART_LABELS.edge,
+	'corner-edge': `${PART_LABELS.corner}→${PART_LABELS.edge}`,
+	'edge-corner': `${PART_LABELS.edge}→${PART_LABELS.corner}`
+} satisfies Record<TrainTarget, string>;
+
+/** 이 대상이 다루는 조각 종류. 기록에 남는 것은 여전히 이 값이다. */
+export const targetKind = (t: TrainTarget): TrainKind =>
+	MEMO_ORDER[t].length > 1 ? 'both' : MEMO_ORDER[t][0];
+
+/** 외우는 순서. 배열을 복사해서 낸다 — 호출부가 뒤집어도 표가 상하지 않는다. */
+export const memoKindsOf = (t: TrainTarget): PieceKind[] => [...MEMO_ORDER[t]];
 
 /**
- * 이 설정이 **무엇을 훈련하는가**. 라벨만 보면 단순한 입력 편의로 읽힌다.
+ * 이 판에서 **치는** 순서 (FR-TR-19).
  *
- * 실전은 외운 순서의 역순으로 실행한다. 통상 관례(CEEC)는 코너를 먼저 외우고
- * 마지막에 푸는 것이라, 그 부하를 재현하려면 엣지를 먼저 쳐야 한다.
+ * 실전 3BLD 는 외운 순서의 역순으로 실행한다. 통상 관례(CEEC)는 코너를 먼저 외워
+ * 마지막에 푸는 것이라, 코너는 엣지를 외우는 동안이 아니라 엣지를 **실행하는**
+ * 내내 붙들려 있다. `memorize` 는 그 부하를 재현하므로 역순으로 받는다.
+ *
+ * `follow` 는 뒤집지 않는다. 큐브를 보면서 한 조각씩 치는 모드라 훑는 순서가 곧
+ * 입력 순서이고, 거기서 역순을 강제하면 "따라가기" 가 성립하지 않는다.
+ *
+ * 배열은 `kindsOf` 가 만든다. 순서를 만드는 곳이 둘이면 언젠가 한쪽만 고쳐진다.
  */
-export const ENTRY_ORDER_HINTS = {
-	corner: '코너를 먼저 칩니다. 코너를 붙들고 있는 구간이 짧습니다',
-	edge: '엣지를 먼저 칩니다. 코너를 엣지 치는 내내 붙들고 있게 됩니다'
-} satisfies Record<PieceKind, string>;
+export function entryKindsOf(t: TrainTarget, mode: TrainMode): PieceKind[] {
+	const memo = MEMO_ORDER[t];
+	const first = mode === 'memorize' ? memo[memo.length - 1] : memo[0];
+	return kindsOf(targetKind(t), first);
+}
+
+/**
+ * 토글 밑의 한 줄. **모드에 따라 달라진다** — 같은 대상이라도 치는 순서가 갈리고,
+ * 그것을 적지 않으면 사용자는 자기가 뒤집어 쳐야 한다는 것을 채점당한 뒤에 안다.
+ */
+export function targetHint(t: TrainTarget, mode: TrainMode): string {
+	const memo = memoKindsOf(t);
+	if (memo.length === 1) return `${PART_LABELS[memo[0]]}만 트레이싱합니다`;
+	const order = memo.map((k) => PART_LABELS[k]).join('→');
+	const first = PART_LABELS[entryKindsOf(t, mode)[0]];
+	return mode === 'memorize'
+		? `${order} 순으로 외우고 ${first}부터 칩니다 — 실전은 외운 역순으로 실행합니다`
+		: `${order} 순으로 훑으며 훑는 대로 칩니다`;
+}
+
+/**
+ * 0.5.0 이 남긴 설정을 새 축으로 옮긴다.
+ *
+ * `both` 는 코너부터 외우는 판으로 본다 — 통상 관례(CEEC)가 그것이다. 같이 저장돼
+ * 있던 `trace.entryFirst` 는 보지 않는다. 그 값은 **치는** 순서라 외우는 순서로
+ * 옮길 근거가 되지 못하고, 옮기면 사용자가 고른 적 없는 암기 순서를 앱이
+ * 지어내는 것이 된다.
+ */
+export function migrateTarget(stored: unknown): TrainTarget | null {
+	if (isTrainTarget(stored)) return stored;
+	return stored === 'both' ? 'corner-edge' : null;
+}
 
 export const TRAIN_MODES = {
 	follow: '큐브를 보면서 하나씩 입력합니다',
@@ -346,8 +414,12 @@ export const isTrainKind = (v: unknown): v is TrainKind =>
 export const isTrainMode = (v: unknown): v is TrainMode =>
 	typeof v === 'string' && v in TRAIN_MODES;
 
+export const isTrainTarget = (v: unknown): v is TrainTarget =>
+	typeof v === 'string' && v in TRAIN_TARGETS;
+
+/** 기록의 `entryFirst` 가 아는 값인가. 조각 종류 둘뿐이다. */
 export const isEntryOrder = (v: unknown): v is PieceKind =>
-	typeof v === 'string' && v in ENTRY_ORDERS;
+	typeof v === 'string' && v in PART_LABELS;
 
 /**
  * 엔진이 버퍼에 대해 알아야 하는 전부.
@@ -623,7 +695,7 @@ export const ENTRY_SEPARATOR = '/';
 /**
  * 구분자를 넣는 버튼의 라벨. 무엇이 시작되는지를 적는다.
  *
- * 갈래 순서를 고를 수 있게 되면서 상수일 수 없다 (FR-TR-25) — 엣지를 먼저 치는
+ * 갈래 순서를 고를 수 있게 되면서 상수일 수 없다 (FR-TR-19) — 엣지를 먼저 치는
  * 판에서 "엣지 시작" 이라고 적으면 이미 치고 있는 갈래를 가리킨다.
  */
 export const separatorLabel = (kinds: readonly PieceKind[]): string =>

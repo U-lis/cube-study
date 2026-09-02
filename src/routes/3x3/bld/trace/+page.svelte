@@ -53,10 +53,10 @@
 		conventionOf,
 		entrySegments,
 		formatMs,
+		entryKindsOf,
 		hasSeparator,
 		isPass,
 		joinBuffers,
-		kindsOf,
 		optionsFrom,
 		partsVerdictText,
 		readingText,
@@ -71,18 +71,17 @@
 		ENTRY_SEPARATOR,
 		PART_LABELS,
 		separatorLabel,
+		targetHint,
+		targetKind,
 		TRAIN_KIND_HEADING,
-		TRAIN_KINDS,
 		TRAIN_MODE_HEADING,
-		ENTRY_ORDER_HEADING,
-		ENTRY_ORDERS,
-		ENTRY_ORDER_HINTS,
 		TRAIN_MODES,
+		TRAIN_TARGETS,
 		TWIST_ABSORBED,
 		TWIST_SEPARATED,
 		type BufferMeta,
-		type TrainKind,
 		type TrainMode,
+		type TrainTarget,
 		type TwistConvention
 	} from '$lib/domain/tracing.js';
 	import type { Cubie, Dataset, Sticker } from '$lib/domain/types.js';
@@ -174,30 +173,26 @@
 	/** 하이라이트 없음. 렌더마다 새 배열을 만들면 뷰어의 `$effect` 가 계속 돈다. */
 	const NO_MARKS: (Mark | null)[] = Array.from({ length: 54 }, () => null);
 
-	/** 대상 선택의 한 줄 설명. 라벨은 이름이고 이쪽이 "그래서 무엇이 다른가" 다. */
-	const KIND_HINT: Record<TrainKind, string> = {
-		corner: '코너만 트레이싱합니다',
-		edge: '엣지만 트레이싱합니다',
-		both: `한 줄에 코너와 엣지를 이어 치고 한 번에 채점합니다`
-	};
-
-	const KIND_OPTIONS = (Object.keys(TRAIN_KINDS) as TrainKind[]).map((value) => ({
-		value,
-		label: TRAIN_KINDS[value],
-		hint: KIND_HINT[value],
-		title: KIND_HINT[value]
-	}));
+	/**
+	 * 대상 넷 (FR-TR-19). 라벨은 외우는 순서이고, 한 줄 설명이 그래서
+	 * 무엇을 어느 순서로 치게 되는지를 적는다.
+	 *
+	 * **모드에 매인다.** `memorize` 는 외운 역순으로 받으므로 같은 대상이라도
+	 * 설명이 달라진다 — 상수로 두면 둘 중 하나가 거짓말이 된다.
+	 */
+	let TARGET_OPTIONS = $derived(
+		(Object.keys(TRAIN_TARGETS) as TrainTarget[]).map((value) => ({
+			value,
+			label: TRAIN_TARGETS[value],
+			hint: targetHint(value, tracing.mode),
+			title: targetHint(value, tracing.mode)
+		}))
+	);
 	const MODE_OPTIONS = (Object.keys(TRAIN_MODES) as TrainMode[]).map((value) => ({
 		value,
 		label: value === 'follow' ? '보고 따라가기' : '외운 다음 입력',
 		hint: TRAIN_MODES[value],
 		title: TRAIN_MODES[value]
-	}));
-	const ORDER_OPTIONS = (Object.keys(ENTRY_ORDERS) as PieceKind[]).map((value) => ({
-		value,
-		label: ENTRY_ORDERS[value],
-		hint: ENTRY_ORDER_HINTS[value],
-		title: ENTRY_ORDER_HINTS[value]
 	}));
 	const CONVENTION_OPTIONS = CONVENTION_VALUES.map((value) => ({
 		value,
@@ -224,12 +219,13 @@
 	 * 잠금이 풀리는 결과 단계에서 설정을 바꿔도 이미 채점한 판의 갈래 구성이
 	 * 흔들리면 안 된다.
 	 */
-	let roundKind = $state<TrainKind>('corner');
+	let roundTarget = $state<TrainTarget>('corner');
 	/**
-	 * 이번 판에 먼저 치는 갈래 (FR-TR-25). 대상과 같은 이유로 시작 시점에 굳는다 —
-	 * 도중에 바뀌면 이미 친 글자가 다른 갈래의 것으로 읽힌다.
+	 * 이번 판의 모드. 대상과 같은 이유로 시작 시점에 굳는다 — 치는 순서가 모드에서
+	 * 나오므로(FR-TR-19), 결과 단계에서 모드를 바꾸면 이미 친 글자가 다른 갈래의
+	 * 것으로 읽힌다.
 	 */
-	let roundEntryFirst = $state<PieceKind>('corner');
+	let roundMode = $state<TrainMode>('follow');
 	/** 54칸 facelet 문자열. 시작 전에는 `null` 이다 — 색 배열이 곧 정답의 일부다. */
 	let facelets = $state<string | null>(null);
 	/**
@@ -288,24 +284,28 @@
 	let running = $derived(stage === 'tracing' && stoppedAt === null);
 	let elapsed = $derived(stage === 'idle' ? 0 : (stoppedAt ?? nowAt) - startedAt);
 
-	/** 입력이 열리는 조건. `follow` 는 트레이싱 중에 이미 열려 있다 (FR-TR-21). */
-	let inputOpen = $derived(
-		stage === 'input' || (stage === 'tracing' && tracing.mode === 'follow')
-	);
+	/**
+	 * 입력이 열리는 조건. `follow` 는 트레이싱 중에 이미 열려 있다 (FR-TR-21).
+	 *
+	 * 설정이 아니라 **굳은 값** 을 본다. 판이 도는 동안 설정은 잠기지만, 모드가 치는
+	 * 순서까지 정하게 된 뒤로(FR-TR-19) 설정을 직접 읽는 자리와 굳은 값을 읽는
+	 * 자리가 섞이면 어느 쪽이 이번 판의 조건인지 코드에서 읽히지 않는다.
+	 */
+	let inputOpen = $derived(stage === 'input' || (stage === 'tracing' && roundMode === 'follow'));
 	/** `memorize` 는 입력 시점에 큐브가 사라진다. 그것이 두 모드의 유일한 차이다. */
-	let cubeVisible = $derived(!(stage === 'input' && tracing.mode === 'memorize'));
+	let cubeVisible = $derived(!(stage === 'input' && roundMode === 'memorize'));
 
-	/** 이번 판의 갈래들. 순서가 구분자의 앞뒤이고 설정이 그것을 정한다 (FR-TR-25). */
-	let kinds = $derived(kindsOf(roundKind, roundEntryFirst));
+	/** 이번 판의 갈래들. 순서가 구분자의 앞뒤이고 대상과 모드가 그것을 정한다 (FR-TR-19). */
+	let kinds = $derived(entryKindsOf(roundTarget, roundMode));
 	/**
 	 * 화면에 **적는** 갈래 구성. `idle` 에서는 설정값을 본다.
 	 *
 	 * `kinds` 는 시작 시점에 굳는 값이라 `idle` 에서는 직전 판을 가리킨다. 채점은
-	 * 그래야 맞지만 라벨은 아니다 — 대상이나 순서를 바꿔도 구분자 버튼이 안
+	 * 그래야 맞지만 라벨은 아니다 — 대상이나 모드를 바꿔도 구분자 버튼이 안
 	 * 따라오면 무엇이 시작될지를 틀리게 적는다.
 	 */
 	let plannedKinds = $derived(
-		stage === 'idle' ? kindsOf(tracing.pieceKind, tracing.entryFirst) : kinds
+		stage === 'idle' ? entryKindsOf(tracing.target, tracing.mode) : kinds
 	);
 	/**
 	 * 지금 치고 있는 갈래 (요구 2).
@@ -466,8 +466,8 @@
 		//
 		// 관례는 여기서 굳히지 않는다. 결과 화면의 표시 토글이 되었으므로 (요구 3
 		// 재검토) 판이 끝난 뒤에 바꾸는 것이 정상 사용이다.
-		roundKind = tracing.pieceKind;
-		roundEntryFirst = tracing.entryFirst;
+		roundTarget = tracing.target;
+		roundMode = tracing.mode;
 		entry = [];
 		conflicts = 0;
 		parts = [];
@@ -590,9 +590,9 @@
 			at: Date.now(),
 			ms: Math.round(stoppedAt - startedAt),
 			// 판이 기록의 단위다. `both` 한 판은 두 건이 아니라 한 건이다.
-			pieceKind: roundKind,
+			pieceKind: targetKind(roundTarget),
 			buffer: joinBuffers(graded.map((p) => metaOf(p.kind)!.buffer)),
-			mode: tracing.mode,
+			mode: roundMode,
 			// 이 판에 실제로 친 순서다. 설정이 아니라 굳은 값을 적는다 — 결과 단계에서
 			// 설정을 바꿔도 이미 채점한 판의 조건은 흔들리지 않는다.
 			entryFirst: kinds[0],
@@ -639,8 +639,9 @@
 	class="trace"
 	data-stage={stage}
 	data-piece={padKind}
-	data-kind={roundKind}
-	data-mode={tracing.mode}
+	data-kind={targetKind(roundTarget)}
+	data-target={roundTarget}
+	data-mode={stage === 'idle' ? tracing.mode : roundMode}
 	data-input-open={inputOpen ? 'true' : 'false'}
 	data-orientation={orientation}
 >
@@ -695,7 +696,9 @@
 		보여서 있는 줄 모르고 쓴다. 고르고 시작하는 순서가 그대로 세로 순서다.
 
 		남은 것은 둘뿐이다. 비틀림 관례는 채점이 아니라 정답 예시의 표시 방식이라
-		결과 패널로 옮겼다 (요구 3 재검토).
+		결과 패널로 옮겼다 (요구 3 재검토). 치는 순서는 대상 라벨과 모드에서 나오므로
+		토글이 아니다 (FR-TR-19) — 잠깐 셋이었고, 그 한 줄이 시작 버튼을 화면 밖으로
+		밀어냈다.
 
 		문제가 도는 동안은 **접는다** (요구 1). 큐브부터 입력 패드까지가 한 화면에
 		들어와야 하는데 이 두 토글이 그 사이에서 180px 을 차지한다. `{#if}` 가 아니라
@@ -707,8 +710,9 @@
 		<SegToggle
 			name="trace-kind"
 			heading={TRAIN_KIND_HEADING}
-			bind:value={tracing.pieceKind}
-			options={KIND_OPTIONS}
+			bind:value={tracing.target}
+			options={TARGET_OPTIONS}
+			cols={2}
 			disabled={settingsLocked}
 		/>
 		<SegToggle
@@ -718,20 +722,6 @@
 			options={MODE_OPTIONS}
 			disabled={settingsLocked}
 		/>
-		<!--
-			치는 순서 (FR-TR-25). 갈래가 하나인 판에서는 고를 것이 없으므로 **눈에서만**
-			지운다 — `{#if}` 로 없애면 대상 설정이 저장소에서 오므로 SSR 과 CSR 의
-			요소 개수가 갈린다 (AD-14). 위 `splitUsable` 과 같은 처리다.
-		-->
-		<div class="order" data-usable={splitUsable ? 'true' : 'false'}>
-			<SegToggle
-				name="trace-order"
-				heading={ENTRY_ORDER_HEADING}
-				bind:value={tracing.entryFirst}
-				options={ORDER_OPTIONS}
-				disabled={settingsLocked || !splitUsable}
-			/>
-		</div>
 	</div>
 
 	<!--
@@ -1300,11 +1290,6 @@
 		line-height: 1.5;
 		color: var(--muted);
 	}
-	/* 자리는 지키고 눈에서만 지운다. 위 마크업 주석 참조 (AD-14). */
-	.order[data-usable='false'] {
-		visibility: hidden;
-	}
-
 	.settings {
 		display: grid;
 		gap: 0.5rem;

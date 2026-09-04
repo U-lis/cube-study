@@ -53,10 +53,10 @@
 		conventionOf,
 		entrySegments,
 		formatMs,
+		entryKindsOf,
 		hasSeparator,
 		isPass,
 		joinBuffers,
-		kindsOf,
 		optionsFrom,
 		partsVerdictText,
 		readingText,
@@ -70,16 +70,18 @@
 		CONVENTION_VALUES,
 		ENTRY_SEPARATOR,
 		PART_LABELS,
-		SEPARATOR_LABEL,
+		separatorLabel,
+		targetHint,
+		targetKind,
 		TRAIN_KIND_HEADING,
-		TRAIN_KINDS,
 		TRAIN_MODE_HEADING,
 		TRAIN_MODES,
+		TRAIN_TARGETS,
 		TWIST_ABSORBED,
 		TWIST_SEPARATED,
 		type BufferMeta,
-		type TrainKind,
 		type TrainMode,
+		type TrainTarget,
 		type TwistConvention
 	} from '$lib/domain/tracing.js';
 	import type { Cubie, Dataset, Sticker } from '$lib/domain/types.js';
@@ -171,19 +173,21 @@
 	/** 하이라이트 없음. 렌더마다 새 배열을 만들면 뷰어의 `$effect` 가 계속 돈다. */
 	const NO_MARKS: (Mark | null)[] = Array.from({ length: 54 }, () => null);
 
-	/** 대상 선택의 한 줄 설명. 라벨은 이름이고 이쪽이 "그래서 무엇이 다른가" 다. */
-	const KIND_HINT: Record<TrainKind, string> = {
-		corner: '코너만 트레이싱합니다',
-		edge: '엣지만 트레이싱합니다',
-		both: `한 줄에 코너와 엣지를 이어 치고 한 번에 채점합니다`
-	};
-
-	const KIND_OPTIONS = (Object.keys(TRAIN_KINDS) as TrainKind[]).map((value) => ({
-		value,
-		label: TRAIN_KINDS[value],
-		hint: KIND_HINT[value],
-		title: KIND_HINT[value]
-	}));
+	/**
+	 * 대상 넷 (FR-TR-19). 라벨은 외우는 순서이고, 한 줄 설명이 그래서
+	 * 무엇을 어느 순서로 치게 되는지를 적는다.
+	 *
+	 * **모드에 매인다.** `memorize` 는 외운 역순으로 받으므로 같은 대상이라도
+	 * 설명이 달라진다 — 상수로 두면 둘 중 하나가 거짓말이 된다.
+	 */
+	let TARGET_OPTIONS = $derived(
+		(Object.keys(TRAIN_TARGETS) as TrainTarget[]).map((value) => ({
+			value,
+			label: TRAIN_TARGETS[value],
+			hint: targetHint(value, tracing.mode),
+			title: targetHint(value, tracing.mode)
+		}))
+	);
 	const MODE_OPTIONS = (Object.keys(TRAIN_MODES) as TrainMode[]).map((value) => ({
 		value,
 		label: value === 'follow' ? '보고 따라가기' : '외운 다음 입력',
@@ -215,7 +219,13 @@
 	 * 잠금이 풀리는 결과 단계에서 설정을 바꿔도 이미 채점한 판의 갈래 구성이
 	 * 흔들리면 안 된다.
 	 */
-	let roundKind = $state<TrainKind>('corner');
+	let roundTarget = $state<TrainTarget>('corner');
+	/**
+	 * 이번 판의 모드. 대상과 같은 이유로 시작 시점에 굳는다 — 치는 순서가 모드에서
+	 * 나오므로(FR-TR-19), 결과 단계에서 모드를 바꾸면 이미 친 글자가 다른 갈래의
+	 * 것으로 읽힌다.
+	 */
+	let roundMode = $state<TrainMode>('follow');
 	/** 54칸 facelet 문자열. 시작 전에는 `null` 이다 — 색 배열이 곧 정답의 일부다. */
 	let facelets = $state<string | null>(null);
 	/**
@@ -274,15 +284,29 @@
 	let running = $derived(stage === 'tracing' && stoppedAt === null);
 	let elapsed = $derived(stage === 'idle' ? 0 : (stoppedAt ?? nowAt) - startedAt);
 
-	/** 입력이 열리는 조건. `follow` 는 트레이싱 중에 이미 열려 있다 (FR-TR-21). */
-	let inputOpen = $derived(
-		stage === 'input' || (stage === 'tracing' && tracing.mode === 'follow')
-	);
+	/**
+	 * 입력이 열리는 조건. `follow` 는 트레이싱 중에 이미 열려 있다 (FR-TR-21).
+	 *
+	 * 설정이 아니라 **굳은 값** 을 본다. 판이 도는 동안 설정은 잠기지만, 모드가 치는
+	 * 순서까지 정하게 된 뒤로(FR-TR-19) 설정을 직접 읽는 자리와 굳은 값을 읽는
+	 * 자리가 섞이면 어느 쪽이 이번 판의 조건인지 코드에서 읽히지 않는다.
+	 */
+	let inputOpen = $derived(stage === 'input' || (stage === 'tracing' && roundMode === 'follow'));
 	/** `memorize` 는 입력 시점에 큐브가 사라진다. 그것이 두 모드의 유일한 차이다. */
-	let cubeVisible = $derived(!(stage === 'input' && tracing.mode === 'memorize'));
+	let cubeVisible = $derived(!(stage === 'input' && roundMode === 'memorize'));
 
-	/** 이번 판의 갈래들. `both` 는 [코너, 엣지] 이고 순서가 구분자의 앞뒤다. */
-	let kinds = $derived(kindsOf(roundKind));
+	/** 이번 판의 갈래들. 순서가 구분자의 앞뒤이고 대상과 모드가 그것을 정한다 (FR-TR-19). */
+	let kinds = $derived(entryKindsOf(roundTarget, roundMode));
+	/**
+	 * 화면에 **적는** 갈래 구성. `idle` 에서는 설정값을 본다.
+	 *
+	 * `kinds` 는 시작 시점에 굳는 값이라 `idle` 에서는 직전 판을 가리킨다. 채점은
+	 * 그래야 맞지만 라벨은 아니다 — 대상이나 모드를 바꿔도 구분자 버튼이 안
+	 * 따라오면 무엇이 시작될지를 틀리게 적는다.
+	 */
+	let plannedKinds = $derived(
+		stage === 'idle' ? entryKindsOf(tracing.target, tracing.mode) : kinds
+	);
 	/**
 	 * 지금 치고 있는 갈래 (요구 2).
 	 *
@@ -315,16 +339,14 @@
 	 * `idle` 에서는 직전 판의 갈래를 가리키고, 그러면 대상을 바꿔도 버튼이
 	 * 따라오지 않는다.
 	 */
-	let splitUsable = $derived(
-		(stage === 'idle' ? kindsOf(tracing.pieceKind) : kinds).length > 1
-	);
+	let splitUsable = $derived(plannedKinds.length > 1);
 	/**
 	 * 입력 칸의 한 줄 설명. `both` 는 구분자를 어떻게 넣는지가 먼저다 — 그것을
 	 * 모르면 코너와 엣지가 한 덩어리로 붙어 채점이 통째로 어긋난다.
 	 */
 	let entryHint = $derived(
-		kinds.length > 1
-			? `${SEPARATOR_LABEL} 를 눌러 코너와 엣지를 가릅니다. 비틀림은 버퍼막힘(break-in)으로 이어 쳐도 되고 문자 하나로 적어도 됩니다`
+		plannedKinds.length > 1
+			? `${separatorLabel(plannedKinds)} 를 눌러 두 갈래를 가릅니다. 비틀림은 버퍼막힘(break-in)으로 이어 쳐도 되고 문자 하나로 적어도 됩니다`
 			: '비틀림은 버퍼막힘(break-in)으로 이어 쳐도 되고 문자 하나로 따로 적어도 됩니다. 채점이 알아서 읽습니다'
 	);
 	/**
@@ -444,7 +466,8 @@
 		//
 		// 관례는 여기서 굳히지 않는다. 결과 화면의 표시 토글이 되었으므로 (요구 3
 		// 재검토) 판이 끝난 뒤에 바꾸는 것이 정상 사용이다.
-		roundKind = tracing.pieceKind;
+		roundTarget = tracing.target;
+		roundMode = tracing.mode;
 		entry = [];
 		conflicts = 0;
 		parts = [];
@@ -567,9 +590,12 @@
 			at: Date.now(),
 			ms: Math.round(stoppedAt - startedAt),
 			// 판이 기록의 단위다. `both` 한 판은 두 건이 아니라 한 건이다.
-			pieceKind: roundKind,
+			pieceKind: targetKind(roundTarget),
 			buffer: joinBuffers(graded.map((p) => metaOf(p.kind)!.buffer)),
-			mode: tracing.mode,
+			mode: roundMode,
+			// 이 판에 실제로 친 순서다. 설정이 아니라 굳은 값을 적는다 — 결과 단계에서
+			// 설정을 바꿔도 이미 채점한 판의 조건은 흔들리지 않는다.
+			entryFirst: kinds[0],
 			twistConvention: recorded,
 			// 스크램블이 정한 개수다. 사용자의 입력 길이가 아니라 문제의 난이도가 남는다.
 			// `both` 는 합계다 — 시간도 두 갈래를 합쳐 잰 값이라 단위가 맞는다.
@@ -613,8 +639,9 @@
 	class="trace"
 	data-stage={stage}
 	data-piece={padKind}
-	data-kind={roundKind}
-	data-mode={tracing.mode}
+	data-kind={targetKind(roundTarget)}
+	data-target={roundTarget}
+	data-mode={stage === 'idle' ? tracing.mode : roundMode}
 	data-input-open={inputOpen ? 'true' : 'false'}
 	data-orientation={orientation}
 >
@@ -669,7 +696,9 @@
 		보여서 있는 줄 모르고 쓴다. 고르고 시작하는 순서가 그대로 세로 순서다.
 
 		남은 것은 둘뿐이다. 비틀림 관례는 채점이 아니라 정답 예시의 표시 방식이라
-		결과 패널로 옮겼다 (요구 3 재검토).
+		결과 패널로 옮겼다 (요구 3 재검토). 치는 순서는 대상 라벨과 모드에서 나오므로
+		토글이 아니다 (FR-TR-19) — 잠깐 셋이었고, 그 한 줄이 시작 버튼을 화면 밖으로
+		밀어냈다.
 
 		문제가 도는 동안은 **접는다** (요구 1). 큐브부터 입력 패드까지가 한 화면에
 		들어와야 하는데 이 두 토글이 그 사이에서 180px 을 차지한다. `{#if}` 가 아니라
@@ -681,8 +710,9 @@
 		<SegToggle
 			name="trace-kind"
 			heading={TRAIN_KIND_HEADING}
-			bind:value={tracing.pieceKind}
-			options={KIND_OPTIONS}
+			bind:value={tracing.target}
+			options={TARGET_OPTIONS}
+			cols={2}
 			disabled={settingsLocked}
 		/>
 		<SegToggle
@@ -746,7 +776,7 @@
 				max={MAX_ENTRY}
 				onedit={noteInput}
 				separator={ENTRY_SEPARATOR}
-				separatorLabel={SEPARATOR_LABEL}
+				separatorLabel={separatorLabel(plannedKinds)}
 				separatorEnabled={canSplit}
 				separatorHidden={!splitUsable}
 			/>

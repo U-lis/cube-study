@@ -30,7 +30,8 @@ import {
 	optionsFrom,
 	ENTRY_SEPARATOR,
 	RECORDS_SCHEMA_VERSION,
-	SEPARATOR_LABEL
+	entryKindsOf,
+	separatorLabel
 } from '../../src/lib/domain/tracing.js';
 import {
 	CORNER_CUBIE,
@@ -212,7 +213,7 @@ test.describe('T4-1 패드 입력 (FR-TR-18)', () => {
 	});
 
 	test('엣지 세션의 패드는 소문자 24글자다', async ({ page }) => {
-		await open(page, EVEN, { 'trace.pieceKind': 'edge' });
+		await open(page, EVEN, { 'trace.target': 'edge' });
 		await page.locator('[data-start]').click();
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'edge');
 		const labels = await keys(page).allInnerTexts();
@@ -301,7 +302,7 @@ test.describe('T4-2 하드웨어 키보드 (FR-TR-18)', () => {
 	});
 
 	test('엣지 세션은 대문자로 쳐도 소문자로 들어간다', async ({ page }) => {
-		await open(page, EVEN, { 'trace.pieceKind': 'edge' });
+		await open(page, EVEN, { 'trace.target': 'edge' });
 		await page.locator('[data-start]').click();
 		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'edge');
 		await page.locator('[data-entry]').focus();
@@ -545,7 +546,7 @@ test.describe('T4-5 패리티와 비틀림 표시 (FR-TR-13)', () => {
  * 구분자가 갈래를 가르는가, 판정이 갈래별로 나오는가, 기록이 한 건인가 셋이다.
  */
 test.describe('T4-8 both 한 번에 (요구 2)', () => {
-	const both = { 'trace.pieceKind': 'both' };
+	const both = { 'trace.target': 'corner-edge' };
 
 	test('구분자 버튼이 패드를 엣지로 바꾸고, 지우면 되돌아온다', async ({ page }) => {
 		await open(page, EVEN, both);
@@ -569,7 +570,7 @@ test.describe('T4-8 both 한 번에 (요구 2)', () => {
 	test('구분자 버튼의 라벨이 무엇이 시작되는지 적는다', async ({ page }) => {
 		await open(page, EVEN, both);
 		await expect(page.locator('[data-pad="entry"] [data-action="separator"]')).toHaveText(
-			SEPARATOR_LABEL
+			separatorLabel(entryKindsOf('corner-edge', 'follow'))
 		);
 	});
 
@@ -691,6 +692,147 @@ test.describe('T4-8 both 한 번에 (요구 2)', () => {
 	});
 });
 
+/**
+ * T4-10 외우는 순서와 치는 순서 (FR-TR-19).
+ *
+ * 실전 3BLD 는 외운 순서의 **역순** 으로 실행한다. 통상 관례(CEEC)는 코너를 먼저
+ * 외워 마지막에 푸는 것이므로 엣지를 먼저 친다. 0.5.0 은 `[코너, 엣지]` 로 고정돼
+ * 있어 코너가 엣지를 **외우는** 동안만 붙들렸고, 실전에서 코너가 붙들리는
+ * 구간(엣지 실행 전체)이 훈련에서 빠져 있었다.
+ *
+ * 설정은 하나다 — **외우는 순서** 만 고르고 치는 순서는 모드가 정한다.
+ * `memorize` 는 뒤집어 받고 `follow` 는 훑는 대로 받는다.
+ *
+ * 여기서 보는 것은 순서가 **정말로 뜻을 갖는가** 다 — 패드·구분자·채점·기록이
+ * 전부 따라오는지. 순서가 라벨만 바뀌고 채점이 그대로면 훈련이 아니다.
+ */
+test.describe('T4-10 외우는 순서와 치는 순서 (FR-TR-19)', () => {
+	/** 엣지부터 외우는 판. `follow` 라 치는 순서도 엣지 먼저다. */
+	const edgeFirst = { 'trace.target': 'edge-corner' };
+	const edgeFirstEntry = `${evenEdge.targets}${ENTRY_SEPARATOR}${even.targets}`;
+
+	test('엣지 먼저면 패드가 엣지로 시작하고 구분자가 코너를 가리킨다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await page.locator('[data-start]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'edge');
+		await expect(page.locator('[data-pad="entry"] [data-action="separator"]')).toHaveText(
+			separatorLabel(entryKindsOf('edge-corner', 'follow'))
+		);
+		// 구분자를 넘기면 코너로 바뀐다 — 0.5.0 과 반대다.
+		await page.locator('[data-pad="entry"] [data-action="separator"]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'corner');
+	});
+
+	test('엣지→코너 순으로 친 판이 정답이다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await play(page, edgeFirstEntry);
+		await expect(page.locator('[data-verdict]')).toHaveAttribute('data-kind', 'correct');
+		await expect(page.locator('[data-part="corner"] [data-answer]')).toHaveText(even.targets);
+		await expect(page.locator('[data-part="edge"] [data-answer]')).toHaveText(evenEdge.targets);
+	});
+
+	/** 순서가 라벨뿐이면 이 검사가 통과한다. 통과하면 안 된다. */
+	test('같은 판에 코너→엣지 순으로 치면 정답이 아니다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await play(page, bothEntry);
+		await expect(page.locator('[data-verdict]')).not.toHaveAttribute('data-kind', 'correct');
+	});
+
+	test('기록에 친 순서가 남고 조각 표기가 그 순서를 적는다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await play(page, edgeFirstEntry);
+		const rec = await page.evaluate(
+			() => JSON.parse(localStorage.getItem('trace.records')!).records[0]
+		);
+		expect(rec.entryFirst).toBe('edge');
+		expect(rec.pieceKind).toBe('both');
+		await openRecords(page);
+		await expect(page.locator('[data-records] tbody tr').first()).toContainText('엣지+코너');
+	});
+
+	/**
+	 * 시작 전에는 설정값을 봐야 한다. `kinds` 는 시작 시점에 굳는 값이라 그것을
+	 * 그대로 쓰면 직전 판의 순서를 적는다 — 순서를 바꿔도 버튼이 안 따라온다.
+	 */
+	test('시작 전에 대상을 바꾸면 구분자 라벨이 따라온다', async ({ page }) => {
+		await open(page, EVEN, { 'trace.target': 'corner-edge' });
+		const sep = page.locator('[data-pad="entry"] [data-action="separator"]');
+		await expect(sep).toHaveText(separatorLabel(entryKindsOf('corner-edge', 'follow')));
+		await page.locator('[data-toggle="trace-kind"] [data-option="edge-corner"]').click();
+		await expect(sep).toHaveText(separatorLabel(entryKindsOf('edge-corner', 'follow')));
+	});
+
+	/**
+	 * 모드가 치는 순서를 정한다. 대상을 그대로 두고 모드만 바꿔도 구분자와 패드가
+	 * 뒤집혀야 한다 — 안 뒤집히면 라벨만 바뀐 것이다.
+	 */
+	test('외운 다음 입력으로 바꾸면 같은 대상이 역순으로 뒤집힌다', async ({ page }) => {
+		await open(page, EVEN, { 'trace.target': 'corner-edge' });
+		const sep = page.locator('[data-pad="entry"] [data-action="separator"]');
+		await expect(sep).toHaveText(separatorLabel(entryKindsOf('corner-edge', 'follow')));
+		await page.locator('[data-toggle="trace-mode"] [data-option="memorize"]').click();
+		await expect(sep).toHaveText(separatorLabel(entryKindsOf('corner-edge', 'memorize')));
+		await page.locator('[data-start]').click();
+		// 외우는 순서는 코너 먼저인데, 치는 것은 엣지부터다.
+		await page.locator('[data-memorized]').click();
+		await expect(page.locator('[data-stage]')).toHaveAttribute('data-piece', 'edge');
+	});
+
+	/** 역순이 라벨뿐이면 이 판이 정답으로 통과한다. 통과하면 안 된다. */
+	test('외운 다음 입력에서 코너→엣지 순으로 치면 정답이 아니다', async ({ page }) => {
+		await open(page, EVEN, { 'trace.target': 'corner-edge', 'trace.mode': 'memorize' });
+		await page.locator('[data-start]').click();
+		await page.locator('[data-memorized]').click();
+		await page.locator('[data-entry]').fill(bothEntry);
+		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-verdict]')).not.toHaveAttribute('data-kind', 'correct');
+		// 역순으로 친 판은 정답이다 — 같은 스크램블, 같은 설정이다.
+		await page.locator('[data-next]').click();
+		await page.locator('[data-start]').click();
+		await page.locator('[data-memorized]').click();
+		await page.locator('[data-entry]').fill(edgeFirstEntry);
+		await page.locator('[data-grade]').click();
+		await expect(page.locator('[data-verdict]')).toHaveAttribute('data-kind', 'correct');
+	});
+
+	test('설정이 새로고침 뒤에도 그대로다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await page.reload();
+		await expect(page.locator('[data-start]')).toBeEnabled({ timeout: 30_000 });
+		await expect(
+			page.locator('[data-toggle="trace-kind"] [data-option="edge-corner"]')
+		).toHaveAttribute('aria-pressed', 'true');
+	});
+
+	/**
+	 * 순서 토글이 사라졌다 — 축이 하나로 합쳐졌으므로 남아 있으면 안 된다.
+	 * 설정 줄이 늘어나는 것을 막는 것이 이 변경의 목적이다.
+	 */
+	test('치는 순서 토글이 따로 서지 않는다', async ({ page }) => {
+		await open(page, EVEN, edgeFirst);
+		await expect(page.locator('[data-toggle="trace-order"]')).toHaveCount(0);
+		await expect(page.locator('[data-toggle]')).toHaveCount(2);
+	});
+
+	/**
+	 * 0.5.0 의 설정을 그대로 되살린다. 옮기지 않으면 `both` 로 훈련하던 사용자가
+	 * 갱신 직후 조용히 코너 전용으로 되돌아간다.
+	 */
+	test('0.5.0 의 both 설정이 코너→엣지로 옮겨지고 옛 칸은 지워진다', async ({ page }) => {
+		await open(page, EVEN, { 'trace.pieceKind': 'both', 'trace.entryFirst': 'edge' });
+		await expect(page.locator('[data-toggle="trace-kind"]')).toHaveAttribute(
+			'data-value',
+			'corner-edge'
+		);
+		const left = await page.evaluate(() => [
+			localStorage.getItem('trace.pieceKind'),
+			localStorage.getItem('trace.entryFirst'),
+			localStorage.getItem('trace.target')
+		]);
+		expect(left).toEqual([null, null, 'corner-edge']);
+	});
+});
+
 test.describe('T4-6 시간과 기록 (FR-TR-23)', () => {
 	test('세 판을 돌리면 직전 기록들이 모달에 보인다', async ({ page }) => {
 		await open(page, EVEN);
@@ -766,8 +908,20 @@ test.describe('T4-6 시간과 기록 (FR-TR-23)', () => {
 			() => JSON.parse(localStorage.getItem('trace.records')!).records[0]
 		);
 		expect(Object.keys(rec).sort()).toEqual(
-			['at', 'buffer', 'correct', 'mode', 'ms', 'pieceKind', 'targetCount', 'twistConvention'].sort()
+			[
+				'at',
+				'buffer',
+				'correct',
+				'entryFirst',
+				'mode',
+				'ms',
+				'pieceKind',
+				'targetCount',
+				'twistConvention'
+			].sort()
 		);
+		// 한 갈래짜리 판은 그 갈래 자신이다 (FR-TR-19).
+		expect(rec.entryFirst).toBe('corner');
 		expect(rec.buffer).toBe(meta.buffer);
 		expect(rec.targetCount).toBe(even.result.targets.length);
 		expect(rec.correct).toBe(true);
@@ -936,7 +1090,7 @@ test.describe('T4-10 엣지 버퍼 (#16, #17)', () => {
 	});
 
 	test('엣지 판은 DF 버퍼로 채점되고 기록에도 DF 가 남는다', async ({ page }) => {
-		await open(page, EVEN, { 'trace.pieceKind': 'edge' });
+		await open(page, EVEN, { 'trace.target': 'edge' });
 		await play(page, answerFor(EDGE_PRIMARY));
 		await expect(page.locator('[data-verdict]')).toHaveAttribute('data-kind', 'correct');
 
@@ -951,7 +1105,7 @@ test.describe('T4-10 엣지 버퍼 (#16, #17)', () => {
 	test('버퍼를 고르는 토글이 화면에 없다', async ({ page }) => {
 		// 고를 수 있는 반대편이 이 앱의 과정에 없다. 선택지를 세워 두면 아무도 안 누르는
 		// 토글이 세로만 먹는다.
-		await open(page, EVEN, { 'trace.pieceKind': 'edge' });
+		await open(page, EVEN, { 'trace.target': 'edge' });
 		await expect(page.locator('[data-toggle="trace-edge-buffer"]')).toHaveCount(0);
 	});
 });
@@ -967,7 +1121,7 @@ test.describe('T4-7 톤과 접근성 (NFR-TR-5)', () => {
 
 	test('패드 버튼의 터치 타깃이 44px 이상이다 @viewport', async ({ page }) => {
 		// 구분자 버튼이 보이는 판으로 연다 — 감춰진 버튼은 잴 수는 있어도 무의미하다.
-		await open(page, EVEN, { 'trace.pieceKind': 'both' });
+		await open(page, EVEN, { 'trace.target': 'corner-edge' });
 		// 패드는 시작 후에만 선다. 시작 전에는 상자가 없어 잴 것도 없다.
 		await page.locator('[data-start]').click();
 		for (const sel of [
@@ -981,9 +1135,30 @@ test.describe('T4-7 톤과 접근성 (NFR-TR-5)', () => {
 		}
 	});
 
+	/**
+	 * 대상이 넷이 되면서 라벨이 길어졌다 (`코너→엣지`). 한 줄에 넷을 넣으면 320px
+	 * 에서 한 칸이 80px 이라 글자가 잘리는데, `text-overflow: ellipsis` 라 잘린
+	 * 것이 조용하다 — 검사가 없으면 아무도 모른다.
+	 */
+	test('320px 폭에서 대상 라벨이 잘리지 않는다 @viewport', async ({ page }) => {
+		await page.setViewportSize({ width: 320, height: 720 });
+		await open(page, EVEN);
+		const opts = page.locator('[data-toggle="trace-kind"] [data-option]');
+		await expect(opts).toHaveCount(4);
+		const cut = await opts.evaluateAll((els) =>
+			els.filter((el) => el.scrollWidth > el.clientWidth).map((el) => el.textContent)
+		);
+		expect(cut).toEqual([]);
+		// 터치 타깃은 줄이 접혀도 그대로다.
+		for (let i = 0; i < 4; i++) {
+			const box = (await opts.nth(i).boundingBox())!;
+			expect(box.height).toBeGreaterThanOrEqual(40);
+		}
+	});
+
 	test('320px 폭에서 가로 스크롤이 생기지 않는다 @viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 320, height: 720 });
-		await open(page, EVEN, { 'trace.pieceKind': 'both' });
+		await open(page, EVEN, { 'trace.target': 'corner-edge' });
 		await page.locator('[data-start]').click();
 		await page.locator('[data-entry]').fill(bothEntry);
 		await page.locator('[data-grade]').click();

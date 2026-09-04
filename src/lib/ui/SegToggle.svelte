@@ -4,8 +4,11 @@
   단일 버튼으로 상태만 보여주면 "누르면 무엇이 되는지"를 알 수 없다.
   선택지를 나란히 두고 활성 쪽을 강조한다.
 
-  선택지는 둘 또는 셋이다. 넷을 넘으면 모바일 폭에서 글자가 잘리기 시작하므로
+  선택지는 둘에서 넷이다. 다섯을 넘으면 모바일 폭에서 글자가 잘리기 시작하므로
   그때는 이 컨트롤이 아니라 목록이 맞다.
+
+  넷은 한 줄에 넣지 않는다. 360px 폭에서 한 칸이 90px 이 되어 두 글자 넘는 라벨이
+  잘린다 — `cols` 로 줄을 접는다 (2×2).
 
   설명은 항상 보이는 한 줄로 둔다. 모바일에는 hover 가 없어서
   title 툴팁에만 의존하면 정작 주 사용처에서 안 보인다.
@@ -25,6 +28,7 @@
 		heading = '',
 		value = $bindable(),
 		options,
+		cols = options.length,
 		disabled = false
 	}: {
 		name: string;
@@ -37,6 +41,11 @@
 		heading?: string;
 		value: T;
 		options: Option[];
+		/**
+		 * 한 줄에 몇 칸인가. 기본은 한 줄에 전부다 — 선택지가 둘·셋이면 그것이 맞다.
+		 * 넷일 때 `2` 를 주면 2×2 로 접힌다.
+		 */
+		cols?: number;
 		/**
 		 * 잠금. 요소를 `{#if}` 로 없애지 않는다 (AD-14) — 자리를 지켜야 화면이
 		 * 밀리지 않는다. 잠긴 표시는 **색이 아니라** 투명도와 커서다.
@@ -56,7 +65,7 @@
 		data-locked={disabled ? 'true' : 'false'}
 		role="group"
 		aria-label={heading || name}
-		style="--cols: {options.length}"
+		style="--cols: {cols}"
 	>
 		{#each options as o (o.value)}
 			<button

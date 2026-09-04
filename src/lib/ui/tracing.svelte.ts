@@ -16,22 +16,32 @@
  */
 import { browser } from '$app/environment';
 import {
-	isTrainKind,
 	isTrainMode,
+	isTrainTarget,
 	isTwistConvention,
+	migrateTarget,
 	parseRecords,
 	pushRecord,
 	serializeRecords,
 	RECORDS_KEY,
 	type TraceRecord,
-	type TrainKind,
 	type TrainMode,
+	type TrainTarget,
 	type TwistConvention
 } from '$lib/domain/tracing.js';
 
-const KEY_PIECE_KIND = 'trace.pieceKind';
+const KEY_TARGET = 'trace.target';
 const KEY_MODE = 'trace.mode';
 const KEY_CONVENTION = 'trace.convention';
+
+/**
+ * 0.5.0 이 쓰던 두 칸. 읽고 나면 지운다 (`readTarget`).
+ *
+ * 남겨두면 다음에 이 파일을 고치는 사람이 저장소에서 세 칸을 보고 어느 것이
+ * 정본인지 알 수 없다.
+ */
+const KEY_LEGACY_KIND = 'trace.pieceKind';
+const KEY_LEGACY_ENTRY_FIRST = 'trace.entryFirst';
 
 /**
  * 저장된 설정 읽기. 판정 함수를 도메인에서 받아 쓴다 — 유효값 목록이 두 곳에
@@ -44,14 +54,36 @@ function read<T>(key: string, guard: (v: unknown) => v is T, fallback: T): T {
 	return guard(v) ? v : fallback;
 }
 
+/**
+ * 훈련 대상을 읽는다. 새 칸이 없으면 **0.5.0 의 칸에서 옮긴다** (FR-TR-19).
+ *
+ * 옮기지 않으면 `both` 로 훈련하던 사용자가 갱신 직후 조용히 코너 전용으로
+ * 되돌아간다. 설정이 사라진 것은 눈에 띄지만 기본값으로 되돌아간 것은 눈에 띄지
+ * 않는다 — 한 판을 다 치고 나서야 안다.
+ */
+function readTarget(): TrainTarget {
+	if (!browser) return 'corner';
+	const own = localStorage.getItem(KEY_TARGET);
+	if (isTrainTarget(own)) return own;
+	const moved = migrateTarget(localStorage.getItem(KEY_LEGACY_KIND));
+	localStorage.removeItem(KEY_LEGACY_KIND);
+	localStorage.removeItem(KEY_LEGACY_ENTRY_FIRST);
+	return moved ?? 'corner';
+}
+
 function loadRecords(): TraceRecord[] {
 	if (!browser) return [];
 	return parseRecords(localStorage.getItem(RECORDS_KEY));
 }
 
 class Tracing {
-	/** 훈련 대상 (FR-TR-19). 코너부터 배우므로 기본이 코너다. */
-	pieceKind = $state<TrainKind>(read(KEY_PIECE_KIND, isTrainKind, 'corner'));
+	/**
+	 * 훈련 대상 (FR-TR-19). 코너부터 배우므로 기본이 코너다.
+	 *
+	 * 값이 외우는 순서까지 담는다 — 치는 순서는 이 값과 모드에서 파생되고 따로
+	 * 저장하지 않는다 (`entryKindsOf`).
+	 */
+	target = $state<TrainTarget>(readTarget());
 	/** 훈련 모드 (FR-TR-21). 규칙을 익히는 단계가 먼저라 기본이 follow 다. */
 	mode = $state<TrainMode>(read(KEY_MODE, isTrainMode, 'follow'));
 	/** 비틀림 관례 (FR-TR-24). 기본은 입문의 방식이자 엔진의 기본값이다. */
@@ -62,7 +94,7 @@ class Tracing {
 	constructor() {
 		if (browser) {
 			$effect.root(() => {
-				$effect(() => localStorage.setItem(KEY_PIECE_KIND, this.pieceKind));
+				$effect(() => localStorage.setItem(KEY_TARGET, this.target));
 				$effect(() => localStorage.setItem(KEY_MODE, this.mode));
 				$effect(() => localStorage.setItem(KEY_CONVENTION, this.convention));
 				$effect(() => localStorage.setItem(RECORDS_KEY, serializeRecords(this.records)));

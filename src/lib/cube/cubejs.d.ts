@@ -17,6 +17,11 @@ declare module 'cubejs/lib/cube.js' {
 		move(alg: string): Cube;
 		/** 54칸 facelet 문자열. 면 순서 URFDLB, 각 면은 좌상 → 우하. */
 		asString(): string;
+		/**
+		 * 균등 분포 랜덤 스테이트. `lib/cube.js` 에 있어서 풀이기 초기화가 필요 없다
+		 * (`cube.js:266`). 스티커 문자 퀴즈 2단계가 쓴다 (#19, GLOBAL AD-LT-5).
+		 */
+		static random(): Cube;
 	}
 }
 declare module 'cubejs' {

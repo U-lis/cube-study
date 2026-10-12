@@ -45,7 +45,7 @@ describe('라우트 축 (FR-NAV-21)', () => {
 		expect(paths).not.toContain('/3x3/bld/3style/corner');
 	});
 
-	it('지금 서 있는 화면은 여섯이다', () => {
+	it('지금 서 있는 화면은 여덟이다', () => {
 		// 개수를 못 박아 두면 화면이 늘 때 이 검사가 먼저 걸린다 — 새 화면이 축을
 		// 따르는지 보라는 신호다.
 		expect(paths).toEqual([
@@ -54,6 +54,8 @@ describe('라우트 축 (FR-NAV-21)', () => {
 			'/3x3/bld/3style/corner/algs/[code]',
 			'/3x3/bld/3style/corner/lookup',
 			'/3x3/bld/3style/corner/quiz',
+			'/3x3/bld/letters/lookup',
+			'/3x3/bld/letters/quiz',
 			'/3x3/bld/trace'
 		]);
 	});

@@ -25,15 +25,19 @@ const LOOKUP = '/3x3/bld/3style/corner/lookup';
 const ALGS = '/3x3/bld/3style/corner/algs';
 const QUIZ = '/3x3/bld/3style/corner/quiz';
 const TRACE = '/3x3/bld/trace';
+const LETTERS_LOOKUP = '/3x3/bld/letters/lookup';
+const LETTERS_QUIZ = '/3x3/bld/letters/quiz';
 /** 데이터가 아는 기준 하나. 상세 화면의 표본이다. */
 const DETAIL = '/3x3/bld/3style/corner/algs/GC';
 
-/** 기능 화면 넷. 홈과 상세는 규약이 달라 따로 본다. */
+/** 기능 화면 여섯. 홈과 상세는 규약이 달라 따로 본다. */
 const FEATURES = [
 	{ path: LOOKUP, name: '조회' },
 	{ path: ALGS, name: '기준공식' },
 	{ path: QUIZ, name: '퀴즈' },
-	{ path: TRACE, name: '트레이싱' }
+	{ path: TRACE, name: '트레이싱' },
+	{ path: LETTERS_LOOKUP, name: '외우기' },
+	{ path: LETTERS_QUIZ, name: '퀴즈' }
 ];
 
 const TABBED = [LOOKUP, ALGS, QUIZ];
@@ -74,7 +78,7 @@ test.describe('T4 화면 이름 (FR-NAV-9)', () => {
 });
 
 test.describe('T4 되돌아가기 (FR-NAV-7)', () => {
-	test('기능 화면 넷은 홈으로 올라간다', async ({ page }) => {
+	test('기능 화면은 모두 홈으로 올라간다', async ({ page }) => {
 		for (const f of FEATURES) {
 			await ready(page, f.path);
 			await expect(page.locator('[data-up-link]'), f.path).toHaveCount(1);
@@ -116,6 +120,19 @@ test.describe('T4 하단 탭 (FR-NAV-4, 5, 6)', () => {
 		await expect(page.locator('nav a.on')).toHaveText('기준공식');
 	});
 
+	test('스티커 문자 화면 둘은 서로의 형제 탭을 단다 (#19)', async ({ page }) => {
+		for (const path of [LETTERS_LOOKUP, LETTERS_QUIZ]) {
+			await ready(page, path);
+			const links = page.locator('nav a');
+			await expect(links, path).toHaveCount(2);
+			expect(await links.evaluateAll((els) => els.map((e) => e.getAttribute('href'))), path).toEqual([
+				LETTERS_LOOKUP,
+				LETTERS_QUIZ
+			]);
+			await expect(links.first(), path).toHaveText('외우기');
+		}
+	});
+
 	test('트레이싱에는 탭바가 없다', async ({ page }) => {
 		// 형제가 없다. 자기 자신만 있는 탭바는 이동 수단이 아니라 장식이다.
 		await ready(page, TRACE);
@@ -142,7 +159,7 @@ test.describe('T4 화면끼리 서로를 보여주지 않는다 (FR-NAV-4)', () 
 		await expect(page.locator('a[href^="/3x3/bld/3style"]')).toHaveCount(0);
 	});
 
-	test('홈은 넷을 모두 링크한다', async ({ page }) => {
+	test('홈은 기능 화면을 모두 링크한다', async ({ page }) => {
 		// 반대쪽 요구다. 홈이 지도이므로 여기서만 전부 보인다.
 		await ready(page, HOME);
 		for (const f of FEATURES) {

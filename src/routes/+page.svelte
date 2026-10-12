@@ -28,7 +28,17 @@
 			name: '퀴즈',
 			desc: '케이스를 보고 알고리즘을 칩니다'
 		},
-		{ href: '/3x3/bld/trace', name: '트레이싱', desc: '스크램블에서 타깃 열을 뽑습니다' }
+		{ href: '/3x3/bld/trace', name: '트레이싱', desc: '스크램블에서 타깃 열을 뽑습니다' },
+		{
+			href: '/3x3/bld/letters/lookup',
+			name: '외우기',
+			desc: 'Speffz 문자가 어느 스티커인지 봅니다'
+		},
+		{
+			href: '/3x3/bld/letters/quiz',
+			name: '문자 퀴즈',
+			desc: '색이 칠해진 조각의 문자를 입력합니다'
+		}
 	];
 </script>
 

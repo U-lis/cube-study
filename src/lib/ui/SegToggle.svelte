@@ -132,6 +132,13 @@
 		font-weight: 600;
 		color: var(--muted);
 	}
+	/*
+	 * 설명을 비우면 줄을 그리지 않는다. 설정이 여럿 나란히 서는 화면(#19 문자 퀴즈)은
+	 * 설명 줄 셋이 큐브와 패드를 화면 밖으로 밀어낸다 — 그때는 머리말과 `title` 만 남긴다.
+	 */
+	.hint:empty {
+		display: none;
+	}
 	.hint {
 		margin: 0.3rem 0 0;
 		font-size: 0.72rem;

@@ -45,17 +45,26 @@
 	/** 패드의 구분자. 이 화면은 갈래가 하나라 쓰지 않는다 — 버튼은 눈에서만 지운다. */
 	const NO_SEPARATOR = '|';
 
+	/*
+	 * 설명 줄을 비운다 (`SegToggle` 의 `.hint:empty`). 설정 셋을 한 줄에 나란히 세워야
+	 * 큐브·패드·채점 버튼이 한 화면에 들어온다 (NFR-LT-7, PHASE_5 실측). 설명은 `title` 에 남긴다.
+	 */
 	const KIND_OPTIONS: { value: PieceKind; label: string; hint: string; title: string }[] = [
-		{ value: 'corner', label: '코너', hint: '코너 큐비의 문자 3개', title: '코너 8개' },
-		{ value: 'edge', label: '엣지', hint: '엣지 큐비의 문자 2개', title: '엣지 12개' }
+		{ value: 'corner', label: '코너', hint: '', title: '코너 큐비 — 문자 3개' },
+		{ value: 'edge', label: '엣지', hint: '', title: '엣지 큐비 — 문자 2개' }
 	];
 	const STAGE_OPTIONS: { value: QuizStage; label: string; hint: string; title: string }[] = [
-		{ value: 'solved', label: '풀린 큐브', hint: '조각이 제자리에 있습니다', title: '1단계' },
-		{ value: 'scrambled', label: '섞인 큐브', hint: '조각이 다른 자리에 있습니다', title: '2단계' }
+		{ value: 'solved', label: '풀림', hint: '', title: '1단계 — 조각이 제자리에 있습니다' },
+		{ value: 'scrambled', label: '섞임', hint: '', title: '2단계 — 조각이 다른 자리에 있습니다' }
 	];
 	const OTHERS_OPTIONS: { value: Others; label: string; hint: string; title: string }[] = [
-		{ value: 'gray', label: '회색', hint: '문제 큐비와 센터만 색입니다', title: '가리기' },
-		{ value: 'color', label: '색', hint: '모든 큐비가 색이고 문제 큐비는 테두리로 표시합니다', title: '실물과 같게' }
+		{ value: 'gray', label: '회색', hint: '', title: '문제 큐비와 센터만 색입니다' },
+		{
+			value: 'color',
+			label: '색',
+			hint: '',
+			title: '모든 큐비가 색이고 문제 큐비는 테두리로 표시합니다'
+		}
 	];
 
 	let ds = $state<Dataset | null>(null);
@@ -137,7 +146,7 @@
 <section class="quiz" data-stage={stage} data-cubie={cubie ?? ''} data-kind={kind}>
 	<div class="settings">
 		<SegToggle name="letters-quiz-kind" heading="종류" bind:value={letters.quizKind} options={KIND_OPTIONS} />
-		<SegToggle name="letters-quiz-stage" heading="단계" bind:value={letters.quizStage} options={STAGE_OPTIONS} />
+		<SegToggle name="letters-quiz-stage" heading="큐브" bind:value={letters.quizStage} options={STAGE_OPTIONS} />
 		<SegToggle
 			name="letters-quiz-others"
 			heading="다른 큐비"
@@ -199,22 +208,27 @@
 	.quiz {
 		display: flex;
 		flex-direction: column;
-		gap: 0.55rem;
-		padding-top: 0.4rem;
+		gap: 0.45rem;
+		padding-top: 0.3rem;
 	}
+	/* 설정 셋을 한 줄에 나란히 (NFR-LT-7). */
 	.settings {
-		display: flex;
-		flex-direction: column;
-		gap: 0.35rem;
-		max-width: 22rem;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+		max-width: 26rem;
 		width: 100%;
 		margin: 0 auto;
 	}
-	/* 트레이싱 `.cube-slot` 과 같은 방식. 고정분은 PHASE_5 에서 실측한다 (NFR-LT-7). */
+	/*
+	 * 트레이싱 `.cube-slot` 과 같은 방식 — 남는 자리를 주고 짧은 화면에서는 큐브가 먼저
+	 * 양보한다. 고정분 40rem 은 실측이다 (2026-10-12, 390×844 에서 채점 버튼 아래끝이
+	 * 하단 탭 위에 서는 값). 375×667 은 큐브가 하한(180px)에 닿아도 넘친다 — #28 과 같은 부류다.
+	 */
 	.cube-slot {
 		width: 100%;
-		max-width: clamp(180px, calc(100vh - 36rem), 420px);
-		max-width: clamp(180px, calc(100svh - 36rem), 420px);
+		max-width: clamp(180px, calc(100vh - 40rem), 420px);
+		max-width: clamp(180px, calc(100svh - 40rem), 420px);
 		margin: 0 auto;
 	}
 	.hint {

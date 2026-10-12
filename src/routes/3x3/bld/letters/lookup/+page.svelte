@@ -24,13 +24,14 @@
 	/** 기준 방향 = 카메라 방향 0번. U·R·F 가 보이는 각도다 (`cube3d-map.ts` `orientationOf`). */
 	const HOME_ORIENTATION = 0;
 
+	/* 설명 줄을 비우고 `title` 에 남긴다 — 설정 둘을 한 줄에 세운다 (NFR-LT-7). */
 	const KIND_OPTIONS: { value: PieceKind; label: string; hint: string; title: string }[] = [
-		{ value: 'corner', label: '코너', hint: '코너 스티커에 문자를 찍습니다', title: '코너 24칸' },
-		{ value: 'edge', label: '엣지', hint: '엣지 스티커에 문자를 찍습니다', title: '엣지 24칸' }
+		{ value: 'corner', label: '코너', hint: '', title: '코너 스티커 24칸에 문자를 찍습니다' },
+		{ value: 'edge', label: '엣지', hint: '', title: '엣지 스티커 24칸에 문자를 찍습니다' }
 	];
 	const OTHERS_OPTIONS: { value: Others; label: string; hint: string; title: string }[] = [
-		{ value: 'gray', label: '회색', hint: '문자가 없는 조각을 회색으로 가립니다', title: '가리기' },
-		{ value: 'color', label: '색', hint: '모든 조각을 실제 색으로 보입니다', title: '실물과 같게' }
+		{ value: 'gray', label: '회색', hint: '', title: '문자가 없는 조각을 회색으로 가립니다' },
+		{ value: 'color', label: '색', hint: '', title: '모든 조각을 실제 색으로 보입니다' }
 	];
 
 	let ds = $state<Dataset | null>(null);
@@ -111,11 +112,12 @@
 		gap: 0.6rem;
 		padding-top: 0.4rem;
 	}
+	/* 설정 둘을 한 줄에 나란히 (NFR-LT-7). */
 	.settings {
-		display: flex;
-		flex-direction: column;
-		gap: 0.4rem;
-		max-width: 20rem;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.6rem;
+		max-width: 22rem;
 		width: 100%;
 		margin: 0 auto;
 	}

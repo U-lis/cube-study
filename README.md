@@ -38,7 +38,7 @@ pnpm dev           # 개발 서버 + HMR (http://localhost:5174, 포트 고정 �
 **PWA와 오프라인 동작은 프로덕션 빌드에서만 확인된다.** 개발 서버에는 서비스워커를 등록하지 않는다 — SW 캐시가 HMR 을 가린다.
 
 ```bash
-pnpm preview       # 빌드 후 서빙 (http://localhost:4173)
+pnpm preview       # 빌드 후 서빙 (http://localhost:5174 — dev 와 같은 포트, dev 릴레이 Origin)
 ```
 
 `preview` 는 매번 빌드부터 한다. `vite preview` 는 기동 시점의 파일 목록을 붙잡기 때문에, 서버를 띄워둔 채 재빌드하면 해시가 바뀐 청크를 404 로 돌려준다. 그러면 서비스워커 프리캐시가 통째로 실패한다(`bad-precaching-response`). 빌드 없이 서빙만 하려면 `pnpm preview:only`.

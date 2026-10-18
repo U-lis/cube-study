@@ -8,7 +8,7 @@
 
 ```bash
 pnpm dev            # 개발 중 (http://localhost:5174)
-pnpm preview        # PWA·오프라인 확인 (http://localhost:4173)
+pnpm preview        # PWA·오프라인·알림 확인 (http://localhost:5174)
 ```
 
 폰에 깔린 앱을 갱신하려면 버전을 올린다. 검사 → 버전 → 태그 → push → 배포 →

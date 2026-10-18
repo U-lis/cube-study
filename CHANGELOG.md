@@ -25,7 +25,7 @@
 
 - **앱 전역 설정은 라우트 축 밖 `/settings/{무엇}` 에 둔다.** 축의 예외가 아니라 일반 규칙이다 (`.dc_workspace/SVELTE.md` 규칙 6).
 
-- 개발 서버 포트를 5174 로 고정했다 (`strictPort`). dev 릴레이에 등록하는 Origin 이다 — 5173 은 bigsix 가 쓴다.
+- 개발 서버와 `pnpm preview` 포트를 5174 로 고정했다 (`strictPort`). dev 릴레이에 등록하는 Origin 이다 — 5173 은 bigsix, 5175 는 give-me-food 가 쓴다. 알림 켜기는 서비스워커가 있는 preview 에서만 시험된다.
 
 ### 알려진 한계
 

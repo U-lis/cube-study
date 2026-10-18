@@ -51,6 +51,12 @@ export default defineConfig({
 	 * 다. 5173 은 bigsix 가 쓴다 — 기본값이 겹치면 한쪽이 다른 포트로 밀려 `origin-not-allowed`.
 	 */
 	server: { port: 5174, strictPort: true },
+	/*
+	 * preview 도 같은 포트다. 서비스워커는 빌드에서만 등록되므로 PC 에서 알림 켜기를
+	 * 해 볼 수 있는 곳이 preview 뿐이고, dev 릴레이에 등록한 Origin 은 5174 하나다.
+	 * E2E 는 `--port 4174` 로 따로 띄우므로 영향이 없다 (가짜 릴레이를 쓴다).
+	 */
+	preview: { port: 5174, strictPort: true },
 	define: {
 		__APP_VERSION__: JSON.stringify(pkg.version),
 		__COMMIT_HASH__: JSON.stringify(commitHash())

@@ -15,13 +15,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { CubeView, Mark } from '$lib/cube/cube3d.js';
+	import { GRAY } from '$lib/ui/facelets.js';
 
 	/** 기본값을 인라인 리터럴로 두면 렌더마다 새 배열이 되어 `$effect` 가 계속 돈다. */
 	const NO_MARKS: (Mark | null)[] = Array.from({ length: 54 }, () => null);
+	const NO_LABELS: (string | null)[] = Array.from({ length: 54 }, () => null);
 
 	let {
 		facelets,
 		marks = NO_MARKS,
+		labels = NO_LABELS,
 		orientation = 0,
 		label = '큐브'
 	}: {
@@ -29,6 +32,8 @@
 		facelets: string[];
 		/** 54칸 강조. 개수 상한이 없다 (FR-TR-16). */
 		marks?: (Mark | null)[];
+		/** 54칸 글자 (#19 외우기). `null` 은 글자 없음. */
+		labels?: (string | null)[];
 		/** 초기 카메라 각도 0..23 (FR-TR-17). */
 		orientation?: number;
 		label?: string;
@@ -36,6 +41,25 @@
 
 	let canvas: HTMLCanvasElement;
 	let view = $state<CubeView | null>(null);
+
+	/**
+	 * 카메라를 그 각도로 **다시** 놓는다 (#19 원위치, GLOBAL AD-LT-9).
+	 *
+	 * `orientation` prop 은 값이 바뀔 때만 반영된다 — 이미 0 인데 0 으로 되돌리라는 요청은
+	 * prop 으로 전할 수 없다. 그래서 명령으로 연다. 뷰가 아직 없으면(three 로드 전) 아무것도
+	 * 하지 않는다. 로드가 끝나면 어차피 `orientation` 으로 선다.
+	 */
+	export function resetView(index: number): void {
+		view?.setOrientation(index);
+	}
+
+	/*
+	 * 시험 훅 (GLOBAL AD-LT-14). E2E 가 WebGL 픽셀을 세지 않고도 무엇을 칠했는지 알 수 있다.
+	 * 화면에 보이는 정보가 아니다.
+	 */
+	let colored = $derived(facelets.filter((c) => c !== GRAY).length);
+	let marked = $derived(marks.filter((m) => m).length);
+	let labeled = $derived(labels.filter((l) => l).length);
 
 	onMount(() => {
 		let live = true;
@@ -71,12 +95,22 @@
 		view?.setHighlights(marks);
 	});
 	$effect(() => {
+		view?.setLabels(labels);
+	});
+	$effect(() => {
 		view?.setOrientation(orientation);
 	});
 </script>
 
 <div class="cube3d">
-	<canvas bind:this={canvas} aria-label={label} data-cube3d></canvas>
+	<canvas
+		bind:this={canvas}
+		aria-label={label}
+		data-cube3d
+		data-colored={colored}
+		data-marked={marked}
+		data-labels={labeled}
+	></canvas>
 </div>
 
 <style>

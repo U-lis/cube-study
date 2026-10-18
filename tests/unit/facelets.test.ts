@@ -5,7 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import Cube from 'cubejs/lib/cube.js';
 import { loadDataset } from '../../src/lib/data/loader.js';
-import { faceletColors, grayFacelets, GRAY } from '../../src/lib/ui/facelets.js';
+import { COLOR_NAME_KO, faceletColors, grayFacelets, GRAY, PAINT } from '../../src/lib/ui/facelets.js';
 
 const ds = await loadDataset();
 const solved = new Cube().asString();
@@ -62,5 +62,11 @@ describe('grayFacelets', () => {
 	it('큐브 색 어느 것과도 같지 않다', () => {
 		const colors = new Set(faceletColors(ds.meta.colorScheme, solved));
 		expect(colors.has(GRAY)).toBe(false);
+	});
+});
+
+describe('색 이름 (#19 외우기 기준 문구)', () => {
+	it('PAINT 의 색 이름을 모두 사람이 읽는 이름으로 옮긴다', () => {
+		expect(Object.keys(COLOR_NAME_KO).sort()).toEqual(Object.keys(PAINT).sort());
 	});
 });

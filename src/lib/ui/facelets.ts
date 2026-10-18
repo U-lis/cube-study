@@ -40,6 +40,21 @@ export const PAINT: Record<string, string> = {
  */
 export const GRAY = '#9a9a9a';
 
+/**
+ * 색 이름 → 사람이 읽는 이름 (#19 외우기의 기준 방향 문구, GLOBAL AD-LT-12).
+ *
+ * `PAINT` 와 같은 자리에 둔다 — 데이터의 색 이름을 화면 값으로 옮기는 표가 모이는
+ * 곳이다. 키는 `PAINT` 와 같아야 한다 (`tests/unit/facelets.test.ts`).
+ */
+export const COLOR_NAME_KO: Record<string, string> = {
+	W: '흰색',
+	Y: '노랑',
+	G: '초록',
+	B: '파랑',
+	R: '빨강',
+	O: '주황'
+};
+
 /** 전 면 회색 54칸. 시작 전 큐브는 이 배열만 존재한다 — 색 배열이 곧 정답의 일부다. */
 export const grayFacelets = (): string[] => Array.from({ length: 54 }, () => GRAY);
 

@@ -24,17 +24,36 @@ const FEATURE_LABELS: Record<string, string> = {
 };
 
 /**
+ * 묶음별 라벨 덮어쓰기 (#19, SPEC FR-LT-24).
+ *
+ * 경로 칸 이름은 세트가 달라도 같은 것을 쓴다(`SVELTE.md` 규칙 3). 그런데 같은
+ * `lookup` 이라도 화면이 하는 일이 다르면 사람이 부르는 이름이 다르다 — 3-style 은
+ * 케이스를 찾는 "조회" 이고, 스티커 문자는 문자를 익히는 "외우기" 다. 경로는 그대로
+ * 두고 이름만 묶음별로 덮는다. 없으면 `FEATURE_LABELS` 로 떨어진다.
+ */
+const GROUP_LABELS: Record<string, Partial<Record<string, string>>> = {
+	'/3x3/bld/letters': { lookup: '외우기' }
+};
+
+/**
  * 형제 묶음. 키는 **기능 칸을 뺀 경로**, 값은 그 아래 실재하는 기능 칸이다.
  *
  * 형제는 "기능 칸만 다른 실재 화면" 이다 (FR-NAV-4). `/3x3/bld/trace` 는 그 관계에
  * 있는 화면이 없으므로 **여기 없다** — 없으면 탭바를 안 그린다 (FR-NAV-5).
  *
- * #19(스티커 외우기)·#21(메모 훈련)·#23(타이머)이 들어오면 `/3x3/bld` 키가 생기고
- * 트레이싱에 훈련 탭바가 붙는다. 그때 이 표에 한 줄이 늘 뿐 규칙은 안 바뀐다.
+ * #19(스티커 문자)는 처음에 `/3x3/bld/letters` 한 화면으로 잡혀 트레이싱과 형제가 될
+ * 예정이었다. 외우기·퀴즈 두 화면이 되면서 `letters` 는 이름 공간이 됐고 자기 묶음을
+ * 갖는다 (2026-10-12). 트레이싱은 여전히 혼자다. #21(메모)·#23(타이머)이 들어올 때
+ * `/3x3/bld` 묶음을 다시 본다.
  */
 const SIBLING_GROUPS: Record<string, readonly string[]> = {
-	'/3x3/bld/3style/corner': ['lookup', 'algs', 'quiz']
+	'/3x3/bld/3style/corner': ['lookup', 'algs', 'quiz'],
+	'/3x3/bld/letters': ['lookup', 'quiz']
 };
+
+/** 그 묶음에서 기능 칸을 부르는 이름. */
+export const labelFor = (group: string, feature: string): string =>
+	GROUP_LABELS[group]?.[feature] ?? FEATURE_LABELS[feature] ?? feature;
 
 export interface NavTab {
 	href: string;
@@ -73,7 +92,7 @@ export function tabsFor(pathname: string, routeId: string | null): NavTab[] {
 	const here = pathname.split('/').filter((s) => s !== '');
 	return siblings.map((f) => ({
 		href: `${parent}/${f}`,
-		label: FEATURE_LABELS[f] ?? f,
+		label: labelFor(parent, f),
 		feature: f,
 		active: here.includes(f)
 	}));

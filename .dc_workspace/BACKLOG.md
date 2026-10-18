@@ -16,7 +16,7 @@
 | 엣지 3-style (#16) | `/3x3/bld/3style/edge/{lookup,algs,quiz}` |
 | M2 참조표 (#17) | `/3x3/bld/m2/edge/lookup` |
 | 코너 OP (#18) | `/3x3/bld/op/corner/lookup` |
-| 스티커 외우기 (#19) | `/3x3/bld/letters` |
+| 스티커 외우기 (#19) | `/3x3/bld/letters/{lookup,quiz}` |
 | 메모 훈련 (#21) | `/3x3/bld/memo` |
 | 멀티페이즈 타이머 (#23) | `/3x3/bld/timer` |
 | CFOP — F2L·OLL·PLL (#20) | `/3x3/speed/cfop/{f2l,oll,pll}/{lookup,algs,quiz}` |
@@ -88,6 +88,8 @@
 `src/lib/ui/Cube3D.svelte` + `src/lib/cube/cube3d.ts` 에 있다 (#13). 남겨두는 이유는
 탈락시킨 후보들의 근거가 다시 필요해질 수 있어서다 — 특히 "강조/흐리게" 로 요구가
 바뀌면 `cubing.js` 가 1순위가 된다는 대목.
+
+3-style 조회 화면에 이 뷰어를 붙여 버퍼·타깃을 칠하는 일은 아직 안 했다 → #36.
 
 손으로 쓸어 돌려보는 3D 큐브. **특정 큐비의 특정 면에만 임의의 색을 칠할 수 있어야
 한다** (버퍼 UBL 과 타깃 2개를 서로 다른 색으로 구분하는 것이 목적).

@@ -30,26 +30,31 @@
  */
 import {
 	BoxGeometry,
+	CanvasTexture,
 	Color,
 	EdgesGeometry,
 	Group,
 	LineDashedMaterial,
 	LineSegments,
+	Matrix4,
 	Mesh,
 	MeshBasicMaterial,
 	PerspectiveCamera,
 	PlaneGeometry,
 	Scene,
+	Vector3,
 	WebGLRenderer
 } from 'three';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 import {
 	assertFacelets,
+	assertLabels,
 	assertMarks,
 	CAMERA_DISTANCE,
 	cubieCoords,
 	cubieKey,
 	faceletToCubie,
+	labelUp,
 	orientationOf,
 	type CubieCoord,
 	type FaceIndex,
@@ -63,7 +68,9 @@ export interface CubeView {
 	setFacelets(colors: string[]): void;
 	/** 54칸 강조. `null` 은 강조 없음. 채워지는 개수에 상한이 없다. */
 	setHighlights(marks: (Mark | null)[]): void;
-	/** 초기 카메라 각도 0..23. */
+	/** 54칸 글자. `null` 은 글자 없음 (#19 외우기). */
+	setLabels(labels: (string | null)[]): void;
+	/** 카메라 각도 0..23. 돌던 관성을 끊고 그 각도로 옮긴다 (#19 원위치). */
 	setOrientation(index: number): void;
 	resize(): void;
 	dispose(): void;
@@ -78,6 +85,38 @@ const PLASTIC = '#17171a';
 const OUTLINE_LIFT = 0.006;
 /** 바깥 테두리 / 안쪽 테두리(`double`)의 크기 비율. */
 const OUTLINE_SCALE = [0.86, 0.62];
+/** 글자 평면의 크기 비율. 테두리 안쪽에 들어오는 크기다. */
+const LABEL_SCALE = 0.7;
+/** 글자 평면을 띄우는 높이. 테두리보다 살짝 위 — 둘이 겹쳐도 글자가 이긴다. */
+const LABEL_LIFT = 0.009;
+/** 글자 텍스처 한 변의 픽셀 수. */
+const LABEL_PX = 128;
+
+/**
+ * 글자 하나를 그린 텍스처 (#19 외우기, GLOBAL AD-LT-8).
+ *
+ * 6색 어느 스티커 위에서도 읽혀야 한다 (SPEC FR-LT-10). 글자 색 하나로는 안 된다 —
+ * 검정은 파랑·빨강에서, 흰색은 흰·노랑에서 묻힌다. 그래서 **검정 글자에 흰 외곽선**을
+ * 두른다. 흰 스티커에서는 검정 획이, 어두운 스티커에서는 흰 외곽선이 경계를 만든다.
+ */
+function drawLabel(letter: string): CanvasTexture {
+	const canvas = document.createElement('canvas');
+	canvas.width = canvas.height = LABEL_PX;
+	const ctx = canvas.getContext('2d')!;
+	ctx.font = `bold ${Math.round(LABEL_PX * 0.66)}px system-ui, sans-serif`;
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+	ctx.lineJoin = 'round';
+	ctx.lineWidth = Math.round(LABEL_PX * 0.12);
+	ctx.strokeStyle = '#ffffff';
+	ctx.fillStyle = '#111111';
+	const y = LABEL_PX * 0.54; // 대문자의 시각 중심이 기준선보다 살짝 아래다
+	ctx.strokeText(letter, LABEL_PX / 2, y);
+	ctx.fillText(letter, LABEL_PX / 2, y);
+	const texture = new CanvasTexture(canvas);
+	texture.anisotropy = 4;
+	return texture;
+}
 
 /** `three` 의 `BoxGeometry` 면 순서에 대응하는 바깥 방향. 0:+X 1:-X 2:+Y 3:-Y 4:+Z 5:-Z */
 const FACE_NORMAL: CubieCoord[] = [
@@ -102,6 +141,23 @@ interface Sticker {
 	material: MeshBasicMaterial;
 	/** 바깥·안쪽 테두리 두 겹. `double` 일 때만 둘 다 보인다. */
 	outlines: LineSegments<EdgesGeometry, LineDashedMaterial>[];
+	/** 글자 평면. 글자가 없으면 감춘다. material 은 칸마다 따로다 — 칸마다 글자가 다르다. */
+	label: Mesh<PlaneGeometry, MeshBasicMaterial>;
+}
+
+/**
+ * TrackballControls 의 관성 상태. 공개 API 가 아니다.
+ *
+ * 감쇠(`dynamicDampingFactor`)는 손을 뗀 뒤에도 `_lastAngle` 만큼 계속 돈다
+ * (`three/examples/jsm/controls/TrackballControls.js` 의 `_rotateCamera`). `reset()` 은
+ * 카메라 자리만 되돌리고 이 값은 지우지 않는다(같은 파일 `reset`). 원위치 직후에
+ * 큐브가 돌던 방향으로 미끄러지지 않게 하려면 이 값을 직접 끊는 수밖에 없다.
+ * three 를 올릴 때 이 이름이 바뀌었는지 확인할 것.
+ */
+interface TrackballInertia {
+	_lastAngle: number;
+	_movePrev: { copy(v: unknown): unknown };
+	_moveCurr: unknown;
 }
 
 export async function createCubeView(canvas: HTMLCanvasElement): Promise<CubeView> {
@@ -140,6 +196,16 @@ export async function createCubeView(canvas: HTMLCanvasElement): Promise<CubeVie
 		return edges;
 	});
 
+	const labelGeometry = new PlaneGeometry(CUBIE_SIZE * LABEL_SCALE, CUBIE_SIZE * LABEL_SCALE);
+	geometries.push(labelGeometry);
+	/** 글자 → 텍스처. 같은 글자는 같은 그림이라 공유한다 (색 material 과 다르다). */
+	const labelTextures = new Map<string, CanvasTexture>();
+	const textureOf = (letter: string): CanvasTexture => {
+		let t = labelTextures.get(letter);
+		if (!t) labelTextures.set(letter, (t = drawLabel(letter)));
+		return t;
+	};
+
 	/** 큐비 좌표 → 면별 material 6개. 큐비마다 **새로** 만든다 (캐시 금지). */
 	const cubies = new Map<string, MeshBasicMaterial[]>();
 	const cubieGroups = new Map<string, Group>();
@@ -172,7 +238,23 @@ export async function createCubeView(canvas: HTMLCanvasElement): Promise<CubeVie
 			group.add(line);
 			return line;
 		});
-		stickers.push({ material: materials[face], outlines });
+		const labelLift = CUBIE_SIZE / 2 + LABEL_LIFT;
+		/*
+		 * 반투명 섞기를 쓰지 않는다 (FR-TR-15, `bundle-three.test.ts` "뷰어에 반투명이 없다").
+		 * `alphaTest` 는 글자 바깥 픽셀을 **버릴** 뿐 섞지 않는다 — 글자 칸은 불투명하게
+		 * 그려지고 나머지는 아래 스티커가 그대로 보인다. 뒷면이 새는 길이 없다.
+		 */
+		const label = new Mesh(labelGeometry, new MeshBasicMaterial({ alphaTest: 0.5 }));
+		const n = new Vector3(...normal);
+		const up = new Vector3(...labelUp(i));
+		// 평면의 +Z 가 면 바깥, +Y 가 글자 위쪽. X = Y × Z 라 거울상이 되지 않는다.
+		label.quaternion.setFromRotationMatrix(
+			new Matrix4().makeBasis(new Vector3().crossVectors(up, n), up, n)
+		);
+		label.position.set(normal[0] * labelLift, normal[1] * labelLift, normal[2] * labelLift);
+		label.visible = false;
+		group.add(label);
+		stickers.push({ material: materials[face], outlines, label });
 	}
 
 	function setFacelets(colors: string[]): void {
@@ -205,8 +287,30 @@ export async function createCubeView(canvas: HTMLCanvasElement): Promise<CubeVie
 		}
 	}
 
+	function setLabels(labels: (string | null)[]): void {
+		assertLabels(labels);
+		for (let i = 0; i < 54; i++) {
+			const { label } = stickers[i];
+			const letter = labels[i];
+			if (!letter) {
+				label.visible = false;
+				continue;
+			}
+			const map = textureOf(letter);
+			if (label.material.map !== map) {
+				label.material.map = map;
+				label.material.needsUpdate = true;
+			}
+			label.visible = true;
+		}
+	}
+
 	function setOrientation(index: number): void {
 		const { position, up } = orientationOf(index);
+		// 관성을 끊는다 (TrackballInertia 주석).
+		const inertia = controls as unknown as TrackballInertia;
+		inertia._lastAngle = 0;
+		inertia._movePrev.copy(inertia._moveCurr);
 		const norm = Math.sqrt(3);
 		camera.up.set(up[0], up[1], up[2]);
 		camera.position.set(
@@ -241,7 +345,11 @@ export async function createCubeView(canvas: HTMLCanvasElement): Promise<CubeVie
 		frame = 0;
 		controls.dispose();
 		for (const materials of cubies.values()) for (const m of materials) m.dispose();
-		for (const sticker of stickers) for (const line of sticker.outlines) line.material.dispose();
+		for (const sticker of stickers) {
+			for (const line of sticker.outlines) line.material.dispose();
+			sticker.label.material.dispose();
+		}
+		for (const t of labelTextures.values()) t.dispose();
 		for (const g of geometries) g.dispose();
 		scene.clear();
 		renderer.dispose();
@@ -250,5 +358,5 @@ export async function createCubeView(canvas: HTMLCanvasElement): Promise<CubeVie
 	setOrientation(0);
 	resize();
 	loop();
-	return { setFacelets, setHighlights, setOrientation, resize, dispose };
+	return { setFacelets, setHighlights, setLabels, setOrientation, resize, dispose };
 }

@@ -10,11 +10,13 @@
 import { describe, it, expect } from 'vitest';
 import {
 	assertFacelets,
+	assertLabels,
 	assertMarks,
 	CAMERA_DISTANCE,
 	cubieCoords,
 	cubieKey,
 	faceletToCubie,
+	labelUp,
 	orientationOf,
 	ORIENTATION_COUNT,
 	type Mark
@@ -203,5 +205,36 @@ describe('T1C-3. 색·강조 배열 계약', () => {
 		const bad: Mark = { color: '#f00' };
 		marks[0] = bad;
 		expect(() => assertMarks(marks)).toThrow(TypeError);
+	});
+});
+
+describe('스티커 글자 방향 (#19, PHASE_2_TEST 1-3)', () => {
+	const FACE_NORMAL: Record<string, number[]> = {
+		U: [0, 1, 0], R: [1, 0, 0], F: [0, 0, 1], D: [0, -1, 0], L: [-1, 0, 0], B: [0, 0, -1]
+	};
+	const face = (i: number) => 'URFDLB'[Math.floor(i / 9)];
+
+	it('U 면은 뒤쪽, D 면은 앞쪽, 옆면은 위쪽이 글자의 위다', () => {
+		for (let i = 0; i < 54; i++) {
+			const expected =
+				face(i) === 'U' ? [0, 0, -1] : face(i) === 'D' ? [0, 0, 1] : [0, 1, 0];
+			expect(labelUp(i).map((v) => v + 0)).toEqual(expected);
+		}
+	});
+
+	it('글자의 위쪽은 그 칸의 면 법선과 수직이다', () => {
+		for (let i = 0; i < 54; i++) {
+			const n = FACE_NORMAL[face(i)];
+			const u = labelUp(i);
+			expect(n[0] * u[0] + n[1] * u[1] + n[2] * u[2]).toBe(0);
+		}
+	});
+
+	it('글자 배열은 54칸이고 칸마다 null 이나 한 글자다', () => {
+		const ok: (string | null)[] = Array.from({ length: 54 }, (_, i) => (i % 2 ? 'A' : null));
+		expect(() => assertLabels(ok)).not.toThrow();
+		expect(() => assertLabels(ok.slice(1))).toThrow(RangeError);
+		expect(() => assertLabels(ok.map((l, i) => (i === 3 ? 'AB' : l)))).toThrow(TypeError);
+		expect(() => assertLabels(ok.map((l, i) => (i === 3 ? 7 : l)))).toThrow(TypeError);
 	});
 });

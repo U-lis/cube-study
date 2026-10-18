@@ -47,6 +47,19 @@ describe('tabsFor', () => {
 		expect(tabs.map((t) => t.label)).toEqual(['조회', '기준공식', '퀴즈']);
 	});
 
+	it('스티커 문자는 외우기·퀴즈 둘이 형제이고 lookup 의 이름이 외우기다 (#19)', () => {
+		const tabs = tabsFor('/3x3/bld/letters/lookup', '/3x3/bld/letters/lookup');
+		expect(tabs.map((t) => [t.label, t.href, t.active])).toEqual([
+			['외우기', '/3x3/bld/letters/lookup', true],
+			['퀴즈', '/3x3/bld/letters/quiz', false]
+		]);
+	});
+
+	it('3-style 의 lookup 은 그대로 조회다 (묶음별 라벨이 새지 않는다)', () => {
+		const tabs = tabsFor('/3x3/bld/3style/corner/lookup', '/3x3/bld/3style/corner/lookup');
+		expect(tabs[0].label).toBe('조회');
+	});
+
 	it('모르는 경로에는 탭이 없다', () => {
 		// 축 밖의 주소로 잘못 들어와도 빈 탭바를 그리지 않는다.
 		expect(tabsFor('/3x3/speed/cfop/oll/lookup', '/3x3/speed/cfop/oll/lookup')).toEqual([]);

@@ -147,3 +147,29 @@ export function assertMarks(marks: unknown): asserts marks is (Mark | null)[] {
 			throw new TypeError(`${i}번 칸의 강조에 테두리 종류가 없다 — 색만으로 구분하지 않는다`);
 	}
 }
+
+/**
+ * 스티커 글자의 **위쪽** 방향 (#19 외우기, GLOBAL AD-LT-8).
+ *
+ * 그 면을 바깥에서 정면으로 볼 때 0행 쪽이다. U 면은 뒤(-Z), D 면은 앞(+Z), 옆면은
+ * 위(+Y)가 된다. 표를 따로 적지 않고 `PLACE` 에서 파생한다 — facelet 읽는 순서와
+ * 글자 방향이 어긋날 수 없게.
+ */
+export function labelUp(i: number): CubieCoord {
+	if (!Number.isInteger(i) || i < 0 || i > 53) throw new RangeError(`facelet 인덱스가 아니다: ${i}`);
+	const place = PLACE[Math.floor(i / 9)];
+	const top = place(0, 1);
+	const middle = place(1, 1);
+	return [top[0] - middle[0], top[1] - middle[1], top[2] - middle[2]];
+}
+
+/** 54칸 글자 배열인지 확인한다. `null` 은 글자 없음, 그 밖에는 한 글자다. */
+export function assertLabels(labels: unknown): asserts labels is (string | null)[] {
+	if (!Array.isArray(labels) || labels.length !== 54)
+		throw new RangeError(`글자는 54칸이어야 한다: ${Array.isArray(labels) ? labels.length : typeof labels}`);
+	for (let i = 0; i < 54; i++) {
+		const l = labels[i];
+		if (l === null || l === undefined) continue;
+		if (typeof l !== 'string' || l.length !== 1) throw new TypeError(`${i}번 칸의 글자가 한 글자가 아니다`);
+	}
+}

@@ -21,7 +21,7 @@ export interface Message {
  * 앱 경로라 릴레이가 앱 출처 기준으로 푼다 (스키마 `link`).
  */
 export const ICON = '/icon-192.png';
-export const BADGE = '/badge-96.png';
+export const BADGE = '/badge-face-96.png';
 
 /** 알림 하나의 JSON 상한 (연동 문서 §6). 넘으면 요청 전체가 400 이다. */
 export const NOTIFICATION_BYTE_LIMIT = 3072;

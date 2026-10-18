@@ -13,7 +13,7 @@
 
 - **매일 퀴즈 알림 (#33, #35 A안).** `/settings/notify` 에서 켜고 시각을 고른다 (기본 21:00). 정한 시각에 코너 3-style 문제 하나가 오고, 누르면 **그 문제가 첫 문제인** 퀴즈가 열린다 (`quiz?c=KG`). "암기한 것만 출제" 범위 밖이어도 첫 문제는 알림의 문제다 — 다음 문제부터 범위를 따른다. 문구는 사실만 적는다: `코너 3-style 퀴즈` / `KG · DFR의 F면 → DFL의 L면`.
 
-- **알림 아이콘이 흑백 큐브다.** Android 상태바에 종 대신 뜬다 (`badge`). 원본 `static/badge.svg`, 생성 `scripts/badge.mjs`.
+- **알림 아이콘이 흑백 큐브다.** Android 상태바에 종 대신 큐브 정면 3×3 이 뜬다 (`badge`). 원본 `static/badge.svg`, 생성 `scripts/badge.mjs`.
 
 - **홈서버 발송 cron (`cron/`).** 1분마다 구독마다 규칙을 평가해 맞은 것을 보낸다. 주기 규칙 `daily` 하나와 **조건 규칙 자리**가 있다 — 조건은 아직 없고, 생기면 규칙 파일 하나와 목록 한 줄이다 (`cron/rules/index.ts`). 조건이 읽을 기기 사실로 `facts.lastQuiz`(코너 퀴즈를 마지막으로 채점한 날)를 미리 싣는다. 운영자 즉시 발송 `cron/push.ts send-now` 도 있다.
 

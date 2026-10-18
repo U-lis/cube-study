@@ -93,7 +93,7 @@
   - `daily` (주기) — `[daily, daily+30분)` 창 안이면 보낸다. 창은 현지 자정에서 자른다. `dedupKey = daily:<현지 날짜>`
   - 조건 규칙 — **지금은 하나도 없다 (사용자: 필요할 때 "이때 푸시 보내" 로 정한다)**. 새 규칙은 파일 하나 + 목록 한 줄이다. 매 tick 평가되므로 조건이 맞는 그 분에 나간다. `dedupKey` 는 규칙이 정한다 (`<id>:<기간>`)
 - **FR-CR-5** 한 구독에 한 tick 에서 여러 규칙이 맞으면 전부 보낸다. 같은 (구독, dedupKey) 는 릴레이가 8일 동안 한 번만 보낸다
-- **FR-CR-6** 매일 퀴즈 메시지: 제목 `코너 3-style 퀴즈`, 본문 `KG · DFR의 F면 → DFL의 L면`, `url` `/3x3/bld/3style/corner/quiz?c=KG`, `tag` `daily`, `badge` `/badge-96.png`, `icon` `/icon-192.png`. 문구는 사실만 **(사용자)**
+- **FR-CR-6** 매일 퀴즈 메시지: 제목 `코너 3-style 퀴즈`, 본문 `KG · DFR의 F면 → DFL의 L면`, `url` `/3x3/bld/3style/corner/quiz?c=KG`, `tag` `daily`, `badge` `/badge-face-96.png`, `icon` `/icon-192.png`. 문구는 사실만 **(사용자)**
 - **FR-CR-7** 문제 고르기는 (구독 ID, 현지 날짜) 해시로 결정한다 — 창 안에서 재시도해도 같은 문제다
 - **FR-CR-8** 검증 실패 meta 는 건너뛰고 로그에 남긴다. 3072 바이트를 넘는 메시지는 건너뛴다
 - **FR-CR-9** `sent` 가 아닌 결과는 전부 로그에 남긴다. API 키는 로그에 안 남긴다 (연동 문서 §7)
@@ -108,7 +108,7 @@
 
 ### 알림 아이콘 (FR-IC)
 
-- **FR-IC-1** `static/badge-96.png` — 96×96, 투명 바탕에 흰 큐브 실루엣. Android 는 badge 의 알파만 쓴다 (흑백) **(사용자)**
+- **FR-IC-1** `static/badge-face-96.png` — 96×96, 투명 바탕에 흰 큐브 정면 3×3 (처음의 등각 세 면은 상태바에서 너무 잘았다). Android 는 badge 의 알파만 쓴다 (흑백) **(사용자)**
 - **FR-IC-2** 원본 `static/badge.svg` 와 생성 스크립트(`sharp`, 이미 devDependency)를 둔다
 
 ## 3. 결정 (자리 비운 동안 내가 정한 것)

@@ -67,7 +67,7 @@ describe('sendNowMessages', () => {
 		const m = sendNowMessages(a, [{ id: SUB, meta: {} }, { id: SUB2, meta: {} }], now);
 		expect(m.map((x) => x.to)).toEqual([SUB, SUB2]);
 		expect(m[0].dedupKey).toBe('now:2026-10-18T12:00');
-		expect(m[0].notification).toMatchObject({ title: '공지', body: 'b', url: '/', badge: '/badge-96.png' });
+		expect(m[0].notification).toMatchObject({ title: '공지', body: 'b', url: '/', badge: '/badge-face-96.png' });
 	});
 });
 

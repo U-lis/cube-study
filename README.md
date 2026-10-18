@@ -169,7 +169,7 @@ git push                    # 서버가 origin 에서 받아가므로 push 가 �
 | 주기 | `daily` — 정한 시각부터 30분 창, 현지 날짜당 한 번 (`dedupKey`). 본문에 문제, 누르면 `quiz?c=` |
 | 조건 | 규칙 자리만 있다. 더하는 법은 `cron/rules/index.ts` 머리 주석 |
 | 즉시 | `cron/push.ts send-now` — 운영자가 지금 보낸다 (`--to s_…` 또는 `--all`) |
-| 아이콘 | `static/badge-96.png` (흑백 큐브, Android 상태바). 다시 만들기: `node scripts/badge.mjs` |
+| 아이콘 | `static/badge-face-96.png` (흑백 큐브, Android 상태바). 다시 만들기: `node scripts/badge.mjs` |
 
 ```bash
 # 홈서버에서 — 키 파일을 환경으로 읽고 돌린다. node 는 nvm 아래다 (PATH 에 없다)

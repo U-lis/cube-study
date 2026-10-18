@@ -31,9 +31,18 @@ describe('라우트 축 (FR-NAV-21)', () => {
 		expect(shallow).toEqual([]);
 	});
 
-	it('기능 화면이 모두 퍼즐 칸 아래에 있다', () => {
-		const outside = paths.filter((p) => p !== '/' && !p.startsWith('/3x3/'));
+	it('기능 화면이 모두 퍼즐 칸 아래에 있다 — 앱 전역 설정만 축 밖이다', () => {
+		// `/settings/*` 는 축의 예외가 아니라 일반 규칙이다 (#33, 0.7.0 SPEC FR-NT-1).
+		// 퍼즐·종목에 안 매이는 앱 전체의 설정이라 축에 앉힐 칸이 없다.
+		const outside = paths.filter(
+			(p) => p !== '/' && !p.startsWith('/3x3/') && !p.startsWith('/settings/')
+		);
 		expect(outside).toEqual([]);
+	});
+
+	it('/settings 자체는 화면이 아니다', () => {
+		// 앞 칸은 이름 공간이다 (AD-NAV-1). 설정 목록은 서랍이 낸다 (0.7.0 SPEC D-2).
+		expect(paths).not.toContain('/settings');
 	});
 
 	it('중간 경로에 화면을 만들지 않는다', () => {
@@ -45,7 +54,7 @@ describe('라우트 축 (FR-NAV-21)', () => {
 		expect(paths).not.toContain('/3x3/bld/3style/corner');
 	});
 
-	it('지금 서 있는 화면은 여덟이다', () => {
+	it('지금 서 있는 화면은 아홉이다', () => {
 		// 개수를 못 박아 두면 화면이 늘 때 이 검사가 먼저 걸린다 — 새 화면이 축을
 		// 따르는지 보라는 신호다.
 		expect(paths).toEqual([
@@ -56,7 +65,8 @@ describe('라우트 축 (FR-NAV-21)', () => {
 			'/3x3/bld/3style/corner/quiz',
 			'/3x3/bld/letters/lookup',
 			'/3x3/bld/letters/quiz',
-			'/3x3/bld/trace'
+			'/3x3/bld/trace',
+			'/settings/notify'
 		]);
 	});
 });

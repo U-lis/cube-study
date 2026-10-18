@@ -172,8 +172,9 @@ git push                    # 서버가 origin 에서 받아가므로 push 가 �
 | 아이콘 | `static/badge-96.png` (흑백 큐브, Android 상태바). 다시 만들기: `node scripts/badge.mjs` |
 
 ```bash
-# 홈서버에서 — 키 파일을 환경으로 읽고 돌린다
+# 홈서버에서 — 키 파일을 환경으로 읽고 돌린다. node 는 nvm 아래다 (PATH 에 없다)
 set -a; . ~/apps/push-relay/dev/data/keys/cube-study.env; set +a
+alias node=$(ls -d ~/.nvm/versions/node/v24.*/bin/node | sort -V | tail -1)
 node --experimental-strip-types ~/apps/cube-study/cron/push.ts tick --instance dev --dry-run
 node --experimental-strip-types ~/apps/cube-study/cron/push.ts send-now --instance dev \
   --title '확인' --body '즉시 발송' --url /settings/notify --all

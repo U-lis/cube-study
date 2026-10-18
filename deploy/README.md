@@ -257,7 +257,9 @@ openssl s_client -connect 172.30.1.54:443 -servername cube.siot-ieung.duckdns.or
 알림을 켜 둔 기기에 지금 바로 하나 보내 보려면 (`README.md` 의 "푸시"):
 
 ```bash
+# node 는 nvm 아래라 PATH 에 없다. 24.x 가 여럿 깔려 있으므로 가장 큰 것을 고른다 (push-install.sh 와 같다)
 ssh homeserver 'set -a; . ~/apps/push-relay/prod/data/keys/cube-study.env; set +a;
-  ~/.nvm/versions/node/v24.*/bin/node --experimental-strip-types ~/apps/cube-study/cron/push.ts \
+  N=$(ls -d ~/.nvm/versions/node/v24.*/bin/node | sort -V | tail -1);
+  $N --experimental-strip-types ~/apps/cube-study/cron/push.ts \
   send-now --instance prod --title "확인" --body "즉시 발송" --url /settings/notify --all'
 ```

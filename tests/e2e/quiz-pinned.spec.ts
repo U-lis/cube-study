@@ -50,3 +50,20 @@ test.describe('퀴즈 ?c= (FR-QC)', () => {
 		await expect(page.locator('[data-case]')).toHaveAttribute('data-case', 'OK');
 	});
 });
+
+test.describe('릴레이에 닿지 않아도 앱은 돈다 (FR-SW-4)', () => {
+	test('릴레이 sw.js 가 실패해도 SW 가 설치되고 오프라인으로 퀴즈가 열린다', async ({ page, context }) => {
+		await context.route('**/__relay/**', (r) => r.abort());
+		await page.goto(`${QUIZ}?c=KG`);
+		await page.waitForFunction(
+			async () => !!(await navigator.serviceWorker?.getRegistration())?.active,
+			undefined,
+			{ timeout: 30_000 }
+		);
+		await page.reload();
+		await page.waitForFunction(() => !!navigator.serviceWorker.controller, undefined, { timeout: 10_000 });
+		await context.setOffline(true);
+		await page.goto(`${QUIZ}?c=GK`);
+		await expect(page.locator('[data-case]')).toHaveAttribute('data-case', 'GK');
+	});
+});

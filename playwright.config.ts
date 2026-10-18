@@ -23,7 +23,15 @@ export default defineConfig({
 		// pnpm 은 `--` 를 스크립트에 그대로 넘긴다. `pnpm run preview -- --port 4174` 는
 		// `vite preview -- --port 4174` 가 되어 포트 지정이 먹지 않고 기본 4173 에 뜬다.
 		// 그러면 여기서 4174 를 기다리다 60초 뒤에 죽는다. 빌드와 서빙을 나눠 부른다.
-		command: 'pnpm run build && pnpm run preview:only --port 4174',
+		/*
+		 * 릴레이 주소를 이 서버의 `/__relay` 로 바꿔 빌드한다 (#33). E2E 가 바깥 릴레이에
+		 * 기대지 않게 하려는 것이다 — 앱 SW 는 릴레이 `sw.js` 를 `importScripts` 하고,
+		 * **업데이트 검사도 그 파일을 다시 받는다.** CI 러너에서 릴레이에 못 닿아
+		 * "업데이트 확인" 이 실패했다. 빈 `sw.js` 를 빌드 뒤에 놓으므로 프리캐시에 안 든다.
+		 * `client.js` 는 검사마다 `page.route` 로 가짜를 끼운다 (`notify.spec.ts`).
+		 */
+		command:
+			'PUBLIC_PUSH_RELAY_URL=http://localhost:4174/__relay pnpm run build && mkdir -p build/__relay && : > build/__relay/sw.js && pnpm run preview:only --port 4174',
 		port: 4174,
 		reuseExistingServer: true,
 		timeout: 60_000

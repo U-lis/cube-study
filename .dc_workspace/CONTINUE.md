@@ -1,10 +1,10 @@
-# 이어서 하기 — 0.5.1 릴리스 직후
+# 이어서 하기 — 0.6.0 릴리스 후, 0.7.0 진행 중
 
 **스냅숏이다. 정본이 아니다.** 각 항목이 가리키는 SPEC·이슈·코드가 정본이고,
 이 문서는 "지금 어디까지 왔고 다음에 무엇을 하면 되는가" 만 적는다.
 내용이 코드와 어긋나면 코드가 맞다.
 
-마지막 갱신: 2026-09-07 (0.5.1 릴리스·배포 완료)
+마지막 갱신: 2026-10-18 (0.6.0 릴리스·배포, 0.7.0 PR 작성)
 
 ---
 
@@ -12,20 +12,30 @@
 
 | | |
 |---|---|
-| 브랜치 | `main` 하나. 작업 브랜치·워크트리는 정리했다 |
-| 워크트리 | `~/Documents/cube-study` 하나뿐이다 |
-| 배포된 커밋 | `3f36a30` (`v0.5.1`) — https://cube.siot-ieung.duckdns.org |
-| 화면 버전 표시 | `0.5.1` (`package.json` 이 정본이고 빌드 타임에 주입된다) |
-| 검사 | 단위 508 · e2e 339 · `pnpm check` 0 |
+| 브랜치 | `main` + `feature/drawer-push` (0.7.0, PR 열림) |
+| 워크트리 | `~/Documents/cube-study`, `~/Documents/cube-study-feature-drawer-push` |
+| 릴리스된 커밋 | `de5d4ed` (`v0.6.0`, 스티커 문자 #19) |
+| 서버에 떠 있는 것 | `feature/drawer-push` 임시 배포일 수 있다 — PR 본문 확인. 되돌리기는 `./deploy/deploy.sh v0.6.0` |
+| 마일스톤 | 0.6.0 닫힘. **0.7.0 = #42 서랍 메뉴 + #33 매일 퀴즈 푸시** |
 | 다음 릴리스 | `CHANGELOG.md` 에 `## [x.y.z]` 항목을 먼저 적어야 `deploy/release.sh` 가 돈다 |
 
-릴리스는 `./deploy/release.sh 0.5.2` 하나다 — 검사·버전·태그·push·배포·검증이
+릴리스는 `./deploy/release.sh 0.7.0` 하나다 — 검사·버전·태그·push·배포·검증이
 한 줄로 이어진다. **사용자가 명시적으로 승인한 뒤에만 부른다.**
-롤백은 `./deploy/deploy.sh v0.5.0` 한 줄이다.
 
-`trace.*` 키만 쓰고 암기 진도 키를 건드리지 않으므로 롤백이 데이터 안전하다.
-다만 0.5.1 이 `trace.pieceKind` 를 `trace.target` 으로 옮기고 **옛 칸을 지우므로**,
-0.5.0 으로 되돌리면 훈련 대상 설정만 기본값(코너)으로 돌아간다. 기록은 그대로다.
+### 0.7.0 에서 사람이 할 일 (코드 밖)
+
+설계·결정은 `2026_10_18-drawer-push/SPEC.md`. 코드는 다 들어갔고 아래가 남았다.
+
+1. 릴레이 관리 UI 에서 `cube-study` 등록 — dev Origin `http://localhost:5174`, prod Origin `https://cube.siot-ieung.duckdns.org`
+2. `ssh -t homeserver 'sudo bash ~/apps/cube-study/deploy/push-install.sh prod dev'`
+3. 폰에서 알림 켜기 → `send-now` 로 확인 (`deploy/README.md` "푸시 타이머")
+4. 확인할 것: Android 상태바 아이콘이 큐브인가 / 뒤로가기로 서랍이 닫히는가 (D-1, 기억 기반 가정)
+
+### 조건 알림
+
+틀만 있다. 사용자가 "이때 푸시 보내" 로 정하면 `cron/rules/` 에 규칙 하나씩 더한다 —
+절차는 `cron/rules/index.ts` 머리 주석. 기기 사정이 필요한 조건이면 앱이 meta `facts` 에
+먼저 실어야 한다 (`src/lib/push/meta.ts` ↔ `cron/meta.ts`, `tests/unit/cron/meta.test.ts` 가 둘을 맞춘다).
 
 ---
 

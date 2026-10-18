@@ -7,7 +7,7 @@
 **실제 앱에 반영하는 것은 릴리스 하나뿐이다.** 개발 중 확인은 로컬 서버에서 한다.
 
 ```bash
-pnpm dev            # 개발 중 (http://localhost:5173)
+pnpm dev            # 개발 중 (http://localhost:5174)
 pnpm preview        # PWA·오프라인 확인 (http://localhost:4173)
 ```
 
@@ -228,3 +228,36 @@ openssl s_client -connect 172.30.1.54:443 -servername cube.siot-ieung.duckdns.or
 
 둘이 다르면 `--install-cert` 를 다시 돌린다. 위 sudoers 와 디렉터리 소유권이
 제자리에 있으면 cron 이 알아서 한다.
+
+## 푸시 타이머 (최초 1회, root 필요) — 0.7.0, #33
+
+알림은 홈서버의 `cube-study-push@<env>.timer` 가 1분마다 `cron/push.ts tick` 을 돌려 보낸다.
+코드는 앱 배포가 서버 저장소(`~/apps/cube-study`)를 갱신하면 따라온다. 유닛만 한 번 깐다.
+
+1. **릴레이에 앱을 등록한다** (관리 UI, 환경마다). 앱 id `cube-study`.
+   - dev: http://100.98.237.31:8802 — Origin `http://localhost:5174`
+   - prod: http://100.98.237.31:8792 — Origin `https://cube.siot-ieung.duckdns.org`
+
+   등록하면 릴레이가 키 파일 `~/apps/push-relay/<env>/data/keys/cube-study.env` 를 쓴다.
+   유닛이 그 파일을 `EnvironmentFile` 로 읽는다 — 키를 주고받을 일이 없다.
+2. **유닛을 깐다.** 여러 번 돌려도 같다. 키 파일이 없는 환경은 경고만 하고 타이머는 켠다
+   (키가 생기면 다음 분부터 돈다 — 그 전까지는 매분 실패 로그가 남는다).
+
+   ```bash
+   ssh -t homeserver 'sudo bash ~/apps/cube-study/deploy/push-install.sh prod dev'
+   ```
+3. **확인.**
+
+   ```bash
+   ssh homeserver 'systemctl list-timers "cube-study-push@*" --no-pager'
+   ssh homeserver 'journalctl -u cube-study-push@dev -n 20 --no-pager'
+   # [push] subscriptions=N … nothing to send   ← 정상 (창 밖)
+   ```
+
+알림을 켜 둔 기기에 지금 바로 하나 보내 보려면 (`README.md` 의 "푸시"):
+
+```bash
+ssh homeserver 'set -a; . ~/apps/push-relay/prod/data/keys/cube-study.env; set +a;
+  ~/.nvm/versions/node/v24.*/bin/node --experimental-strip-types ~/apps/cube-study/cron/push.ts \
+  send-now --instance prod --title "확인" --body "즉시 발송" --url /settings/notify --all'
+```

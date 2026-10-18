@@ -1,0 +1,14 @@
+# cube-study 푸시 타이머 — 매 분. 서비스 유닛 설명 참고. #33
+[Unit]
+Description=cube-study push timer (%i)
+After=network-online.target
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=1min
+AccuracySec=10s
+# 놓친 분을 메우지 않는다. 매일 퀴즈는 30분 창이라 몇 분 놓쳐도 그날 안에 간다.
+Persistent=false
+
+[Install]
+WantedBy=timers.target

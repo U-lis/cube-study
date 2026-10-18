@@ -44,8 +44,9 @@ async function readChecked(page: Page): Promise<{ setup: string[]; direct: strin
 	return { setup: p.checked.setup ?? [], direct: p.checked.direct ?? [] };
 }
 
-/** About 모달 열기. 열린 뒤 조작 가능한 상태까지 기다린다. */
+/** About 모달 열기. 정보는 서랍 안에 있다 (#42). 열린 뒤 조작 가능한 상태까지 기다린다. */
 async function openAbout(page: Page): Promise<void> {
+	await page.locator('[data-drawer-open]').click();
 	await page.locator('[data-about-open]').click();
 	await expect(page.locator('[data-about]')).toBeVisible();
 	// idle 버튼이 렌더된 상태 (또는 confirming — 케이스에 따라)

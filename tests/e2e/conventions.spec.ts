@@ -145,26 +145,36 @@ test.describe('T4 하단 탭 (FR-NAV-4, 5, 6)', () => {
 	});
 });
 
+/*
+ * 범위는 `main` (화면 본문) 과 하단 탭이다. 서랍(#42)은 홈처럼 **지도**다 — 닫혀 있다가
+ * 사용자가 열 때만 보이고, 모든 화면을 링크하는 것이 그 일이다. 퀴즈를 풀다가 트레이싱이
+ * 눈에 들어오지 않는다는 FR-NAV-4 의 요구는 그대로 지켜진다.
+ */
 test.describe('T4 화면끼리 서로를 보여주지 않는다 (FR-NAV-4)', () => {
 	test('공식 화면에 트레이싱으로 가는 링크가 없다', async ({ page }) => {
 		// FR-NAV-4 의 본론이다. 퀴즈를 풀다가 트레이싱이 눈에 들어오지 않는다.
 		for (const path of [...TABBED, DETAIL]) {
 			await ready(page, path);
-			await expect(page.locator(`a[href^="${TRACE}"]`), path).toHaveCount(0);
+			await expect(page.locator(`main a[href^="${TRACE}"], nav a[href^="${TRACE}"]`), path).toHaveCount(0);
 		}
 	});
 
 	test('트레이싱에 공식 화면으로 가는 링크가 없다', async ({ page }) => {
 		await ready(page, TRACE);
-		await expect(page.locator('a[href^="/3x3/bld/3style"]')).toHaveCount(0);
+		await expect(page.locator('main a[href^="/3x3/bld/3style"], nav a[href^="/3x3/bld/3style"]')).toHaveCount(0);
 	});
 
 	test('홈은 기능 화면을 모두 링크한다', async ({ page }) => {
 		// 반대쪽 요구다. 홈이 지도이므로 여기서만 전부 보인다.
 		await ready(page, HOME);
 		for (const f of FEATURES) {
-			await expect(page.locator(`a[href="${f.path}"]`), f.path).toHaveCount(1);
+			await expect(page.locator(`main a[href="${f.path}"]`), f.path).toHaveCount(1);
 		}
+	});
+
+	test('서랍은 닫힌 채로 뜬다', async ({ page }) => {
+		await ready(page, QUIZ);
+		await expect(page.locator('[data-drawer]')).not.toBeVisible();
 	});
 });
 

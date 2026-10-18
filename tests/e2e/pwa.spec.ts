@@ -155,7 +155,8 @@ test.describe('테마 (FR-21)', () => {
 		await page.goto('/3x3/bld/3style/corner/lookup');
 		const toggle = page.locator('[data-theme-toggle]');
 
-		// system -> light
+		// system -> light. 테마는 서랍 안에 있다 (#42)
+		await page.locator('[data-drawer-open]').click();
 		await toggle.click();
 		await expect(toggle).toHaveAttribute('data-theme', 'light');
 		expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe(
@@ -172,6 +173,7 @@ test.describe('테마 (FR-21)', () => {
 	test('FOUC 없음: 초기 렌더부터 저장된 테마가 적용된다', async ({ page }) => {
 		await page.emulateMedia({ colorScheme: 'dark' });
 		await page.goto('/3x3/bld/3style/corner/lookup');
+		await page.locator('[data-drawer-open]').click();
 		await page.locator('[data-theme-toggle]').click(); // light 고정
 		await page.reload();
 		// 문서 파싱 직후 data-theme 이 이미 붙어 있어야 한다

@@ -13,6 +13,8 @@
 	import { browser } from '$app/environment';
 	import UpLink from '$lib/ui/UpLink.svelte';
 	import { push } from '$lib/ui/push.svelte.js';
+	import { daily } from '$lib/ui/daily.svelte.js';
+	import { DAILY_SIZES } from '$lib/domain/daily.js';
 
 	if (browser) void push.refresh();
 
@@ -38,8 +40,8 @@
 <section class="settings" data-push-view={push.view}>
 	<h2>매일 퀴즈</h2>
 	<p class="desc">
-		정한 시각에 코너 3-style 문제 하나를 보냅니다. 알림을 누르면 그 문제가 첫 문제인 퀴즈
-		화면이 열립니다.
+		정한 시각에 알림을 보냅니다. 알림을 누르면 매일 퀴즈 화면이 열립니다. 코너 3-style
+		공식을 암기 표시한 것에서 먼저 내고, 모자라면 나머지를 무작위로 채웁니다.
 	</p>
 
 	<div class="seg" role="group" aria-label="매일 퀴즈">
@@ -69,6 +71,23 @@
 			value={push.daily}
 			onchange={(e) => push.setDaily(e.currentTarget.value)}
 		/>
+	</label>
+
+	<!--
+		문제 수는 알림과 무관하게 기기에만 저장한다 (FR-DQ-1). 알림을 못 받는 기기도
+		매일 퀴즈 화면은 쓴다 — 그래서 켬/끔이나 권한으로 잠그지 않는다.
+	-->
+	<label class="time">
+		<span>문제 수</span>
+		<select
+			data-daily-size
+			value={daily.size}
+			onchange={(e) => daily.setSize(Number(e.currentTarget.value))}
+		>
+			{#each DAILY_SIZES as n (n)}
+				<option value={n}>{n}</option>
+			{/each}
+		</select>
 	</label>
 
 	<p class="status" data-push-status>상태: {STATUS[push.view]}</p>
@@ -145,13 +164,18 @@
 		border: 1px solid var(--border);
 		border-radius: 10px;
 	}
-	.time input {
+	.time input,
+	.time select {
 		min-height: 40px;
 		font: inherit;
 		font-size: 1rem;
 		color: var(--fg);
 		background: transparent;
 		border: none;
+	}
+	.time option {
+		color: var(--fg);
+		background: var(--bg);
 	}
 	.status {
 		margin: 0;

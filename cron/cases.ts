@@ -1,9 +1,11 @@
-// 코너 케이스 목록 — 매일 퀴즈의 문제를 고른다 (SPEC FR-CR-1, FR-CR-7).
+// 코너 케이스 목록 — 규칙이 `ctx.cases` 로 받는다 (SPEC FR-CR-1).
+//
+// 매일 퀴즈는 0.7.0 개발 중 문제를 고르지 않게 됐다 (FR-DQ-7). 지금 이 목록을 읽는 규칙은
+// 없지만, 케이스를 알림에 싣는 조건 규칙이 쓸 자리로 남겨 둔다.
 //
 // 데이터 파일을 읽는다. 코드(`src/`)는 import 하지 않는다 — 사본을 두면 둘이 어긋난다.
 
 import { readFileSync } from 'node:fs';
-import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 export interface CaseInfo {
@@ -21,15 +23,3 @@ export function loadCases(path = DATA): CaseInfo[] {
     .sort()
     .map((k) => ds.cases[k]);
 }
-
-/**
- * (구독, 날짜) 로 결정되는 문제. 창 안에서 매분 다시 계산해도 같은 문제다 —
- * 재시도가 다른 문제를 들고 가지 않는다.
- */
-export function pickCase(cases: readonly CaseInfo[], subscriptionId: string, date: string): CaseInfo {
-  const h = createHash('sha256').update(`${subscriptionId}|${date}`).digest();
-  return cases[h.readUInt32BE(0) % cases.length];
-}
-
-/** 퀴즈 화면의 표기와 같다 (`src/lib/domain/validate.ts` 의 `targetText`). */
-export const targetText = (t: CaseInfo['target1']): string => `${t.cubie}의 ${t.face}면`;

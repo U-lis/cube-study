@@ -2,9 +2,9 @@
  * cron 규칙 · 평가 (#33, SPEC FR-CR-4 ~ 8).
  */
 import { describe, it, expect } from 'vitest';
-import { loadCases, pickCase } from '../../../cron/cases.ts';
+import { loadCases } from '../../../cron/cases.ts';
 import { plan, BADGE, ICON } from '../../../cron/engine.ts';
-import { daily, WINDOW_MIN } from '../../../cron/rules/daily.ts';
+import { daily, DAILY_URL, WINDOW_MIN } from '../../../cron/rules/daily.ts';
 import { RULES } from '../../../cron/rules/index.ts';
 import type { Rule } from '../../../cron/rules/types.ts';
 
@@ -39,12 +39,6 @@ describe('daily', () => {
 		expect(b?.dedupKey).toBe(a?.dedupKey);
 	});
 
-	it('같은 날 같은 구독은 같은 문제다 — 재시도가 다른 문제를 들고 가지 않는다', () => {
-		const a = ev(meta('21:00'), at('2026-10-18T12:00:00Z'));
-		const b = ev(meta('21:00'), at('2026-10-18T12:20:00Z'));
-		expect(b?.notification.url).toBe(a?.notification.url);
-	});
-
 	it('시간대를 따른다', () => {
 		// 21:00 뉴욕(EDT, UTC-4) = 다음 날 01:00Z
 		expect(ev(meta('21:00', 'America/New_York'), at('2026-10-18T12:00:00Z'))).toBeNull();
@@ -57,23 +51,12 @@ describe('daily', () => {
 		expect(ev(meta(null), at('2026-10-18T12:00:00Z'))).toBeNull();
 	});
 
-	it('문구는 사실만 — 케이스와 두 타깃, 그 문제를 여는 주소', () => {
+	it('문구는 사실만 — 매일 퀴즈 화면을 연다. 문제는 고르지 않는다 (FR-DQ-7)', () => {
 		const hit = ev(meta('21:00'), at('2026-10-18T12:00:00Z'))!;
-		const c = pickCase(cases, SUB, '2026-10-18');
-		expect(hit.notification.title).toBe('코너 3-style 퀴즈');
-		expect(hit.notification.body).toBe(
-			`${c.case} · ${c.target1.cubie}의 ${c.target1.face}면 → ${c.target2.cubie}의 ${c.target2.face}면`
-		);
-		expect(hit.notification.url).toBe(`/3x3/bld/3style/corner/quiz?c=${c.case}`);
-	});
-});
-
-describe('pickCase', () => {
-	it('378 케이스 안에서 고르고, 날마다 바뀐다', () => {
-		expect(cases.length).toBe(378);
-		const days = Array.from({ length: 30 }, (_, i) => `2026-11-${String(i + 1).padStart(2, '0')}`);
-		const picked = new Set(days.map((d) => pickCase(cases, SUB, d).case));
-		expect(picked.size).toBeGreaterThan(20);
+		expect(hit.notification.title).toBe('매일 퀴즈');
+		expect(hit.notification.body).toBe('코너 3-style');
+		expect(hit.notification.url).toBe(DAILY_URL);
+		expect(DAILY_URL).toBe('/3x3/bld/3style/corner/daily');
 	});
 });
 

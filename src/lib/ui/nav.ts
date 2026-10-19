@@ -20,6 +20,7 @@ const FEATURE_LABELS: Record<string, string> = {
 	lookup: '조회',
 	algs: '기준공식',
 	quiz: '퀴즈',
+	daily: '매일',
 	trace: '트레이싱'
 };
 
@@ -47,7 +48,7 @@ const GROUP_LABELS: Record<string, Partial<Record<string, string>>> = {
  * `/3x3/bld` 묶음을 다시 본다.
  */
 const SIBLING_GROUPS: Record<string, readonly string[]> = {
-	'/3x3/bld/3style/corner': ['lookup', 'algs', 'quiz'],
+	'/3x3/bld/3style/corner': ['lookup', 'algs', 'quiz', 'daily'],
 	'/3x3/bld/letters': ['lookup', 'quiz']
 };
 

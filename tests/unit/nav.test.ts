@@ -14,10 +14,10 @@ describe('tabsFor', () => {
 		expect(tabsFor('/', '/')).toEqual([]);
 	});
 
-	it('조회·기준공식·퀴즈는 서로 형제다', () => {
-		for (const feature of ['lookup', 'algs', 'quiz']) {
+	it('조회·기준공식·퀴즈·매일은 서로 형제다', () => {
+		for (const feature of ['lookup', 'algs', 'quiz', 'daily']) {
 			const tabs = tabsFor(`${CORNER}/${feature}`, `${CORNER}/${feature}`);
-			expect(tabs.map((t) => t.feature), feature).toEqual(['lookup', 'algs', 'quiz']);
+			expect(tabs.map((t) => t.feature), feature).toEqual(['lookup', 'algs', 'quiz', 'daily']);
 			expect(tabs.filter((t) => t.active).map((t) => t.feature), feature).toEqual([feature]);
 		}
 	});
@@ -25,7 +25,7 @@ describe('tabsFor', () => {
 	it('기준 상세는 목록의 탭을 물려받고 기준공식이 켜진다', () => {
 		// 동적 칸을 걷어낸 경로로 계산한다 (AD-NAV-B). 상세마다 예외 분기가 없다.
 		const tabs = tabsFor(`${CORNER}/algs/GC`, `${CORNER}/algs/[code]`);
-		expect(tabs.map((t) => t.feature)).toEqual(['lookup', 'algs', 'quiz']);
+		expect(tabs.map((t) => t.feature)).toEqual(['lookup', 'algs', 'quiz', 'daily']);
 		expect(tabs.find((t) => t.active)?.feature).toBe('algs');
 	});
 
@@ -38,13 +38,14 @@ describe('tabsFor', () => {
 		expect(tabs.map((t) => t.href)).toEqual([
 			`${CORNER}/lookup`,
 			`${CORNER}/algs`,
-			`${CORNER}/quiz`
+			`${CORNER}/quiz`,
+			`${CORNER}/daily`
 		]);
 	});
 
 	it('탭의 라벨은 화면 이름이다', () => {
 		const tabs = tabsFor(`${CORNER}/quiz`, `${CORNER}/quiz`);
-		expect(tabs.map((t) => t.label)).toEqual(['조회', '기준공식', '퀴즈']);
+		expect(tabs.map((t) => t.label)).toEqual(['조회', '기준공식', '퀴즈', '매일']);
 	});
 
 	it('스티커 문자는 외우기·퀴즈 둘이 형제이고 lookup 의 이름이 외우기다 (#19)', () => {
@@ -71,7 +72,8 @@ describe('tabsFor', () => {
 		expect(tabsFor(`${CORNER}/algs`, null).map((t) => t.feature)).toEqual([
 			'lookup',
 			'algs',
-			'quiz'
+			'quiz',
+			'daily'
 		]);
 	});
 });
@@ -100,7 +102,8 @@ describe('menuFor (서랍, #42)', () => {
 		expect(corner?.kind === 'group' && corner.links.map((l) => l.label)).toEqual([
 			'조회',
 			'기준공식',
-			'퀴즈'
+			'퀴즈',
+			'매일'
 		]);
 		const letters = menu.find((e) => e.kind === 'group' && e.id === '/3x3/bld/letters');
 		expect(letters?.kind === 'group' && letters.links.map((l) => l.label)).toEqual([

@@ -24,23 +24,25 @@ const HOME = '/';
 const LOOKUP = '/3x3/bld/3style/corner/lookup';
 const ALGS = '/3x3/bld/3style/corner/algs';
 const QUIZ = '/3x3/bld/3style/corner/quiz';
+const DAILY = '/3x3/bld/3style/corner/daily';
 const TRACE = '/3x3/bld/trace';
 const LETTERS_LOOKUP = '/3x3/bld/letters/lookup';
 const LETTERS_QUIZ = '/3x3/bld/letters/quiz';
 /** 데이터가 아는 기준 하나. 상세 화면의 표본이다. */
 const DETAIL = '/3x3/bld/3style/corner/algs/GC';
 
-/** 기능 화면 여섯. 홈과 상세는 규약이 달라 따로 본다. */
+/** 기능 화면 일곱. 홈과 상세는 규약이 달라 따로 본다. */
 const FEATURES = [
 	{ path: LOOKUP, name: '조회' },
 	{ path: ALGS, name: '기준공식' },
 	{ path: QUIZ, name: '퀴즈' },
+	{ path: DAILY, name: '매일 퀴즈' },
 	{ path: TRACE, name: '트레이싱' },
 	{ path: LETTERS_LOOKUP, name: '외우기' },
 	{ path: LETTERS_QUIZ, name: '퀴즈' }
 ];
 
-const TABBED = [LOOKUP, ALGS, QUIZ];
+const TABBED = [LOOKUP, ALGS, QUIZ, DAILY];
 
 /** 데이터셋이 붙어 화면이 다 선 뒤에 잰다. */
 async function ready(page: Page, path: string) {
@@ -99,16 +101,17 @@ test.describe('T4 되돌아가기 (FR-NAV-7)', () => {
 });
 
 test.describe('T4 하단 탭 (FR-NAV-4, 5, 6)', () => {
-	test('공식 화면 셋은 형제 탭 셋을 단다', async ({ page }) => {
+	test('공식 화면 넷은 형제 탭 넷을 단다', async ({ page }) => {
 		for (const path of TABBED) {
 			await ready(page, path);
 			const links = page.locator('nav a');
-			await expect(links, path).toHaveCount(3);
+			await expect(links, path).toHaveCount(4);
 			// 형제는 기능 칸만 다르다 — 앞의 네 칸이 모두 같아야 한다.
 			expect(await links.evaluateAll((els) => els.map((e) => e.getAttribute('href'))), path).toEqual([
 				LOOKUP,
 				ALGS,
-				QUIZ
+				QUIZ,
+				DAILY
 			]);
 		}
 	});
@@ -116,7 +119,7 @@ test.describe('T4 하단 탭 (FR-NAV-4, 5, 6)', () => {
 	test('기준 상세는 목록의 탭을 물려받는다', async ({ page }) => {
 		// 상세는 자기 형제가 없다. 동적 칸을 걷어낸 경로로 계산하므로 탭이 유지된다.
 		await ready(page, DETAIL);
-		await expect(page.locator('nav a')).toHaveCount(3);
+		await expect(page.locator('nav a')).toHaveCount(4);
 		await expect(page.locator('nav a.on')).toHaveText('기준공식');
 	});
 

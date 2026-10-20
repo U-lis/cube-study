@@ -232,6 +232,18 @@ test.describe('매일 퀴즈 (FR-DQ)', () => {
 		await expect(stage(page)).toHaveAttribute('data-stage', 'idle');
 	});
 
+	test('시작 버튼이 하단 탭에 가리지 않는다 @viewport', async ({ page }) => {
+		await page.goto(DAILY);
+		const start = page.locator('[data-start]');
+		await expect(start).toBeVisible();
+		const covered = await start.evaluate((el) => {
+			const r = el.getBoundingClientRect();
+			const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+			return !(hit && el.contains(hit));
+		});
+		expect(covered).toBe(false);
+	});
+
 	test('진행 버튼이 본문 최하단에 선다 @viewport', async ({ page }) => {
 		await page.goto(DAILY);
 		await page.locator('[data-start]').click();

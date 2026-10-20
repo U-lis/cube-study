@@ -342,8 +342,8 @@ Claude Design (`design` 스킬 / `DesignSync`)으로 디자인 시스템을 세�
 
 **디자인 시스템은 발명이 아니라 추출이다.** 지금 UI 컴포넌트가 11개인데
 (`SegToggle` `StickerPad` `MoveKeypad` `AnchorPad` `CaseInput` `CaseView` `Alg`
-`Cube3D` `Records` `Toast` `UpLink`), 두 화면 이상에서 실제로 재사용되는 것은
-`SegToggle` · `Alg` · `UpLink` 정도다. 나머지는 아직 한 화면짜리다. 지금 규격으로
+`Cube3D` `Records` `Toast` `PageTitle`), 두 화면 이상에서 실제로 재사용되는 것은
+`SegToggle` · `Alg` · `PageTitle` 정도다. 나머지는 아직 한 화면짜리다. 지금 규격으로
 뽑으면 **우연히 그렇게 생긴 것**을 굳힌다.
 
 **중요한 절반은 이미 있다.** `src/lib/styles/app.css` 의 토큰이 사실상 색 레이어다

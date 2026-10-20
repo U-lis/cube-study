@@ -13,7 +13,7 @@
 	import MoveKeypad from '$lib/ui/MoveKeypad.svelte';
 	import AnchorPad from '$lib/ui/AnchorPad.svelte';
 	import SegToggle from '$lib/ui/SegToggle.svelte';
-	import UpLink from '$lib/ui/UpLink.svelte';
+	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { settings } from '$lib/ui/settings.svelte.js';
 	import { memorize } from '$lib/ui/memorize.svelte.js';
 	import { loadDataset } from '$lib/data/loader.js';
@@ -210,9 +210,7 @@
 
 <svelte:head><title>3-Style Corner — 퀴즈</title></svelte:head>
 
-<UpLink href="/" label="홈" />
-
-<h1>퀴즈</h1>
+<PageTitle href="/" label="홈"><h1>퀴즈</h1></PageTitle>
 
 {#if ds}
 	<section class="quiz" data-stage={stage}>
@@ -392,7 +390,7 @@
 	/* 화면 이름. 다른 화면(기준공식)과 같은 톤이다. */
 	h1 {
 		font-size: 1.3rem;
-		margin: 0.2rem 0 0.6rem;
+		margin: 0;
 	}
 	/* 문제로 내려온 케이스 코드. 옛 h1 의 크기를 그대로 물려받는다. */
 	.case {

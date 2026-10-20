@@ -11,7 +11,7 @@
 -->
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import UpLink from '$lib/ui/UpLink.svelte';
+	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { push } from '$lib/ui/push.svelte.js';
 	import { daily } from '$lib/ui/daily.svelte.js';
 	import { DAILY_SIZES } from '$lib/domain/daily.js';
@@ -33,9 +33,7 @@
 
 <svelte:head><title>CubeStudy — 알림</title></svelte:head>
 
-<UpLink href="/" label="홈" />
-
-<h1>알림</h1>
+<PageTitle href="/" label="홈"><h1>알림</h1></PageTitle>
 
 <section class="settings" data-push-view={push.view}>
 	<h2>매일 퀴즈</h2>
@@ -111,7 +109,7 @@
 <style>
 	h1 {
 		font-size: 1.3rem;
-		margin: 0.2rem 0 0.6rem;
+		margin: 0;
 	}
 	h2 {
 		margin: 1rem 0 0.4rem;

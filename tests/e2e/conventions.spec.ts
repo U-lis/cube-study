@@ -94,6 +94,17 @@ test.describe('T4 되돌아가기 (FR-NAV-7)', () => {
 		await expect(page.locator('[data-up-link]')).toHaveAttribute('data-up-link', ALGS);
 	});
 
+	test('되돌아가기와 화면 이름이 한 줄에 선다', async ({ page }) => {
+		// 사용자 결정 2026-10-20: `홈 › 매일 퀴즈`. 두 줄이면 본문이 그만큼 내려간다
+		for (const path of [...FEATURES.map((f) => f.path), DETAIL]) {
+			await ready(page, path);
+			const up = (await page.locator('[data-up-link]').boundingBox())!;
+			const h1 = (await page.locator('h1').boundingBox())!;
+			expect(h1.x, path).toBeGreaterThan(up.x + up.width);
+			expect(h1.y, path).toBeLessThan(up.y + up.height);
+		}
+	});
+
 	test('홈에는 되돌아갈 곳이 없다', async ({ page }) => {
 		await ready(page, HOME);
 		await expect(page.locator('[data-up-link]')).toHaveCount(0);

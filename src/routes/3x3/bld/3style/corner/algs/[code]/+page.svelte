@@ -3,7 +3,7 @@
 	import Alg from '$lib/ui/Alg.svelte';
 	import { targetText } from '$lib/domain/validate.js';
 	import { formatCommutator } from '$lib/domain/format.js';
-	import UpLink from '$lib/ui/UpLink.svelte';
+	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { memorize } from '$lib/ui/memorize.svelte.js';
 	import { settings } from '$lib/ui/settings.svelte.js';
 	let { data } = $props();
@@ -62,9 +62,9 @@
 	오른쪽 체크박스 열이 이름 없는 칸이 된다.
 -->
 <div class="head" data-anchor-head>
-	<UpLink href="/3x3/bld/3style/corner/algs" label="기준공식" />
-
-<h1>{data.isDirect ? '기준 없음' : data.code}</h1>
+	<PageTitle href="/3x3/bld/3style/corner/algs" label="기준공식">
+		<h1>{data.isDirect ? '기준 없음' : data.code}</h1>
+	</PageTitle>
 
 {#if data.anchor}
 	<div class="anchor">
@@ -273,7 +273,7 @@
 		font-size: 1.8rem;
 		letter-spacing: 0.1em;
 		color: var(--accent);
-		margin: 0 0 0.6rem;
+		margin: 0;
 	}
 	.anchor {
 		padding: 0.7rem;

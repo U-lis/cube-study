@@ -19,7 +19,7 @@
 	import MoveKeypad from '$lib/ui/MoveKeypad.svelte';
 	import AnchorPad from '$lib/ui/AnchorPad.svelte';
 	import SegToggle from '$lib/ui/SegToggle.svelte';
-	import UpLink from '$lib/ui/UpLink.svelte';
+	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { settings } from '$lib/ui/settings.svelte.js';
 	import { memorize } from '$lib/ui/memorize.svelte.js';
 	import { daily } from '$lib/ui/daily.svelte.js';
@@ -160,9 +160,7 @@
 
 <svelte:head><title>3-Style Corner — 매일 퀴즈</title></svelte:head>
 
-<UpLink href="/" label="홈" />
-
-<h1>매일 퀴즈</h1>
+<PageTitle href="/" label="홈"><h1>매일 퀴즈</h1></PageTitle>
 
 {#if ds}
 	<section
@@ -293,7 +291,7 @@
 <style>
 	h1 {
 		font-size: 1.3rem;
-		margin: 0.2rem 0 0.6rem;
+		margin: 0;
 	}
 	.daily {
 		display: flex;

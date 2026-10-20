@@ -21,7 +21,7 @@
 	import Cube3D from '$lib/ui/Cube3D.svelte';
 	import SegToggle from '$lib/ui/SegToggle.svelte';
 	import StickerPad from '$lib/ui/StickerPad.svelte';
-	import UpLink from '$lib/ui/UpLink.svelte';
+	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { letters } from '$lib/ui/letters.svelte.js';
 	import { faceletColors, GRAY, grayFacelets } from '$lib/ui/facelets.js';
 	import { loadDataset } from '$lib/data/loader.js';
@@ -138,9 +138,7 @@
 
 <svelte:head><title>스티커 문자 — 퀴즈</title></svelte:head>
 
-<UpLink href="/" label="홈" />
-
-<h1>퀴즈</h1>
+<PageTitle href="/" label="홈"><h1>퀴즈</h1></PageTitle>
 
 <!-- `data-cubie` 는 E2E 의 시험 훅이다. 화면에 보이는 정보가 아니다 (PHASE_4_TEST). -->
 <section class="quiz" data-stage={stage} data-cubie={cubie ?? ''} data-kind={kind}>
@@ -203,7 +201,7 @@
 <style>
 	h1 {
 		font-size: 1.3rem;
-		margin: 0.2rem 0 0.4rem;
+		margin: 0;
 	}
 	.quiz {
 		display: flex;

@@ -4,7 +4,7 @@
 	import { page } from '$app/state';
 	import CaseInput from '$lib/ui/CaseInput.svelte';
 	import CaseView from '$lib/ui/CaseView.svelte';
-	import UpLink from '$lib/ui/UpLink.svelte';
+	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { lookup, reasonText } from '$lib/domain/validate.js';
 	import { loadDataset } from '$lib/data/loader.js';
 	import type { CaseEntry, Dataset } from '$lib/domain/types.js';
@@ -72,16 +72,12 @@
 
 <!--
 	되돌아가기 (FR-NAV-7). 기준 상세에서 넘어왔으면 그 기준으로, 아니면 홈으로.
-	**둘 중 하나만 뜨는 `{:else}` 구조여야 한다** — 개수가 갈리면 하이드레이션이
-	흔들린다 (NFR-NAV-1).
+	링크는 언제나 하나다 — 개수가 갈리면 하이드레이션이 흔들린다 (NFR-NAV-1).
 -->
-{#if from}
-	<UpLink href="/3x3/bld/3style/corner/algs/{from}" label={upLabel ?? ''} />
-{:else}
-	<UpLink href="/" label="홈" />
-{/if}
-
-<h1>조회</h1>
+<PageTitle
+	href={from ? `/3x3/bld/3style/corner/algs/${from}` : '/'}
+	label={from ? (upLabel ?? '') : '홈'}><h1>조회</h1></PageTitle
+>
 
 <div class="top">
 	<!-- X 는 결과까지 치운다. 포커스 초기화(다시 칠 준비)와 구분한다 -->
@@ -110,7 +106,7 @@
 <style>
 	h1 {
 		font-size: 1.3rem;
-		margin: 0.2rem 0 0.4rem;
+		margin: 0;
 	}
 	.top {
 		position: sticky;

@@ -44,7 +44,7 @@ GLOBAL AD-4, AD-9. SPEC Section 2 (FR-M2-D).
 
 ## 완료 체크리스트
 
-- [ ] `SVELTE.md` 라우트 표에 `/3x3/bld/m2/edge/{lookup,quiz}` 기재
-- [ ] `SVELTE.md` 네임스페이스 경로 명시
-- [ ] `README.md` M2 데이터 출처·수정·짝수 행 규칙 추가
-- [ ] `pnpm check && pnpm test && pnpm test:e2e` 초록
+- [x] `SVELTE.md` 라우트 표에 `/3x3/bld/m2/edge/{lookup,quiz}` 기재
+- [x] `SVELTE.md` 네임스페이스 경로 명시
+- [x] `README.md` M2 데이터 출처·수정·짝수 행 규칙 추가
+- [x] `pnpm check && pnpm test && pnpm test:e2e` 초록

@@ -8,11 +8,19 @@
 	const SUFFIXES = ['', "'", '2'] as const;
 	const MAX_MOVES = 200;
 
-	let { moves = $bindable<string[]>([]) }: { moves?: string[] } = $props();
+	/**
+	 * 면 18개 밖의 무브 줄들 (SPEC AD-3). M2 퀴즈가 `M·M'·M2` 와 `l·l'·r·r'` 을
+	 * 넘긴다 — 그 세트의 공식이 쓰는 무브 전부다. 기본값 빈 배열이라 기존 호출부는
+	 * 변경 없이 돈다.
+	 */
+	let {
+		moves = $bindable<string[]>([]),
+		extraRows = []
+	}: { moves?: string[]; extraRows?: readonly (readonly string[])[] } = $props();
 
-	function push(face: string, suffix: string) {
+	function pushToken(token: string) {
 		if (moves.length >= MAX_MOVES) return;
-		moves = [...moves, face + suffix];
+		moves = [...moves, token];
 	}
 	function undo() {
 		moves = moves.slice(0, -1);
@@ -29,11 +37,26 @@
 				<button
 					type="button"
 					data-move={face + sfx}
-					onclick={() => push(face, sfx)}
+					onclick={() => pushToken(face + sfx)}
 					disabled={moves.length >= MAX_MOVES}
 				>
 					<!-- 수식자 칸의 폭을 항상 예약해 면 글자가 어느 행에서나 같은 위치에 온다 -->
 					<span class="face">{face}</span><span class="sfx">{sfx}</span>
+				</button>
+			{/each}
+		</div>
+	{/each}
+	{#each extraRows as row, i (i)}
+		<!-- 각 추가 행은 자기 길이에 맞춘 그리드다 (SPEC AD-3). -->
+		<div class="row extra" style="grid-template-columns: repeat({row.length}, 1fr);">
+			{#each row as token (token)}
+				<button
+					type="button"
+					data-move={token}
+					onclick={() => pushToken(token)}
+					disabled={moves.length >= MAX_MOVES}
+				>
+					<span class="face">{token}</span>
 				</button>
 			{/each}
 		</div>

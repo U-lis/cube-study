@@ -14,7 +14,7 @@
 | 항목 | 경로 |
 |---|---|
 | 엣지 3-style (#16) | `/3x3/bld/3style/edge/{lookup,algs,quiz}` |
-| M2 참조표 (#17) | `/3x3/bld/m2/edge/lookup` |
+| M2 엣지 조회·퀴즈 (#17) — **0.8.0 진행 중** (`feature/m2`, SPEC `.dc_workspace/2026_10_23-m2/SPEC.md`) | `/3x3/bld/m2/edge/{lookup,quiz}` |
 | 코너 OP (#18) | `/3x3/bld/op/corner/lookup` |
 | 스티커 외우기 (#19) | `/3x3/bld/letters/{lookup,quiz}` |
 | 메모 훈련 (#21) | `/3x3/bld/memo` |

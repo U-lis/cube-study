@@ -3,7 +3,7 @@
 [![CI](https://github.com/U-lis/cube-study/actions/workflows/ci.yml/badge.svg)](https://github.com/U-lis/cube-study/actions/workflows/ci.yml)
 [![사이트 점검](https://github.com/U-lis/cube-study/actions/workflows/site-check.yml/badge.svg)](https://github.com/U-lis/cube-study/actions/workflows/site-check.yml)
 
-3BLD(눈가리고 큐브 맞추기) 학습용 앱. 현재 **코너 3-style (UBL 버퍼)** 의 조회·기준공식·퀴즈와, 코너·엣지 **트레이싱 훈련** 을 제공한다.
+3BLD(눈가리고 큐브 맞추기) 학습용 앱. 현재 **코너 3-style (UBL 버퍼)** 의 조회·기준공식·퀴즈, **M2 엣지 (DF 버퍼)** 의 조회·퀴즈, 코너·엣지 **트레이싱 훈련** 을 제공한다.
 
 버전과 커밋 해시는 왼쪽 위 ☰ 서랍의 머리와 "앱 정보" 에서 확인할 수 있다. 버전의 정본은 `package.json` 하나이며 빌드 타임에 주입된다.
 
@@ -97,7 +97,7 @@ Speffz 문자가 어느 facelet 인가 — 하나뿐이고, 그 좌표는 데이
 
 ```
 src/lib/
-├── data/         corner-UBL.json + {pieceType, buffer} 로더
+├── data/         corner-UBL.json · edge-DF-m2.json + {pieceType, buffer} 로더
 ├── cube/         큐브 시뮬레이터 (cubejs 백엔드), Speffz 좌표, 표기 유틸,
 │              트레이싱 엔진 (trace.ts), 스크램블 워커, 3D 큐브 (cube3d.ts)
 ├── domain/       타입, 입력 검증, 표기 생성, 퀴즈 채점, 기준공식 취급,
@@ -124,6 +124,24 @@ data/schema-history/   데이터 스키마 v1~v9 기록 (앱은 읽지 않는다
 - **무브 정의를 저장소로 다시 들여오지 말 것.** 0.3.0 까지는 `perms.json` 에 무브 테이블을 들고 있었고, `L` 이 뒤집힌 채 실려 나갔는데 자체 검증 1512/1512 가 그걸 못 잡았다. 지금은 `cubejs` 가 정한다.
 - **프라임 기호는 반드시 ASCII `'`(U+0027).** 알고리즘 렌더는 `Alg.svelte` 한 곳만 거치며 `{@html}`을 쓰지 않는다. 무브 사이에는 실제 공백 텍스트 노드가 들어간다 — 복사했을 때 무브 구분이 유지되어야 한다.
 - **화면 코드를 쓰기 전에 `.dc_workspace/SVELTE.md`.** 이 저장소가 Svelte/SvelteKit 의 무엇을 쓰고 무엇을 안 쓰는지, 그리고 **새 화면의 URL 을 어느 축에 앉히는지**가 거기 있다. 서버가 없다는 사실이 프레임워크 기능의 절반을 잘라내므로, 공식 문서의 예제를 그대로 옮기면 안 되는 자리가 많다.
+
+### M2 엣지 데이터 (`src/lib/data/edge-DF-m2.json`)
+
+출처: 사용자 PDF `m2_edges.pdf` (2026-10-23, 비공개). 수정 내역이 두 가지 있다.
+
+- **E(LU) 공식 정정.** PDF 원문의 공식이 코너를 건드려 틀렸다. Pochmann/speedsolving
+  원문 기준 `x' U L' U' M2 U L U' x` 를 회전 없는 B 면 무브로 변환해
+  `B L' B' M2 B L B'` 로 교체했다. `tests/unit/m2-solve.test.ts` 가 이 공식을
+  포함한 27개 행 전체가 M2 를 한 번씩 풀음을 증명한다.
+
+- **회전 제거.** PDF 의 M·E·P·F·O·G 행 6개는 `x' … x` 형태였다. 큐브를 돌리면
+  기준 자리 UB 가 틀어져 손과 머릿속이 어긋나므로, 사용자 요청으로 동치인
+  B 면 무브로 변환했다. `tests/unit/m2-rotation.test.ts` 가 변환 전후 큐브
+  효과가 동일함을 54칸 비교로 검증한다.
+
+**짝수 번째 행(c2·i2·s2·w2)과 패리티는 데이터에 그대로 적혀 있다.** 코드가
+홀짝을 보고 행을 바꾸거나 패리티 공식을 생성하지 않는다 — 27개 항목을 데이터
+순서로 읽는다.
 
 화면 규약(구성·흐름·표기)은 `.dc_workspace/CONVENTIONS.md` 가 정본이고, 규칙 요약과
 문서 지도는 저장소 루트 `CLAUDE.md` 에 있다. 배경과 설계 근거는

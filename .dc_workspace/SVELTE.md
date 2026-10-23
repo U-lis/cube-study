@@ -124,7 +124,8 @@ sveltekit({
 | 코너 3-style 조회·기준공식·퀴즈·매일 퀴즈 | `/3x3/bld/3style/corner/{lookup,algs,quiz,daily}` |
 | 트레이싱 | `/3x3/bld/trace` — 방법·세트에 안 매인다 |
 | 엣지 3-style (#16) | `/3x3/bld/3style/edge/{lookup,algs,quiz}` |
-| M2 참조표 (#17) | `/3x3/bld/m2/edge/lookup` |
+| M2 엣지 (네임스페이스) | `/3x3/bld/m2`, `/3x3/bld/m2/edge` — 화면 없음 |
+| M2 엣지 조회·퀴즈 (#17) | `/3x3/bld/m2/edge/{lookup,quiz}` |
 | 코너 OP (#18) | `/3x3/bld/op/corner/lookup` |
 | 스티커 외우기 (#19) | `/3x3/bld/letters/{lookup,quiz}` |
 | 메모 훈련 (#21) | `/3x3/bld/memo` |

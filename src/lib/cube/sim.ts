@@ -86,17 +86,27 @@ export function stateFromFacelets(s: string, kind: PieceKind): CubeState {
 	return perm;
 }
 
-/** 알고리즘 하나의 스티커 치환. 물리는 cubejs 가 하고 우리는 읽기만 한다. */
-function permOf(alg: string, kind: PieceKind): CubeState {
+/**
+ * 알고리즘을 적용한 54칸 facelet 문자열. 물리는 cubejs 가 하고 우리는 읽기만 한다.
+ *
+ * `permOf` 는 이 결과를 `stateFromFacelets` 로 다시 읽을 뿐이다. M2 채점(AD-2)은
+ * 센터까지 포함한 54칸 비교를 해야 하므로 중간 산물인 facelet 문자열이 공개 API 다.
+ * cubejs 가 던지는 "Invalid move: X" 는 `grade.ts` 가 읽는 "Unknown move: X" 로 맞춘다.
+ */
+export function faceletsOf(alg: string): string {
 	const cube = new Cube();
 	try {
 		cube.move(alg);
 	} catch (e) {
-		// grade.ts 가 읽는 문구로 맞춰준다 (cubejs 는 "Invalid move: X" 라고 한다).
 		const m = /(?:Invalid|Unknown) move: (\S+)/.exec((e as Error).message);
 		throw new Error(`Unknown move: ${m ? m[1] : alg}`);
 	}
-	return stateFromFacelets(cube.asString(), kind);
+	return cube.asString();
+}
+
+/** 알고리즘 하나의 스티커 치환. 물리는 cubejs 가 하고 우리는 읽기만 한다. */
+function permOf(alg: string, kind: PieceKind): CubeState {
+	return stateFromFacelets(faceletsOf(alg), kind);
 }
 
 export class CubeSim {

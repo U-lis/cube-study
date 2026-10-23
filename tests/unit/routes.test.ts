@@ -52,6 +52,8 @@ describe('라우트 축 (FR-NAV-21)', () => {
 		expect(paths).not.toContain('/3x3/bld');
 		expect(paths).not.toContain('/3x3/bld/3style');
 		expect(paths).not.toContain('/3x3/bld/3style/corner');
+		expect(paths).not.toContain('/3x3/bld/m2');
+		expect(paths).not.toContain('/3x3/bld/m2/edge');
 	});
 
 	it('지금 서 있는 화면은 열이다', () => {
@@ -66,6 +68,8 @@ describe('라우트 축 (FR-NAV-21)', () => {
 			'/3x3/bld/3style/corner/quiz',
 			'/3x3/bld/letters/lookup',
 			'/3x3/bld/letters/quiz',
+			'/3x3/bld/m2/edge/lookup',
+			'/3x3/bld/m2/edge/quiz',
 			'/3x3/bld/trace',
 			'/settings/notify'
 		]);

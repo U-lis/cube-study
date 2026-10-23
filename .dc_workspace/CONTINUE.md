@@ -1,10 +1,10 @@
-# 이어서 하기 — 0.6.0 릴리스 후, 0.7.0 진행 중
+# 이어서 하기 — 0.7.0 릴리스 후
 
 **스냅숏이다. 정본이 아니다.** 각 항목이 가리키는 SPEC·이슈·코드가 정본이고,
 이 문서는 "지금 어디까지 왔고 다음에 무엇을 하면 되는가" 만 적는다.
 내용이 코드와 어긋나면 코드가 맞다.
 
-마지막 갱신: 2026-10-18 (0.6.0 릴리스·배포, 0.7.0 PR 작성)
+마지막 갱신: 2026-10-23 (0.7.0 릴리스·배포)
 
 ---
 
@@ -12,24 +12,14 @@
 
 | | |
 |---|---|
-| 브랜치 | `main` + `feature/drawer-push` (0.7.0, PR 열림) |
-| 워크트리 | `~/Documents/cube-study`, `~/Documents/cube-study-feature-drawer-push` |
-| 릴리스된 커밋 | `de5d4ed` (`v0.6.0`, 스티커 문자 #19) |
-| 서버에 떠 있는 것 | `feature/drawer-push` 임시 배포일 수 있다 — PR 본문 확인. 되돌리기는 `./deploy/deploy.sh v0.6.0` |
-| 마일스톤 | 0.6.0 닫힘. **0.7.0 = #42 서랍 메뉴 + #33 매일 퀴즈 푸시** |
+| 브랜치 | `main` 하나 |
+| 릴리스된 커밋 | `v0.7.0` (서랍 메뉴 #42 · 매일 퀴즈와 푸시 #33 · 화면 이름 한 줄) |
+| 서버에 떠 있는 것 | `v0.7.0`. 되돌리기는 `./deploy/deploy.sh v0.6.0` |
+| 푸시 | 릴레이 등록 · `push-install.sh prod dev` · 폰 수신 확인까지 끝났다 (2026-10-23 사용자 확인) |
 | 다음 릴리스 | `CHANGELOG.md` 에 `## [x.y.z]` 항목을 먼저 적어야 `deploy/release.sh` 가 돈다 |
 
-릴리스는 `./deploy/release.sh 0.7.0` 하나다 — 검사·버전·태그·push·배포·검증이
+릴리스는 `./deploy/release.sh <버전>` 하나다 — 검사·버전·태그·push·배포·검증이
 한 줄로 이어진다. **사용자가 명시적으로 승인한 뒤에만 부른다.**
-
-### 0.7.0 에서 사람이 할 일 (코드 밖)
-
-설계·결정은 `2026_10_18-drawer-push/SPEC.md`. 코드는 다 들어갔고 아래가 남았다.
-
-1. 릴레이 관리 UI 에서 `cube-study` 등록 — dev Origin `http://localhost:5174`, prod Origin `https://cube.siot-ieung.duckdns.org`
-2. `ssh -t homeserver 'sudo bash ~/apps/cube-study/deploy/push-install.sh prod dev'`
-3. 폰에서 알림 켜기 → `send-now` 로 확인 (`deploy/README.md` "푸시 타이머")
-4. 확인할 것: Android 상태바 아이콘이 큐브인가 / 뒤로가기로 서랍이 닫히는가 (D-1, 기억 기반 가정)
 
 ### 조건 알림
 

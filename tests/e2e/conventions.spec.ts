@@ -94,7 +94,7 @@ test.describe('T4 되돌아가기 (FR-NAV-7)', () => {
 		await expect(page.locator('[data-up-link]')).toHaveAttribute('data-up-link', ALGS);
 	});
 
-	test('되돌아가기와 화면 이름이 한 줄에 선다', async ({ page }) => {
+	test('되돌아가기와 화면 이름이 한 줄에 선다 @viewport', async ({ page }) => {
 		// 사용자 결정 2026-10-20: `홈 › 매일 퀴즈`. 두 줄이면 본문이 그만큼 내려간다
 		for (const path of [...FEATURES.map((f) => f.path), DETAIL]) {
 			await ready(page, path);

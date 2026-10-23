@@ -71,7 +71,7 @@ M2 퀴즈만 `[["M","M'","M2"],["l","l'","r","r'"]]` 를 넘긴다.
 | Phase | 이름 | 내용 | 상태 |
 |-------|------|------|------|
 | 1 | core | `sim.ts` `faceletsOf`; 드래프트 `m2.ts`·`m2.svelte.ts` 커밋; 단위 테스트 | Complete |
-| 2 | ui | `MoveKeypad` extraRows; `nav.ts` 추가; 홈 FEATURES; About 수정; 조회·퀴즈 페이지 | Pending |
+| 2 | ui | `MoveKeypad` extraRows; `nav.ts` 추가; 홈 FEATURES; About 수정; 조회·퀴즈 페이지 | Complete |
 | 3 | docs | `SVELTE.md` 라우트 표; `README.md` M2 데이터 주석; `CONVENTIONS.md` (필요 시) | Pending |
 
 ## 검사 명령

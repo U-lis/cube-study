@@ -43,27 +43,28 @@ export interface M2DataSet {
  * 표와 퀴즈의 한 칸. 패리티도 하나의 항목이다 (SPEC D-3).
  *
  * `letter` 는 화면 표시용 대문자. 내부 식별은 `id` 를 쓴다 (`c` 와 `c2` 처럼 짝수 번째가 다르다).
- * `place` 는 교환 자리 (`DF↔UB`, 패리티는 `UB↔UL`).
+ * `place` 는 셋업으로 가져올 스티커 (`${piece} 의 ${face} 면`, 패리티는 `UB↔UL 교환`).
+ * `order` 는 데이터가 적은 그대로다 — 코드가 null 을 odd 로 바꾸지 않는다 (A·Q 처럼
+ * 짝이 버퍼인 줄은 M 슬라이스 공식이 아니라 순번과 무관하다).
  */
 export interface M2Item {
 	id: string;
 	letter: string;
 	place: string;
-	order: 'odd' | 'even' | 'parity';
+	order: 'odd' | 'even' | 'parity' | null;
 	alg: string;
 }
 
 /** 패리티 자리 표시. 1506판 확인(SPEC FR-M2-D-6)에 따라 UB↔UL 교환만 남는다. */
-const PARITY_PLACE = 'UB↔UL';
+const PARITY_PLACE = 'UB↔UL 교환';
 
 /** 데이터 순서 그대로. 마지막에 패리티 하나. 총 27개 (SPEC §2). */
 export function itemsOf(ds: M2DataSet): M2Item[] {
-	const buf = ds.meta.buffer;
 	const items: M2Item[] = ds.rows.map((row) => ({
 		id: row.id,
 		letter: row.letter.toUpperCase(),
-		place: `${buf}↔${row.piece}`,
-		order: row.order ?? 'odd',
+		place: `${row.piece} 의 ${row.face} 면`,
+		order: row.order,
 		alg: row.alg
 	}));
 	items.push({
@@ -86,13 +87,15 @@ export type M2Verdict =
 const SOLVED = faceletsOf('');
 
 /**
- * 판정 문구에 쓰는 짧은 이름. `A`, `C (짝수 번째)`, `패리티`.
+ * 판정 문구에 쓰는 짧은 이름. `C (홀수 번째)`, `C (짝수 번째)`, `패리티`,
+ * 그 외는 그냥 문자 (`A`).
  *
  * `other` 라벨에 쓴다 — 같은 효과의 공식이라면 어느 줄인지 알려준다.
  */
 export function labelOf(item: M2Item): string {
 	if (item.order === 'parity') return '패리티';
 	if (item.order === 'even') return `${item.letter} (짝수 번째)`;
+	if (item.order === 'odd') return `${item.letter} (홀수 번째)`;
 	return item.letter;
 }
 

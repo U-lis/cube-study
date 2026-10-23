@@ -56,6 +56,14 @@ describe('tabsFor', () => {
 		]);
 	});
 
+	it('M2 엣지는 조회·퀴즈 둘이 형제다 (#17)', () => {
+		const tabs = tabsFor('/3x3/bld/m2/edge/lookup', '/3x3/bld/m2/edge/lookup');
+		expect(tabs.map((t) => [t.label, t.href, t.active])).toEqual([
+			['조회', '/3x3/bld/m2/edge/lookup', true],
+			['퀴즈', '/3x3/bld/m2/edge/quiz', false]
+		]);
+	});
+
 	it('3-style 의 lookup 은 그대로 조회다 (묶음별 라벨이 새지 않는다)', () => {
 		const tabs = tabsFor('/3x3/bld/3style/corner/lookup', '/3x3/bld/3style/corner/lookup');
 		expect(tabs[0].label).toBe('조회');
@@ -87,12 +95,23 @@ describe('isHome', () => {
 });
 
 describe('menuFor (서랍, #42)', () => {
-	it('3BLD 는 스티커 문자 → 3-style 코너 → 트레이싱 순이다', () => {
+	it('3BLD 는 스티커 문자 → 3-style 코너 → M2 엣지 → 트레이싱 순이다', () => {
 		const menu = menuFor('/');
 		expect(menu.map((e) => (e.kind === 'group' ? e.label : e.link.label))).toEqual([
 			'스티커 문자',
 			'3-style 코너',
+			'M2 엣지',
 			'트레이싱'
+		]);
+	});
+
+	it('M2 엣지 묶음은 조회·퀴즈 둘이다', () => {
+		const menu = menuFor('/');
+		const m2 = menu.find((e) => e.kind === 'group' && e.id === '/3x3/bld/m2/edge');
+		expect(m2?.kind === 'group' && m2.links.map((l) => l.label)).toEqual(['조회', '퀴즈']);
+		expect(m2?.kind === 'group' && m2.links.map((l) => l.href)).toEqual([
+			'/3x3/bld/m2/edge/lookup',
+			'/3x3/bld/m2/edge/quiz'
 		]);
 	});
 
@@ -125,7 +144,18 @@ describe('menuFor (서랍, #42)', () => {
 		const flags = menu.flatMap((e) => (e.kind === 'group' ? [[e.id, e.containsCurrent]] : []));
 		expect(flags).toEqual([
 			['/3x3/bld/letters', false],
-			[CORNER, true]
+			[CORNER, true],
+			['/3x3/bld/m2/edge', false]
+		]);
+	});
+
+	it('M2 조회에 있으면 M2 묶음만 containsCurrent 다', () => {
+		const menu = menuFor('/3x3/bld/m2/edge/lookup');
+		const flags = menu.flatMap((e) => (e.kind === 'group' ? [[e.id, e.containsCurrent]] : []));
+		expect(flags).toEqual([
+			['/3x3/bld/letters', false],
+			[CORNER, false],
+			['/3x3/bld/m2/edge', true]
 		]);
 	});
 

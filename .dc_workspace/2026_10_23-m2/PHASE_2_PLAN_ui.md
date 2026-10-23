@@ -86,17 +86,17 @@ src/routes/3x3/bld/m2/edge/quiz/+page.svelte
 
 ## 완료 체크리스트
 
-- [ ] `MoveKeypad` 에 `extraRows` prop 추가, 기존 화면 영향 없음
-- [ ] `nav.ts` SIBLING_GROUPS·MENU_3BLD 갱신
-- [ ] 홈 FEATURES 에 M2 조회·퀴즈 추가
-- [ ] About 에서 `m2.clearAll()` 호출
-- [ ] 조회 페이지 `<h1>조회</h1>`, 27행 표, 암기 체크박스
-- [ ] 조회 페이지 `<details>` 원리 기본 닫힘
-- [ ] 퀴즈 페이지 `<h1>퀴즈</h1>`, M/l/r 키 존재
-- [ ] 퀴즈 페이지 `data-stage` active/result 전환
-- [ ] 퀴즈 페이지 진행 버튼 화면 최하단 @viewport
-- [ ] 퀴즈 페이지 `암기한 것만 출제` 비어 있을 때 안내
-- [ ] `pnpm check && pnpm test && pnpm test:e2e` 초록
+- [x] `MoveKeypad` 에 `extraRows` prop 추가, 기존 화면 영향 없음: Verified in src/lib/ui/MoveKeypad.svelte:18-19
+- [x] `nav.ts` SIBLING_GROUPS·MENU_3BLD 갱신: Verified in src/lib/ui/nav.ts:53,122
+- [x] 홈 FEATURES 에 M2 조회·퀴즈 추가: Verified in src/routes/+page.svelte:37-44
+- [x] About 에서 `m2.clearAll()` 호출: Verified in src/lib/ui/About.svelte:30,32
+- [x] 조회 페이지 `<h1>조회</h1>`, 27행 표, 암기 체크박스: Verified in src/routes/3x3/bld/m2/edge/lookup/+page.svelte:32,46-67
+- [x] 조회 페이지 `<details>` 원리 기본 닫힘: Verified in src/routes/3x3/bld/m2/edge/lookup/+page.svelte:75
+- [x] 퀴즈 페이지 `<h1>퀴즈</h1>`, M/l/r 키 존재: Verified in src/routes/3x3/bld/m2/edge/quiz/+page.svelte:118,32-35
+- [x] 퀴즈 페이지 `data-stage` active/result 전환: Verified in src/routes/3x3/bld/m2/edge/quiz/+page.svelte:102,120
+- [x] 퀴즈 페이지 진행 버튼 화면 최하단 @viewport: Verified in src/routes/3x3/bld/m2/edge/quiz/+page.svelte:349-351
+- [x] 퀴즈 페이지 `암기한 것만 출제` 비어 있을 때 안내: Verified in src/routes/3x3/bld/m2/edge/quiz/+page.svelte:96,136
+- [x] `pnpm check && pnpm test && pnpm test:e2e` 초록: 698 unit tests, 432 E2E tests passed
 
 ## 주의사항
 

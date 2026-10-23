@@ -58,6 +58,29 @@ describe('D-1. itemsOf', () => {
 			expect(items[k].id).toBe(ds.rows[k].id);
 		}
 	});
+
+	it('order 는 데이터 그대로 — null 은 null, odd/even 은 데이터 값', () => {
+		// A (짝이 버퍼) 는 데이터가 null 이므로 코드도 null 로 둔다.
+		const a = items.find((it) => it.id === 'a')!;
+		expect(a.order).toBeNull();
+		// c (M 슬라이스 홀수 번째) 는 데이터가 'odd'.
+		const c = items.find((it) => it.id === 'c')!;
+		expect(c.order).toBe('odd');
+		const c2 = items.find((it) => it.id === 'c2')!;
+		expect(c2.order).toBe('even');
+	});
+
+	it('place 는 셋업으로 가져올 스티커 — piece 와 face 가 함께 선다', () => {
+		// A 와 Q 는 piece 가 같지만 face 가 다르다 (스티커가 다르다).
+		const a = items.find((it) => it.id === 'a')!;
+		const q = items.find((it) => it.id === 'q')!;
+		expect(a.place).toBe('UB 의 U 면');
+		expect(q.place).toBe('UB 의 B 면');
+	});
+
+	it('패리티 place 는 UB↔UL 교환', () => {
+		expect(items[26].place).toBe('UB↔UL 교환');
+	});
 });
 
 describe('D-2. 각 타깃 행: DF 버퍼에 타깃 조각이 온다 (M2 부수효과 포함)', () => {
@@ -190,7 +213,8 @@ describe('D-5. gradeM2: 정답', () => {
 });
 
 describe('D-6. gradeM2: 다른 행과 같은 상태 → other', () => {
-	it('타깃이 a 인데 b 의 공식 입력 → other (b 라벨)', () => {
+	it('순번과 무관한 줄의 라벨은 문자뿐: 타깃 a 인데 b 공식 → other (B)', () => {
+		// b 는 order=null (짝이 버퍼가 아니지만 M 슬라이스가 아니라 짝수/홀수 구분이 없다).
 		const a = items.find((it) => it.id === 'a')!;
 		const b = items.find((it) => it.id === 'b')!;
 		const v = gradeM2(b.alg, a.alg, items);
@@ -205,6 +229,15 @@ describe('D-6. gradeM2: 다른 행과 같은 상태 → other', () => {
 		expect(v.kind).toBe('other');
 		// c2 는 w (odd) 와 효과가 같다. items 순서는 데이터 순서라 c2 가 w 보다 먼저다.
 		if (v.kind === 'other') expect(v.label).toBe('C (짝수 번째)');
+	});
+
+	it('홀수 번째 라벨: 타깃 a 인데 c 공식 → other (C (홀수 번째))', () => {
+		// c 는 order='odd'. c 는 w2 (even) 와 효과가 같다. items 순서상 c 가 w2 보다 먼저다.
+		const a = items.find((it) => it.id === 'a')!;
+		const c = items.find((it) => it.id === 'c')!;
+		const v = gradeM2(c.alg, a.alg, items);
+		expect(v.kind).toBe('other');
+		if (v.kind === 'other') expect(v.label).toBe('C (홀수 번째)');
 	});
 });
 

@@ -13,7 +13,7 @@
 	import MoveKeypad from '$lib/ui/MoveKeypad.svelte';
 	import AnchorPad from '$lib/ui/AnchorPad.svelte';
 	import SegToggle from '$lib/ui/SegToggle.svelte';
-	import UpLink from '$lib/ui/UpLink.svelte';
+	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { settings } from '$lib/ui/settings.svelte.js';
 	import { memorize } from '$lib/ui/memorize.svelte.js';
 	import { loadDataset } from '$lib/data/loader.js';
@@ -29,6 +29,9 @@
 		type AnchorRef
 	} from '$lib/domain/anchor.js';
 	import { pickNext, pushRecent } from '$lib/domain/quiz.js';
+	import { browser } from '$app/environment';
+	import { page } from '$app/state';
+	import { push } from '$lib/ui/push.svelte.js';
 	import { type CaseCode, type CaseEntry, type Dataset } from '$lib/domain/types.js';
 
 	let ds = $state<Dataset | null>(null);
@@ -42,6 +45,17 @@
 	 * localStorage 에 남기지 않는다 — 새로고침하면 비워지는 것이 맞다.
 	 */
 	let recent = $state<CaseCode[]>([]);
+	/**
+	 * 알림이 연 문제 (`?c=KG`, #33 · #35 A안, SPEC FR-QC).
+	 *
+	 * 첫 문제로 한 번만 쓴다. 출제 범위("암기한 것만") 밖이어도 낸다 — 알림이 약속한
+	 * 문제다 (FR-QC-2). 다음 문제부터 범위를 따른다. 데이터에 없으면 무시한다.
+	 *
+	 * 프리렌더에서는 쿼리를 읽을 수 없다 (조회 화면과 같은 이유) — 브라우저에서만.
+	 */
+	let pinned = $state<CaseCode | null>(browser ? page.url.searchParams.get('c') : null);
+	/** 알림이 연 문제가 지금 떠 있다. 범위 밖이어도 그 문제를 끝까지 둔다. */
+	let shown = $state<CaseCode | null>(null);
 
 	const INPUT_OPTIONS: [
 		{ value: Mode; label: string; hint: string; title: string },
@@ -107,6 +121,7 @@
 		}
 		recent = seen;
 		current = ds.cases[code];
+		shown = null;
 		clearEntry();
 	}
 
@@ -136,7 +151,17 @@
 			}
 			return;
 		}
-		if (!current || !p.includes(current.case)) {
+		if (pinned !== null) {
+			const entry = ds.cases[pinned];
+			pinned = null;
+			if (entry) {
+				current = entry;
+				shown = entry.case;
+				clearEntry();
+				return;
+			}
+		}
+		if (!current || (!p.includes(current.case) && current.case !== shown)) {
 			next();
 		}
 	});
@@ -144,6 +169,7 @@
 	function submit() {
 		if (!sim || !ds || !current || moves.length === 0) return;
 		verdict = grade(sim, ds, current, moves.join(' '));
+		push.noteQuiz();
 	}
 
 	/** 기준공식 선택 = setup 입력의 제출. [S: 기준] 을 펼쳐서 채점한다. */
@@ -151,6 +177,7 @@
 		if (!sim || !ds || !current || verdict) return;
 		picked = ref;
 		verdict = grade(sim, ds, current, expandSetup(ds, moves.join(' '), ref));
+		push.noteQuiz();
 	}
 
 	let alg = $derived(moves.join(' '));
@@ -183,9 +210,7 @@
 
 <svelte:head><title>3-Style Corner — 퀴즈</title></svelte:head>
 
-<UpLink href="/" label="홈" />
-
-<h1>퀴즈</h1>
+<PageTitle href="/" label="홈"><h1>퀴즈</h1></PageTitle>
 
 {#if ds}
 	<section class="quiz" data-stage={stage}>
@@ -365,7 +390,7 @@
 	/* 화면 이름. 다른 화면(기준공식)과 같은 톤이다. */
 	h1 {
 		font-size: 1.3rem;
-		margin: 0.2rem 0 0.6rem;
+		margin: 0;
 	}
 	/* 문제로 내려온 케이스 코드. 옛 h1 의 크기를 그대로 물려받는다. */
 	.case {

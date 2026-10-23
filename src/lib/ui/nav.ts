@@ -20,6 +20,7 @@ const FEATURE_LABELS: Record<string, string> = {
 	lookup: '조회',
 	algs: '기준공식',
 	quiz: '퀴즈',
+	daily: '매일',
 	trace: '트레이싱'
 };
 
@@ -47,7 +48,7 @@ const GROUP_LABELS: Record<string, Partial<Record<string, string>>> = {
  * `/3x3/bld` 묶음을 다시 본다.
  */
 const SIBLING_GROUPS: Record<string, readonly string[]> = {
-	'/3x3/bld/3style/corner': ['lookup', 'algs', 'quiz'],
+	'/3x3/bld/3style/corner': ['lookup', 'algs', 'quiz', 'daily'],
 	'/3x3/bld/letters': ['lookup', 'quiz']
 };
 
@@ -102,3 +103,70 @@ export function tabsFor(pathname: string, routeId: string | null): NavTab[] {
 export function isHome(pathname: string): boolean {
 	return pathname === '/';
 }
+
+/**
+ * 서랍 메뉴 (#42, SPEC FR-DR-3 ~ 7).
+ *
+ * 묶음의 기능 칸은 `SIBLING_GROUPS` 에서 읽는다 — 하단 탭과 같은 표다. 서랍이 손으로
+ * 적는 것은 **묶음의 이름과 순서**, 그리고 묶음이 없는 화면(트레이싱) 하나뿐이다.
+ * 이름은 사람이 부르는 말이라 어차피 어딘가 적어야 하고, 순서는 외우는 순서(문자 →
+ * 공식 → 실전)라 경로에서 나오지 않는다.
+ *
+ * 묶음 키는 `SIBLING_GROUPS` 의 키여야 한다. 아니면 빈 아코디언이 생긴다 —
+ * `tests/unit/nav.test.ts` 가 잡는다.
+ */
+const MENU_3BLD: readonly ({ group: string; label: string } | { href: string; label: string })[] = [
+	{ group: '/3x3/bld/letters', label: '스티커 문자' },
+	{ group: '/3x3/bld/3style/corner', label: '3-style 코너' },
+	{ href: '/3x3/bld/trace', label: '트레이싱' }
+];
+
+export interface MenuLink {
+	href: string;
+	label: string;
+	current: boolean;
+}
+
+export type MenuEntry =
+	| { kind: 'link'; link: MenuLink }
+	| { kind: 'group'; id: string; label: string; links: MenuLink[]; containsCurrent: boolean };
+
+/** 지금 화면인가. 상세(`…/algs/GC`)는 목록 항목이 지금 화면이다 — 하단 탭과 같은 판정. */
+function isCurrent(href: string, pathname: string): boolean {
+	return pathname === href || pathname.startsWith(href + '/');
+}
+
+/**
+ * 서랍의 3BLD 묶음.
+ *
+ * 룬을 쓰지 않는 순수 함수다. 펼침 상태는 여기서 정하지 않는다 — `containsCurrent` 만
+ * 내고, 서랍이 열릴 때 그것으로 초기값을 잡는다 (FR-DR-5, 펼침은 저장하지 않는다).
+ */
+export function menuFor(pathname: string): MenuEntry[] {
+	return MENU_3BLD.map((item): MenuEntry => {
+		if ('href' in item) {
+			return {
+				kind: 'link',
+				link: { href: item.href, label: item.label, current: isCurrent(item.href, pathname) }
+			};
+		}
+		const links = (SIBLING_GROUPS[item.group] ?? []).map((f) => {
+			const href = `${item.group}/${f}`;
+			return { href, label: labelFor(item.group, f), current: isCurrent(href, pathname) };
+		});
+		return {
+			kind: 'group',
+			id: item.group,
+			label: item.label,
+			links,
+			containsCurrent: links.some((l) => l.current)
+		};
+	});
+}
+
+/** 서랍이 묶음으로 쓰는 키. 검사가 `SIBLING_GROUPS` 와 맞는지 본다. */
+export const menuGroups = (): string[] =>
+	MENU_3BLD.flatMap((item) => ('group' in item ? [item.group] : []));
+
+/** 형제 묶음의 키. */
+export const siblingGroups = (): string[] => Object.keys(SIBLING_GROUPS);

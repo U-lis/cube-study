@@ -11,7 +11,7 @@
 	import Cube from 'cubejs/lib/cube.js';
 	import Cube3D from '$lib/ui/Cube3D.svelte';
 	import SegToggle from '$lib/ui/SegToggle.svelte';
-	import UpLink from '$lib/ui/UpLink.svelte';
+	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { letters } from '$lib/ui/letters.svelte.js';
 	import { COLOR_NAME_KO, faceletColors, GRAY, grayFacelets } from '$lib/ui/facelets.js';
 	import { loadDataset } from '$lib/data/loader.js';
@@ -65,9 +65,7 @@
 
 <svelte:head><title>스티커 문자 — 외우기</title></svelte:head>
 
-<UpLink href="/" label="홈" />
-
-<h1>외우기</h1>
+<PageTitle href="/" label="홈"><h1>외우기</h1></PageTitle>
 
 <section class="lookup" data-letters-lookup>
 	<div class="settings">
@@ -104,7 +102,7 @@
 <style>
 	h1 {
 		font-size: 1.3rem;
-		margin: 0.2rem 0 0.4rem;
+		margin: 0;
 	}
 	.lookup {
 		display: flex;

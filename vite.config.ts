@@ -46,6 +46,17 @@ function commitHash(): string {
 }
 
 export default defineConfig({
+	/*
+	 * dev 포트 고정 (#33, FR-DP-4). dev 릴레이에 등록하는 Origin 이 `http://localhost:5174`
+	 * 다. 5173 은 bigsix 가 쓴다 — 기본값이 겹치면 한쪽이 다른 포트로 밀려 `origin-not-allowed`.
+	 */
+	server: { port: 5174, strictPort: true },
+	/*
+	 * preview 도 같은 포트다. 서비스워커는 빌드에서만 등록되므로 PC 에서 알림 켜기를
+	 * 해 볼 수 있는 곳이 preview 뿐이고, dev 릴레이에 등록한 Origin 은 5174 하나다.
+	 * E2E 는 `--port 4174` 로 따로 띄우므로 영향이 없다 (가짜 릴레이를 쓴다).
+	 */
+	preview: { port: 5174, strictPort: true },
 	define: {
 		__APP_VERSION__: JSON.stringify(pkg.version),
 		__COMMIT_HASH__: JSON.stringify(commitHash())
@@ -70,6 +81,11 @@ export default defineConfig({
 			 * 이 앱은 언제나 도메인 루트에서 서비스되므로 절대경로로 잃는 것이 없다.
 			 */
 			paths: { relative: false },
+			/*
+			 * 등록은 `sw.svelte.ts` 가 `/sw.js` 로 직접 한다. 자동 등록을 켜 두면
+			 * `/service-worker.js` 로 한 번 더 등록하려 든다 (#33, FR-SW-1).
+			 */
+			serviceWorker: { register: false },
 			compilerOptions: {
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
@@ -99,27 +115,21 @@ export default defineConfig({
 					}
 				]
 			},
-			workbox: {
+			/*
+			 * `injectManifest` (#33, FR-SW-1). 릴레이 `sw.js` 를 `importScripts` 할 자리가
+			 * `generateSW` 에는 없다. SvelteKit 이 `src/service-worker.ts` 를 컴파일하면
+			 * 이 플러그인이 프리캐시 목록을 심고 `sw.js` 로 낸다 — `sw.svelte.ts` 가 등록하는
+			 * 이름이 그대로다.
+			 *
+			 * `generateSW` 시절의 `ignoreURLParametersMatching` · `navigateFallback` 은
+			 * 빌드 옵션이 아니라 SW 코드에서 같은 동작으로 다시 만든다. 둘 다 0.5.0 에서
+			 * 실제 사고를 막은 설정이다 — 이유는 `src/service-worker.ts` 에 옮겨 적었다.
+			 */
+			strategies: 'injectManifest',
+			filename: 'sw.js',
+			injectManifest: {
 				// json 을 빠뜨리면 오프라인에서 데이터 로드가 통째로 죽는다 (NFR-8)
-				globPatterns: ['**/*.{js,css,html,json,svg,png,woff2}'],
-				/*
-				 * 프리캐시를 찾을 때 **쿼리를 전부 무시한다.**
-				 *
-				 * 프리캐시 키는 `…/lookup.html` 인데 이동 요청은 `…/lookup?c=LB` 로 온다.
-				 * 기본값(`utm_*`·`fbclid` 만 무시)으로는 이 둘이 안 맞아 `navigateFallback`
-				 * 으로 떨어진다. 0.4.2 까지는 그 폴백이 `/` = **조회 화면 자신** 이라
-				 * 사고가 드러나지 않았다 — 엉뚱한 HTML 을 받아도 같은 화면이었고, 쿼리는
-				 * 어차피 클라이언트가 URL 에서 읽었다.
-				 *
-				 * 이제 `/` 는 홈이다. 그대로 두면 서비스워커가 잡은 뒤부터 `?c=` 가 붙은
-				 * 모든 주소가 홈을 띄운다 — 설치한 사람의 북마크가 통째로 죽는다.
-				 * `notation.spec.ts` 가 두 번째 이동에서 이것을 잡았다.
-				 *
-				 * 쿼리는 화면 상태일 뿐 다른 문서를 가리키지 않으므로(`?c=`·`?from=`)
-				 * 무시해도 잃는 것이 없다.
-				 */
-				ignoreURLParametersMatching: [/.*/],
-				navigateFallback: '/'
+				globPatterns: ['**/*.{js,css,html,json,svg,png,woff2}']
 			}
 		})
 	]

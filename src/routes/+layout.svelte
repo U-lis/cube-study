@@ -8,6 +8,8 @@
 	import { backGuard } from '$lib/ui/backguard.svelte.js';
 	import { wakeLock } from '$lib/ui/wakelock.svelte.js';
 	import About from '$lib/ui/About.svelte';
+	import Drawer from '$lib/ui/Drawer.svelte';
+	import { push } from '$lib/ui/push.svelte.js';
 	import Toast from '$lib/ui/Toast.svelte';
 	import { tabsFor, isHome } from '$lib/ui/nav.js';
 	let { children } = $props();
@@ -34,6 +36,8 @@
 		if (document.readyState === 'complete') void sw.register();
 		else window.addEventListener('load', () => void sw.register(), { once: true });
 		wakeLock.start();
+		// 켜 둔 기기만 릴레이에 닿는다 (FR-MT-3·5). 시간대가 바뀌었을 수 있다.
+		void push.sync();
 	}
 	/**
 	 * 설치 프롬프트.
@@ -60,7 +64,7 @@
 	}
 
 	let about: ReturnType<typeof About> | undefined = $state();
-	const THEME_LABEL = { system: '시스템', light: '라이트', dark: '다크' } as const;
+	let drawer: ReturnType<typeof Drawer> | undefined = $state();
 	/*
 	 * 하단 탭 (FR-NAV-4·5·6·23).
 	 *
@@ -97,89 +101,54 @@
 	data-sveltekit-replacestate={backGuard.active ? '' : 'false'}
 >
 	<div class="bar">
-		{#if installPrompt}
-			<button type="button" data-install onclick={install}>설치</button>
-		{/if}
-		{#if wakeLock.supported}
-			<!-- 공식을 보며 큐브를 돌리는 동안 화면에 손이 안 닿아 꺼진다 -->
-			<button
-				type="button"
-				data-wake-lock={wakeLock.enabled}
-				class:on={wakeLock.enabled}
-				onclick={() => wakeLock.toggle()}
-				aria-pressed={wakeLock.enabled}
-				aria-label="화면 자동 꺼짐 방지"
-				title={wakeLock.enabled ? '화면을 켜둡니다' : '화면 자동 꺼짐 방지'}
-			>
-				<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-					<rect
-						x="3"
-						y="4"
-						width="18"
-						height="13"
-						rx="2"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-					/>
-					<path d="M9 21h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-					{#if wakeLock.enabled}
-						<circle cx="12" cy="10.5" r="2.5" fill="currentColor" />
-					{/if}
-				</svg>
-				<!-- 아이콘만으로는 무슨 버튼인지 알 수 없다. 상태는 색이, 정체는 글자가 맡는다. -->
-				<span class="btn-label">화면 켜기</span>
-			</button>
-		{/if}
-
 		<!--
-			아이콘으로 보여준다. '시스템' 이라는 글자만 있으면 테마 버튼인 줄 모르고
-			시스템 정보를 보여주는 버튼으로 읽힌다.
+			상단 바는 ☰ 와 화면 켜기뿐이다 (#42, FR-DR-1). 테마·정보는 서랍으로 들어갔다.
+			화면 켜기는 밖에 남는다 — 큐브를 돌리는 중에 화면이 꺼질지를 눈으로 알아야
+			하는 버튼이라, 서랍에 넣으면 열어봐야 안다 (#14 의 이유 그대로).
 		-->
-		<button
-			type="button"
-			data-theme-toggle
-			data-theme={settings.theme}
-			onclick={() => settings.cycleTheme()}
-			aria-label={`테마 전환 (현재 ${THEME_LABEL[settings.theme]})`}
-			title={`테마: ${THEME_LABEL[settings.theme]}`}
-		>
-			<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-				{#if settings.theme === 'light'}
-					<!-- 해 -->
-					<circle cx="12" cy="12" r="4.5" fill="currentColor" />
-					{#each [0, 45, 90, 135, 180, 225, 270, 315] as deg (deg)}
-						<path
-							d="M12 2.5v3"
+		<button type="button" class="menu" data-drawer-open aria-label="메뉴 열기" onclick={() => drawer?.open()}>
+			<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+				<path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+			</svg>
+		</button>
+		<div class="right">
+			{#if installPrompt}
+				<button type="button" data-install onclick={install}>설치</button>
+			{/if}
+			{#if wakeLock.supported}
+				<!-- 공식을 보며 큐브를 돌리는 동안 화면에 손이 안 닿아 꺼진다 -->
+				<button
+					type="button"
+					data-wake-lock={wakeLock.enabled}
+					class:on={wakeLock.enabled}
+					onclick={() => wakeLock.toggle()}
+					aria-pressed={wakeLock.enabled}
+					aria-label="화면 자동 꺼짐 방지"
+					title={wakeLock.enabled ? '화면을 켜둡니다' : '화면 자동 꺼짐 방지'}
+				>
+					<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+						<rect
+							x="3"
+							y="4"
+							width="18"
+							height="13"
+							rx="2"
+							fill="none"
 							stroke="currentColor"
 							stroke-width="2"
-							stroke-linecap="round"
-							transform="rotate({deg} 12 12)"
 						/>
-					{/each}
-				{:else if settings.theme === 'dark'}
-					<!-- 달 -->
-					<path
-						d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"
-						fill="currentColor"
-						stroke="none"
-					/>
-				{:else}
-					<!-- 시스템: 반은 해, 반은 달 -->
-					<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2" />
-					<path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none" />
-				{/if}
-			</svg>
-			<span class="theme-label">{THEME_LABEL[settings.theme]}</span>
-		</button>
-		<button type="button" data-about-open onclick={() => about?.open()} aria-label="앱 정보">
-			<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-				<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" />
-				<circle cx="12" cy="7.6" r="1.2" fill="currentColor" />
-				<path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-			</svg>
-		</button>
+						<path d="M9 21h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+						{#if wakeLock.enabled}
+							<circle cx="12" cy="10.5" r="2.5" fill="currentColor" />
+						{/if}
+					</svg>
+					<!-- 아이콘만으로는 무슨 버튼인지 알 수 없다. 상태는 색이, 정체는 글자가 맡는다. -->
+					<span class="btn-label">화면 켜기</span>
+				</button>
+			{/if}
+		</div>
 	</div>
+	<Drawer bind:this={drawer} onabout={() => about?.open()} />
 	<About bind:this={about} />
 
 	<!-- 뒤로가기 예고가 우선한다. 2초 안에 답해야 하는 쪽이라 밀리면 안 된다. -->
@@ -217,11 +186,29 @@
 	}
 	.bar {
 		display: flex;
-		justify-content: flex-end;
-		padding: 0.4rem 0.9rem 0;
+		align-items: center;
+		justify-content: space-between;
+		/*
+		 * 높이는 0.6.0 과 같은 38.4px 다 (위 0.4rem + 버튼 32px). 화면들이 바 높이를
+		 * 빼고 세로를 맞춰 두었다 — 바가 커지면 퀴즈 진행 버튼이 그만큼 밀린다.
+		 */
+		min-height: 38.4px;
+		padding: 0 0.9rem 0 0.4rem;
 	}
-	.bar {
+	.right {
+		display: flex;
 		gap: 0.4rem;
+		padding-top: 0.4rem;
+	}
+	/* 터치 타깃은 44px, 바에서는 38px 만 차지한다 — 넘치는 6px 은 아래 본문 쪽으로 걸친다 */
+	.bar button.menu {
+		width: 44px;
+		height: 44px;
+		margin: 0 0 -6px;
+		align-self: flex-start;
+		padding: 0;
+		color: var(--fg);
+		border: none;
 	}
 	/* 설치 버튼은 설치 가능할 때만 나타난다. 눈에 띄어야 하지만 강요하지 않는다. */
 	.bar button[data-install] {
@@ -243,16 +230,9 @@
 	 * 320px 폭에 들어간다. 그보다 좁을 때만 아이콘으로 접는다 — 이전 400px
 	 * 기준은 과해서 흔한 폰 폭(360~412)에서 글자가 전부 사라지고 있었다.
 	 */
-	.theme-label,
 	.btn-label {
 		margin-left: 0.35rem;
 		white-space: nowrap;
-	}
-	@media (max-width: 330px) {
-		.theme-label,
-		.btn-label {
-			display: none;
-		}
 	}
 	.bar button {
 		display: inline-flex;

@@ -121,7 +121,7 @@ sveltekit({
 | 화면 | 경로 |
 |---|---|
 | 홈 | `/` |
-| 코너 3-style 조회·기준공식·퀴즈 | `/3x3/bld/3style/corner/{lookup,algs,quiz}` |
+| 코너 3-style 조회·기준공식·퀴즈·매일 퀴즈 | `/3x3/bld/3style/corner/{lookup,algs,quiz,daily}` |
 | 트레이싱 | `/3x3/bld/trace` — 방법·세트에 안 매인다 |
 | 엣지 3-style (#16) | `/3x3/bld/3style/edge/{lookup,algs,quiz}` |
 | M2 참조표 (#17) | `/3x3/bld/m2/edge/lookup` |
@@ -130,14 +130,16 @@ sveltekit({
 | 메모 훈련 (#21) | `/3x3/bld/memo` |
 | 멀티페이즈 타이머 (#23) | `/3x3/bld/timer` |
 | CFOP (#20 이후) | `/3x3/speed/cfop/{f2l,oll,pll}/{lookup,algs,quiz}` |
+| 알림 설정 (#33) | `/settings/notify` — 축 밖 (아래 규칙 6) |
 
-규칙 다섯 가지.
+규칙 여섯 가지.
 
 1. **퍼즐이 맨 앞이다.** 3BLD 도 3x3 이다. 종목을 첫 칸에 두면 퍼즐과 종목이 한 칸에 섞인다.
 2. **종목 칸(`bld` / `speed`)을 생략하지 않는다.** 한 칸 더 깊어지는 값으로 사는 것은 **묶음이 경로 접두사가 된다**는 성질이다. `/3x3/bld/*` 하나로 홈의 묶음도, 하단 탭의 형제도, "다른 묶음의 화면을 링크하지 않는다" 는 검사도 전부 기계적으로 나온다. 종목 칸을 빼면 그 묶음이 다시 손으로 적는 배열이 된다.
 3. **기능 칸의 이름은 세트가 달라도 같은 것을 쓴다** — `lookup` · `algs` · `quiz`. 세트마다 다르면 탭과 규약 검사가 세트별 표를 들어야 한다. `algs` 를 고른 이유는 navigation SPEC 의 AD-NAV-8 에 있다.
 4. **버퍼는 경로가 아니다.** UBL / UFR(#24)은 같은 화면이 데이터셋만 바꿔 끼우는 것이라 화면 안의 설정으로 고른다. 조각·방법과 달리 화면 구성이 하나도 안 바뀐다.
 5. **축의 값은 소문자 영문 한 단어.** `3style` 은 하이픈 없이 쓴다 — 화면 문구의 "3-style" 과 달리 경로에서는 구분자를 아낀다.
+6. **앱 전역 설정은 축 밖 `/settings/{무엇}` 에 둔다** (2026-10-18, #33). 예외가 아니라 일반 규칙이다 — 퍼즐·종목에 안 매이는 앱 전체의 설정이라 축에 앉힐 칸이 없다. `/settings` 자체는 화면이 아니다(이름 공간). 설정 목록은 서랍이 낸다. 화면마다 다른 설정(표기·입력 방식)은 여기 오지 않고 그 화면 안에 남는다.
 
 #### 방법 칸을 새로 팔 것인가, 필터로 둘 것인가
 
@@ -283,16 +285,20 @@ DOM 요소에 외부 라이브러리를 물리는 일은 이제 attachment 가 �
 
 ## 6. PWA · 서비스워커
 
-SvelteKit 은 `src/service-worker.ts` 를 두면 자동 등록하는 자체 경로를 갖고 있다.
-**우리는 그것을 안 쓰고 `@vite-pwa/sveltekit`(Workbox)을 쓴다.** 공식 문서가 인정하는
-대안이다("many PWA applications leverage Workbox … you may prefer Vite PWA plugin").
+`@vite-pwa/sveltekit`(Workbox)을 **`injectManifest`** 로 쓴다 (0.7.0, #33). SW 소스는
+SvelteKit 기본 자리인 `src/service-worker.ts` 이고, SvelteKit 이 컴파일한 것에 플러그인이
+프리캐시 목록을 심어 `sw.js` 로 낸다. 0.6.0 까지는 `generateSW` 였다 — 릴레이 `sw.js` 를
+`importScripts` 할 자리가 없어서 옮겼다.
 
 그 선택에 따라오는 것들:
 
-- 프리캐시 목록은 `workbox.globPatterns` 가 만든다. **`json` 을 빠뜨리면 오프라인에서 데이터가 통째로 죽는다** (NFR-8).
-- `$service-worker` 모듈(`build`·`files`·`version`)은 쓰지 않는다. 그건 SvelteKit 자체 경로의 API 다.
+- 프리캐시 목록은 `injectManifest.globPatterns` 가 만든다. **`json` 을 빠뜨리면 오프라인에서 데이터가 통째로 죽는다** (NFR-8).
+- `generateSW` 의 `ignoreURLParametersMatching: [/.*/]` · `navigateFallback: '/'` 는 SW 코드에서 같은 동작으로 다시 만들었다. 둘 다 0.5.0 사고를 막은 설정이다 — **지우지 말 것.** `tests/e2e/quiz-pinned.spec.ts` 가 두 번째 이동에서 `?c=` 를 확인한다.
+- 등록은 `sw.svelte.ts` 가 `/sw.js` 로 한다. SvelteKit 자동 등록은 끈다 (`serviceWorker.register: false`).
+- 앱 SW 에 `push`·`notificationclick` 핸들러를 두지 않는다. 릴레이 `sw.js` 가 맡는다.
+- `$service-worker` 모듈(`build`·`files`·`version`)은 쓰지 않는다. 프리캐시는 Workbox 가 한다.
 - manifest 링크는 `+layout.svelte` 가 직접 건다. SvelteKit 이 `app.html` 을 제어해서 플러그인이 주입하지 못한다.
-- `registerType: 'autoUpdate'`.
+- autoUpdate 는 SW 코드의 `skipWaiting` + `clients.claim` 이다.
 - **PWA 확인은 프로덕션 빌드에서만 된다.** dev 서버에는 서비스워커를 등록하지 않는다 (SW 캐시가 HMR 을 가린다).
 
 ---

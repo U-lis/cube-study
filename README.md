@@ -5,7 +5,7 @@
 
 3BLD(눈가리고 큐브 맞추기) 학습용 앱. 현재 **코너 3-style (UBL 버퍼)** 의 조회·기준공식·퀴즈와, 코너·엣지 **트레이싱 훈련** 을 제공한다.
 
-버전과 커밋 해시는 앱 우상단 정보 버튼에서 확인할 수 있다. 버전의 정본은 `package.json` 하나이며 빌드 타임에 주입된다.
+버전과 커밋 해시는 왼쪽 위 ☰ 서랍의 머리와 "앱 정보" 에서 확인할 수 있다. 버전의 정본은 `package.json` 하나이며 빌드 타임에 주입된다.
 
 PDF에서 인덱스를 찾아 스크롤로 뒤지는 대신, 스티커 2글자를 입력하면 기준공식과 실제 공식이 즉시 나온다.
 
@@ -17,6 +17,8 @@ PDF에서 인덱스를 찾아 스크롤로 뒤지는 대신, 스티커 2글자�
 | **기준공식 브라우저** | 기준을 데이터가 정한 학습 순서로. 기준별 케이스 목록. 기준별 암기 진도·"외운거 안보기"·"역공식 안보기" |
 | **아는 기준으로** | 배정된 기준을 아직 안 배웠으면 조회 카드에 아는 기준의 경로를 함께 보여준다. 배운 기준은 그 기준의 자기 케이스 2개 암기 체크로 판정한다 |
 | **퀴즈** | direct(무브 직접 입력) 또는 setup(셋업 + 기준공식 선택). 큐브 시뮬레이터가 채점. "암기한 것만" 필터 |
+| **매일 퀴즈** | 하루 한 판, 5 ~ 20문제. 암기 표시한 공식부터 내고 모자라면 무작위로 채운다. 다 풀고 한 번에 채점한다. `/3x3/bld/3style/corner/daily` |
+| **알림** | 매일 정한 시각에 푸시를 보낸다. 누르면 매일 퀴즈가 열린다. 설정은 `/settings/notify`. 발송은 홈서버 cron (아래 "푸시") |
 | **트레이싱 훈련** | 랜덤 스테이트 스크램블을 3D 큐브로 보여주고, 타깃 열을 입력하면 실제 큐브 효과로 채점. 코너·엣지·양쪽, 보고 따라가기/외운 다음 입력, 비틀림 관례 A·B. 최근 50건 기록 |
 
 화면 주소는 `/{퍼즐}/{종목}/{방법}/{세트}/{기능}` 축을 따른다 — 조회 `/3x3/bld/3style/corner/lookup`, 기준공식 `.../algs`, 퀴즈 `.../quiz`, 트레이싱 `/3x3/bld/trace`. `/` 는 홈이고 기능 넷을 나열한다. 새 화면을 어느 축에 앉히는지는 `.dc_workspace/SVELTE.md` 가 정본이다.
@@ -31,13 +33,13 @@ Node 24 + pnpm 10 을 쓴다. `packageManager` 필드가 있으므로 corepack �
 
 ```bash
 pnpm install
-pnpm dev           # 개발 서버 + HMR (http://localhost:5173)
+pnpm dev           # 개발 서버 + HMR (http://localhost:5174, 포트 고정 — dev 릴레이 Origin)
 ```
 
 **PWA와 오프라인 동작은 프로덕션 빌드에서만 확인된다.** 개발 서버에는 서비스워커를 등록하지 않는다 — SW 캐시가 HMR 을 가린다.
 
 ```bash
-pnpm preview       # 빌드 후 서빙 (http://localhost:4173)
+pnpm preview       # 빌드 후 서빙 (http://localhost:5174 — dev 와 같은 포트, dev 릴레이 Origin)
 ```
 
 `preview` 는 매번 빌드부터 한다. `vite preview` 는 기동 시점의 파일 목록을 붙잡기 때문에, 서버를 띄워둔 채 재빌드하면 해시가 바뀐 청크를 404 로 돌려준다. 그러면 서비스워커 프리캐시가 통째로 실패한다(`bad-precaching-response`). 빌드 없이 서빙만 하려면 `pnpm preview:only`.
@@ -102,7 +104,14 @@ src/lib/
 │              암기 상태 (memorize.ts), 트레이싱 채점·세션 (tracing.ts)
 └── ui/           컴포넌트, 표시 설정, Svelte 스토어 (memorize/tracing/scramble.svelte.ts)
 
-src/routes/      화면. 경로가 곧 축이다 (3x3/bld/3style/corner/…, 3x3/bld/trace)
+src/lib/push/    알림 meta (meta.ts), 릴레이 client.js 로더 (relay.ts)
+src/service-worker.ts   앱 SW (injectManifest). 릴레이 sw.js 를 importScripts 한다
+src/routes/      화면. 경로가 곧 축이다 (3x3/bld/3style/corner/…, 3x3/bld/trace). 앱 설정은 settings/…
+
+cron/            홈서버 푸시 발송 (Node 24, 의존성 없음, src/ 를 import 하지 않는다)
+├── push.ts      진입점 — tick (1분 타이머) · send-now (즉시 발송)
+├── rules/       규칙. daily(매일 퀴즈) 하나 + 조건 규칙 자리 (rules/index.ts 에 더하는 법)
+└── engine.ts    구독 × 규칙 → 메시지
 
 data/schema-history/   데이터 스키마 v1~v9 기록 (앱은 읽지 않는다)
 ```
@@ -149,6 +158,33 @@ git push                    # 서버가 origin 에서 받아가므로 push 가 �
 접속은 Tailscale 을 타므로 **집 밖에서도 같은 명령으로 배포된다.** 공유기에 열어둔 포트는 없다.
 
 서버 최초 설정과 운영 메모는 `deploy/README.md`.
+
+## 푸시
+
+[push-relay](../push-relay) 에 붙는다 (연동 문서 `push-relay/docs/integration.md`). 앱은 서버가 없으므로
+**보내는 쪽은 홈서버 cron** 이다. 앱은 구독할 때 meta(`tz` · `daily` · `facts`)를 싣고, cron 이 1분마다
+구독 목록을 받아 `cron/rules` 의 규칙을 평가해 맞은 것을 보낸다.
+
+| | |
+|---|---|
+| 주기 | `daily` — 정한 시각부터 30분 창, 현지 날짜당 한 번 (`dedupKey`). 누르면 매일 퀴즈 화면. 문제는 화면이 고른다 (암기 목록이 기기에만 있다) |
+| 조건 | 규칙 자리만 있다. 더하는 법은 `cron/rules/index.ts` 머리 주석 |
+| 즉시 | `cron/push.ts send-now` — 운영자가 지금 보낸다 (`--to s_…` 또는 `--all`) |
+| 아이콘 | `static/badge-face-96.png` (흑백 큐브, Android 상태바). 다시 만들기: `node scripts/badge.mjs` |
+
+```bash
+# 홈서버에서 — 키 파일을 환경으로 읽고 돌린다. node 는 nvm 아래다 (PATH 에 없다)
+set -a; . ~/apps/push-relay/dev/data/keys/cube-study.env; set +a
+alias node=$(ls -d ~/.nvm/versions/node/v24.*/bin/node | sort -V | tail -1)
+node --experimental-strip-types ~/apps/cube-study/cron/push.ts tick --instance dev --dry-run
+node --experimental-strip-types ~/apps/cube-study/cron/push.ts send-now --instance dev \
+  --title '확인' --body '즉시 발송' --url /settings/notify --all
+
+journalctl -u cube-study-push@prod -n 50 --no-pager    # 타이머 로그
+```
+
+릴레이 주소는 `.env.development`(dev 릴레이) · `.env.production`(prod 릴레이). 둘 다 공개 주소라 커밋한다.
+서버 설치(타이머)는 `deploy/README.md` 의 "푸시 타이머".
 
 ## 라이선스
 

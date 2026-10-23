@@ -24,23 +24,25 @@ const HOME = '/';
 const LOOKUP = '/3x3/bld/3style/corner/lookup';
 const ALGS = '/3x3/bld/3style/corner/algs';
 const QUIZ = '/3x3/bld/3style/corner/quiz';
+const DAILY = '/3x3/bld/3style/corner/daily';
 const TRACE = '/3x3/bld/trace';
 const LETTERS_LOOKUP = '/3x3/bld/letters/lookup';
 const LETTERS_QUIZ = '/3x3/bld/letters/quiz';
 /** 데이터가 아는 기준 하나. 상세 화면의 표본이다. */
 const DETAIL = '/3x3/bld/3style/corner/algs/GC';
 
-/** 기능 화면 여섯. 홈과 상세는 규약이 달라 따로 본다. */
+/** 기능 화면 일곱. 홈과 상세는 규약이 달라 따로 본다. */
 const FEATURES = [
 	{ path: LOOKUP, name: '조회' },
 	{ path: ALGS, name: '기준공식' },
 	{ path: QUIZ, name: '퀴즈' },
+	{ path: DAILY, name: '매일 퀴즈' },
 	{ path: TRACE, name: '트레이싱' },
 	{ path: LETTERS_LOOKUP, name: '외우기' },
 	{ path: LETTERS_QUIZ, name: '퀴즈' }
 ];
 
-const TABBED = [LOOKUP, ALGS, QUIZ];
+const TABBED = [LOOKUP, ALGS, QUIZ, DAILY];
 
 /** 데이터셋이 붙어 화면이 다 선 뒤에 잰다. */
 async function ready(page: Page, path: string) {
@@ -92,6 +94,17 @@ test.describe('T4 되돌아가기 (FR-NAV-7)', () => {
 		await expect(page.locator('[data-up-link]')).toHaveAttribute('data-up-link', ALGS);
 	});
 
+	test('되돌아가기와 화면 이름이 한 줄에 선다', async ({ page }) => {
+		// 사용자 결정 2026-10-20: `홈 › 매일 퀴즈`. 두 줄이면 본문이 그만큼 내려간다
+		for (const path of [...FEATURES.map((f) => f.path), DETAIL]) {
+			await ready(page, path);
+			const up = (await page.locator('[data-up-link]').boundingBox())!;
+			const h1 = (await page.locator('h1').boundingBox())!;
+			expect(h1.x, path).toBeGreaterThan(up.x + up.width);
+			expect(h1.y, path).toBeLessThan(up.y + up.height);
+		}
+	});
+
 	test('홈에는 되돌아갈 곳이 없다', async ({ page }) => {
 		await ready(page, HOME);
 		await expect(page.locator('[data-up-link]')).toHaveCount(0);
@@ -99,16 +112,17 @@ test.describe('T4 되돌아가기 (FR-NAV-7)', () => {
 });
 
 test.describe('T4 하단 탭 (FR-NAV-4, 5, 6)', () => {
-	test('공식 화면 셋은 형제 탭 셋을 단다', async ({ page }) => {
+	test('공식 화면 넷은 형제 탭 넷을 단다', async ({ page }) => {
 		for (const path of TABBED) {
 			await ready(page, path);
 			const links = page.locator('nav a');
-			await expect(links, path).toHaveCount(3);
+			await expect(links, path).toHaveCount(4);
 			// 형제는 기능 칸만 다르다 — 앞의 네 칸이 모두 같아야 한다.
 			expect(await links.evaluateAll((els) => els.map((e) => e.getAttribute('href'))), path).toEqual([
 				LOOKUP,
 				ALGS,
-				QUIZ
+				QUIZ,
+				DAILY
 			]);
 		}
 	});
@@ -116,7 +130,7 @@ test.describe('T4 하단 탭 (FR-NAV-4, 5, 6)', () => {
 	test('기준 상세는 목록의 탭을 물려받는다', async ({ page }) => {
 		// 상세는 자기 형제가 없다. 동적 칸을 걷어낸 경로로 계산하므로 탭이 유지된다.
 		await ready(page, DETAIL);
-		await expect(page.locator('nav a')).toHaveCount(3);
+		await expect(page.locator('nav a')).toHaveCount(4);
 		await expect(page.locator('nav a.on')).toHaveText('기준공식');
 	});
 
@@ -145,26 +159,36 @@ test.describe('T4 하단 탭 (FR-NAV-4, 5, 6)', () => {
 	});
 });
 
+/*
+ * 범위는 `main` (화면 본문) 과 하단 탭이다. 서랍(#42)은 홈처럼 **지도**다 — 닫혀 있다가
+ * 사용자가 열 때만 보이고, 모든 화면을 링크하는 것이 그 일이다. 퀴즈를 풀다가 트레이싱이
+ * 눈에 들어오지 않는다는 FR-NAV-4 의 요구는 그대로 지켜진다.
+ */
 test.describe('T4 화면끼리 서로를 보여주지 않는다 (FR-NAV-4)', () => {
 	test('공식 화면에 트레이싱으로 가는 링크가 없다', async ({ page }) => {
 		// FR-NAV-4 의 본론이다. 퀴즈를 풀다가 트레이싱이 눈에 들어오지 않는다.
 		for (const path of [...TABBED, DETAIL]) {
 			await ready(page, path);
-			await expect(page.locator(`a[href^="${TRACE}"]`), path).toHaveCount(0);
+			await expect(page.locator(`main a[href^="${TRACE}"], nav a[href^="${TRACE}"]`), path).toHaveCount(0);
 		}
 	});
 
 	test('트레이싱에 공식 화면으로 가는 링크가 없다', async ({ page }) => {
 		await ready(page, TRACE);
-		await expect(page.locator('a[href^="/3x3/bld/3style"]')).toHaveCount(0);
+		await expect(page.locator('main a[href^="/3x3/bld/3style"], nav a[href^="/3x3/bld/3style"]')).toHaveCount(0);
 	});
 
 	test('홈은 기능 화면을 모두 링크한다', async ({ page }) => {
 		// 반대쪽 요구다. 홈이 지도이므로 여기서만 전부 보인다.
 		await ready(page, HOME);
 		for (const f of FEATURES) {
-			await expect(page.locator(`a[href="${f.path}"]`), f.path).toHaveCount(1);
+			await expect(page.locator(`main a[href="${f.path}"]`), f.path).toHaveCount(1);
 		}
+	});
+
+	test('서랍은 닫힌 채로 뜬다', async ({ page }) => {
+		await ready(page, QUIZ);
+		await expect(page.locator('[data-drawer]')).not.toBeVisible();
 	});
 });
 

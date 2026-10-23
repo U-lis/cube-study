@@ -28,6 +28,11 @@
 			name: '퀴즈',
 			desc: '케이스를 보고 알고리즘을 칩니다'
 		},
+		{
+			href: '/3x3/bld/3style/corner/daily',
+			name: '매일 퀴즈',
+			desc: '하루 한 판, 다 풀고 한 번에 채점합니다'
+		},
 		{ href: '/3x3/bld/trace', name: '트레이싱', desc: '스크램블에서 타깃 열을 뽑습니다' },
 		{
 			href: '/3x3/bld/letters/lookup',

@@ -8,7 +8,7 @@
 	SSR 에서는 ds 가 undefined 라 progressMap 이 비고 `0/{count}` 로 렌더된다 (AD-4).
 -->
 <script lang="ts">
-	import UpLink from '$lib/ui/UpLink.svelte';
+	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { onMount } from 'svelte';
 	import Alg from '$lib/ui/Alg.svelte';
 	import { targetText } from '$lib/domain/validate.js';
@@ -60,9 +60,7 @@
 
 <svelte:head><title>3-Style Corner — 기준공식</title></svelte:head>
 
-<UpLink href="/" label="홈" />
-
-<h1>기준공식</h1>
+<PageTitle href="/" label="홈"><h1>기준공식</h1></PageTitle>
 
 <ul>
 	{#each rows as r (r.name)}
@@ -117,7 +115,7 @@
 <style>
 	h1 {
 		font-size: 1.3rem;
-		margin: 1rem 0 0.8rem;
+		margin: 0;
 	}
 	ul {
 		list-style: none;

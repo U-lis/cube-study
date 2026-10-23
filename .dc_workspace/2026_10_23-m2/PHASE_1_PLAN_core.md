@@ -37,7 +37,6 @@ export interface M2Item {
 
 export function itemsOf(ds: M2DataSet): M2Item[];   // 27개, 데이터 순서
 export function gradeM2(enteredAlg: string, targetAlg: string, allItems: M2Item[]): M2Verdict;
-export function clearAll(): void;                   // localStorage m2.checked 삭제
 ```
 
 `gradeM2` 구현:
@@ -53,7 +52,7 @@ export function clearAll(): void;                   // localStorage m2.checked �
 
 - `$state` 로 `memorizedOnly` · `checked` (Set) 를 관리한다.
 - `$effect.root` 로 localStorage 자동 저장 (`m2.quiz.memorizedOnly`, `m2.checked`).
-- `clearAll()` : 저장 키를 지우고 상태를 초기화한다.
+- `clearAll()` 은 도메인에 두지 않는다. 저장소를 비우는 것은 `m2.svelte.ts` 의 `clearAll()` 이다 (`memorize` 와 같은 분담, 검증 단계에서 바로잡음)
 
 ## 새 테스트 파일
 
@@ -112,14 +111,14 @@ B 면 공식(회전 없는 버전)과 원래 x-rotation 공식의 54칸 상태�
 
 ## 완료 체크리스트
 
-- [ ] `sim.ts` 에 `faceletsOf` export 있음
-- [ ] `permOf` 가 `faceletsOf` 를 내부적으로 사용하고 export 없음
-- [ ] `m2.ts` 에 `itemsOf`, `gradeM2`, `clearAll` export 있음
-- [ ] `m2.svelte.ts` 에 `memorizedOnly`, `checked`, `clearAll` 있음
-- [ ] `tests/unit/m2-domain.test.ts` 전체 통과
-- [ ] `tests/unit/m2-rotation.test.ts` B 면 공식 6개 모두 통과
-- [ ] `tests/unit/m2-solve.test.ts` ~300 스크램블 통과
-- [ ] `pnpm check && pnpm test` 초록
+- [x] `sim.ts` 에 `faceletsOf` export 있음 — Verified in src/lib/cube/sim.ts:96
+- [x] `permOf` 가 `faceletsOf` 를 내부적으로 사용하고 export 없음 — Verified in src/lib/cube/sim.ts:109
+- [x] `m2.ts` 에 `itemsOf`, `gradeM2` export 있음 (clearAll 은 UI 스토어 쪽)
+- [x] `m2.svelte.ts` 에 `memorizedOnly`, `checked`, `clearAll` 있음 — Verified in src/lib/ui/m2.svelte.ts
+- [x] `tests/unit/m2-domain.test.ts` 전체 통과 — 695/695 tests passed
+- [x] `tests/unit/m2-rotation.test.ts` B 면 공식 6개 모두 통과 — 695/695 tests passed
+- [x] `tests/unit/m2-solve.test.ts` ~300 스크램블 통과 — 695/695 tests passed
+- [x] `pnpm check && pnpm test` 초록 — 0 errors, 695 passed
 
 ## 주의사항
 

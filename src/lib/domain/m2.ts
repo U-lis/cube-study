@@ -10,6 +10,7 @@
  * ────────────────────────────────────────────────────────────
  */
 import { faceletsOf } from '../cube/sim.js';
+import type { AlgPart } from './format.js';
 import type { Cubie, Face, Sticker } from './types.js';
 
 /** 데이터 파일의 한 행. 짝수 번째 줄은 id 에 `2` 를 붙여 따로 들어 있다. */
@@ -23,6 +24,8 @@ export interface M2Row {
 	/** 짝이 버퍼인 A·Q 는 순번과 무관하므로 null. */
 	order: 'odd' | 'even' | null;
 	alg: string;
+	/** 화면 표기. 반복을 `(U' M')×3` 으로 묶은 것. 없으면 `alg` 그대로 보인다. 펼치면 `alg` 와 같아야 한다 (테스트) */
+	display?: string;
 }
 
 export interface M2DataSet {
@@ -53,6 +56,8 @@ export interface M2Item {
 	place: string;
 	order: 'odd' | 'even' | 'parity' | null;
 	alg: string;
+	/** 화면 표기 (`M2Row.display`, 없으면 `alg`). 채점은 `alg` 로 한다 */
+	display: string;
 }
 
 /** 패리티 자리 표시. 1506판 확인(SPEC FR-M2-D-6)에 따라 UB↔UL 교환만 남는다. */
@@ -65,16 +70,45 @@ export function itemsOf(ds: M2DataSet): M2Item[] {
 		letter: row.letter.toUpperCase(),
 		place: `${row.piece} 의 ${row.face} 면`,
 		order: row.order,
-		alg: row.alg
+		alg: row.alg,
+		display: row.display ?? row.alg
 	}));
 	items.push({
 		id: ds.parity.id,
 		letter: '',
 		place: PARITY_PLACE,
 		order: 'parity',
-		alg: ds.parity.alg
+		alg: ds.parity.alg,
+		display: ds.parity.alg
 	});
 	return items;
+}
+
+/** `(무브열)×n` 한 덩어리, 또는 괄호 밖 무브열. */
+const GROUP = /\(([^()]*)\)×(\d+)|[^()]+/g;
+
+/** 화면 표기를 Alg 파트로. 괄호와 `)×n` 은 punct, 무브는 plain. */
+export function displayParts(display: string): AlgPart[] {
+	const parts: AlgPart[] = [];
+	for (const m of display.matchAll(GROUP)) {
+		if (m[1] !== undefined) {
+			parts.push({ text: '(', role: 'punct' }, { text: m[1].trim(), role: 'plain' }, { text: `)×${m[2]}`, role: 'punct' });
+		} else if (m[0].trim()) {
+			parts.push({ text: m[0].trim(), role: 'plain' });
+		}
+	}
+	return parts;
+}
+
+/** 화면 표기의 반복을 펼친 무브열. 데이터 검사용 — 화면은 `alg` 를 쓴다. */
+export function expandDisplay(display: string): string {
+	const out: string[] = [];
+	for (const m of display.matchAll(GROUP)) {
+		const moves = (m[1] ?? m[0]).trim().split(/\s+/).filter(Boolean);
+		const n = m[1] !== undefined ? Number(m[2]) : 1;
+		for (let i = 0; i < n; i++) out.push(...moves);
+	}
+	return out.join(' ');
 }
 
 export type M2Verdict =

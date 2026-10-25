@@ -12,6 +12,8 @@ import { describe, it, expect } from 'vitest';
 import {
 	itemsOf,
 	gradeM2,
+	displayParts,
+	expandDisplay,
 	parseM2Checked,
 	serializeM2Checked,
 	type M2DataSet,
@@ -308,5 +310,31 @@ describe('D-12. 버전 불일치', () => {
 	});
 	it('schemaVersion 이 없음 → 빈 Set', () => {
 		expect(parseM2Checked('{"checked":["a"]}').size).toBe(0);
+	});
+});
+
+describe('D-13. 화면 표기 (반복 묶음)', () => {
+	it('펼친 표기는 데이터의 alg 와 무브 하나하나까지 같다', () => {
+		for (const it of items) expect(expandDisplay(it.display), it.id).toBe(it.alg);
+	});
+	it('Q 는 반복을 묶어 보인다', () => {
+		expect(items.find((x) => x.id === 'q')!.display).toBe("(U' M')×3 U' M (U' M')×4");
+	});
+	it('display 가 없는 줄은 alg 그대로', () => {
+		expect(items.find((x) => x.id === 'b')!.display).toBe("R' U R U' M2 U R' U' R");
+	});
+	it('displayParts: 괄호와 )×n 은 punct, 무브는 plain', () => {
+		expect(displayParts("(U' M')×3 U' M (U' M')×4")).toEqual([
+			{ text: '(', role: 'punct' },
+			{ text: "U' M'", role: 'plain' },
+			{ text: ')×3', role: 'punct' },
+			{ text: "U' M", role: 'plain' },
+			{ text: '(', role: 'punct' },
+			{ text: "U' M'", role: 'plain' },
+			{ text: ')×4', role: 'punct' }
+		]);
+	});
+	it('displayParts: 묶음 없는 표기는 plain 하나', () => {
+		expect(displayParts('M2')).toEqual([{ text: 'M2', role: 'plain' }]);
 	});
 });

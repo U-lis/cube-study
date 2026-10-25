@@ -13,7 +13,7 @@
 	import Alg from '$lib/ui/Alg.svelte';
 	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { m2 } from '$lib/ui/m2.svelte.js';
-	import { itemsOf, type M2DataSet, type M2Item } from '$lib/domain/m2.js';
+	import { displayParts, itemsOf, type M2DataSet, type M2Item } from '$lib/domain/m2.js';
 	import dataJson from '$lib/data/edge-DF-m2.json';
 
 	const ds = dataJson as unknown as M2DataSet;
@@ -53,7 +53,7 @@
 					<td class="place" data-place>{item.place}</td>
 					<td class="order" data-order-text>{orderText(item.order)}</td>
 					<td class="alg">
-						<Alg parts={[{ text: item.alg, role: 'plain' }]} size="sm" />
+						<Alg parts={displayParts(item.display)} size="sm" />
 					</td>
 					<td class="check">
 						<label>

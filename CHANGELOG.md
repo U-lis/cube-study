@@ -17,7 +17,7 @@
 
 - **About "전체 해제" 가 M2 암기도 초기화한다.** `m2.clearAll()` 을 `memorize.clearAll()` 과 함께 호출한다.
 
-- **M2 엣지 데이터 (`edge-DF-m2.json`).** 출처: 사용자 PDF `m2_edges.pdf` (2026-10-23). 두 곳이 PDF 와 다르다. `x' … x` 회전 공식 여섯은 같은 효과의 B 면 공식으로 바꿨다 — 큐브를 돌리면 기준 자리 UB 가 틀어진다. PDF 의 E(LU) `x' UL'U' M2 U'LU x` 는 코너를 건드려 Pochmann 원문의 `x' U L' U' M2 U L U' x` 를 회전 없이 쓴 `B L' B' M2 B L B'` 로 넣었다. 상세는 `README.md` "M2 엣지 데이터" 절.
+- **M2 엣지 데이터 (`edge-DF-m2.json`).** 출처: 사용자 PDF `m2_edges.pdf` (2026-10-23). 두 곳이 PDF 와 다르다. `x' … x` 회전 공식 여섯은 같은 효과의 B 면 공식으로 바꿨다 — 큐브를 돌리면 기준 자리 UB 가 틀어진다. PDF 의 E(LU) `x' UL'U' M2 U'LU x` 는 코너를 건드려 Pochmann 원문의 `x' U L' U' M2 U L U' x` 를 회전 없이 쓴 `B L' B' M2 B L B'` 로 넣었다. 화면에는 Q 처럼 반복이 있는 공식을 `(U' M')×3 U' M (U' M')×4` 로 묶어 보인다(데이터 `display`). 상세는 `README.md` "M2 엣지 데이터" 절.
 
 ## [0.7.0] - 2026-10-23
 

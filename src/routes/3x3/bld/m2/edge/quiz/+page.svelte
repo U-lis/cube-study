@@ -16,7 +16,7 @@
 	import PageTitle from '$lib/ui/PageTitle.svelte';
 	import { m2 } from '$lib/ui/m2.svelte.js';
 	import { push } from '$lib/ui/push.svelte.js';
-	import { gradeM2, itemsOf, labelOf, m2VerdictText, type M2DataSet, type M2Item, type M2Verdict } from '$lib/domain/m2.js';
+	import { displayParts, gradeM2, itemsOf, labelOf, m2VerdictText, type M2DataSet, type M2Item, type M2Verdict } from '$lib/domain/m2.js';
 	import { pickNext, pushRecent } from '$lib/domain/quiz.js';
 	import dataJson from '$lib/data/edge-DF-m2.json';
 
@@ -179,7 +179,7 @@
 			<div class="answer" data-answer>
 				<dt>공식</dt>
 				<dd>
-					<Alg parts={[{ text: current.alg, role: 'plain' }]} size="sm" />
+					<Alg parts={displayParts(current.display)} size="sm" />
 				</dd>
 				<a href="/3x3/bld/m2/edge/lookup" data-goto-lookup>조회 화면에서 보기</a>
 			</div>

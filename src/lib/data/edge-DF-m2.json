@@ -10,7 +10,7 @@
 	},
 	"rows": [
 		{ "id": "a", "letter": "a", "piece": "UB", "face": "U", "order": null, "alg": "M2" },
-		{ "id": "q", "letter": "q", "piece": "UB", "face": "B", "order": null, "alg": "U' M' U' M' U' M' U' M U' M' U' M' U' M' U' M'" },
+		{ "id": "q", "letter": "q", "piece": "UB", "face": "B", "order": null, "alg": "U' M' U' M' U' M' U' M U' M' U' M' U' M' U' M'", "display": "(U' M')×3 U' M (U' M')×4" },
 		{ "id": "b", "letter": "b", "piece": "UR", "face": "U", "order": null, "alg": "R' U R U' M2 U R' U' R" },
 		{ "id": "m", "letter": "m", "piece": "UR", "face": "R", "order": null, "alg": "B' R B M2 B' R' B" },
 		{ "id": "c", "letter": "c", "piece": "UF", "face": "U", "order": "odd", "alg": "U2 M' U2 M'" },

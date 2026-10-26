@@ -6,6 +6,7 @@ import { test, expect } from '@playwright/test';
 const QUIZ = '/3x3/bld/3style/corner/quiz';
 const CORNER = '/3x3/bld/3style/corner';
 const LETTERS = '/3x3/bld/letters';
+const M2_EDGE = '/3x3/bld/m2/edge';
 
 test.describe('서랍 (FR-DR)', () => {
 	test('메뉴 버튼으로 열고 닫기 버튼 · ESC 로 닫는다', async ({ page }) => {
@@ -35,6 +36,16 @@ test.describe('서랍 (FR-DR)', () => {
 		await page.goto('/');
 		await expect(page.locator(`[data-drawer-link="${LETTERS}/quiz"]`)).toHaveCount(1);
 		await expect(page.locator(`[data-drawer-link="${CORNER}/algs"]`)).toHaveCount(1);
+		await expect(page.locator(`[data-drawer-link="${M2_EDGE}/lookup"]`)).toHaveCount(1);
+	});
+
+	test('M2 엣지 묶음이 서랍에 있고 조회·퀴즈 둘을 담는다 (#17)', async ({ page }) => {
+		await page.goto('/');
+		await page.locator('[data-drawer-open]').click();
+		await expect(page.locator(`[data-drawer-group="${M2_EDGE}"]`)).toBeVisible();
+		await page.locator(`[data-drawer-group="${M2_EDGE}"]`).click();
+		await expect(page.locator(`[data-drawer-link="${M2_EDGE}/lookup"]`)).toHaveText('조회');
+		await expect(page.locator(`[data-drawer-link="${M2_EDGE}/quiz"]`)).toHaveText('퀴즈');
 	});
 
 	test('묶음 머리를 누르면 펼치고 다시 누르면 접는다', async ({ page }) => {

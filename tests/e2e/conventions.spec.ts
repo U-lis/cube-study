@@ -28,10 +28,12 @@ const DAILY = '/3x3/bld/3style/corner/daily';
 const TRACE = '/3x3/bld/trace';
 const LETTERS_LOOKUP = '/3x3/bld/letters/lookup';
 const LETTERS_QUIZ = '/3x3/bld/letters/quiz';
+const M2_LOOKUP = '/3x3/bld/m2/edge/lookup';
+const M2_QUIZ = '/3x3/bld/m2/edge/quiz';
 /** 데이터가 아는 기준 하나. 상세 화면의 표본이다. */
 const DETAIL = '/3x3/bld/3style/corner/algs/GC';
 
-/** 기능 화면 일곱. 홈과 상세는 규약이 달라 따로 본다. */
+/** 기능 화면. 홈과 상세는 규약이 달라 따로 본다. */
 const FEATURES = [
 	{ path: LOOKUP, name: '조회' },
 	{ path: ALGS, name: '기준공식' },
@@ -39,7 +41,9 @@ const FEATURES = [
 	{ path: DAILY, name: '매일 퀴즈' },
 	{ path: TRACE, name: '트레이싱' },
 	{ path: LETTERS_LOOKUP, name: '외우기' },
-	{ path: LETTERS_QUIZ, name: '퀴즈' }
+	{ path: LETTERS_QUIZ, name: '퀴즈' },
+	{ path: M2_LOOKUP, name: '조회' },
+	{ path: M2_QUIZ, name: '퀴즈' }
 ];
 
 const TABBED = [LOOKUP, ALGS, QUIZ, DAILY];

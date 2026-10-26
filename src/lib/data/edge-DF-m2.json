@@ -1,0 +1,40 @@
+{
+	"meta": {
+		"method": "M2",
+		"pieceType": "edge",
+		"buffer": "DF",
+		"bufferStickers": ["u", "k"],
+		"swapSticker": "a",
+		"parityNote": "엣지 타깃 수가 홀수일 때 엣지를 다 푼 직후 한 번. 엣지는 UB↔UL 교환 하나만 남는다 — 코너 패리티 공식이 마저 처리한다",
+		"source": "사용자 PDF m2_edges.pdf (2026-10-23, 원전 Zane Carney 의 SpeedSolving M2 튜토리얼). x 회전 공식 여섯은 B 면 공식으로, E 는 Pochmann 원문으로 바꿨다 — .dc_workspace/2026_10_23-m2/SPEC.md FR-M2-D-2"
+	},
+	"rows": [
+		{ "id": "a", "letter": "a", "piece": "UB", "face": "U", "order": null, "alg": "M2" },
+		{ "id": "q", "letter": "q", "piece": "UB", "face": "B", "order": null, "alg": "U' M' U' M' U' M' U' M U' M' U' M' U' M' U' M'", "display": "(U' M')×3 U' M (U' M')×4" },
+		{ "id": "b", "letter": "b", "piece": "UR", "face": "U", "order": null, "alg": "R' U R U' M2 U R' U' R" },
+		{ "id": "m", "letter": "m", "piece": "UR", "face": "R", "order": null, "alg": "B' R B M2 B' R' B" },
+		{ "id": "c", "letter": "c", "piece": "UF", "face": "U", "order": "odd", "alg": "U2 M' U2 M'" },
+		{ "id": "c2", "letter": "c", "piece": "UF", "face": "U", "order": "even", "alg": "M U2 M U2" },
+		{ "id": "i", "letter": "i", "piece": "UF", "face": "F", "order": "odd", "alg": "D M' U R2 U' M U R2 U' D' M2" },
+		{ "id": "i2", "letter": "i", "piece": "UF", "face": "F", "order": "even", "alg": "M2 D U R2 U' M' U R2 U' M D'" },
+		{ "id": "d", "letter": "d", "piece": "UL", "face": "U", "order": null, "alg": "L U' L' U M2 U' L U L'" },
+		{ "id": "e", "letter": "e", "piece": "UL", "face": "L", "order": null, "alg": "B L' B' M2 B L B'" },
+		{ "id": "j", "letter": "j", "piece": "FR", "face": "F", "order": null, "alg": "U R U' M2 U R' U'" },
+		{ "id": "p", "letter": "p", "piece": "FR", "face": "R", "order": null, "alg": "B' R2 B M2 B' R2 B" },
+		{ "id": "l", "letter": "l", "piece": "FL", "face": "F", "order": null, "alg": "U' L' U M2 U' L U" },
+		{ "id": "f", "letter": "f", "piece": "FL", "face": "L", "order": null, "alg": "B L2 B' M2 B L2 B'" },
+		{ "id": "t", "letter": "t", "piece": "BR", "face": "B", "order": null, "alg": "U R' U' M2 U R U'" },
+		{ "id": "n", "letter": "n", "piece": "BR", "face": "R", "order": null, "alg": "l U' R' U M2 U' R U l'" },
+		{ "id": "r", "letter": "r", "piece": "BL", "face": "B", "order": null, "alg": "U' L U M2 U' L' U" },
+		{ "id": "h", "letter": "h", "piece": "BL", "face": "L", "order": null, "alg": "r' U L U' M2 U L' U' r" },
+		{ "id": "v", "letter": "v", "piece": "DR", "face": "D", "order": null, "alg": "U R2 U' M2 U R2 U'" },
+		{ "id": "o", "letter": "o", "piece": "DR", "face": "R", "order": null, "alg": "B' R' B M2 B' R B" },
+		{ "id": "w", "letter": "w", "piece": "DB", "face": "D", "order": "odd", "alg": "M U2 M U2" },
+		{ "id": "w2", "letter": "w", "piece": "DB", "face": "D", "order": "even", "alg": "U2 M' U2 M'" },
+		{ "id": "s", "letter": "s", "piece": "DB", "face": "B", "order": "odd", "alg": "M2 D U R2 U' M' U R2 U' M D'" },
+		{ "id": "s2", "letter": "s", "piece": "DB", "face": "B", "order": "even", "alg": "D M' U R2 U' M U R2 U' D' M2" },
+		{ "id": "x", "letter": "x", "piece": "DL", "face": "D", "order": null, "alg": "U' L2 U M2 U' L2 U" },
+		{ "id": "g", "letter": "g", "piece": "DL", "face": "L", "order": null, "alg": "B L B' M2 B L' B'" }
+	],
+	"parity": { "id": "parity", "alg": "D' L2 D M2 D' L2 D" }
+}

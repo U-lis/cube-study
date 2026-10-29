@@ -307,15 +307,25 @@ const planted = async (page: import('@playwright/test').Page) => {
 };
 
 test.describe('뒤로가기 (설치된 앱)', () => {
-	test('탭을 옮겨도 히스토리가 쌓이지 않는다', async ({ page }) => {
+	test('화면을 옮겨도 히스토리가 쌓이지 않는다', async ({ page }) => {
+		// 하단 탭바가 있던 시절에는 탭 사이의 왕복을 봤다. #46 이후 유일한 이동
+		// 수단인 서랍으로 왕복해도 그 성질이 유지됨을 본다 — `replaceState` 는
+		// 레이아웃의 `data-sveltekit-replacestate` 가 다는 것이고, 어느 링크든 같다.
 		await asStandalone(page);
 		await page.goto('/3x3/bld/3style/corner/lookup');
 		await armed(page);
 		const before = await page.evaluate(() => history.length);
 
-		for (const label of ['기준공식', '퀴즈', '조회', '기준공식']) {
-			await page.locator(`nav a:text-is("${label}")`).click();
-			await expect(page.locator('nav a.on')).toHaveText(label);
+		const trip: Array<[string, string]> = [
+			['/3x3/bld/3style/corner/algs', '기준공식'],
+			['/3x3/bld/3style/corner/quiz', '퀴즈'],
+			['/3x3/bld/3style/corner/lookup', '조회'],
+			['/3x3/bld/3style/corner/algs', '기준공식']
+		];
+		for (const [path, label] of trip) {
+			await page.locator('[data-drawer-open]').click();
+			await page.locator(`[data-drawer-link="${path}"]`).click();
+			await expect(page.locator('h1'), path).toHaveText(label);
 		}
 
 		expect(await page.evaluate(() => history.length)).toBe(before);
@@ -399,7 +409,9 @@ test.describe('뒤로가기 (설치된 앱)', () => {
 test.describe('뒤로가기 (브라우저 탭)', () => {
 	test('뒤로가기가 이전 화면으로 그대로 이동한다', async ({ page }) => {
 		await page.goto('/3x3/bld/3style/corner/lookup');
-		await page.locator('nav a:text-is("퀴즈")').click();
+		// #46 이후 이동은 서랍으로 한다. 하단 탭바는 제거됐다.
+		await page.locator('[data-drawer-open]').click();
+		await page.locator('[data-drawer-link="/3x3/bld/3style/corner/quiz"]').click();
 		await expect(page.locator('[data-case]')).toBeVisible();
 		await page.goBack();
 		await expect(page.getByLabel('케이스 코드')).toBeVisible();

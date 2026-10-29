@@ -92,14 +92,16 @@ M2 패리티와의 관계 (엣지 UB↔UL 이 닫힌다).
 
 `+layout.svelte` 에서 탭바 마크업과 스타일(`min-height: 52px`, 테두리 1px = 53px
 sticky 영역) 전체를 제거한다. `.shell { min-height: 100dvh }` 는 그대로 둔다.  
-`min-height: calc(100dvh - 52px - 40px - 1rem)` 이 있는 화면 두 곳만 calc 를 수정한다:
+두 quiz 화면의 `.quiz { min-height: calc(100dvh - 52px - 40px - 1rem) }` 도 수정한다.
+calc 상수는 탭바 제거 후에도 오버플로를 일으켰다 (390×844 에서 제출 버튼이 33px 아래로
+튀어나옴). 상수 조정 대신 **flex fill** 방식을 채택했다:
 
-- `src/routes/3x3/bld/m2/edge/quiz/+page.svelte:215`
-- `src/routes/3x3/bld/3style/corner/quiz/+page.svelte:347`
+- `src/routes/+layout.svelte`: `main { display:flex; flex-direction:column; flex:1 }`
+- `src/routes/3x3/bld/m2/edge/quiz/+page.svelte`: `.quiz { flex:1 }` (min-height calc 제거)
+- `src/routes/3x3/bld/3style/corner/quiz/+page.svelte`: `.quiz { flex:1 }` (min-height calc 제거)
 
-`52px` 항을 제거하면 `min-height: calc(100dvh - 40px - 1rem)` 이 된다.  
-제거 후 세로 공간 실측 (기준 실측, 2026-10-29 제거 전): 375×667에서 코너 퀴즈 740px ·
-M2 퀴즈 717px, 390×844에서 둘 다 894px. 제거 후 결과를 PHASE_1_TEST.md 에 기록한다.
+제거 후 실측 (2026-10-29, 제출 아래끝): 375×667 — 코너 671px · M2 651px;
+390×844 — 둘 다 828px (≤ 844 확인). 상세는 PHASE_1_TEST.md.
 
 ### AD-12 세션 추출 — 타입과 결과 그리드만
 
@@ -138,7 +140,7 @@ correct: number }`. 기록 목록 표시는 저장된 `correct` 를 그대로 �
 
 | Phase | 키워드 | 내용 | 상태 | 선행 |
 |-------|--------|------|------|------|
-| 1 | tabs | 탭바 제거, 문서 정리, 관련 테스트 갱신 | Pending | — |
+| 1 | tabs | 탭바 제거, 문서 정리, 관련 테스트 갱신 | Complete | — |
 | 2 | op-core | OP 데이터, 도메인, 스토어, 단위 테스트 | Pending | 1 |
 | 3 | op-ui | MoveKeypad 확장, 네비게이션, OP 조회·퀴즈 화면 | Pending | 2 |
 | 4 | session | session.ts 추출, QuizResults.svelte, daily 리팩터 | Pending | 3 |

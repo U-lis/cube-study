@@ -94,19 +94,19 @@ D-10 항목 "하단 형제 탭은 그대로" 뒤에 `→ #46 에서 대체됨` �
 
 ## 완료 체크리스트
 
-- [ ] `+layout.svelte` 에 `<nav>` 탭바 마크업이 없다
-- [ ] `+layout.svelte` 에 `tabsFor` import 가 없다
-- [ ] `nav.ts` 에 `tabsFor` 함수가 없다
-- [ ] `grep -r tabsFor src/` 결과 없음 확인
-- [ ] 두 quiz 페이지 calc 에서 `52px` 항이 제거됐다
-- [ ] `CONVENTIONS.md` 1.4 절 삭제, 1.1 절 "형제 탭" 삭제
-- [ ] `CLAUDE.md` 탭 관련 두 줄 삭제
-- [ ] `SVELTE.md` 탭 언급 정리
-- [ ] `drawer-push/SPEC.md:139` D-10 주석 추가
-- [ ] `nav.test.ts` `tabsFor` describe 없음
-- [ ] `conventions.spec.ts` 탭 검사 3개 제거, "어느 화면에도 탭바가 없다" 추가
-- [ ] 실측 결과 `PHASE_1_TEST.md` 기록
-- [ ] `pnpm check && pnpm test && pnpm test:e2e` 초록
+- [x] `+layout.svelte` 에 `<nav>` 탭바 마크업이 없다
+- [x] `+layout.svelte` 에 `tabsFor` import 가 없다
+- [x] `nav.ts` 에 `tabsFor` 함수가 없다
+- [x] `grep -r tabsFor src/` 결과 없음 확인
+- [x] 두 quiz 페이지 calc 에서 `52px` 항이 제거됐다 (flex fill 방식으로 교체 — `main { display:flex; flex-direction:column }` + `.quiz { flex:1 }`)
+- [x] `CONVENTIONS.md` 1.4 절 삭제, 1.1 절 "형제 탭" 삭제
+- [x] `CLAUDE.md` 탭 관련 두 줄 삭제
+- [x] `SVELTE.md` 탭 언급 정리
+- [x] `drawer-push/SPEC.md:139` D-10 주석 추가
+- [x] `nav.test.ts` `tabsFor` describe 없음
+- [x] `conventions.spec.ts` 탭 검사 3개 제거, "어느 화면에도 탭바가 없다" 추가
+- [x] 실측 결과 `PHASE_1_TEST.md` 기록 (제출 아래끝 기준, 375×667/390×844 양 화면)
+- [x] `pnpm check && pnpm test && pnpm test:e2e` 초록 (696/696 unit, 430/430 e2e, 1 skipped)
 
 ## 주의사항
 

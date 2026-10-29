@@ -46,6 +46,7 @@ const FEATURES = [
 	{ path: M2_QUIZ, name: '퀴즈' }
 ];
 
+/** 하단 탭바가 있던 시절(0.4.3~0.8.0) 의 공식 화면 넷. 교차 링크 검사가 남는다. */
 const TABBED = [LOOKUP, ALGS, QUIZ, DAILY];
 
 /** 데이터셋이 붙어 화면이 다 선 뒤에 잰다. */
@@ -115,71 +116,36 @@ test.describe('T4 되돌아가기 (FR-NAV-7)', () => {
 	});
 });
 
-test.describe('T4 하단 탭 (FR-NAV-4, 5, 6)', () => {
-	test('공식 화면 넷은 형제 탭 넷을 단다', async ({ page }) => {
-		for (const path of TABBED) {
+test.describe('T4 하단 탭 (#46 에서 제거)', () => {
+	test('어느 화면에도 탭바가 없다', async ({ page }) => {
+		// 0.4.3~0.8.0 의 하단 탭바는 레이아웃의 `main` 바로 뒤에 `<nav>` 로 섰다.
+		// #46 에서 서랍(☰)이 유일한 이동 수단이 됐다. 서랍은 `<div class="list">` 로
+		// 짰고 (Drawer.svelte 의 주석 참조) 앱 전체에 `<nav>` 를 두지 않는다.
+		for (const path of [...FEATURES.map((f) => f.path), DETAIL, HOME]) {
 			await ready(page, path);
-			const links = page.locator('nav a');
-			await expect(links, path).toHaveCount(4);
-			// 형제는 기능 칸만 다르다 — 앞의 네 칸이 모두 같아야 한다.
-			expect(await links.evaluateAll((els) => els.map((e) => e.getAttribute('href'))), path).toEqual([
-				LOOKUP,
-				ALGS,
-				QUIZ,
-				DAILY
-			]);
+			await expect(page.locator('nav'), path).toHaveCount(0);
 		}
-	});
-
-	test('기준 상세는 목록의 탭을 물려받는다', async ({ page }) => {
-		// 상세는 자기 형제가 없다. 동적 칸을 걷어낸 경로로 계산하므로 탭이 유지된다.
-		await ready(page, DETAIL);
-		await expect(page.locator('nav a')).toHaveCount(4);
-		await expect(page.locator('nav a.on')).toHaveText('기준공식');
-	});
-
-	test('스티커 문자 화면 둘은 서로의 형제 탭을 단다 (#19)', async ({ page }) => {
-		for (const path of [LETTERS_LOOKUP, LETTERS_QUIZ]) {
-			await ready(page, path);
-			const links = page.locator('nav a');
-			await expect(links, path).toHaveCount(2);
-			expect(await links.evaluateAll((els) => els.map((e) => e.getAttribute('href'))), path).toEqual([
-				LETTERS_LOOKUP,
-				LETTERS_QUIZ
-			]);
-			await expect(links.first(), path).toHaveText('외우기');
-		}
-	});
-
-	test('트레이싱에는 탭바가 없다', async ({ page }) => {
-		// 형제가 없다. 자기 자신만 있는 탭바는 이동 수단이 아니라 장식이다.
-		await ready(page, TRACE);
-		await expect(page.locator('nav')).toHaveCount(0);
-	});
-
-	test('홈에는 탭바가 없다', async ({ page }) => {
-		await ready(page, HOME);
-		await expect(page.locator('nav')).toHaveCount(0);
 	});
 });
 
 /*
- * 범위는 `main` (화면 본문) 과 하단 탭이다. 서랍(#42)은 홈처럼 **지도**다 — 닫혀 있다가
- * 사용자가 열 때만 보이고, 모든 화면을 링크하는 것이 그 일이다. 퀴즈를 풀다가 트레이싱이
- * 눈에 들어오지 않는다는 FR-NAV-4 의 요구는 그대로 지켜진다.
+ * 범위는 `main` (화면 본문)이다. 서랍(#42)은 홈처럼 **지도**다 — 닫혀 있다가 사용자가
+ * 열 때만 보이고, 모든 화면을 링크하는 것이 그 일이다. 퀴즈를 풀다가 트레이싱이 눈에
+ * 들어오지 않는다는 FR-NAV-4 의 요구는 그대로 지켜진다. #46 에서 하단 탭바가
+ * 제거되면서 "탭 안쪽" 을 보지 않는다 — `main` 하나만 본다.
  */
 test.describe('T4 화면끼리 서로를 보여주지 않는다 (FR-NAV-4)', () => {
 	test('공식 화면에 트레이싱으로 가는 링크가 없다', async ({ page }) => {
 		// FR-NAV-4 의 본론이다. 퀴즈를 풀다가 트레이싱이 눈에 들어오지 않는다.
 		for (const path of [...TABBED, DETAIL]) {
 			await ready(page, path);
-			await expect(page.locator(`main a[href^="${TRACE}"], nav a[href^="${TRACE}"]`), path).toHaveCount(0);
+			await expect(page.locator(`main a[href^="${TRACE}"]`), path).toHaveCount(0);
 		}
 	});
 
 	test('트레이싱에 공식 화면으로 가는 링크가 없다', async ({ page }) => {
 		await ready(page, TRACE);
-		await expect(page.locator('main a[href^="/3x3/bld/3style"], nav a[href^="/3x3/bld/3style"]')).toHaveCount(0);
+		await expect(page.locator('main a[href^="/3x3/bld/3style"]')).toHaveCount(0);
 	});
 
 	test('홈은 기능 화면을 모두 링크한다', async ({ page }) => {
@@ -224,6 +190,20 @@ test.describe('T4 진행 버튼 (FR-NAV-13, AD-NAV-9)', () => {
 		// idle 에서는 아래가 다 접히므로 최하단이 곧 설정 바로 아래다.
 		expect(await y('[data-start]')).toBeGreaterThan(await y('canvas[data-cube3d]'));
 		expect(await y('[data-start]')).toBeGreaterThan(await y('[data-timer]'));
+	});
+
+	test('제출 버튼이 뷰포트를 벗어나지 않는다 @viewport', async ({ page }) => {
+		await page.setViewportSize({ width: 390, height: 844 });
+		for (const path of [
+			'/3x3/bld/3style/corner/quiz',
+			'/3x3/bld/m2/edge/quiz'
+		]) {
+			await page.goto(path);
+			await page.waitForLoadState('networkidle');
+			const box = await page.locator('[data-grade]').boundingBox();
+			expect(box).not.toBeNull();
+			expect(box!.y + box!.height).toBeLessThanOrEqual(844);
+		}
 	});
 });
 

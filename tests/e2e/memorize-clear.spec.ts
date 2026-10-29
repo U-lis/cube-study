@@ -170,10 +170,12 @@ test.describe('T6-5. 전체 해제 실행 결과 (FR-MC-21)', () => {
 		await expect.poll(() => readChecked(page)).toEqual({ setup: [], direct: [] });
 
 		// 모달 닫고 /anchors 로. 하드 goto 는 addInitScript 가 재실행되어 seed 가
-		// 복원되므로 하단 nav 링크를 통한 클라이언트 사이드 네비게이션을 쓴다.
+		// 복원되므로 서랍을 통한 클라이언트 사이드 네비게이션을 쓴다. 하단 탭바는
+		// #46 에서 제거됐다 — 그 자리를 서랍이 받는다.
 		await page.locator('[data-about-close]').click();
 		await expect(page.locator('[data-about]')).not.toBeVisible();
-		await page.locator('nav a[href="/3x3/bld/3style/corner/algs"]').click();
+		await page.locator('[data-drawer-open]').click();
+		await page.locator('[data-drawer-link="/3x3/bld/3style/corner/algs"]').click();
 		await page.waitForURL(/\/3x3\/bld\/3style\/corner\/algs$/);
 
 		// data-progress 를 가진 요소가 있어야 하고 전부 "0/N" 패턴

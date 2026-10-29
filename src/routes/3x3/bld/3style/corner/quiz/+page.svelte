@@ -343,8 +343,8 @@
 		flex-direction: column;
 		gap: 0.7rem;
 		padding-top: 0.6rem;
-		/* 셸 높이에서 상단 바와 하단 네비를 뺀 만큼 채운다 */
-		min-height: calc(100dvh - 52px - 40px - 1rem);
+		/* 셸 높이에서 상단 바를 뺀 만큼 채운다 */
+		flex: 1;
 	}
 	.input-mode {
 		max-width: 20rem;

@@ -162,12 +162,12 @@ export function serializeOpChecked(checked: Set<string>): string;
 
 ## 완료 체크리스트
 
-- [ ] `corner-UBL-op.json` 22행 + meta 작성 완료
-- [ ] `op.ts` 에 `itemsOf`, `gradeOp`, `expandY`, `displayPartsOf`, `opVerdictText`, `parseOpChecked`, `serializeOpChecked` export 있음
-- [ ] `op.svelte.ts` 에 `memorizedOnly`, `checked`, `clearAll` 있음
-- [ ] `op-domain.test.ts` D-1~D-12 통과
-- [ ] `op-solve.test.ts` ~100 스크램블 통과
-- [ ] `pnpm check && pnpm test` 초록
+- [x] `corner-UBL-op.json` 22행 + meta 작성 완료 — verified in src/lib/data/corner-UBL-op.json (22 rows, meta.yPerm matches spec)
+- [x] `op.ts` 에 `itemsOf`, `gradeOp`, `expandY`, `displayPartsOf`, `opVerdictText`, `parseOpChecked`, `serializeOpChecked` export 있음 — verified in src/lib/domain/op.ts:77,89,120,145,170,192,203
+- [x] `op.svelte.ts` 에 `memorizedOnly`, `checked`, `clearAll` 있음 — verified in src/lib/ui/op.svelte.ts:33,34,54
+- [x] `op-domain.test.ts` D-1~D-12 통과 — 822 tests passed (pnpm test)
+- [x] `op-solve.test.ts` ~100 스크램블 통과 — even/odd scramble tests passed (pnpm test)
+- [x] `pnpm check && pnpm test` 초록 — 0 errors, 822 passed
 
 ## 주의사항
 

@@ -226,6 +226,34 @@ test.describe('T6-5b. M2 암기 체크도 함께 비운다 (SPEC D-7, AD-6)', ()
 	});
 });
 
+test.describe('T6-5c. OP 암기 체크도 함께 비운다 (SPEC AD-8)', () => {
+	test('전체 해제가 op.checked 를 비운다', async ({ page }) => {
+		await page.addInitScript(() => {
+			localStorage.setItem(
+				'op.checked',
+				JSON.stringify({ schemaVersion: 1, checked: ['y', 'b', 'c'] })
+			);
+		});
+		await seedChecked(page, allCodes.slice(0, 1), []);
+
+		await page.goto('/3x3/bld/3style/corner/lookup');
+		await openAbout(page);
+		await page.locator('[data-clear-memorize="idle"]').click();
+		await page.locator('[data-clear-memorize="confirming"]').click();
+		await expect(page.locator('[data-clear-memorize="idle"]')).toBeVisible();
+
+		// op.checked 가 빈 Set 으로 저장된다. $effect 가 저장할 때까지 폴링.
+		await expect
+			.poll(async () => {
+				const raw = await page.evaluate(() => localStorage.getItem('op.checked'));
+				if (!raw) return [];
+				const p = JSON.parse(raw) as { checked: string[] };
+				return p.checked ?? [];
+			})
+			.toEqual([]);
+	});
+});
+
 test.describe('T6-6. 첫 클릭 후 취소 — 실행 안 됨 (FR-MC-22)', () => {
 	test('confirming 상태에서 모달 닫으면 checked 는 그대로', async ({ page }) => {
 		const seededSetup = allCodes.slice(0, 2);

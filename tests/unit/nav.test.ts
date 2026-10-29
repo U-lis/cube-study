@@ -21,12 +21,13 @@ describe('isHome', () => {
 });
 
 describe('menuFor (서랍, #42)', () => {
-	it('3BLD 는 스티커 문자 → 3-style 코너 → M2 엣지 → 트레이싱 순이다', () => {
+	it('3BLD 는 스티커 문자 → 3-style 코너 → M2 엣지 → OP 코너 → 트레이싱 순이다', () => {
 		const menu = menuFor('/');
 		expect(menu.map((e) => (e.kind === 'group' ? e.label : e.link.label))).toEqual([
 			'스티커 문자',
 			'3-style 코너',
 			'M2 엣지',
+			'OP 코너',
 			'트레이싱'
 		]);
 	});
@@ -38,6 +39,16 @@ describe('menuFor (서랍, #42)', () => {
 		expect(m2?.kind === 'group' && m2.links.map((l) => l.href)).toEqual([
 			'/3x3/bld/m2/edge/lookup',
 			'/3x3/bld/m2/edge/quiz'
+		]);
+	});
+
+	it('OP 코너 묶음은 조회·퀴즈 둘이다 (#18)', () => {
+		const menu = menuFor('/');
+		const opc = menu.find((e) => e.kind === 'group' && e.id === '/3x3/bld/op/corner');
+		expect(opc?.kind === 'group' && opc.links.map((l) => l.label)).toEqual(['조회', '퀴즈']);
+		expect(opc?.kind === 'group' && opc.links.map((l) => l.href)).toEqual([
+			'/3x3/bld/op/corner/lookup',
+			'/3x3/bld/op/corner/quiz'
 		]);
 	});
 
@@ -71,7 +82,8 @@ describe('menuFor (서랍, #42)', () => {
 		expect(flags).toEqual([
 			['/3x3/bld/letters', false],
 			[CORNER, true],
-			['/3x3/bld/m2/edge', false]
+			['/3x3/bld/m2/edge', false],
+			['/3x3/bld/op/corner', false]
 		]);
 	});
 
@@ -81,7 +93,19 @@ describe('menuFor (서랍, #42)', () => {
 		expect(flags).toEqual([
 			['/3x3/bld/letters', false],
 			[CORNER, false],
-			['/3x3/bld/m2/edge', true]
+			['/3x3/bld/m2/edge', true],
+			['/3x3/bld/op/corner', false]
+		]);
+	});
+
+	it('OP 조회에 있으면 OP 묶음만 containsCurrent 다 (#18)', () => {
+		const menu = menuFor('/3x3/bld/op/corner/lookup');
+		const flags = menu.flatMap((e) => (e.kind === 'group' ? [[e.id, e.containsCurrent]] : []));
+		expect(flags).toEqual([
+			['/3x3/bld/letters', false],
+			[CORNER, false],
+			['/3x3/bld/m2/edge', false],
+			['/3x3/bld/op/corner', true]
 		]);
 	});
 

@@ -89,14 +89,14 @@ src/routes/3x3/bld/op/corner/quiz/+page.svelte
 
 ## 완료 체크리스트
 
-- [ ] `MoveKeypad` 에 `disabledTokens` prop 추가, 기존 화면 영향 없음
-- [ ] `nav.ts` `SIBLING_GROUPS` · `MENU_3BLD` 에 OP 코너 추가
-- [ ] 홈 FEATURES 에 OP 조회·퀴즈 추가
-- [ ] `About.svelte` 에서 `op.clearAll()` 호출
-- [ ] 조회 페이지: `<h1>조회</h1>`, 22행 표, Y 행 맨 위, 암기 체크박스, `<details>` 기본 접힘
-- [ ] 퀴즈 페이지: `<h1>퀴즈</h1>`, `[Y]` 키 존재, Y 행 문제 시 `[Y]` 비활성화, `data-stage` 전환
-- [ ] 퀴즈 페이지: 제출 시 `push.noteQuiz()` 호출
-- [ ] `pnpm check && pnpm test && pnpm test:e2e` 초록
+- [x] `MoveKeypad` 에 `disabledTokens` prop 추가, 기존 화면 영향 없음 — `src/lib/ui/MoveKeypad.svelte:22,26,50,66`
+- [x] `nav.ts` `SIBLING_GROUPS` · `MENU_3BLD` 에 OP 코너 추가 — `src/lib/ui/nav.ts:56,83`
+- [x] 홈 FEATURES 에 OP 조회·퀴즈 추가 — `src/routes/+page.svelte:47-54`
+- [x] `About.svelte` 에서 `op.clearAll()` 호출 — `src/lib/ui/About.svelte:34`
+- [x] 조회 페이지: `<h1>조회</h1>`, 22행 표, Y 행 맨 위, 암기 체크박스, `<details>` 기본 접힘 — `src/routes/3x3/bld/op/corner/lookup/+page.svelte`
+- [x] 퀴즈 페이지: `<h1>퀴즈</h1>`, `[Y]` 키 존재, Y 행 문제 시 `[Y]` 비활성화, `data-stage` 전환 — `src/routes/3x3/bld/op/corner/quiz/+page.svelte:124,129,131,173`
+- [x] 퀴즈 페이지: 제출 시 `push.noteQuiz()` 호출 — `src/routes/3x3/bld/op/corner/quiz/+page.svelte:100`
+- [x] `pnpm check && pnpm test && pnpm test:e2e` 초록
 
 ## 테스트 파일
 
@@ -125,7 +125,7 @@ src/routes/3x3/bld/op/corner/quiz/+page.svelte
 
 서랍에 `OP 코너` 그룹이 표시된다.
 
-### `tests/e2e/about.spec.ts` 갱신
+### `tests/e2e/memorize-clear.spec.ts` 갱신 (PLAN 당초 `about.spec.ts` 로 기술했으나 실제 구현은 여기)
 
 "암기 전체 해제" 가 `op.checked` 도 비운다.
 

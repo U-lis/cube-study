@@ -52,7 +52,8 @@ const GROUP_LABELS: Record<string, Partial<Record<string, string>>> = {
 const SIBLING_GROUPS: Record<string, readonly string[]> = {
 	'/3x3/bld/3style/corner': ['lookup', 'algs', 'quiz', 'daily'],
 	'/3x3/bld/letters': ['lookup', 'quiz'],
-	'/3x3/bld/m2/edge': ['lookup', 'quiz']
+	'/3x3/bld/m2/edge': ['lookup', 'quiz'],
+	'/3x3/bld/op/corner': ['lookup', 'quiz']
 };
 
 /** 그 묶음에서 기능 칸을 부르는 이름. */
@@ -79,6 +80,7 @@ const MENU_3BLD: readonly ({ group: string; label: string } | { href: string; la
 	{ group: '/3x3/bld/letters', label: '스티커 문자' },
 	{ group: '/3x3/bld/3style/corner', label: '3-style 코너' },
 	{ group: '/3x3/bld/m2/edge', label: 'M2 엣지' },
+	{ group: '/3x3/bld/op/corner', label: 'OP 코너' },
 	{ href: '/3x3/bld/trace', label: '트레이싱' }
 ];
 

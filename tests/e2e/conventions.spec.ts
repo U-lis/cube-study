@@ -30,6 +30,8 @@ const LETTERS_LOOKUP = '/3x3/bld/letters/lookup';
 const LETTERS_QUIZ = '/3x3/bld/letters/quiz';
 const M2_LOOKUP = '/3x3/bld/m2/edge/lookup';
 const M2_QUIZ = '/3x3/bld/m2/edge/quiz';
+const OP_LOOKUP = '/3x3/bld/op/corner/lookup';
+const OP_QUIZ = '/3x3/bld/op/corner/quiz';
 /** 데이터가 아는 기준 하나. 상세 화면의 표본이다. */
 const DETAIL = '/3x3/bld/3style/corner/algs/GC';
 
@@ -43,7 +45,9 @@ const FEATURES = [
 	{ path: LETTERS_LOOKUP, name: '외우기' },
 	{ path: LETTERS_QUIZ, name: '퀴즈' },
 	{ path: M2_LOOKUP, name: '조회' },
-	{ path: M2_QUIZ, name: '퀴즈' }
+	{ path: M2_QUIZ, name: '퀴즈' },
+	{ path: OP_LOOKUP, name: '조회' },
+	{ path: OP_QUIZ, name: '퀴즈' }
 ];
 
 /** 하단 탭바가 있던 시절(0.4.3~0.8.0) 의 공식 화면 넷. 교차 링크 검사가 남는다. */
@@ -196,7 +200,8 @@ test.describe('T4 진행 버튼 (FR-NAV-13, AD-NAV-9)', () => {
 		await page.setViewportSize({ width: 390, height: 844 });
 		for (const path of [
 			'/3x3/bld/3style/corner/quiz',
-			'/3x3/bld/m2/edge/quiz'
+			'/3x3/bld/m2/edge/quiz',
+			'/3x3/bld/op/corner/quiz'
 		]) {
 			await page.goto(path);
 			await page.waitForLoadState('networkidle');

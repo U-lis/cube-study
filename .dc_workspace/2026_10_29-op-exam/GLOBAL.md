@@ -142,7 +142,7 @@ correct: number }`. 기록 목록 표시는 저장된 `correct` 를 그대로 �
 |-------|--------|------|------|------|
 | 1 | tabs | 탭바 제거, 문서 정리, 관련 테스트 갱신 | Complete | — |
 | 2 | op-core | OP 데이터, 도메인, 스토어, 단위 테스트 | Complete | 1 |
-| 3 | op-ui | MoveKeypad 확장, 네비게이션, OP 조회·퀴즈 화면 | Pending | 2 |
+| 3 | op-ui | MoveKeypad 확장, 네비게이션, OP 조회·퀴즈 화면 | Complete | 2 |
 | 4 | session | session.ts 추출, QuizResults.svelte, daily 리팩터 | Pending | 3 |
 | 5 | exam | exam.ts, exam.svelte.ts, 시험 화면 | Pending | 4 |
 | 6 | docs | README, SVELTE.md, CONTINUE, BACKLOG 갱신 | Pending | 5 |

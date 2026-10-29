@@ -15,9 +15,9 @@ GLOBAL AD-12. SPEC FR-EX-R-1~4.
 ```ts
 export type QuizAnswer = /* 기존 DailyAnswer 와 동일한 구조 */;
 
-export function isAnswered(mode: InputMode, a: QuizAnswer): boolean;
+export function isAnswered(mode: Mode, a: QuizAnswer): boolean;  // InputMode 아님: format.ts 의 Mode
 export function emptyAnswer(): QuizAnswer;
-export function parseAnswer(raw: unknown): QuizAnswer;
+export function parseAnswer(raw: unknown): QuizAnswer | null;    // 실패 시 null 반환
 ```
 
 `QuizAnswer` 는 `src/lib/ui/daily.svelte.ts` 에 있는 `DailyAnswer` 의 복사본이 아니라
@@ -41,9 +41,9 @@ export type { QuizAnswer as DailyAnswer } from './session.ts';
 컴포넌트로 추출한다.
 
 props:
-- `results: QuizAnswer[]`
-- `mode: InputMode`
-- `notation: string` (호출자가 settings 싱글톤 대신 넘긴다. 컴포넌트 안에서 settings 를 import 하지 않는다.)
+- `results: QuizResultRow[]`  (코더 실장: entry+answer+verdict 묶음 — QuizAnswer[] 아님)
+- `mode: Mode`  (format.ts 의 Mode; InputMode 아님)
+- `notation: Notation` (호출자가 settings 싱글톤 대신 넘긴다. 컴포넌트 안에서 settings 를 import 하지 않는다.)
 
 `data-result-case`, `data-summary`, `data-verdict`, `data-kind`, `data-result` 속성을
 그대로 유지한다. `N문제 중 M개 정답` 요약 줄(`data-summary`)을 포함한다.
@@ -62,13 +62,13 @@ props:
 
 ## 완료 체크리스트
 
-- [ ] `session.ts` 에 `QuizAnswer`, `isAnswered`, `emptyAnswer`, `parseAnswer` export 있음
-- [ ] `daily.ts` 에서 `DailyAnswer = QuizAnswer` 재export 됨
-- [ ] `QuizResults.svelte` 에 `results`, `mode`, `notation` props 있음
-- [ ] `QuizResults.svelte` 에 `data-summary`, `data-result-case` 속성 있음
-- [ ] `daily/+page.svelte` 에서 `QuizResults` 사용
-- [ ] `tests/e2e/daily.spec.ts` 전체 통과 (리팩터링 전후 동일)
-- [ ] `pnpm check && pnpm test && pnpm test:e2e` 초록
+- [x] `session.ts` 에 `QuizAnswer`, `isAnswered`, `emptyAnswer`, `parseAnswer` export 있음 — src/lib/domain/session.ts:18,33,36,44
+- [x] `daily.ts` 에서 `DailyAnswer = QuizAnswer` 재export 됨 — src/lib/domain/daily.ts:15-20 (`export type DailyAnswer = QuizAnswer`)
+- [x] `QuizResults.svelte` 에 `results`, `mode`, `notation` props 있음 — src/lib/ui/QuizResults.svelte:17-21
+- [x] `QuizResults.svelte` 에 `data-summary`, `data-result-case` 속성 있음 — src/lib/ui/QuizResults.svelte:34,39
+- [x] `daily/+page.svelte` 에서 `QuizResults` 사용 — src/routes/3x3/bld/3style/corner/daily/+page.svelte:220-224
+- [x] `tests/e2e/daily.spec.ts` 전체 통과 (리팩터링 전후 동일) — 458/459 pass (1 pre-existing skip)
+- [x] `pnpm check && pnpm test && pnpm test:e2e` 초록 — 0 errors, 824 unit, 458 e2e passed
 
 ## 주의사항
 

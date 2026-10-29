@@ -6,10 +6,10 @@
 
 | 동작 | 레이어 | 결과 |
 |------|--------|------|
-| `tests/e2e/daily.spec.ts` 전체 통과 (리팩터링 전후 동일) | e2e | [ ] |
-| `pnpm check` 통과 (타입 오류 없음) | build | [ ] |
-| `pnpm test` 통과 (단위 테스트 회귀 없음) | unit | [ ] |
-| `pnpm test:e2e` 통과 (E2E 회귀 없음) | e2e | [ ] |
+| `tests/e2e/daily.spec.ts` 전체 통과 (리팩터링 전후 동일) | e2e | [x] 458/459 pass (1 pre-existing skip) |
+| `pnpm check` 통과 (타입 오류 없음) | build | [x] 0 errors, 977 files |
+| `pnpm test` 통과 (단위 테스트 회귀 없음) | unit | [x] 824 passed, 36 files |
+| `pnpm test:e2e` 통과 (E2E 회귀 없음) | e2e | [x] 458 passed, 1 skipped, 0 failed |
 
 ## 선택적 추가 테스트
 
@@ -19,9 +19,9 @@
 
 ## 문서 내용 검토 항목 (자동화 아님)
 
-- [ ] `daily.ts` 에서 `DailyAnswer` 가 `QuizAnswer` 로 재export 됨
-- [ ] `QuizResults.svelte` 에서 settings 싱글톤을 직접 import 하지 않음
-- [ ] `daily/+page.svelte` 결과 `<ol>` 블록이 `QuizResults` 로 대체됨
+- [x] `daily.ts` 에서 `DailyAnswer` 가 `QuizAnswer` 로 재export 됨 — daily.ts:15
+- [x] `QuizResults.svelte` 에서 settings 싱글톤을 직접 import 하지 않음 — import 목록 확인
+- [x] `daily/+page.svelte` 결과 `<ol>` 블록이 `QuizResults` 로 대체됨 — page.svelte:220-224
 
 ## 이 Phase 에서 실제로 해당하는 경계 케이스
 

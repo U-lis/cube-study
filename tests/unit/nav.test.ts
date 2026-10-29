@@ -59,13 +59,22 @@ describe('menuFor (서랍, #42)', () => {
 			'조회',
 			'기준공식',
 			'퀴즈',
-			'매일'
+			'매일',
+			'시험'
 		]);
 		const letters = menu.find((e) => e.kind === 'group' && e.id === '/3x3/bld/letters');
 		expect(letters?.kind === 'group' && letters.links.map((l) => l.label)).toEqual([
 			'외우기',
 			'퀴즈'
 		]);
+	});
+
+	it('코너 묶음 끝에 시험이 선다 (#34)', () => {
+		const menu = menuFor('/');
+		const corner = menu.find((e) => e.kind === 'group' && e.id === CORNER);
+		expect(corner?.kind === 'group' && corner.links.map((l) => l.href)).toContain(
+			`${CORNER}/exam`
+		);
 	});
 
 	it('서랍의 묶음은 모두 형제 묶음이다 — 빈 아코디언이 없다', () => {

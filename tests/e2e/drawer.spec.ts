@@ -58,6 +58,13 @@ test.describe('서랍 (FR-DR)', () => {
 		await expect(page.locator(`[data-drawer-link="${OP_CORNER}/quiz"]`)).toHaveText('퀴즈');
 	});
 
+	test('코너 묶음에 시험 항목이 있다 (#34)', async ({ page }) => {
+		await page.goto('/');
+		await page.locator('[data-drawer-open]').click();
+		await page.locator(`[data-drawer-group="${CORNER}"]`).click();
+		await expect(page.locator(`[data-drawer-link="${CORNER}/exam"]`)).toHaveText('시험');
+	});
+
 	test('묶음 머리를 누르면 펼치고 다시 누르면 접는다', async ({ page }) => {
 		await page.goto('/');
 		await page.locator('[data-drawer-open]').click();

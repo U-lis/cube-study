@@ -25,6 +25,7 @@ const LOOKUP = '/3x3/bld/3style/corner/lookup';
 const ALGS = '/3x3/bld/3style/corner/algs';
 const QUIZ = '/3x3/bld/3style/corner/quiz';
 const DAILY = '/3x3/bld/3style/corner/daily';
+const EXAM = '/3x3/bld/3style/corner/exam';
 const TRACE = '/3x3/bld/trace';
 const LETTERS_LOOKUP = '/3x3/bld/letters/lookup';
 const LETTERS_QUIZ = '/3x3/bld/letters/quiz';
@@ -41,6 +42,7 @@ const FEATURES = [
 	{ path: ALGS, name: '기준공식' },
 	{ path: QUIZ, name: '퀴즈' },
 	{ path: DAILY, name: '매일 퀴즈' },
+	{ path: EXAM, name: '시험' },
 	{ path: TRACE, name: '트레이싱' },
 	{ path: LETTERS_LOOKUP, name: '외우기' },
 	{ path: LETTERS_QUIZ, name: '퀴즈' },

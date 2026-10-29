@@ -34,6 +34,11 @@
 			desc: '하루 한 판, 다 풀고 한 번에 채점합니다'
 		},
 		{
+			href: '/3x3/bld/3style/corner/exam',
+			name: '시험',
+			desc: '문항 수를 골라 코너를 한 번에 채점합니다'
+		},
+		{
 			href: '/3x3/bld/m2/edge/lookup',
 			name: 'M2 조회',
 			desc: 'M2 엣지 공식표와 암기 체크'

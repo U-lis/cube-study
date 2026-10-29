@@ -66,6 +66,7 @@ describe('라우트 축 (FR-NAV-21)', () => {
 			'/3x3/bld/3style/corner/algs',
 			'/3x3/bld/3style/corner/algs/[code]',
 			'/3x3/bld/3style/corner/daily',
+			'/3x3/bld/3style/corner/exam',
 			'/3x3/bld/3style/corner/lookup',
 			'/3x3/bld/3style/corner/quiz',
 			'/3x3/bld/letters/lookup',

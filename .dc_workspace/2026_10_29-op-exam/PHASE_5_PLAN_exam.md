@@ -124,16 +124,16 @@ active 세션이 있으면 첫 unanswered 문항부터 열어 이어 시작한�
 
 ## 완료 체크리스트
 
-- [ ] `exam.ts` 에 `EXAM_SIZES`, `parseExamSize`, `ExamSession`, `ExamRecord`, `parseRecords`, `serializeRecords`, `pushRecord` export 있음
-- [ ] `exam.svelte.ts` 에 `size`, `session`, `records`, `setSize`, `start`, `answer`, `grade`, `reset` 있음
-- [ ] 시험 페이지 `<h1>시험</h1>`, `data-stage` idle/active/result 전환
-- [ ] idle: 설정 줄, 기록 목록 (correct 스냅샷 표시, 재채점 없음)
-- [ ] active: 판정 없이 진행, 마지막 문항 후 채점 버튼
-- [ ] result: `QuizResults` + `다시 시작` 버튼
-- [ ] 이어 풀기: 재방문 시 첫 unanswered 문항부터
-- [ ] `nav.ts` corner group 에 `exam` 추가
-- [ ] 홈 FEATURES 에 시험 추가
-- [ ] `pnpm check && pnpm test && pnpm test:e2e` 초록
+- [x] `exam.ts` 에 `EXAM_SIZES`, `parseExamSize`, `ExamSession`, `ExamRecord`, `parseRecords`, `serializeRecords`, `pushRecord` export 있음 — verified in src/lib/domain/exam.ts
+- [x] `exam.svelte.ts` 에 `size`, `session`, `records`, `setSize`, `start`, `answer`, `grade`, `reset` 있음 — verified in src/lib/ui/exam.svelte.ts
+- [x] 시험 페이지 `<h1>시험</h1>`, `data-stage` idle/active/result 전환 — src/routes/3x3/bld/3style/corner/exam/+page.svelte:188,193
+- [x] idle: 설정 줄, 기록 목록 (correct 스냅샷 표시, 재채점 없음) — +page.svelte:197-237, CSS collapse at line 349
+- [x] active: 판정 없이 진행, 마지막 문항 후 채점 버튼 — +page.svelte:240-272, controls at 283-319
+- [x] result: `QuizResults` + `다시 시작` 버튼 — +page.svelte:275-281, 314-318
+- [x] 이어 풀기: 재방문 시 첫 unanswered 문항부터 — +page.svelte:70-74
+- [x] `nav.ts` corner group 에 `exam` 추가 — src/lib/ui/nav.ts:54
+- [x] 홈 FEATURES 에 시험 추가 — src/routes/+page.svelte:37-38
+- [x] `pnpm check && pnpm test && pnpm test:e2e` 초록 — 837 unit, 469 e2e passed
 
 ## 테스트 파일
 

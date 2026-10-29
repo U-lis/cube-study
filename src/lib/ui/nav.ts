@@ -20,6 +20,7 @@ const FEATURE_LABELS: Record<string, string> = {
 	algs: '기준공식',
 	quiz: '퀴즈',
 	daily: '매일',
+	exam: '시험',
 	trace: '트레이싱'
 };
 
@@ -50,7 +51,7 @@ const GROUP_LABELS: Record<string, Partial<Record<string, string>>> = {
  * 본다.
  */
 const SIBLING_GROUPS: Record<string, readonly string[]> = {
-	'/3x3/bld/3style/corner': ['lookup', 'algs', 'quiz', 'daily'],
+	'/3x3/bld/3style/corner': ['lookup', 'algs', 'quiz', 'daily', 'exam'],
 	'/3x3/bld/letters': ['lookup', 'quiz'],
 	'/3x3/bld/m2/edge': ['lookup', 'quiz'],
 	'/3x3/bld/op/corner': ['lookup', 'quiz']

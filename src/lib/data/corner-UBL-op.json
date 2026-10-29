@@ -1,0 +1,36 @@
+{
+	"meta": {
+		"method": "OP",
+		"pieceType": "corner",
+		"buffer": "UBL",
+		"bufferStickers": ["A", "E", "R"],
+		"swapPiece": "DFR",
+		"swapSticker": "P",
+		"yPerm": "R U' R' U' R U R' F' R U R' U' R' F R",
+		"source": "사용자 PDF op_corners.pdf (2026-10-29, 비공개)"
+	},
+	"rows": [
+		{ "id": "y", "letter": "Y", "setup": "", "isYRow": true },
+		{ "id": "b", "letter": "B", "setup": "R D'" },
+		{ "id": "c", "letter": "C", "setup": "F" },
+		{ "id": "d", "letter": "D", "setup": "F R'" },
+		{ "id": "f", "letter": "F", "setup": "F2" },
+		{ "id": "g", "letter": "G", "setup": "D2 R" },
+		{ "id": "h", "letter": "H", "setup": "D2" },
+		{ "id": "i", "letter": "I", "setup": "F' D" },
+		{ "id": "j", "letter": "J", "setup": "F2 D" },
+		{ "id": "k", "letter": "K", "setup": "D R" },
+		{ "id": "l", "letter": "L", "setup": "D" },
+		{ "id": "m", "letter": "M", "setup": "R'" },
+		{ "id": "n", "letter": "N", "setup": "R2" },
+		{ "id": "o", "letter": "O", "setup": "R" },
+		{ "id": "p", "letter": "P", "setup": "" },
+		{ "id": "q", "letter": "Q", "setup": "R' F" },
+		{ "id": "s", "letter": "S", "setup": "D' R" },
+		{ "id": "t", "letter": "T", "setup": "D'" },
+		{ "id": "u", "letter": "U", "setup": "F'" },
+		{ "id": "v", "letter": "V", "setup": "D' F'" },
+		{ "id": "w", "letter": "W", "setup": "D2 F'" },
+		{ "id": "x", "letter": "X", "setup": "D F'" }
+	]
+}

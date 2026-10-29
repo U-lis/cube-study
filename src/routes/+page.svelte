@@ -34,6 +34,11 @@
 			desc: '하루 한 판, 다 풀고 한 번에 채점합니다'
 		},
 		{
+			href: '/3x3/bld/3style/corner/exam',
+			name: '시험',
+			desc: '문항 수를 골라 코너를 한 번에 채점합니다'
+		},
+		{
 			href: '/3x3/bld/m2/edge/lookup',
 			name: 'M2 조회',
 			desc: 'M2 엣지 공식표와 암기 체크'
@@ -42,6 +47,16 @@
 			href: '/3x3/bld/m2/edge/quiz',
 			name: 'M2 퀴즈',
 			desc: '타깃을 보고 M2 공식을 칩니다'
+		},
+		{
+			href: '/3x3/bld/op/corner/lookup',
+			name: 'OP 조회',
+			desc: 'OP 코너 공식표와 암기 체크'
+		},
+		{
+			href: '/3x3/bld/op/corner/quiz',
+			name: 'OP 퀴즈',
+			desc: '문자를 보고 OP 코너 공식을 칩니다'
 		},
 		{ href: '/3x3/bld/trace', name: '트레이싱', desc: '스크램블에서 타깃 열을 뽑습니다' },
 		{

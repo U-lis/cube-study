@@ -3,6 +3,7 @@
 	import { sw } from './sw.svelte.js';
 	import { memorize } from './memorize.svelte.js';
 	import { m2 } from './m2.svelte.js';
+	import { op } from './op.svelte.js';
 
 	let dialog: HTMLDialogElement | undefined = $state();
 
@@ -28,8 +29,9 @@
 
 	function confirmClear() {
 		memorize.clearAll();
-		// 같은 이름의 버튼이 일부만 비우면 문구가 거짓이 된다 (SPEC D-7, AD-6).
+		// 같은 이름의 버튼이 일부만 비우면 문구가 거짓이 된다 (SPEC D-7, AD-6, AD-8).
 		m2.clearAll();
+		op.clearAll();
 		clearState = 'idle';
 	}
 

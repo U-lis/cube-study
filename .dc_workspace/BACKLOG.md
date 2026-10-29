@@ -15,7 +15,9 @@
 |---|---|
 | 엣지 3-style (#16) | `/3x3/bld/3style/edge/{lookup,algs,quiz}` |
 | M2 엣지 조회·퀴즈 (#17) — **0.8.0 완료** (SPEC `.dc_workspace/2026_10_23-m2/SPEC.md`, 범위 밖 셋은 그 §6) | `/3x3/bld/m2/edge/{lookup,quiz}` |
-| 코너 OP (#18) | `/3x3/bld/op/corner/lookup` |
+| OP 코너 조회·퀴즈 (#18) — **0.9.0 완료** (SPEC `.dc_workspace/2026_10_29-op-exam/SPEC.md` Part B, 범위 밖은 그 §7) | `/3x3/bld/op/corner/{lookup,quiz}` |
+| 코너 3-style 시험 (#34) — **0.9.0 완료** (같은 SPEC Part C — 매일 퀴즈 로직을 `session.ts`·`QuizResults.svelte` 로 추출해 재사용) | `/3x3/bld/3style/corner/exam` |
+| 하단 탭 제거 (#46) — **0.9.0 완료** (같은 SPEC Part A — `+layout.svelte` 탭바 및 `tabsFor` 제거, 두 퀴즈를 flex fill 로 전환) | — |
 | 스티커 외우기 (#19) | `/3x3/bld/letters/{lookup,quiz}` |
 | 메모 훈련 (#21) | `/3x3/bld/memo` |
 | 멀티페이즈 타이머 (#23) | `/3x3/bld/timer` |

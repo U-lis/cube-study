@@ -170,10 +170,12 @@ test.describe('T6-5. 전체 해제 실행 결과 (FR-MC-21)', () => {
 		await expect.poll(() => readChecked(page)).toEqual({ setup: [], direct: [] });
 
 		// 모달 닫고 /anchors 로. 하드 goto 는 addInitScript 가 재실행되어 seed 가
-		// 복원되므로 하단 nav 링크를 통한 클라이언트 사이드 네비게이션을 쓴다.
+		// 복원되므로 서랍을 통한 클라이언트 사이드 네비게이션을 쓴다. 하단 탭바는
+		// #46 에서 제거됐다 — 그 자리를 서랍이 받는다.
 		await page.locator('[data-about-close]').click();
 		await expect(page.locator('[data-about]')).not.toBeVisible();
-		await page.locator('nav a[href="/3x3/bld/3style/corner/algs"]').click();
+		await page.locator('[data-drawer-open]').click();
+		await page.locator('[data-drawer-link="/3x3/bld/3style/corner/algs"]').click();
 		await page.waitForURL(/\/3x3\/bld\/3style\/corner\/algs$/);
 
 		// data-progress 를 가진 요소가 있어야 하고 전부 "0/N" 패턴
@@ -216,6 +218,34 @@ test.describe('T6-5b. M2 암기 체크도 함께 비운다 (SPEC D-7, AD-6)', ()
 		await expect
 			.poll(async () => {
 				const raw = await page.evaluate(() => localStorage.getItem('m2.checked'));
+				if (!raw) return [];
+				const p = JSON.parse(raw) as { checked: string[] };
+				return p.checked ?? [];
+			})
+			.toEqual([]);
+	});
+});
+
+test.describe('T6-5c. OP 암기 체크도 함께 비운다 (SPEC AD-8)', () => {
+	test('전체 해제가 op.checked 를 비운다', async ({ page }) => {
+		await page.addInitScript(() => {
+			localStorage.setItem(
+				'op.checked',
+				JSON.stringify({ schemaVersion: 1, checked: ['y', 'b', 'c'] })
+			);
+		});
+		await seedChecked(page, allCodes.slice(0, 1), []);
+
+		await page.goto('/3x3/bld/3style/corner/lookup');
+		await openAbout(page);
+		await page.locator('[data-clear-memorize="idle"]').click();
+		await page.locator('[data-clear-memorize="confirming"]').click();
+		await expect(page.locator('[data-clear-memorize="idle"]')).toBeVisible();
+
+		// op.checked 가 빈 Set 으로 저장된다. $effect 가 저장할 때까지 폴링.
+		await expect
+			.poll(async () => {
+				const raw = await page.evaluate(() => localStorage.getItem('op.checked'));
 				if (!raw) return [];
 				const p = JSON.parse(raw) as { checked: string[] };
 				return p.checked ?? [];

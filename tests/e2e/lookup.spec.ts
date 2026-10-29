@@ -144,8 +144,10 @@ test.describe('sticky 결과 (FR-4)', () => {
 	});
 
 	test('다른 화면을 거쳐 돌아와도 커서가 잡힌다', async ({ page }) => {
+		// 서랍으로 돌아간다 — 하단 탭바가 있던 시절(#46 이전)의 `nav a` 를 대신한다.
 		await page.goto('/3x3/bld/3style/corner/quiz');
-		await page.locator('nav a[href="/3x3/bld/3style/corner/lookup"]').click();
+		await page.locator('[data-drawer-open]').click();
+		await page.locator('[data-drawer-link="/3x3/bld/3style/corner/lookup"]').click();
 		await expect(input(page)).toBeFocused();
 	});
 

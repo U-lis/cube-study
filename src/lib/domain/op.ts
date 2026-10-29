@@ -113,14 +113,17 @@ export function itemsOf(ds: OpDataSet): OpItem[] {
  * 화면 표기의 파트. `[Y]` 는 anchor 역할(통째로 렌더), setup 과 역 setup 은 plain
  * (낱글자로 쪼갠다) 이다 (AD-2). setup 이 비었으면 `[Y]` 하나뿐이다.
  *
- * `yPerm` 은 `displayPartsOf` 의 서명 유지용이다 — anchor 는 통째로 렌더되므로
- * 15수를 여기서 펼치지 않는다. 서명을 두면 호출부가 yPerm 을 안 들고 있어도 되고,
- * 나중에 "펼친 모양을 함께 보이기" 같은 분기를 넣을 자리가 생긴다.
+ * Y 행만 예외다 (SPEC FR-OP-L-1): `[Y]` 자체를 15수로 외우는 줄이므로 `yPerm`
+ * 전체를 plain 으로 되돌려 `Alg` 가 무브로 쪼갠다. P 행은 setup 이 비어 있을 뿐
+ * 공식은 `[Y]` 단독 anchor 다 (`isYRow: false`).
  */
 export function displayPartsOf(
 	item: OpItem,
-	_yPerm: string
+	yPerm: string
 ): AlgPart[] {
+	if (item.isYRow) {
+		return [{ text: yPerm, role: 'plain' }];
+	}
 	if (item.setup === '') {
 		return [{ text: '[Y]', role: 'anchor' }];
 	}

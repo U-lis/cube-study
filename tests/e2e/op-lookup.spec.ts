@@ -22,6 +22,15 @@ test.describe('OP 조회 (#18)', () => {
 		await expect(first.locator('[data-letter]')).toHaveText('Y');
 	});
 
+	test('Y 행 공식은 Y-perm 15수를 보이고 P 행은 [Y] 하나다 (FR-OP-L-1)', async ({ page }) => {
+		await page.goto(PATH);
+		const yAlg = page.locator('[data-op-lookup] tbody tr[data-row-id="y"] td.alg');
+		await expect(yAlg).toContainText("R U' R' U'");
+		const pAlg = page.locator('[data-op-lookup] tbody tr[data-row-id="p"] td.alg');
+		await expect(pAlg).toHaveText('[Y]');
+		await expect(pAlg).not.toContainText("R U' R' U'");
+	});
+
 	test('암기 체크박스가 리로드 후에도 유지된다', async ({ page }) => {
 		await page.goto(PATH);
 		const box = page.locator('[data-op-lookup] [data-memorize-input][data-row="b"]');

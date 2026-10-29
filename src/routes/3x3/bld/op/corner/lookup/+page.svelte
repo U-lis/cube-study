@@ -109,6 +109,8 @@
 		text-align: left;
 		padding: 0.4rem 0.3rem;
 		border-bottom: 1px solid var(--border);
+		/* "문자" 가 좁은 첫 칸에서 두 줄로 쪼개지지 않게 한다. 390×844 리뷰에서 발견. */
+		white-space: nowrap;
 	}
 	tbody td {
 		padding: 0.35rem 0.3rem;

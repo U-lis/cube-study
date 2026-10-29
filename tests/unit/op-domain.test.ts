@@ -321,11 +321,17 @@ describe('D-13. displayPartsOf', () => {
 		]);
 	});
 
-	it('setup 빈 행 (P): [anchor] 하나', () => {
+	it('setup 빈 행 (P, isYRow 아님): [anchor] 하나 (`[Y]` 단독)', () => {
 		const p = items.find((it) => it.id === 'p')!;
+		expect(p.isYRow).toBe(false);
 		expect(displayPartsOf(p, Y_PERM)).toEqual([{ text: '[Y]', role: 'anchor' }]);
 	});
 
+	it('Y 행: yPerm 15 수 전체를 plain 으로 돌려 Alg 가 쪼갠다 (FR-OP-L-1)', () => {
+		const y = items[0];
+		expect(y.isYRow).toBe(true);
+		expect(displayPartsOf(y, Y_PERM)).toEqual([{ text: Y_PERM, role: 'plain' }]);
+	});
 });
 
 describe('D-14. opVerdictText — 사실 문구', () => {

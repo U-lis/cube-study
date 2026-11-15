@@ -1,6 +1,6 @@
 # 홈서버 배포
 
-`https://cube.siot-ieung.duckdns.org` 로 서빙한다. 정적 파일뿐이라 서버 런타임은 없다.
+`https://cube.aool.family` 로 서빙한다. 정적 파일뿐이라 서버 런타임은 없다.
 
 ## 평소
 
@@ -101,12 +101,12 @@ Chrome/Safari 로 위 주소를 열고 "홈 화면에 추가". 업데이트는 �
 | 리포 | `~/apps/cube-study` — 서버가 직접 클론 |
 | docroot | `/var/www/cube-study` — `ulismoon` 소유라 배포에 root 불필요 |
 | vhost | `/etc/nginx/sites-available/cube.conf` (리포의 `deploy/nginx/cube.conf`) |
-| 인증서 | `/etc/nginx/ssl/cube/` — acme.sh 가 DuckDNS DNS-01 로 발급 |
+| 인증서 | `/etc/nginx/ssl/aool/` — `aool.family` + `*.aool.family` 공용 와일드카드. acme.sh + dns_porkbun 으로 발급·자동 갱신 |
 | Node | nvm 24 (`~/.nvm`), pnpm 은 corepack |
 | 접속 | Tailscale (tailnet `tailafb1ca.ts.net`). 서버 `100.98.237.31` |
 
-DuckDNS 는 `*.siot-ieung.duckdns.org` 를 전부 같은 IP 로 응답하므로 서브도메인에
-별도 DNS 설정이 필요 없다. 라우터 헤어핀 NAT 가 되므로 집 안에서도 도메인으로 붙는다.
+서브도메인(`cube.aool.family` 등)은 `aool.family` DNS 에서 같은 서버를 가리키게 두고,
+인증서는 공용 와일드카드 하나로 처리한다. 라우터 헤어핀 NAT 가 되므로 집 안에서도 도메인으로 붙는다.
 
 ## 외부에서 배포하기
 
@@ -181,7 +181,7 @@ import json,sys; print(json.load(sys.stdin)["Self"].get("KeyExpiry","만료 없�
 
 ```bash
 sudo install -d -o ulismoon -g ulismoon -m 755 /var/www/cube-study
-sudo install -d -o ulismoon -g ulismoon -m 700 /etc/nginx/ssl/cube
+sudo install -d -o ulismoon -g ulismoon -m 700 /etc/nginx/ssl/aool
 
 # acme.sh 가 cron 에서 nginx 를 reload 할 수 있게 한다. reload 하나만 연다.
 echo "ulismoon ALL=(root) NOPASSWD: /usr/bin/systemctl reload nginx" \
@@ -194,16 +194,10 @@ sudo ln -sf /etc/nginx/sites-available/cube.conf /etc/nginx/sites-enabled/cube.c
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
-인증서 발급과 설치:
-
-```bash
-~/.acme.sh/acme.sh --issue --dns dns_duckdns -d cube.siot-ieung.duckdns.org \
-  --dnssleep 60 --server letsencrypt
-~/.acme.sh/acme.sh --install-cert -d cube.siot-ieung.duckdns.org --ecc \
-  --fullchain-file /etc/nginx/ssl/cube/fullchain.pem \
-  --key-file      /etc/nginx/ssl/cube/key.pem \
-  --reloadcmd     "sudo systemctl reload nginx"
-```
+인증서: 앱별로 발급하지 않는다. 서버 공용 와일드카드(`aool.family` + `*.aool.family`)를
+`/etc/nginx/ssl/aool/{fullchain,key}.pem` 에 두고 여러 vhost 가 함께 쓴다. acme.sh +
+`dns_porkbun` 으로 발급하며 갱신과 nginx reload 는 자동이다. 이 앱은 `cube.conf` 의
+`ssl_certificate` 경로만 맞추면 된다.
 
 ## 인증서가 만료됐을 때
 
@@ -219,7 +213,7 @@ nginx 로 복사하는 단계가 조용히 실패하고 있었다.**
 
 ```bash
 # 실제 서빙되는 인증서 (이게 정본)
-openssl s_client -connect 172.30.1.54:443 -servername cube.siot-ieung.duckdns.org \
+openssl s_client -connect 172.30.1.54:443 -servername cube.aool.family \
   </dev/null 2>/dev/null | openssl x509 -noout -dates
 
 # acme.sh 가 들고 있는 것
@@ -236,7 +230,7 @@ openssl s_client -connect 172.30.1.54:443 -servername cube.siot-ieung.duckdns.or
 
 1. **릴레이에 앱을 등록한다** (관리 UI, 환경마다). 앱 id `cube-study`.
    - dev: http://100.98.237.31:8802 — Origin `http://localhost:5174`
-   - prod: http://100.98.237.31:8792 — Origin `https://cube.siot-ieung.duckdns.org`
+   - prod: http://100.98.237.31:8792 — Origin `https://cube.aool.family`
 
    등록하면 릴레이가 키 파일 `~/apps/push-relay/<env>/data/keys/cube-study.env` 를 쓴다.
    유닛이 그 파일을 `EnvironmentFile` 로 읽는다 — 키를 주고받을 일이 없다.

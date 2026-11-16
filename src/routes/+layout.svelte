@@ -7,6 +7,7 @@
 	import { sw } from '$lib/ui/sw.svelte.js';
 	import { backGuard } from '$lib/ui/backguard.svelte.js';
 	import { wakeLock } from '$lib/ui/wakelock.svelte.js';
+	import { install } from '$lib/ui/install.svelte.js';
 	import About from '$lib/ui/About.svelte';
 	import Drawer from '$lib/ui/Drawer.svelte';
 	import { push } from '$lib/ui/push.svelte.js';
@@ -39,30 +40,8 @@
 		// 켜 둔 기기만 릴레이에 닿는다 (FR-MT-3·5). 시간대가 바뀌었을 수 있다.
 		void push.sync();
 	}
-	/**
-	 * 설치 프롬프트.
-	 *
-	 * Chrome(Android)은 설치 조건을 만족하면 하단 설치 안내(mini-infobar)를 스스로
-	 * 띄운다. 그래서 beforeinstallprompt 에서 preventDefault() 를 부르지 않는다 —
-	 * 부르면 그 자동 안내가 막힌다. 이벤트는 보관해 두고, 안내를 닫은 사용자도
-	 * 버튼으로 prompt() 를 부를 수 있게 한다.
-	 * 조건 미달이거나 이미 설치됐으면 이벤트가 오지 않으므로 버튼도 안 나온다.
-	 * iOS Safari 는 이 이벤트 자체가 없다 — 공유 시트로만 설치된다.
-	 */
-	let installPrompt = $state<{ prompt: () => Promise<unknown> } | null>(null);
-	if (browser) {
-		window.addEventListener('beforeinstallprompt', (e) => {
-			installPrompt = e as unknown as { prompt: () => Promise<unknown> };
-		});
-		window.addEventListener('appinstalled', () => (installPrompt = null));
-	}
-
-	async function install() {
-		const p = installPrompt;
-		if (!p) return;
-		installPrompt = null; // prompt() 는 이벤트당 한 번만 쓸 수 있다
-		await p.prompt();
-	}
+	// 설치 항목은 서랍에 있다. 리스너는 어느 화면에서든 받아야 하므로 여기서 건다.
+	install.start();
 
 	let about: ReturnType<typeof About> | undefined = $state();
 	let drawer: ReturnType<typeof Drawer> | undefined = $state();
@@ -113,9 +92,6 @@
 			</svg>
 		</button>
 		<div class="right">
-			{#if installPrompt}
-				<button type="button" data-install onclick={install}>설치</button>
-			{/if}
 			{#if wakeLock.supported}
 				<!-- 공식을 보며 큐브를 돌리는 동안 화면에 손이 안 닿아 꺼진다 -->
 				<button
@@ -210,11 +186,6 @@
 		padding: 0;
 		color: var(--fg);
 		border: none;
-	}
-	/* 설치 버튼은 설치 가능할 때만 나타난다. 눈에 띄어야 하지만 강요하지 않는다. */
-	.bar button[data-install] {
-		color: var(--accent);
-		border-color: var(--accent);
 	}
 	/* 켜져 있는 토글은 색으로 알린다. 아이콘만으로는 상태가 안 읽힌다. */
 	.bar button.on {

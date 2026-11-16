@@ -9,7 +9,7 @@
 
 ### 고침
 
-- 설치 안내: `beforeinstallprompt` 를 `preventDefault()` 로 막지 않는다. Chrome(Android)이 조건을 만족하면 설치 안내를 스스로 띄운다. 설치 버튼은 그대로 남는다
+- 설치 안내: `beforeinstallprompt` 를 `preventDefault()` 로 막지 않는다. Chrome(Android)이 조건을 만족하면 설치 안내를 스스로 띄운다. 상단 바의 「설치」 버튼은 서랍 '설정' 묶음의 「앱 설치」 로 옮겼다 (안내를 닫은 경우용)
 
 ## [0.8.0] - 2026-10-26
 

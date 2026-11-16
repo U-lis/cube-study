@@ -112,4 +112,31 @@ test.describe('서랍 (FR-DR)', () => {
 			expect(b!.height, await rows.nth(i).innerText()).toBeGreaterThanOrEqual(44);
 		}
 	});
+
+	test('설치 항목: 이벤트를 막지 않고, 받으면 서랍 설정에 「앱 설치」 가 나온다', async ({ page }) => {
+		await page.goto('/');
+		await expect(page.locator('.bar [data-install]')).toHaveCount(0);
+		await page.locator('[data-drawer-open]').click();
+		await expect(page.locator('[data-install]')).toHaveCount(0);
+		await page.keyboard.press('Escape');
+
+		const prevented = await page.evaluate(() => {
+			const w = window as unknown as { __prompted: number };
+			w.__prompted = 0;
+			const e = new Event('beforeinstallprompt', { cancelable: true }) as Event & {
+				prompt: () => Promise<void>;
+			};
+			e.prompt = async () => {
+				w.__prompted += 1;
+			};
+			window.dispatchEvent(e);
+			return e.defaultPrevented;
+		});
+		expect(prevented).toBe(false); // 막으면 Chrome 자동 설치 안내가 사라진다
+
+		await page.locator('[data-drawer-open]').click();
+		await page.locator('[data-install]').click();
+		expect(await page.evaluate(() => (window as unknown as { __prompted: number }).__prompted)).toBe(1);
+		await expect(page.locator('[data-install]')).toHaveCount(0);
+	});
 });

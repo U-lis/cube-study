@@ -40,15 +40,16 @@
 	/**
 	 * 설치 프롬프트.
 	 *
-	 * 브라우저는 설치 팝업을 스스로 띄우지 않는다. beforeinstallprompt 를 잡아
-	 * 보관했다가 사용자가 버튼을 눌렀을 때 prompt() 를 불러야 한다.
+	 * Chrome(Android)은 설치 조건을 만족하면 하단 설치 안내(mini-infobar)를 스스로
+	 * 띄운다. 그래서 beforeinstallprompt 에서 preventDefault() 를 부르지 않는다 —
+	 * 부르면 그 자동 안내가 막힌다. 이벤트는 보관해 두고, 안내를 닫은 사용자도
+	 * 버튼으로 prompt() 를 부를 수 있게 한다.
 	 * 조건 미달이거나 이미 설치됐으면 이벤트가 오지 않으므로 버튼도 안 나온다.
 	 * iOS Safari 는 이 이벤트 자체가 없다 — 공유 시트로만 설치된다.
 	 */
 	let installPrompt = $state<{ prompt: () => Promise<unknown> } | null>(null);
 	if (browser) {
 		window.addEventListener('beforeinstallprompt', (e) => {
-			e.preventDefault(); // 막지 않으면 브라우저가 제 타이밍에 처리해 버린다
 			installPrompt = e as unknown as { prompt: () => Promise<unknown> };
 		});
 		window.addEventListener('appinstalled', () => (installPrompt = null));

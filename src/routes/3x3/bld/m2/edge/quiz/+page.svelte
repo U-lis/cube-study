@@ -211,8 +211,8 @@
 		flex-direction: column;
 		gap: 0.7rem;
 		padding-top: 0.6rem;
-		/* 셸 높이에서 상단 바와 하단 네비를 뺀 만큼 — 코너 퀴즈와 같은 값. */
-		min-height: calc(100dvh - 52px - 40px - 1rem);
+		/* 셸 높이에서 상단 바를 뺀 만큼 — 코너 퀴즈와 같은 값. */
+		flex: 1;
 	}
 	/*
 	 * 설정 (화면 규약 "측정하는 판이 도는 동안만 접는다"). active 에서는 CSS 로 접고

@@ -1,6 +1,5 @@
 <!--
   짧은 알림. 스스로 사라지고, 탭하면 즉시 닫힌다.
-  화면을 가리지 않도록 하단 네비 위에 띄운다.
 -->
 <script lang="ts">
 	let {
@@ -21,7 +20,7 @@
 	.toast {
 		position: fixed;
 		left: 50%;
-		bottom: calc(52px + 0.7rem + env(safe-area-inset-bottom, 0px));
+		bottom: calc(0.7rem + env(safe-area-inset-bottom, 0px));
 		z-index: 10;
 		transform: translateX(-50%);
 		max-width: min(22rem, calc(100vw - 2rem));

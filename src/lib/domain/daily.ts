@@ -9,10 +9,22 @@
  * memorize.ts 와 같은 규칙을 따른다 — Svelte 를 import 하지 않고, 난수는 인자로 받는다.
  */
 
-import type { AnchorRef } from './anchor.js';
 import type { Mode } from './format.js';
 import type { InverseOf } from './quiz.js';
+import {
+	emptyAnswer,
+	isAnswered,
+	parseAnswer,
+	type QuizAnswer
+} from './session.js';
 import type { CaseCode } from './types.js';
+
+/**
+ * 매일 퀴즈 코드가 늘 쓰던 이름. 공용 타입은 `session.ts` 에 있고 여기서는
+ * 기존 importer 가 깨지지 않게 그대로 재export 한다.
+ */
+export type DailyAnswer = QuizAnswer;
+export { emptyAnswer, isAnswered };
 
 /** 문제 수 범위 (사용자 결정 2026-10-19). */
 export const DAILY_MIN = 5;
@@ -82,15 +94,6 @@ export function buildDailySet(
 	return shuffle(picked, rand);
 }
 
-/**
- * 한 문제의 답. 입력 방식과 같은 모양이다 — direct 는 무브열, setup 은 셋업 무브와
- * 고른 기준공식. 판을 시작할 때 고른 방식이 판 끝까지 간다.
- */
-export interface DailyAnswer {
-	moves: string[];
-	ref: AnchorRef | null;
-}
-
 export interface DailySession {
 	v: 1;
 	/** 판을 시작한 현지 날짜 `YYYY-MM-DD`. 오늘이 아니면 지난 판이다. */
@@ -101,31 +104,11 @@ export interface DailySession {
 	graded: boolean;
 }
 
-export const emptyAnswer = (): DailyAnswer => ({ moves: [], ref: null });
-
 export function newSession(date: string, mode: Mode, cases: readonly CaseCode[]): DailySession {
 	return { v: 1, date, mode, cases: [...cases], answers: cases.map(emptyAnswer), graded: false };
 }
 
-/** 답을 낸 것인가. setup 은 기준을 골라야 답이다 — 셋업 무브만으로는 식이 안 선다. */
-export function isAnswered(mode: Mode, a: DailyAnswer): boolean {
-	return mode === 'setup' ? a.ref !== null : a.moves.length > 0;
-}
-
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
-
-function parseAnswer(raw: unknown): DailyAnswer | null {
-	if (!raw || typeof raw !== 'object') return null;
-	const r = raw as Record<string, unknown>;
-	if (!Array.isArray(r.moves) || !r.moves.every((m) => typeof m === 'string')) return null;
-	let ref: AnchorRef | null = null;
-	if (r.ref !== null) {
-		const x = r.ref as Record<string, unknown> | undefined;
-		if (!x || typeof x.name !== 'string' || typeof x.inverse !== 'boolean') return null;
-		ref = { name: x.name, inverse: x.inverse };
-	}
-	return { moves: r.moves as string[], ref };
-}
 
 /**
  * 저장 원문을 읽는다. 모양이 하나라도 어긋나면 null — 그날 판이 없던 것으로 친다.

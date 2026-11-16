@@ -18,7 +18,7 @@ set -euo pipefail
 HOST="${DEPLOY_HOST:-homeserver}"
 REPO="${DEPLOY_REPO:-$HOME/apps/cube-study}"   # 서버상의 경로
 DOCROOT="${DEPLOY_DOCROOT:-/var/www/cube-study}"
-URL="${DEPLOY_URL:-https://cube.siot-ieung.duckdns.org}"
+URL="${DEPLOY_URL:-https://cube.aool.family}"
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=deploy/lib.sh

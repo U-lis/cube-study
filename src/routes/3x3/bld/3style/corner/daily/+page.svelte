@@ -20,14 +20,15 @@
 	import AnchorPad from '$lib/ui/AnchorPad.svelte';
 	import SegToggle from '$lib/ui/SegToggle.svelte';
 	import PageTitle from '$lib/ui/PageTitle.svelte';
+	import QuizResults from '$lib/ui/QuizResults.svelte';
 	import { settings } from '$lib/ui/settings.svelte.js';
 	import { memorize } from '$lib/ui/memorize.svelte.js';
 	import { daily } from '$lib/ui/daily.svelte.js';
 	import { push } from '$lib/ui/push.svelte.js';
 	import { loadDataset } from '$lib/data/loader.js';
 	import { getSim, type CubeSim } from '$lib/cube/sim.js';
-	import { grade, verdictText, type Verdict } from '$lib/domain/grade.js';
-	import { formatAlg, type AlgPart, type Mode } from '$lib/domain/format.js';
+	import { grade, type Verdict } from '$lib/domain/grade.js';
+	import { type AlgPart, type Mode } from '$lib/domain/format.js';
 	import { targetText } from '$lib/domain/validate.js';
 	import { anchorRefs, expandSetup, refLabel, type AnchorRef } from '$lib/domain/anchor.js';
 	import { buildDailySet, isAnswered, type DailyAnswer } from '$lib/domain/daily.js';
@@ -155,7 +156,6 @@
 			return [{ entry, answer: a, verdict }];
 		});
 	});
-	let correctCount = $derived(results.filter((r) => r.verdict?.kind === 'correct').length);
 </script>
 
 <svelte:head><title>3-Style Corner — 매일 퀴즈</title></svelte:head>
@@ -217,44 +217,11 @@
 		{/if}
 
 		<div class="result">
-			<p class="summary" data-summary>
-				{results.length}문제 중 {correctCount}개 정답
-			</p>
-			<ol>
-				{#each results as r, i (i)}
-					<li data-result-case={r.entry.case}>
-						<div class="row-head">
-							<span class="row-case">{r.entry.case}</span>
-							<span class="row-targets"
-								>{targetText(r.entry.target1)} → {targetText(r.entry.target2)}</span
-							>
-						</div>
-						<div class="mine">
-							{#if partsOf(r.answer).length > 0}
-								<Alg parts={partsOf(r.answer)} size="sm" />
-							{:else}
-								<span class="placeholder">입력 없음</span>
-							{/if}
-						</div>
-						<div
-							class="verdict"
-							data-verdict
-							data-kind={r.verdict?.kind ?? 'blank'}
-							data-result={r.verdict?.kind === 'correct' ? 'ok' : 'bad'}
-						>
-							{r.verdict ? verdictText(r.verdict) : '답을 내지 않았습니다'}
-						</div>
-						{#if r.verdict?.kind !== 'correct'}
-							<dl class="answer">
-								<dt>direct</dt>
-								<dd><Alg parts={formatAlg(r.entry, 'direct', settings.notation)} size="sm" /></dd>
-								<dt>setup</dt>
-								<dd><Alg parts={formatAlg(r.entry, 'setup', settings.notation)} size="sm" /></dd>
-							</dl>
-						{/if}
-					</li>
-				{/each}
-			</ol>
+			<QuizResults
+				results={session?.graded ? results : []}
+				mode={session?.mode ?? settings.quizInput}
+				notation={settings.notation}
+			/>
 		</div>
 
 		<div class="controls">
@@ -378,75 +345,6 @@
 	.placeholder {
 		color: var(--muted);
 		font-size: 0.9rem;
-	}
-	.summary {
-		margin: 0;
-		font-size: 1rem;
-		font-weight: 600;
-	}
-	.result ol {
-		display: flex;
-		flex-direction: column;
-		gap: 0.6rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	.result li {
-		display: flex;
-		flex-direction: column;
-		gap: 0.4rem;
-		padding: 0.7rem;
-		background: var(--surface);
-		border: 1px solid var(--border);
-		border-radius: 8px;
-	}
-	.row-head {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		gap: 0.6rem;
-	}
-	.row-case {
-		font-family: var(--mono);
-		font-size: 1.2rem;
-		letter-spacing: 0.1em;
-	}
-	.row-targets {
-		font-family: var(--mono);
-		font-size: 0.8rem;
-		color: var(--muted);
-	}
-	.verdict {
-		padding: 0.4rem 0.6rem;
-		font-size: 0.9rem;
-		border-radius: 6px;
-		border: 1px solid var(--border);
-	}
-	/* 색은 `data-result` 하나만 본다 (규약) */
-	.verdict[data-result='ok'] {
-		color: var(--ok);
-		border-color: var(--ok);
-	}
-	.verdict[data-result='bad'] {
-		color: var(--danger);
-		border-color: var(--danger);
-	}
-	.answer {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: 0.3rem 0.7rem;
-		margin: 0;
-		align-items: baseline;
-	}
-	.answer dt {
-		font-family: var(--mono);
-		font-size: 0.78rem;
-		color: var(--muted);
-	}
-	.answer dd {
-		margin: 0;
-		min-width: 0;
 	}
 	/* 진행 버튼은 본문 최하단 (규약 1.3). 엄지 도달 범위에 둔다 */
 	.controls {

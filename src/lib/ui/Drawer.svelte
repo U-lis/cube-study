@@ -63,8 +63,9 @@
 		</div>
 
 		<!--
-			`<nav>` 가 아니다. 그 이름은 하단 탭이 쓴다 — 페이지의 이동 랜드마크는 하나이고,
-			서랍은 그 자체가 이름 붙은 dialog 다 (aria-label="메뉴").
+			`<nav>` 가 아니라 `<div class="list">` 다. 서랍은 그 자체가 이름 붙은
+			dialog 다 (aria-label="메뉴"). #46 에서 하단 탭바가 제거되면서 앱 전체에
+			`<nav>` 가 사라졌고, `conventions.spec.ts` 가 그것을 지킨다.
 		-->
 		<div class="list">
 			<a href="/" class="row" data-drawer-link="/" aria-current={page.url.pathname === '/' ? 'page' : undefined} onclick={close}>

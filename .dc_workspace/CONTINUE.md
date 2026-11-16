@@ -1,10 +1,10 @@
-# 이어서 하기 — 0.8.0 릴리스 후
+# 이어서 하기 — 0.9.0 진행 중
 
 **스냅숏이다. 정본이 아니다.** 각 항목이 가리키는 SPEC·이슈·코드가 정본이고,
 이 문서는 "지금 어디까지 왔고 다음에 무엇을 하면 되는가" 만 적는다.
 내용이 코드와 어긋나면 코드가 맞다.
 
-마지막 갱신: 2026-10-26 (0.8.0 릴리스·배포)
+마지막 갱신: 2026-10-29 (0.9.0 Phase 6 — 문서)
 
 ---
 
@@ -12,14 +12,67 @@
 
 | | |
 |---|---|
-| 브랜치 | `main` 하나 |
+| 브랜치 | `feature/op-exam` (0.9.0 작업 중). main 은 `v0.8.0` 에 있다 |
 | 릴리스된 커밋 | `v0.8.0` (M2 엣지 조회 · 퀴즈 #17) |
-| 서버에 떠 있는 것 | `v0.8.0`. 되돌리기는 `./deploy/deploy.sh v0.7.0` |
+| 서버에 떠 있는 것 | `v0.8.0`. 되돌리기는 `./deploy/deploy.sh v0.8.0` |
+| 임시 배포 (0.9.0 확인용) | `./deploy/deploy.sh feature/op-exam` — 사용자 승인 후에만 |
 | 푸시 | 릴레이 등록 · `push-install.sh prod dev` · 폰 수신 확인까지 끝났다 (2026-10-23 사용자 확인) |
-| 다음 릴리스 | `CHANGELOG.md` 에 `## [x.y.z]` 항목을 먼저 적어야 `deploy/release.sh` 가 돈다 |
+| 다음 릴리스 | `CHANGELOG.md` 에 `## [x.y.z]` 항목을 DOCS_UPDATE 단계에서 적어야 `deploy/release.sh` 가 돈다 |
 
 릴리스는 `./deploy/release.sh <버전>` 하나다 — 검사·버전·태그·push·배포·검증이
 한 줄로 이어진다. **사용자가 명시적으로 승인한 뒤에만 부른다.**
+
+### 0.9.0 에서 지금까지 한 것
+
+SPEC: `.dc_workspace/2026_10_29-op-exam/SPEC.md` (하단 탭 제거 · OP 코너 · 시험).
+Phase 1~6 모두 코드/문서 작업이 끝났다. 남은 것은 CHANGELOG·버전·태그·배포뿐이다.
+
+| Phase | 내용 | 상태 |
+|---|---|---|
+| 1 | 탭바 제거(#46), `tabsFor` 제거, 관련 테스트 갱신, CONVENTIONS·CLAUDE.md 세로 순서에서 "형제 탭" 삭제 | Complete |
+| 2 | OP 데이터(`corner-UBL-op.json`), `src/lib/domain/op.ts`, `op.svelte.ts` 스토어, 단위 테스트 | Complete |
+| 3 | `MoveKeypad.disabledTokens` prop, 서랍에 `OP 코너` 그룹, OP 조회·퀴즈 화면 | Complete |
+| 4 | `src/lib/domain/session.ts` 추출, `QuizResults.svelte`, 매일 퀴즈 리팩터 (동작 불변) | Complete |
+| 5 | `exam.ts`·`exam.svelte.ts`, 시험 화면 `/3x3/bld/3style/corner/exam`, 50건 기록 | Complete |
+| 6 | README · SVELTE.md · CONTINUE.md · BACKLOG.md 갱신 | Complete (이 문서) |
+
+### 0.9.0 에서 밟은 함정 하나 — 세로 fit 재설계
+
+탭바(53px sticky)를 지웠더니 390×844 에서 두 퀴즈의 제출 버튼이 **33px 아래로
+튀어나왔다.** 원인은 `.quiz { min-height: calc(100dvh - 52px - 40px - 1rem) }` 처럼
+탭바 높이를 **상수**로 더한 레이아웃이다. 상수 조정이 아니라 **flex fill** 로 옮겼다
+(SPEC AD-11).
+
+- `+layout.svelte` 의 `main` 이 `display:flex; flex-direction:column; flex:1`
+- 두 퀴즈 (`m2/edge/quiz`, `3style/corner/quiz`) 는 `.quiz { flex:1 }` — calc 제거
+
+제거 후 실측 (2026-10-29, 제출 버튼의 `boundingBox().y + height`):
+
+| 뷰포트 | 코너 퀴즈 | M2 퀴즈 |
+|---|---|---|
+| 375×667 | 671px | 651px |
+| 390×844 | 828px | 828px |
+
+측정은 `pnpm dev --port 5199` + Playwright/Chromium (상세는
+`.dc_workspace/2026_10_29-op-exam/PHASE_1_TEST.md`).
+
+이 함정이 다시 자라지 않도록 e2e 에
+**"제출 버튼이 뷰포트를 벗어나지 않는다 @viewport"** 가드를 둔다 — 두 퀴즈 각각
+위 두 뷰포트에서 `boundingBox().y + height ≤ viewport.height` 를 단언한다.
+`scrollHeight` 는 뷰포트를 채우는 값이지 콘텐츠 끝이 아니라서 지표로 쓸 수 없다
+(PHASE_1_TEST.md 측정 노트).
+
+### CONVENTIONS·CLAUDE.md 는 Phase 1 에서 이미 손봤다
+
+- `CONVENTIONS.md` 1.1 세로 순서 끝 "형제 탭" 삭제, 1.4 절("하단 탭은 형제만 담는다") 삭제
+- `CLAUDE.md` 의 세로 순서 끝 "형제 탭" 삭제, "하단 탭은 기능 칸만 다른 화면끼리다" 항목 삭제
+- `2026_10_18-drawer-push/SPEC.md` D-10 ("하단 형제 탭은 그대로") 에 "→ #46 에서 대체됨" 주석
+
+### `tabsFor` 는 지웠고 `labelFor` 는 남겼다
+
+`tabsFor` (`src/lib/ui/nav.ts:81` 자리) 의 호출처가 `+layout.svelte` 의 탭바 하나뿐이었다.
+`labelFor` (`nav.ts:57`) 와 형제 묶음 계산(`SIBLING_GROUPS`)은 서랍 `menuFor` 가 계속
+쓰므로 남긴다. `SIBLING_GROUPS['/3x3/bld/op/corner'] = ['lookup','quiz']` 가 들어왔다.
 
 ### 조건 알림
 
@@ -114,9 +167,12 @@
 
 ## 4. 열린 이슈
 
+0.9.0 에서 닫은 것: **#46 하단 탭 제거**, **#18 OP 코너 조회·퀴즈**, **#34 코너 3-style 시험**
+(이 branch 에서 처리, 아직 main 에 머지되지 않았다).
+
 | | |
 |---|---|
-| **#28** | 짧은 뷰포트에서 한 화면 fit 이 무너진다. 위 실측표와 세 가지 대안(JS 실측 / 플렉스 레이아웃 / 포기 문턱)이 이슈에 있다. **0.5.1 이 설정 줄을 하나 줄였으므로 재측정이 먼저다** |
+| **#28** | 짧은 뷰포트에서 한 화면 fit 이 무너진다. 0.9.0 에서 두 퀴즈를 flex fill 로 옮기면서 **375×667 코너 퀴즈 자연 콘텐츠 끝이 671px 로 내려왔다**(이슈 #46 테스트 측정). 뷰포트(667px) 보다 4px 많아 여전히 미세 스크롤이지만, 0.5.0 당시의 704px 보다 33px 짧다. 재검토 지점이지 닫히지는 않았다. 세 가지 대안(JS 실측 / 플렉스 레이아웃 / 포기 문턱)이 이슈에 있다 |
 | **#29** | 갤럭시 Z 폴드 폼팩터. Z Fold 8 실측 사양(커버 5.5" 1248×1972 10:16, 내부 7.6" 2448×1848 4:3)이 이슈에 있다. **커버는 비율은 세로로 길지만 접은 본체 높이가 123.9mm 로 통상보다 낮다** |
 | #16 | 엣지 3-style 데이터. 엣지 버퍼 DF 고정의 근거다 (#17 M2 는 0.8.0 에서 닫혔다) |
 | #26 | 색각 고대비 모드. 디자인 시스템 착수의 가장 강한 신호다 (`BACKLOG.md`) |

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import '$lib/styles/app.css';
 	import { browser, dev } from '$app/environment';
-	import { page } from '$app/state';
 	import { afterNavigate } from '$app/navigation';
 	import { settings } from '$lib/ui/settings.svelte.js';
 	import { sw } from '$lib/ui/sw.svelte.js';
@@ -11,7 +10,6 @@
 	import Drawer from '$lib/ui/Drawer.svelte';
 	import { push } from '$lib/ui/push.svelte.js';
 	import Toast from '$lib/ui/Toast.svelte';
-	import { tabsFor, isHome } from '$lib/ui/nav.js';
 	let { children } = $props();
 
 	// 설치된 앱에서만 켜진다. 화면 이동 뒤마다 감시 항목을 다시 심는다.
@@ -42,15 +40,16 @@
 	/**
 	 * 설치 프롬프트.
 	 *
-	 * 브라우저는 설치 팝업을 스스로 띄우지 않는다. beforeinstallprompt 를 잡아
-	 * 보관했다가 사용자가 버튼을 눌렀을 때 prompt() 를 불러야 한다.
+	 * Chrome(Android)은 설치 조건을 만족하면 하단 설치 안내(mini-infobar)를 스스로
+	 * 띄운다. 그래서 beforeinstallprompt 에서 preventDefault() 를 부르지 않는다 —
+	 * 부르면 그 자동 안내가 막힌다. 이벤트는 보관해 두고, 안내를 닫은 사용자도
+	 * 버튼으로 prompt() 를 부를 수 있게 한다.
 	 * 조건 미달이거나 이미 설치됐으면 이벤트가 오지 않으므로 버튼도 안 나온다.
 	 * iOS Safari 는 이 이벤트 자체가 없다 — 공유 시트로만 설치된다.
 	 */
 	let installPrompt = $state<{ prompt: () => Promise<unknown> } | null>(null);
 	if (browser) {
 		window.addEventListener('beforeinstallprompt', (e) => {
-			e.preventDefault(); // 막지 않으면 브라우저가 제 타이밍에 처리해 버린다
 			installPrompt = e as unknown as { prompt: () => Promise<unknown> };
 		});
 		window.addEventListener('appinstalled', () => (installPrompt = null));
@@ -65,17 +64,6 @@
 
 	let about: ReturnType<typeof About> | undefined = $state();
 	let drawer: ReturnType<typeof Drawer> | undefined = $state();
-	/*
-	 * 하단 탭 (FR-NAV-4·5·6·23).
-	 *
-	 * 소속·순서를 손으로 적은 배열이 여기 있었다. 지금은 경로가 정한다 — 형제는
-	 * 기능 칸만 다른 실재 화면이고, 그 계산은 `nav.ts` 하나에 있다.
-	 *
-	 * 활성 판정을 `pathname === href` 정확 일치로 하지 않는 이유는 상세 화면이다.
-	 * `/…/algs/GC` 에서 목록 탭이 꺼지면 지금 어디에 있는지가 화면에서 사라진다.
-	 */
-	let tabs = $derived(tabsFor(page.url.pathname, page.route.id));
-	let showTabs = $derived(!isHome(page.url.pathname) && tabs.length > 0);
 </script>
 
 <!--
@@ -89,7 +77,7 @@
 
 <!--
 	설치된 앱에서는 화면 이동이 히스토리를 쌓지 않고 교체한다. 쌓이면 뒤로가기가
-	아까 본 케이스들을 하나씩 되짚는다. 이동은 하단 탭으로 하고 뒤로가기는 닫기만 뜻한다.
+	아까 본 케이스들을 하나씩 되짚는다. 이동은 서랍(☰)으로 하고 뒤로가기는 닫기만 뜻한다.
 
 	브라우저 탭에서는 끈다 ("false"). 탭의 뒤로가기를 가로채는 것은 사용자를 가두는
 	짓이고, 애초에 닫을 앱도 아니다.
@@ -162,18 +150,6 @@
 		<Toast text="새 버전으로 업데이트했습니다" onclose={() => sw.dismiss()} />
 	{/if}
 	<main>{@render children()}</main>
-	<!--
-		탭바를 `{#if}` 로 넣고 뺀다. 이것은 NFR-NAV-1(요소 개수 불변)의 예외가 아니다 —
-		갈리는 것은 **라우트 사이**이고, 한 라우트는 서버가 그린 것과 하이드레이션한 것이
-		언제나 같다. `tabsFor` 가 `localStorage` 를 안 읽는 순수 함수인 것이 그 보장이다.
-	-->
-	{#if showTabs}
-		<nav>
-			{#each tabs as tab (tab.href)}
-				<a href={tab.href} class:on={tab.active}>{tab.label}</a>
-			{/each}
-		</nav>
-	{/if}
 </div>
 
 <style>
@@ -248,28 +224,9 @@
 		cursor: pointer;
 	}
 	main {
+		display: flex;
+		flex-direction: column;
 		flex: 1;
 		padding: 0 0.9rem 1rem;
-	}
-	nav {
-		position: sticky;
-		bottom: 0;
-		display: flex;
-		background: var(--surface);
-		border-top: 1px solid var(--border);
-	}
-	nav a {
-		flex: 1;
-		min-height: 52px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 0.95rem;
-		color: var(--muted);
-		text-decoration: none;
-	}
-	nav a.on {
-		color: var(--accent);
-		font-weight: 600;
 	}
 </style>

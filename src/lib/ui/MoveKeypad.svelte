@@ -12,14 +12,23 @@
 	 * 면 18개 밖의 무브 줄들 (SPEC AD-3). M2 퀴즈가 `M·M'·M2` 와 `l·l'·r·r'` 을
 	 * 넘긴다 — 그 세트의 공식이 쓰는 무브 전부다. 기본값 빈 배열이라 기존 호출부는
 	 * 변경 없이 돈다.
+	 *
+	 * `disabledTokens` (SPEC AD-6). OP 퀴즈가 Y 행 문제에서 `['[Y]']` 를 넘겨
+	 * `[Y]` 단독 정답을 막는다. 기본값 빈 배열이라 기존 호출부는 변경 없이 돈다.
 	 */
 	let {
 		moves = $bindable<string[]>([]),
-		extraRows = []
-	}: { moves?: string[]; extraRows?: readonly (readonly string[])[] } = $props();
+		extraRows = [],
+		disabledTokens = []
+	}: {
+		moves?: string[];
+		extraRows?: readonly (readonly string[])[];
+		disabledTokens?: readonly string[];
+	} = $props();
 
 	function pushToken(token: string) {
 		if (moves.length >= MAX_MOVES) return;
+		if (disabledTokens.includes(token)) return;
 		moves = [...moves, token];
 	}
 	function undo() {
@@ -38,7 +47,7 @@
 					type="button"
 					data-move={face + sfx}
 					onclick={() => pushToken(face + sfx)}
-					disabled={moves.length >= MAX_MOVES}
+					disabled={moves.length >= MAX_MOVES || disabledTokens.includes(face + sfx)}
 				>
 					<!-- 수식자 칸의 폭을 항상 예약해 면 글자가 어느 행에서나 같은 위치에 온다 -->
 					<span class="face">{face}</span><span class="sfx">{sfx}</span>
@@ -54,7 +63,7 @@
 					type="button"
 					data-move={token}
 					onclick={() => pushToken(token)}
-					disabled={moves.length >= MAX_MOVES}
+					disabled={moves.length >= MAX_MOVES || disabledTokens.includes(token)}
 				>
 					<span class="face">{token}</span>
 				</button>

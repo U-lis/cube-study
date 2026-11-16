@@ -14,6 +14,7 @@
 	import { menuFor } from './nav.js';
 	import { settings } from './settings.svelte.js';
 	import { push } from './push.svelte.js';
+	import { install } from './install.svelte.js';
 
 	let { onabout }: { onabout: () => void } = $props();
 
@@ -157,6 +158,17 @@
 				</span>
 				<span class="value" data-drawer-value="테마">{THEME_LABEL[settings.theme]}</span>
 			</button>
+			{#if install.available}
+				<!-- 브라우저가 설치 안내를 스스로 띄운다. 그걸 닫은 사람을 위한 자리다. -->
+				<button type="button" class="row" data-install onclick={() => { close(); void install.prompt(); }}>
+					<span class="label">
+						<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+							<path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+						앱 설치
+					</span>
+				</button>
+			{/if}
 			<button type="button" class="row" data-about-open onclick={about}>
 				<span class="label">
 					<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">

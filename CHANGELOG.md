@@ -5,6 +5,12 @@
 
 버전의 정본은 `package.json` 하나이며 빌드 타임에 앱으로 주입된다.
 
+## [Unreleased]
+
+### 고침
+
+- 설치 안내: `beforeinstallprompt` 를 `preventDefault()` 로 막지 않는다. Chrome(Android)이 조건을 만족하면 설치 안내를 스스로 띄운다. 설치 버튼은 그대로 남는다
+
 ## [0.8.0] - 2026-10-26
 
 ### 추가
